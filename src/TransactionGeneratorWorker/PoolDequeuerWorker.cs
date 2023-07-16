@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.Extensions;
@@ -34,17 +35,11 @@ namespace TrackingChain.TransactionGeneratorWorker
         {
             logger.StartPoolDequeuerWorker();
 
-            if (dequeuerOptions.Instance != dequeuerOptions.Accounts.Count)
-            {
-                //TODO controllare duplicati
-            }
-
             // Task creations.
             var tasks = new List<Task>();
-            for (int i = 0; i < dequeuerOptions.Instance; i++)
-            {
-                tasks.Add(DoAsyncWork(dequeuerOptions.Accounts[i], stoppingToken));
-            }
+
+            foreach (var account in dequeuerOptions.Accounts.Distinct())
+                tasks.Add(RunSingleAccountAsync(account, stoppingToken));
 
             await Task.WhenAll(tasks);
 
@@ -52,7 +47,9 @@ namespace TrackingChain.TransactionGeneratorWorker
         }
 
         // Helpers.
-        private async Task DoAsyncWork(Guid taskId, CancellationToken stoppingToken)
+        private async Task RunSingleAccountAsync(
+            Guid taskId, 
+            CancellationToken stoppingToken)
         {
             logger.StartChildPoolDequeuerTask(taskId);
             while (!stoppingToken.IsCancellationRequested)
@@ -66,7 +63,7 @@ namespace TrackingChain.TransactionGeneratorWorker
 #pragma warning disable CS0168 // Variable is declared but never used
                 try
                 {
-                    dequeued = await poolDequeuerUseCase.DequeueTransactionAsync(dequeuerOptions.Instance, taskId);
+                    dequeued = await poolDequeuerUseCase.DequeueTransactionAsync(dequeuerOptions.Accounts.Count, taskId);
                 }
 #pragma warning disable CA1031 // 
                 catch (Exception ex)

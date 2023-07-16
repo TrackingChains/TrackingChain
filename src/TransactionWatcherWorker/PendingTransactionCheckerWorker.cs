@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.Extensions;
@@ -36,10 +37,8 @@ namespace TransactionWatcherWorker
 
             // Task creations.
             var tasks = new List<Task>();
-            for (int i = 0; i < checkerOptions.Instance; i++)
-            {
-                tasks.Add(DoAsyncWork(checkerOptions.Accounts[i], stoppingToken));
-            }
+            foreach (var account in  checkerOptions.Accounts.Distinct())
+                tasks.Add(RunSingleAccountAsync(account, stoppingToken));
 
             await Task.WhenAll(tasks);
 
@@ -47,7 +46,7 @@ namespace TransactionWatcherWorker
         }
 
         // Helpers.
-        private async Task DoAsyncWork(Guid taskId, CancellationToken stoppingToken)
+        private async Task RunSingleAccountAsync(Guid taskId, CancellationToken stoppingToken)
         {
             logger.StartChildPoolDequeuerTask(taskId);
             while (!stoppingToken.IsCancellationRequested)
@@ -61,7 +60,7 @@ namespace TransactionWatcherWorker
 #pragma warning disable CS0168 // Variable is declared but never used
                 try
                 {
-                    dequeued = await poolDequeuerUseCase.CheckTransactionStatusAsync(checkerOptions.Instance, taskId);
+                    dequeued = await poolDequeuerUseCase.CheckTransactionStatusAsync(checkerOptions.Accounts.Count, taskId);
                 }
 #pragma warning disable CA1031 // 
                 catch (Exception ex)
