@@ -1,0 +1,36 @@
+﻿@page
+@model TrackingChain.TriageWebApplication.Pages.TrackingModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Tracking Products</h1>
+    <form method="post">
+        <table>
+            <tr>
+                <td>Product Code: </td>
+                <td><input type="text" name="productCode" /></td>
+            </tr>
+            <tr>
+                <td>Product Data Json (or HASH): </td>
+                <td><input type="text" name="productDataJson" /></td>
+            </tr>
+
+            <tr>
+                <td>Seleziona la blockchain</td>
+                <td>
+                    <select asp-for="SelectedChain" asp-items="Model.ChainOptions">
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Submit" asp-page-handler="Submit" /></td>
+            </tr>
+        </table>
+        <hr />
+        @Model.Result
+    </form>
+</div>

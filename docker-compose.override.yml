@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  triageapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - "80"
+      - "443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  aggregatorpoolworker:
+    environment:
+      - DOTNET_ENVIRONMENT=Development
+
+
+  transactiongeneratorworker:
+    environment:
+      - DOTNET_ENVIRONMENT=Development
+
+
+  transactionwatcherworker:
+    environment:
+      - DOTNET_ENVIRONMENT=Development
+
