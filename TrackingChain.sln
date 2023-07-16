@@ -17,7 +17,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		application-template.md = application-template.md
 		LICENSE = LICENSE
-		README_Account.txt = README_Account.txt
 		README_MigrationDb.txt = README_MigrationDb.txt
 		SqlForTest.sql = SqlForTest.sql
 		TrackerChain.png = TrackerChain.png
@@ -44,6 +43,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Front", "Front", "{A1E3A0BE-D756-471B-B2B9-DFF51851E99B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TriageWebApplication", "src\TriageWebApplication\TriageWebApplication.csproj", "{4D067C67-AC2A-43D9-AB08-658876F354F7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database_Seed_Test", "Database_Seed_Test", "{A4968876-1C42-42B9-B783-CDFE20362276}"
+	ProjectSection(SolutionItems) = preProject
+		SqlForTest.sql = SqlForTest.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -110,6 +114,7 @@ Global
 		{091C68AE-32F7-42C5-9C81-C59393FE568C} = {D4F52325-97F4-4E45-9F8C-A86A32E515AA}
 		{DE95D34C-31C3-483B-9FC4-0B372588247D} = {3EFD9F1D-2D17-43E0-AE03-E37B012AB16B}
 		{4D067C67-AC2A-43D9-AB08-658876F354F7} = {A1E3A0BE-D756-471B-B2B9-DFF51851E99B}
+		{A4968876-1C42-42B9-B783-CDFE20362276} = {6C7CC752-7EF4-4119-9376-0B1CDBE8F2C0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49D58F03-0A69-4F81-BB36-8910F2366114}
