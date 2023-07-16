@@ -46,6 +46,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database_Seed_Test", "Database_Seed_Test", "{A4968876-1C42-42B9-B783-CDFE20362276}"
 	ProjectSection(SolutionItems) = preProject
 		Sql_Seed_Database_Test.sql = Sql_Seed_Database_Test.sql
+		Sql_Seed_Database_Test_WithKey.sql = Sql_Seed_Database_Test_WithKey.sql
 	EndProjectSection
 EndProject
 Global
