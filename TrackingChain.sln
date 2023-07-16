@@ -18,7 +18,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		application-template.md = application-template.md
 		LICENSE = LICENSE
 		README_MigrationDb.txt = README_MigrationDb.txt
-		TrackerChain.png = TrackerChain.png
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AggregatorPoolWorker", "src\AggregatorPoolWorker\AggregatorPoolWorker.csproj", "{FF76735E-F90B-461C-BEA7-EA566116604F}"
