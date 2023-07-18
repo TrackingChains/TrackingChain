@@ -397,3 +397,8 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 /Sql_Seed_Database_Test_WithKey.sql
+/src/TriageAPI/appsettings.Development.json
+/src/TriageWebApplication/appsettings.Development.json
+/src/AggregatorPoolWorker/appsettings.Development.json
+/src/TransactionGeneratorWorker/appsettings.Development.json
+/src/TransactionWatcherWorker/appsettings.Development.json
