@@ -47,6 +47,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database_Seed_Test", "Datab
 		Sql_Seed_Database_Test_WithKey.sql = Sql_Seed_Database_Test_WithKey.sql
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{615480E3-1DB2-4783-AC35-D2F468E1BAE1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{BA8A24A5-C70E-41F0-A9BE-AADD5B671E9E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransactionGeneratorCore.Tests", "test\TransactionGeneratorCore.Tests\TransactionGeneratorCore.Tests.csproj", "{ABADF2BD-ADDB-4AB8-B6FF-9BC1CC11F6B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +103,10 @@ Global
 		{4D067C67-AC2A-43D9-AB08-658876F354F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D067C67-AC2A-43D9-AB08-658876F354F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D067C67-AC2A-43D9-AB08-658876F354F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABADF2BD-ADDB-4AB8-B6FF-9BC1CC11F6B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABADF2BD-ADDB-4AB8-B6FF-9BC1CC11F6B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABADF2BD-ADDB-4AB8-B6FF-9BC1CC11F6B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABADF2BD-ADDB-4AB8-B6FF-9BC1CC11F6B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -113,6 +123,7 @@ Global
 		{DE95D34C-31C3-483B-9FC4-0B372588247D} = {3EFD9F1D-2D17-43E0-AE03-E37B012AB16B}
 		{4D067C67-AC2A-43D9-AB08-658876F354F7} = {A1E3A0BE-D756-471B-B2B9-DFF51851E99B}
 		{A4968876-1C42-42B9-B783-CDFE20362276} = {6C7CC752-7EF4-4119-9376-0B1CDBE8F2C0}
+		{ABADF2BD-ADDB-4AB8-B6FF-9BC1CC11F6B3} = {BA8A24A5-C70E-41F0-A9BE-AADD5B671E9E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49D58F03-0A69-4F81-BB36-8910F2366114}

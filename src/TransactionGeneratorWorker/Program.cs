@@ -1,3 +1,4 @@
+using Jering.Javascript.NodeJS;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -27,6 +28,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddTransient<ITransactionGeneratorService, TransactionGeneratorService>();
         services.AddTransient<IPoolDequeuerUseCase, PoolDequeuerUseCase>();
         services.AddTransient<IUnitOfWork, UnitOfWork>();
+        services.AddNodeJS();
 
         services.AddHostedService<PoolDequeuerWorker>();
     })

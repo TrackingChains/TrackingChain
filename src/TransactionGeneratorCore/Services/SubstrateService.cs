@@ -1,22 +1,30 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Jering.Javascript.NodeJS;
+using Microsoft.Extensions.Logging;
 using Nethereum.Contracts.ContractHandlers;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Web3;
+using Substrate.Astar.NET.NetApiExt.Generated;
+using Substrate.NetApi.Model.Extrinsics;
+using System;
 using System.Text;
 using System.Threading.Tasks;
 using TrackingChain.TransactionGeneratorCore.SmartContracts;
 
 namespace TrackingChain.TransactionGeneratorCore.Services
 {
-    public class NethereumService : IEthereumService
+    public class SubstrateService : IEthereumService
     {
         // Fields.
-        private readonly ILogger<NethereumService> logger;
+        private readonly ILogger<SubstrateService> logger;
+        private readonly INodeJSService nodeJSService;
 
         // Constractor.
-        public NethereumService(ILogger<NethereumService> logger)
+        public SubstrateService(
+            ILogger<SubstrateService> logger,
+            INodeJSService nodeJSService)
         {
             this.logger = logger;
+            this.nodeJSService = nodeJSService;
         }
 
         // Public methods.
@@ -50,6 +58,9 @@ namespace TrackingChain.TransactionGeneratorCore.Services
             string chainRpc,
             string contractAddress)
         {
+            ResultSubstrateCall? result = await nodeJSService.InvokeFromFileAsync<ResultSubstrateCall>("exampleModule.js", args: new[] { "success" });
+            
+
             var contractHandler = GetContractHandler(
                 privateKey,
                 chainNumberId,
@@ -77,7 +88,7 @@ namespace TrackingChain.TransactionGeneratorCore.Services
         }
 
         private ContractHandler GetContractHandler(
-            string privateKey, 
+            string privateKey,
             int chainNumberId,
             string chainRpc,
             string contractAddress)
@@ -86,6 +97,11 @@ namespace TrackingChain.TransactionGeneratorCore.Services
             var web3 = new Web3(account, chainRpc);
 
             return web3.Eth.GetContractHandler(contractAddress);
+        }
+
+        public class ResultSubstrateCall
+        {
+
         }
     }
 }
