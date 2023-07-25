@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
 		LICENSE = LICENSE
-		README_MigrationDb.txt = README_MigrationDb.txt
+		README_MigrationDb.md = README_MigrationDb.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AggregatorPoolWorker", "src\AggregatorPoolWorker\AggregatorPoolWorker.csproj", "{FF76735E-F90B-461C-BEA7-EA566116604F}"
@@ -46,12 +46,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database_Seed_Test", "Datab
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Substrate", "Substrate", "{615480E3-1DB2-4783-AC35-D2F468E1BAE1}"
+	ProjectSection(SolutionItems) = preProject
+		README_SUBSTRATE.md = README_SUBSTRATE.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{BA8A24A5-C70E-41F0-A9BE-AADD5B671E9E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransactionGeneratorCore.Tests", "test\TransactionGeneratorCore.Tests\TransactionGeneratorCore.Tests.csproj", "{ABADF2BD-ADDB-4AB8-B6FF-9BC1CC11F6B3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Substrate.Shibuya.NET.NetApiExt", "Substrate.Shibuya.NET.NetApiExt\Substrate.Shibuya.NET.NetApiExt.csproj", "{990A3488-787E-4DF4-A21B-653F4121C385}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Substrate.Shibuya.NET.NetApiExt", "src\Substrate.Shibuya.NET.NetApiExt\Substrate.Shibuya.NET.NetApiExt.csproj", "{990A3488-787E-4DF4-A21B-653F4121C385}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shibuya", "Shibuya", "{BFCE3F84-9F5D-48D1-82B9-30C6AA205E1A}"
 EndProject

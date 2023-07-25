@@ -16,7 +16,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Substrate.Shibuya.NET.NetApiExt\Substrate.Shibuya.NET.NetApiExt.csproj" />
+	  <ProjectReference Include="..\Substrate.Shibuya.NET.NetApiExt\Substrate.Shibuya.NET.NetApiExt.csproj" />
 	</ItemGroup>
 	
   <ItemGroup>
