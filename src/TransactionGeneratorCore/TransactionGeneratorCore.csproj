@@ -23,8 +23,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Substrate.Chains.NET\Substrate.Astar.NET\Substrate.Astar.NET.NetApiExt\Substrate.Astar.NET.NetApiExt.csproj" />
+    <ProjectReference Include="..\Substrate.Shibuya.NET.Client\Substrate.Shibuya.NET.Client.csproj" />
     <ProjectReference Include="..\TrackingChainCommon\TrackingChainCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="SubstrateClient\" />
   </ItemGroup>
 
 </Project>
