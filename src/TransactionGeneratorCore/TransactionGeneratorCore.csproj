@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Substrate.Shibuya.NET.Client\Substrate.Shibuya.NET.Client.csproj" />
     <ProjectReference Include="..\TrackingChainCommon\TrackingChainCore.csproj" />
   </ItemGroup>
 
