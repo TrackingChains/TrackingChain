@@ -8,7 +8,7 @@ using TrackingChain.TrackingChainCore.EntityFramework.Context;
 
 #nullable disable
 
-namespace TrackingChain.TrackingChainCore.Migrations
+namespace TrackingChain.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -121,6 +121,10 @@ namespace TrackingChain.TrackingChainCore.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ExtraInfo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -149,7 +153,7 @@ namespace TrackingChain.TrackingChainCore.Migrations
                     b.Property<bool>("Completed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Data")
+                    b.Property<string>("DataValue")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -179,6 +183,10 @@ namespace TrackingChain.TrackingChainCore.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("SmartContractAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SmartContractExtraInfo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -216,7 +224,7 @@ namespace TrackingChain.TrackingChainCore.Migrations
                     b.Property<bool>("Completed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Data")
+                    b.Property<string>("DataValue")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -240,6 +248,10 @@ namespace TrackingChain.TrackingChainCore.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("SmartContractAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SmartContractExtraInfo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -272,7 +284,7 @@ namespace TrackingChain.TrackingChainCore.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Data")
+                    b.Property<string>("DataValue")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -319,6 +331,10 @@ namespace TrackingChain.TrackingChainCore.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SmartContractExtraInfo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<long>("SmartContractId")
                         .HasColumnType("bigint");
 
@@ -354,7 +370,7 @@ namespace TrackingChain.TrackingChainCore.Migrations
                     b.Property<bool>("Completed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Data")
+                    b.Property<string>("DataValue")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -368,6 +384,10 @@ namespace TrackingChain.TrackingChainCore.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("SmartContractAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SmartContractExtraInfo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

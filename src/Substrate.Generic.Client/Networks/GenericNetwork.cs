@@ -33,6 +33,7 @@ namespace Substrate.Generic.Client.Networks
         public async Task<string?> BatchAllAsync(
             IEnumerable<EnumRuntimeCall> callList,
             int concurrentTasks,
+            bool watchExtrinsic,
             CancellationToken token)
         {
             var extrinsicType = "BatchAll";
@@ -50,7 +51,7 @@ namespace Substrate.Generic.Client.Networks
 
             var extrinsic = UtilityCalls.BatchAll(calls);
 
-            return await GenericExtrinsicAsync(Account, extrinsicType, extrinsic, concurrentTasks, token);
+            return await GenericExtrinsicAsync(Account, extrinsicType, extrinsic, concurrentTasks, watchExtrinsic, token);
         }
 
         public async Task<string?> ContractsCallAsync(
@@ -61,6 +62,7 @@ namespace Substrate.Generic.Client.Networks
             BigInteger? storageDepositLimit,
             byte[] data,
             int concurrentTasks,
+            bool watchExtrinsic,
             CancellationToken token)
         {
             var extrinsicType = "ContractsCallAsync";
@@ -99,7 +101,7 @@ namespace Substrate.Generic.Client.Networks
 
             var extrinsic = ContractsCalls.Call(destParam, valueParam, gasLimitParam, storageDepositLimitParam, dataParam);
 
-            return await GenericExtrinsicAsync(Account, extrinsicType, extrinsic, concurrentTasks, token);
+            return await GenericExtrinsicAsync(Account, extrinsicType, extrinsic, concurrentTasks, watchExtrinsic, token);
         }
 
         public async Task<AccountInfo?> GetAccountAsync(CancellationToken token)
@@ -129,6 +131,7 @@ namespace Substrate.Generic.Client.Networks
             AccountId32 to, 
             BigInteger amount, 
             int concurrentTasks,
+            bool watchExtrinsic,
             CancellationToken token)
         {
             var extrinsicType = "TransferKeepAlive";
@@ -146,7 +149,7 @@ namespace Substrate.Generic.Client.Networks
 
             var extrinsic = BalancesCalls.TransferKeepAlive(multiAddress, balance);
 
-            return await GenericExtrinsicAsync(Account, extrinsicType, extrinsic, concurrentTasks, token);
+            return await GenericExtrinsicAsync(Account, extrinsicType, extrinsic, concurrentTasks, watchExtrinsic, token);
         }
     }
 }

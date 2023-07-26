@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using TrackingChain.Common.ExtraInfos;
 using TrackingChain.Common.Interfaces;
 using TrackingChain.TrackingChainCore.Domain.Enums;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
@@ -74,9 +75,9 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                             pool.DataValue,
                             account.PrivateKey,
                             pool.ChainNumberId,
-                            account.GetFirstRandomAvaiableRpcAddress,
+                            account.GetFirstRandomWsAddress,
                             pool.SmartContractAddress,
-                            new Common.ExtraInfos.SubstractContractExtraInfo(),
+                            SubstractContractExtraInfo.FromJson(pool.SmartContractExtraInfo),
                             CancellationToken.None);
 
                 var txPending = transactionGeneratorService.AddTransactionPendingFroomPool(pool, txHash);

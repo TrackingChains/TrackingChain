@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TrackingChain.TrackingChainCore.Migrations
+namespace TrackingChain.Core.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration
@@ -37,6 +37,7 @@ namespace TrackingChain.TrackingChainCore.Migrations
                     ChainNumberId = table.Column<int>(type: "int", nullable: false),
                     ChainType = table.Column<int>(type: "int", nullable: false),
                     Currency = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExtraInfo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -59,10 +60,11 @@ namespace TrackingChain.TrackingChainCore.Migrations
                     Priority = table.Column<byte>(type: "tinyint", nullable: false),
                     PoolDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Data = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DataValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReceivedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ChainNumberId = table.Column<int>(type: "int", nullable: false),
                     ChainType = table.Column<int>(type: "int", nullable: false),
+                    SmartContractExtraInfo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SmartContractId = table.Column<long>(type: "bigint", nullable: false),
                     SmartContractAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProfileGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
@@ -84,10 +86,11 @@ namespace TrackingChain.TrackingChainCore.Migrations
                     TriageDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Priority = table.Column<byte>(type: "tinyint", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Data = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DataValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReceivedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ChainNumberId = table.Column<int>(type: "int", nullable: false),
                     ChainType = table.Column<int>(type: "int", nullable: false),
+                    SmartContractExtraInfo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SmartContractId = table.Column<long>(type: "bigint", nullable: false),
                     SmartContractAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProfileGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
@@ -116,10 +119,11 @@ namespace TrackingChain.TrackingChainCore.Migrations
                     ReceiptTypeHex = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RegistryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Data = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DataValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReceivedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ChainNumberId = table.Column<int>(type: "int", nullable: false),
                     ChainType = table.Column<int>(type: "int", nullable: false),
+                    SmartContractExtraInfo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SmartContractId = table.Column<long>(type: "bigint", nullable: false),
                     SmartContractAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProfileGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
@@ -139,10 +143,11 @@ namespace TrackingChain.TrackingChainCore.Migrations
                     IsInPool = table.Column<bool>(type: "bit", nullable: false),
                     TrackingIdentify = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Data = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DataValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReceivedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ChainNumberId = table.Column<int>(type: "int", nullable: false),
                     ChainType = table.Column<int>(type: "int", nullable: false),
+                    SmartContractExtraInfo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SmartContractId = table.Column<long>(type: "bigint", nullable: false),
                     SmartContractAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProfileGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)

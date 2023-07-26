@@ -16,13 +16,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Jering.Javascript.NodeJS" Version="6.3.1" />
     <PackageReference Include="Nethereum.ABI" Version="4.13.0" />
     <PackageReference Include="Nethereum.Contracts" Version="4.13.0" />
     <PackageReference Include="Nethereum.Web3" Version="4.13.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Substrate.Generic.Client\Substrate.Generic.Client.csproj" />
     <ProjectReference Include="..\TrackingChain.Core\TrackingChain.Core.csproj" />
   </ItemGroup>
 

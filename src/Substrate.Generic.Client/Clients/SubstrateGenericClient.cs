@@ -5,12 +5,16 @@ using Substrate.Generic.Client.Networks;
 using Substrate.NetApi;
 using Substrate.NetApi.Model.Types;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Numerics;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TrackingChain.Common.ExtraInfos;
 using TrackingChain.Common.Interfaces;
+using TrackingChain.Core.Dto;
 
 namespace Substrate.Generic.Client.Clients
 {
@@ -27,11 +31,11 @@ namespace Substrate.Generic.Client.Clients
 
         // Methods.
         public async Task<string> InsertTrackingAsync(
-            string code, 
-            string dataValue, 
-            string privateKey, 
-            int chainNumberId, 
-            string chainWs, 
+            string code,
+            string dataValue,
+            string privateKey,
+            int chainNumberId,
+            string chainWs,
             string contractAddress,
             SubstractContractExtraInfo substractContractExtraInfo,
             CancellationToken token)
@@ -58,54 +62,88 @@ namespace Substrate.Generic.Client.Clients
 
             //logger.LogInformation("Connected to {url}: {flag}", chainWs, client.IsConnected);
 
-            // do action in here ...
-            Thread.Sleep(3000);
-
             var dest = Utils.GetPublicKeyFrom(contractAddress).ToAccountId32();
-            var value = new BigInteger(0);
-            var refTime = (ulong)3951114240;
-            var proofSize = (ulong)125952;
-            var storageDepositLimit = new BigInteger(54000000000);
-            var data = Utils.HexToByteArray(InputParamsToHex(code, dataValue, false, substractContractExtraInfo));  //"0x1ba63d86363617270650000000000000000000000000000000000000000000000000000014616161616100"
-            var subscriptionId = await client.ContractsCallAsync(dest, value, refTime, proofSize, storageDepositLimit, data, 1, token);
-
-            await client.DisconnectAsync();
-            //logger.LogInformation("Disconnected from {url}", url);
-
+            //var data =   //"0x1ba63d86363617270650000000000000000000000000000000000000000000000000000014616161616100"
+            var insertTrackDto = CreateInsertTrackParams(
+                code, 
+                dataValue, 
+                false, 
+                substractContractExtraInfo);
+            var subscriptionId = await client.ContractsCallAsync(
+                dest, 
+                insertTrackDto.Value, 
+                insertTrackDto.RefTime, 
+                insertTrackDto.ProofSize,
+                insertTrackDto.StorageDepositLimit,
+                insertTrackDto.DataHex, 
+                1, 
+                false,
+                token);
+            return subscriptionId ?? "";
+            /*
             if (subscriptionId != null)
             {
-                return subscriptionId;
-                /*
-                logger.LogInformation("SubscriptionId: {subscriptionId}", subscriptionId);
+
+                //logger.LogInformation("SubscriptionId: {subscriptionId}", subscriptionId);
                 var queueInfo = client.ExtrinsicManger.Get(subscriptionId);
-                while (queueInfo != null && 
+                while (queueInfo != null &&
                        !queueInfo.IsCompleted)
                 {
-                    logger.LogInformation("QueueInfo {subscription} [{state}]", subscriptionId, queueInfo != null ? queueInfo.State.ToString() : queueInfo);
+#pragma warning disable CA1848 // Use the LoggerMessage delegates
+#pragma warning disable CA1727 // Use the LoggerMessage delegates
+                    logger.LogInformation("QueueInfo {subscription} [{state}]", subscriptionId, queueInfo.State.ToString());
+#pragma warning restore CA1727 // Use the LoggerMessage delegates
+#pragma warning restore CA1848 // Use the LoggerMessage delegates
                     Thread.Sleep(1000);
                     queueInfo = client.ExtrinsicManger.Get(subscriptionId);
-                }*/
+                }
+                await client.DisconnectAsync();
+                //logger.LogInformation("Disconnected from {url}", url);
+                return subscriptionId ?? "";
             }
             else
             {
                 //logger.LogError("Failed to call contract");
                 return "";
             }
+            */
         }
 
         // Helpers.
-        private string InputParamsToHex(
+        private InsertTrackDto CreateInsertTrackParams(
             string code,
             string dataValue,
             bool closed,
             SubstractContractExtraInfo substractContractExtraInfo)
         {
-            var codeHex = code.Replace("0x", "", System.StringComparison.InvariantCultureIgnoreCase);
-            var dataValueHex = dataValue.Replace("0x", "", System.StringComparison.InvariantCultureIgnoreCase);
-            var prefixDataValueHex = (dataValueHex.Length * 2).ToString("X", CultureInfo.InvariantCulture);
+            // Code.
+            var codeHex = Encoding.ASCII.GetBytes(code)
+                .Select(b => b.ToString("x2", CultureInfo.InvariantCulture))
+                .Aggregate((acc, str) => acc + str)
+                .PadRight(64, '0');
+
+            // DataValue.
+            var dataValueHex = Encoding.ASCII.GetBytes(dataValue)
+                .Select(b => b.ToString("X2", CultureInfo.InvariantCulture))
+                .Aggregate((acc, str) => acc + str);
+            var prefixDataValueHex = (dataValueHex.Length * 2).ToString("x2", CultureInfo.InvariantCulture);
+
+            // Closed.
             var closedHex = closed ? "01" : "00";
 
-            return $"{substractContractExtraInfo.InsertTrackSelectorValue}{codeHex}{prefixDataValueHex}{dataValueHex}{closedHex}";
+            // Calculate storage deposit limit.
+            var itemWeight = new List<BigInteger> { new BigInteger(14000000000) }; // Basic size;
+            itemWeight.AddRange(Enumerable.Repeat(new BigInteger(1000000000), dataValueHex.Length / 2)); // Single Hex Size multiplied for number of bytes.
+            var storageDepositLimit = itemWeight.Aggregate((currentSum, item) => currentSum + item);
+
+            return new InsertTrackDto
+            {
+                DataHex = Utils.HexToByteArray($"{substractContractExtraInfo.InsertTrackSelectorValue}{codeHex}{prefixDataValueHex}{dataValueHex}{closedHex}"),
+                ProofSize = (ulong)125952,
+                RefTime = (ulong)3951114240,
+                StorageDepositLimit = storageDepositLimit,
+                Value = new BigInteger(0),
+            };
         }
     }
 }

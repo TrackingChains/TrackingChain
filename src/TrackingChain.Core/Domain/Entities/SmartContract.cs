@@ -39,8 +39,5 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public string ExtraInfo { get; private set; }
         public string Name { get; private set; }
         public virtual ProfileGroup? ProfileGroup { get; private set; } = default!;
-
-        // Methods.
-        public SubstractContractExtraInfo GetExtraInfo => JsonSerializer.Deserialize<SubstractContractExtraInfo>(ExtraInfo) ?? new SubstractContractExtraInfo();
     }
 }

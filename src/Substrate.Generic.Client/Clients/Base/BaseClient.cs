@@ -86,6 +86,7 @@ namespace Substrate.Generic.Client.Client.Bases
             string extrinsicType, 
             Method extrinsicMethod, 
             int concurrentTasks, 
+            bool watchExtrinsic,
             CancellationToken token)
         {
             if (account == null)
@@ -115,7 +116,9 @@ namespace Substrate.Generic.Client.Client.Bases
             string? subscription = null;
             try
             {
-                subscription = await SubstrateClient.Author.SubmitAndWatchExtrinsicAsync(ExtrinsicManger.ActionExtrinsicUpdate, extrinsicMethod, account, _chargeTypeDefault, 64, token);
+                subscription = watchExtrinsic ?
+                    await SubstrateClient.Author.SubmitAndWatchExtrinsicAsync(ExtrinsicManger.ActionExtrinsicUpdate, extrinsicMethod, account, _chargeTypeDefault, 64, token)
+                    : (await SubstrateClient.Author.SubmitExtrinsicAsync(extrinsicMethod, account, _chargeTypeDefault, 64, token))?.Value ?? "";
             }
             catch (RemoteInvocationException)
             {

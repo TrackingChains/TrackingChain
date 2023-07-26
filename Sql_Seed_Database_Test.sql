@@ -1,6 +1,7 @@
 
 --https://blockscout.com/shibuya/address/0xa0532A56179Eb1677D33709db82de6b5880f23c6
 --https://moonbase.moonscan.io/address/0x55D64aB19C01e135b86429D9367DfCEE3EF615a3#code
+--https://shibuya.subscan.io/account/aKpb5m5WBvTA164EdZhkYHU1SHBixY4QPnxbekMDUSfUYGd
 
 -- Astar Test
   insert into [Accounts] (Id, ChainWsAddress, ChainRpcAddress, PrivateKey) values
@@ -18,12 +19,12 @@
 ('9F8E591B-6A9C-486E-AB2B-2B42ABBF5B23','wss://moonbase-alpha.blastapi.io/4e06bea6-56f2-40e0-a400-2e95f07a87e9', 'https://moonbase-alpha.blastapi.io/4e06bea6-56f2-40e0-a400-2e95f07a87e9', '...')
 
 -- SmartContract
-insert into [SmartContract] (Address, ChainNumberId, ChainType, Currency, Name) values
-('0xa0532A56179Eb1677D33709db82de6b5880f23c6', 81, 0, 'SBY', 'Shibuya Test Net EVM')
-insert into [SmartContract] (Address, ChainNumberId, ChainType, Currency, Name) values
-('0x55D64aB19C01e135b86429D9367DfCEE3EF615a3', 1287, 0, 'DEV', 'Moonbase Test Net')
-insert into [SmartContract] (Address, ChainNumberId, ChainType, Currency, Name) values
-('aKpb5m5WBvTA164EdZhkYHU1SHBixY4QPnxbekMDUSfUYGd', 1000, 0, 'SBY', 'Shibuya Test Net INK')
+insert into [SmartContract] (Address, ChainNumberId, ChainType, Currency, ExtraInfo, Name) values
+('0xa0532A56179Eb1677D33709db82de6b5880f23c6', 81, 0, 'SBY', '{}', 'Shibuya Test Net EVM')
+insert into [SmartContract] (Address, ChainNumberId, ChainType, Currency, ExtraInfo, Name) values
+('0x55D64aB19C01e135b86429D9367DfCEE3EF615a3', 1287, 0, 'DEV', '{}', 'Moonbase Test Net')
+insert into [SmartContract] (Address, ChainNumberId, ChainType, Currency, ExtraInfo, Name) values
+('aKpb5m5WBvTA164EdZhkYHU1SHBixY4QPnxbekMDUSfUYGd', 1000, 1, 'SBY', '{"InsertTrackSelectorValue":"0x1ba63d86"}', 'Shibuya Test Net INK')
 
 -- Profile
 insert into [ProfileGroups] (Id, AggregationCode, Authority, Category, Name, SmartContractId, Priority) values
