@@ -31,11 +31,12 @@ namespace TrackingChain.AggregatorPoolCore.Services
 
             var transactionQueues = triages.Select(p => new TransactionPool(
                 p.Code,
-                p.Data,
+                p.DataValue,
                 p.TrackingIdentify,
                 p.ReceivedDate,
                 p.SmartContractId,
                 p.SmartContractAddress,
+                p.SmartContractExtraInfo,
                 p.ProfileGroupId,
                 p.ChainNumberId,
                 p.ChainType));

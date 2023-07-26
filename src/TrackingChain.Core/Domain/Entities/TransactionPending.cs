@@ -16,9 +16,10 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             Guid profileGroupId,
             long smartContractId,
             string smartContractAddress,
+            string smartContractExtraInfo,
             int chainNumberId,
             ChainType chainType)
-            : base(code, data, chainNumberId, chainType, smartContractId, smartContractAddress, profileGroupId)
+            : base(code, data, chainNumberId, chainType, smartContractId, smartContractAddress, smartContractExtraInfo, profileGroupId)
         {
             ReceivedDate = DateTime.UtcNow;
             TrackingId = trackingIdentify;

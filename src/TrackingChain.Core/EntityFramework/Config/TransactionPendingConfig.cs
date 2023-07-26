@@ -15,7 +15,7 @@ namespace TrackingChain.TrackingChainCore.EntityFramework.Config
 
             builder.Property(x => x.Code)
                 .IsRequired();
-            builder.Property(x => x.Data)
+            builder.Property(x => x.DataValue)
                 .IsRequired();
             builder.Property(x => x.Locked)
                 .IsConcurrencyToken();

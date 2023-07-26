@@ -35,10 +35,11 @@ namespace TrackingChain.TransactionWaitingCore.Services
 
             var transactionRegistry = new TransactionRegistry(
                 transactionTriage.Code,
-                transactionTriage.Data,
+                transactionTriage.DataValue,
                 transactionTriage.TrackingIdentify,
                 transactionTriage.SmartContractId,
                 transactionTriage.SmartContractAddress,
+                transactionTriage.SmartContractExtraInfo,
                 transactionTriage.ProfileGroupId,
                 transactionTriage.ChainNumberId,
                 transactionTriage.ChainType,
@@ -60,6 +61,7 @@ namespace TrackingChain.TransactionWaitingCore.Services
                 group.Id,
                 smartContract.Id,
                 smartContract.Address,
+                smartContract.ExtraInfo,
                 smartContract.ChainNumberId,
                 smartContract.ChainType);
 

@@ -8,15 +8,16 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         // Constructors.
         public TransactionPool(
             string code,
-            string data,
+            string dataValue,
             Guid trackingIdentify,
             DateTime triageDate,
             long smartContractId,
             string smartContractAddress,
+            string smartContractExtraInfo,
             Guid profileGroupId,
             int chainNumberId,
             ChainType chainType)
-            : base(code, data, chainNumberId, chainType, smartContractId, smartContractAddress, profileGroupId)
+            : base(code, dataValue, chainNumberId, chainType, smartContractId, smartContractAddress, smartContractExtraInfo, profileGroupId)
         {
             ReceivedDate = DateTime.UtcNow;
             TrackingId = trackingIdentify;

@@ -2,7 +2,10 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using TrackingChain.Common.Interfaces;
+using TrackingChain.TrackingChainCore.Domain.Enums;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TransactionGeneratorCore.Services;
 
@@ -15,6 +18,7 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
         private readonly ApplicationDbContext applicationDbContext;
         private readonly IEthereumService ethereumService;
         private readonly ILogger<PoolDequeuerUseCase> logger;
+        private readonly ISubstrateClient substrateClient;
         private readonly ITransactionGeneratorService transactionGeneratorService;
 
         // Constructors.
@@ -23,12 +27,14 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
             ApplicationDbContext applicationDbContext,
             IEthereumService ethereumService,
             ILogger<PoolDequeuerUseCase> logger,
+            ISubstrateClient substrateClient,
             ITransactionGeneratorService transactionGeneratorService)
         {
             this.accountService = accountService;
             this.applicationDbContext = applicationDbContext;
             this.ethereumService = ethereumService;
             this.logger = logger;
+            this.substrateClient = substrateClient;
             this.transactionGeneratorService = transactionGeneratorService;
         }
 
@@ -53,13 +59,25 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                     continue;
                 }
 
-                var txHash = await ethereumService.InsertTrackingAsync(
-                    pool.Code,
-                    pool.Data,
-                    account.PrivateKey,
-                    pool.ChainNumberId,
-                    account.GetFirstRandomAvaiableRpcAddress,
-                    pool.SmartContractAddress);
+                string txHash;
+                if (pool.ChainType == ChainType.EVM)
+                    txHash = await ethereumService.InsertTrackingAsync(
+                        pool.Code,
+                        pool.DataValue,
+                        account.PrivateKey,
+                        pool.ChainNumberId,
+                        account.GetFirstRandomAvaiableRpcAddress,
+                        pool.SmartContractAddress);
+                else
+                    txHash = await substrateClient.InsertTrackingAsync(
+                            pool.Code,
+                            pool.DataValue,
+                            account.PrivateKey,
+                            pool.ChainNumberId,
+                            account.GetFirstRandomAvaiableRpcAddress,
+                            pool.SmartContractAddress,
+                            new Common.ExtraInfos.SubstractContractExtraInfo(),
+                            CancellationToken.None);
 
                 var txPending = transactionGeneratorService.AddTransactionPendingFroomPool(pool, txHash);
                 await transactionGeneratorService.SetToPendingAsync(txPending);

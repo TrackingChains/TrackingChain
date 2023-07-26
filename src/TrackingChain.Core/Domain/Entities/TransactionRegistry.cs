@@ -8,15 +8,16 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         // Constructors.
         public TransactionRegistry(
             string code,
-            string data,
+            string dataValue,
             Guid trackingIdentify,
             long smartContractId,
             string smartContractAddress,
+            string smartContractExtraInfo,
             Guid profileGroupId,
             int chainNumberId,
             ChainType chainType,
             DateTime triageDate)
-            : base(code, data, chainNumberId, chainType, smartContractId, smartContractAddress, profileGroupId)
+            : base(code, dataValue, chainNumberId, chainType, smartContractId, smartContractAddress, smartContractExtraInfo, profileGroupId)
         {
             TrackingId = trackingIdentify;
             TriageDate = triageDate;

@@ -8,23 +8,18 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         // Constructors.
         public TransactionTriage(
             string code, 
-            string data,
+            string dataValue,
             Guid profileGroupId,
             long smartContractId,
             string smartContractAddress,
+            string smartContractExtraInfo,
             int chainNumberId,
             ChainType chainType)
-            : base (code, data, chainNumberId, chainType, smartContractId, smartContractAddress, profileGroupId)
+            : base (code, dataValue, chainNumberId, chainType, smartContractId, smartContractAddress, smartContractExtraInfo, profileGroupId)
         {
-            ArgumentException.ThrowIfNullOrEmpty(code);
-            ArgumentException.ThrowIfNullOrEmpty(data);
-            ArgumentException.ThrowIfNullOrEmpty(smartContractAddress);
-
             if (smartContractId <= 0)
                 throw new ArgumentException($"{nameof(smartContractId)} must be great than 0");
 
-            Data = data;
-            ReceivedDate = DateTime.UtcNow;
             TrackingIdentify = Guid.NewGuid();
         }
         protected TransactionTriage() { }
