@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Substrate.Shibuya.NET.NetApiExt\Substrate.Shibuya.NET.NetApiExt.csproj" />
+    <ProjectReference Include="..\TrackingChain.Common\TrackingChain.Common.csproj" />
   </ItemGroup>
 
 </Project>

@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\TransactionGeneratorCore\TransactionGeneratorCore.csproj" />
+    <ProjectReference Include="..\..\src\TransactionGenerator.Core\TransactionGenerator.Core.csproj" />
   </ItemGroup>
 
 </Project>
