@@ -20,78 +20,47 @@ namespace Substrate.Generic.Client.Networks
 {
     public class GenericNetwork : BaseClient
     {
-        public Account Account { get; set; }
-
+        // Constructors.
         public GenericNetwork(Account account, string url) : base(url)
         {
             Account = account;
         }
 
-        /// <summary>
-        /// Get the current block number
-        /// </summary>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        public async Task<U32?> GetBlocknumberAsync(CancellationToken token)
-        {
-            if (!IsConnected)
-            {
-                //Log.Warning("Currently not connected to the network!");
-                return null;
-            }
+        // Properties.
+        public Account Account { get; set; }
 
-            return await SubstrateClient.SystemStorage.Number(token);
-        }
-
-        /// <summary>
-        /// Get the account infos for the current account
-        /// </summary>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        public async Task<AccountInfo?> GetAccountAsync(CancellationToken token)
-        {
-            if (Account == null || 
-                Account.Value == null)
-            {
-                //Log.Warning("No account set!");
-                return null;
-            }
-
-            return await SubstrateClient.SystemStorage.Account(Account.Value.ToAccountId32(), token);
-        }
-
-        public async Task<string?> TransferKeepAliveAsync(
-            AccountId32 to, 
-            BigInteger amount, 
+        // Public methods.
+        public async Task<string?> BatchAllAsync(
+            IEnumerable<EnumRuntimeCall> callList,
             int concurrentTasks,
             CancellationToken token)
         {
-            var extrinsicType = "TransferKeepAlive";
+            var extrinsicType = "BatchAll";
 
-            if (!IsConnected || Account == null)
+            if (!IsConnected ||
+                Account == null ||
+                callList == null ||
+                !callList.Any())
             {
                 return null;
             }
 
-            var multiAddress = new EnumMultiAddress();
-            multiAddress.Create(MultiAddress.Id, to);
+            var calls = new BaseVec<EnumRuntimeCall>();
+            calls.Create(callList.ToArray());
 
-            var balance = new BaseCom<U128>();
-            balance.Create(amount);
-
-            var extrinsic = BalancesCalls.TransferKeepAlive(multiAddress, balance);
+            var extrinsic = UtilityCalls.BatchAll(calls);
 
             return await GenericExtrinsicAsync(Account, extrinsicType, extrinsic, concurrentTasks, token);
         }
 
         public async Task<string?> ContractsCallAsync(
-            AccountId32 dest, 
-            BigInteger value, 
-            ulong refTime, 
-            ulong proofSize, 
-            BigInteger? storageDepositLimit, 
-            byte[] data, 
-            int concurrentTasks, 
+            AccountId32 dest,
+            BigInteger value,
+            ulong refTime,
+            ulong proofSize,
+            BigInteger? storageDepositLimit,
+            byte[] data,
+            int concurrentTasks,
             CancellationToken token)
         {
             var extrinsicType = "ContractsCallAsync";
@@ -133,28 +102,51 @@ namespace Substrate.Generic.Client.Networks
             return await GenericExtrinsicAsync(Account, extrinsicType, extrinsic, concurrentTasks, token);
         }
 
-        public async Task<string?> BatchAllAsync(
-            IEnumerable<EnumRuntimeCall> callList, 
-            int concurrentTasks, 
+        public async Task<AccountInfo?> GetAccountAsync(CancellationToken token)
+        {
+            if (Account == null ||
+                Account.Value == null)
+            {
+                //Log.Warning("No account set!");
+                return null;
+            }
+
+            return await SubstrateClient.SystemStorage.Account(Account.Value.ToAccountId32(), token);
+        }
+
+        public async Task<U32?> GetBlocknumberAsync(CancellationToken token)
+        {
+            if (!IsConnected)
+            {
+                //Log.Warning("Currently not connected to the network!");
+                return null;
+            }
+
+            return await SubstrateClient.SystemStorage.Number(token);
+        }
+
+        public async Task<string?> TransferKeepAliveAsync(
+            AccountId32 to, 
+            BigInteger amount, 
+            int concurrentTasks,
             CancellationToken token)
         {
-            var extrinsicType = "BatchAll";
+            var extrinsicType = "TransferKeepAlive";
 
-            if (!IsConnected || 
-                Account == null || 
-                callList == null || 
-                !callList.Any())
+            if (!IsConnected || Account == null)
             {
                 return null;
             }
 
-            var calls = new BaseVec<EnumRuntimeCall>();
-            calls.Create(callList.ToArray());
+            var multiAddress = new EnumMultiAddress();
+            multiAddress.Create(MultiAddress.Id, to);
 
-            var extrinsic = UtilityCalls.BatchAll(calls);
+            var balance = new BaseCom<U128>();
+            balance.Create(amount);
+
+            var extrinsic = BalancesCalls.TransferKeepAlive(multiAddress, balance);
 
             return await GenericExtrinsicAsync(Account, extrinsicType, extrinsic, concurrentTasks, token);
         }
-
     }
 }

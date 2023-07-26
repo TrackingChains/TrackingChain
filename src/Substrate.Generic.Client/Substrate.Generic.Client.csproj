@@ -4,7 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>TrackingChain.Core</RootNamespace>
 
-    <Authors>Federico Cicciarella</Authors>
+    <Authors>Federico Cicciarella based on (https://github.com/SubstrateGaming/Substrate.Chains.NET) </Authors>
     <Description>Substrate generic client</Description>
 
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
