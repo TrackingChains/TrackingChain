@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text.Json;
+using TrackingChain.Common.ExtraInfos;
 using TrackingChain.TrackingChainCore.Domain.Enums;
 
 namespace TrackingChain.TrackingChainCore.Domain.Entities
@@ -11,7 +13,8 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             int chainNumberId,
             ChainType chainType,
             string currency,
-            string name)
+            string name,
+            SubstractContractExtraInfo substractContractExtraInfo)
         {
             ArgumentNullException.ThrowIfNullOrEmpty(address);
             ArgumentNullException.ThrowIfNullOrEmpty(name);
@@ -20,6 +23,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             this.ChainNumberId = chainNumberId;
             this.ChainType = chainType;
             this.Currency = currency;
+            this.ExtraInfo = JsonSerializer.Serialize(substractContractExtraInfo);
             this.Name = name;
         }
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -32,9 +36,11 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public int ChainNumberId { get; private set; }
         public ChainType ChainType { get; private set; }
         public string Currency { get; private set; }
+        public string ExtraInfo { get; private set; }
         public string Name { get; private set; }
         public virtual ProfileGroup? ProfileGroup { get; private set; } = default!;
 
         // Methods.
+        public SubstractContractExtraInfo GetExtraInfo => JsonSerializer.Deserialize<SubstractContractExtraInfo>(ExtraInfo) ?? new SubstractContractExtraInfo();
     }
 }

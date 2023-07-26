@@ -1,4 +1,6 @@
-﻿namespace TrackingChain.Common.Interfaces
+﻿using TrackingChain.Common.ExtraInfos;
+
+namespace TrackingChain.Common.Interfaces
 {
     public interface ISubstrateClient
     {
@@ -9,6 +11,7 @@
             int chainNumberId,
             string chainWs,
             string contractAddress,
+            SubstractContractExtraInfo substractContractExtraInfo,
             CancellationToken token);
     }
 }
