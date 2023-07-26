@@ -1,4 +1,7 @@
 ﻿using Substrate.NetApi.Model.Rpc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Substrate.Generic.Client.Client.Bases
 {
@@ -6,7 +9,9 @@ namespace Substrate.Generic.Client.Client.Bases
 
     public class ExtrinsicManager
     {
+#pragma warning disable CA1003 // Use generic event handler instances
         public event ExtrinsicFinalizedEvent ExtrinsicUpdated;
+#pragma warning restore CA1003 // Use generic event handler instances
 
         public IEnumerable<QueueInfo> Running => _data.Values.Where(p => !p.IsCompleted);
 
@@ -31,14 +36,9 @@ namespace Substrate.Generic.Client.Client.Bases
             _data.Add(subscription, new QueueInfo(extrinsicType));
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public QueueInfo Get(string id)
+        public QueueInfo? Get(string id)
         {
-            if (!_data.TryGetValue(id, out QueueInfo queueInfo))
+            if (!_data.TryGetValue(id, out QueueInfo? queueInfo))
             {
                 //Log.Debug("QueueInfo not available for subscriptionId {id}", id);
                 return null;
@@ -47,13 +47,10 @@ namespace Substrate.Generic.Client.Client.Bases
             return queueInfo;
         }
 
-        /// <summary>
-        /// Simple extrinsic tester
-        /// </summary>
-        /// <param name="subscriptionId"></param>
-        /// <param name="extrinsicUpdate"></param>
         public void ActionExtrinsicUpdate(string subscriptionId, ExtrinsicStatus extrinsicUpdate)
         {
+            ArgumentNullException.ThrowIfNull(extrinsicUpdate);
+
             if (!_data.TryGetValue(subscriptionId, out QueueInfo? queueInfo) || queueInfo == null)
             {
                 queueInfo = new QueueInfo("Unknown");
@@ -106,12 +103,6 @@ namespace Substrate.Generic.Client.Client.Bases
             ExtrinsicUpdated?.Invoke(subscriptionId, queueInfo);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="subscriptionId"></param>
-        /// <param name="queueInfo"></param>
-        /// <exception cref="NotImplementedException"></exception>
         private void OnExtrinsicUpdated(string subscriptionId, QueueInfo queueInfo)
         {
             /*Log.Debug("{name}[{id}] updated {state}",

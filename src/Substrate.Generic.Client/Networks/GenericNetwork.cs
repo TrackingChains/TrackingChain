@@ -10,7 +10,11 @@ using Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto;
 using Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_runtime.multiaddress;
 using Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2;
 using Substrate.Shibuya.NET.NetApiExt.Generated.Storage;
+using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Substrate.Generic.Client.Networks
 {
@@ -44,9 +48,10 @@ namespace Substrate.Generic.Client.Networks
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public async Task<AccountInfo> GetAccountAsync(CancellationToken token)
+        public async Task<AccountInfo?> GetAccountAsync(CancellationToken token)
         {
-            if (Account == null || Account.Value == null)
+            if (Account == null || 
+                Account.Value == null)
             {
                 //Log.Warning("No account set!");
                 return null;
@@ -55,14 +60,11 @@ namespace Substrate.Generic.Client.Networks
             return await SubstrateClient.SystemStorage.Account(Account.Value.ToAccountId32(), token);
         }
 
-        /// <summary>
-        /// Execute a transfer keep alive extrinsic
-        /// </summary>
-        /// <param name="to"></param>
-        /// <param name="amount"></param>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        public async Task<string?> TransferKeepAliveAsync(AccountId32 to, BigInteger amount, int concurrentTasks, CancellationToken token)
+        public async Task<string?> TransferKeepAliveAsync(
+            AccountId32 to, 
+            BigInteger amount, 
+            int concurrentTasks,
+            CancellationToken token)
         {
             var extrinsicType = "TransferKeepAlive";
 
@@ -82,18 +84,15 @@ namespace Substrate.Generic.Client.Networks
             return await GenericExtrinsicAsync(Account, extrinsicType, extrinsic, concurrentTasks, token);
         }
 
-        /// <summary>
-        /// Contracts Call extrinsic
-        /// </summary>
-        /// <param name="dest"></param>
-        /// <param name="value"></param>
-        /// <param name="gasLimit"></param>
-        /// <param name="storageDepositLimit"></param>
-        /// <param name="data"></param>
-        /// <param name="concurrentTasks"></param>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        public async Task<string?> ContractsCallAsync(AccountId32 dest, BigInteger value, ulong refTime, ulong proofSize, BigInteger? storageDepositLimit, byte[] data, int concurrentTasks, CancellationToken token)
+        public async Task<string?> ContractsCallAsync(
+            AccountId32 dest, 
+            BigInteger value, 
+            ulong refTime, 
+            ulong proofSize, 
+            BigInteger? storageDepositLimit, 
+            byte[] data, 
+            int concurrentTasks, 
+            CancellationToken token)
         {
             var extrinsicType = "ContractsCallAsync";
 
@@ -134,18 +133,17 @@ namespace Substrate.Generic.Client.Networks
             return await GenericExtrinsicAsync(Account, extrinsicType, extrinsic, concurrentTasks, token);
         }
 
-        /// <summary>
-        /// Execute a a bath of extrinsics
-        /// </summary>
-        /// <param name="to"></param>
-        /// <param name="amount"></param>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        public async Task<string?> BatchAllAsync(List<EnumRuntimeCall> callList, int concurrentTasks, CancellationToken token)
+        public async Task<string?> BatchAllAsync(
+            IEnumerable<EnumRuntimeCall> callList, 
+            int concurrentTasks, 
+            CancellationToken token)
         {
             var extrinsicType = "BatchAll";
 
-            if (!IsConnected || Account == null || callList == null || callList.Count == 0)
+            if (!IsConnected || 
+                Account == null || 
+                callList == null || 
+                !callList.Any())
             {
                 return null;
             }

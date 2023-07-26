@@ -1,4 +1,6 @@
-﻿namespace Substrate.Generic.Client.Client.Bases
+﻿using System;
+
+namespace Substrate.Generic.Client.Client.Bases
 {
     public enum QueueInfoState
     {

@@ -5,6 +5,10 @@ using Substrate.NetApi.Model.Extrinsics;
 using Substrate.NetApi.Model.Types;
 using Substrate.Shibuya.NET.NetApiExt.Generated;
 using Substrate.Shibuya.NET.NetApiExt.Generated.Storage;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Substrate.Generic.Client.Client.Bases
 {
@@ -54,7 +58,9 @@ namespace Substrate.Generic.Client.Client.Bases
                 {
                     await SubstrateClient.ConnectAsync(useMetadata, standardSubstrate, token);
                 }
+#pragma warning disable CA1031 // Use generic event handler instances
                 catch (Exception)
+#pragma warning disable CA1031 // Use generic event handler instances
                 {
                     //Log.Error("BaseClient.ConnectAsync: {0}",
                     //e.ToString());
@@ -75,15 +81,12 @@ namespace Substrate.Generic.Client.Client.Bases
             return true;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="extrinsicType"></param>
-        /// <param name="extrinsicMethod"></param>
-        /// <param name="concurrentTasks"></param>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        internal async Task<string> GenericExtrinsicAsync(Account account, string extrinsicType, Method extrinsicMethod, int concurrentTasks, CancellationToken token)
+        internal async Task<string?> GenericExtrinsicAsync(
+            Account account, 
+            string extrinsicType, 
+            Method extrinsicMethod, 
+            int concurrentTasks, 
+            CancellationToken token)
         {
             if (account == null)
             {
@@ -109,12 +112,12 @@ namespace Substrate.Generic.Client.Client.Bases
                 return null;
             }
 
-            string subscription = null;
+            string? subscription = null;
             try
             {
                 subscription = await SubstrateClient.Author.SubmitAndWatchExtrinsicAsync(ExtrinsicManger.ActionExtrinsicUpdate, extrinsicMethod, account, _chargeTypeDefault, 64, token);
             }
-            catch (RemoteInvocationException e)
+            catch (RemoteInvocationException)
             {
                 //Log.Error("RemoteInvocationException: {0}", e.Message);
                 return subscription;
@@ -132,7 +135,7 @@ namespace Substrate.Generic.Client.Client.Bases
             return subscription;
         }
 
-        public async Task<string> SubscribeEventsAsync(CancellationToken token)
+        public async Task<string?> SubscribeEventsAsync(CancellationToken token)
         {
             if (!IsConnected)
             {
@@ -159,11 +162,16 @@ namespace Substrate.Generic.Client.Client.Bases
             return subscription;
         }
 
-        public static Account RandomAccount(int seed, string derivationPsw = "aA1234dd", KeyType keyType = KeyType.Sr25519)
+        public static Account RandomAccount(
+            int seed, 
+            string derivationPsw = "aA1234dd", 
+            KeyType keyType = KeyType.Sr25519)
         {
             var random = new Random(seed);
             var randomBytes = new byte[16];
+#pragma warning disable CA5394 // Do not use insecure randomness
             random.NextBytes(randomBytes);
+#pragma warning restore CA5394 // Do not use insecure randomness
             var mnemonic = string.Join(" ", Mnemonic.MnemonicFromEntropy(randomBytes, Mnemonic.BIP39Wordlist.English));
             //Log.Information("mnemonic[Sr25519]: {0}", mnemonic);
             return Mnemonic.GetAccountFromMnemonic(mnemonic, derivationPsw, keyType);

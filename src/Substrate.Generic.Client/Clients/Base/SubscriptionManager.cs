@@ -8,18 +8,14 @@ namespace Substrate.Generic.Client.Client.Bases
     {
         public bool IsSubscribed { get; set; }
 
+#pragma warning disable CA1003 // Use generic event handler instances
         public event SubscriptionOnEvent SubscrptionEvent;
+#pragma warning restore CA1003 // Use generic event handler instances
 
         public SubscriptionManager()
         {
             SubscrptionEvent += OnSystemEvents;
         }
-
-        /// <summary>
-        /// Simple extrinsic tester
-        /// </summary>
-        /// <param name="subscriptionId"></param>
-        /// <param name="extrinsicUpdate"></param>
         public void ActionSubscrptionEvent(string subscriptionId, StorageChangeSet storageChangeSet)
         {
             IsSubscribed = false;
@@ -29,12 +25,6 @@ namespace Substrate.Generic.Client.Client.Bases
             SubscrptionEvent?.Invoke(subscriptionId, storageChangeSet);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="subscriptionId"></param>
-        /// <param name="queueInfo"></param>
-        /// <exception cref="NotImplementedException"></exception>
         private void OnSystemEvents(string subscriptionId, StorageChangeSet storageChangeSet)
         {
             /*Log.Debug("OnExtrinsicUpdated[{id}] updated {state}",

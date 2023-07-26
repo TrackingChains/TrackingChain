@@ -4,16 +4,21 @@ using Substrate.NetApi.Model.Types.Base;
 using Substrate.NetApi.Model.Types.Primitive;
 using Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types;
 using Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 
 namespace Substrate.Generic.Client.Helpers
 {
-    public static class Generic
+    public static class ChainGeneric
     {
-        public static BigInteger BAJU2Pico(double amount) => new(Convert.ToUInt64(amount * Math.Pow(10, 12)));
+        public static BigInteger ToPico(double amount) => new(Convert.ToUInt64(amount * Math.Pow(10, 12)));
 
         public static string ToHexString(this H256 h256)
         {
+            ArgumentNullException.ThrowIfNull(h256);
+
             return Utils.Bytes2HexString(h256.Value.Value.Select(p => p.Value).ToArray());
         }
 
@@ -24,6 +29,8 @@ namespace Substrate.Generic.Client.Helpers
 
         public static string ToAddress(this AccountId32 account32, short ss58 = 42)
         {
+            ArgumentNullException.ThrowIfNull(account32);
+
             var pubKey = account32.Value.Value.Select(p => p.Value).ToArray();
             return pubKey.ToAddress(ss58);
         }
@@ -43,6 +50,8 @@ namespace Substrate.Generic.Client.Helpers
 
         public static AccountId32 ToAccountId32(this Account account)
         {
+            ArgumentNullException.ThrowIfNull(account);
+
             var account32 = new AccountId32();
             account32.Create(account.Bytes);
 
