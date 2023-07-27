@@ -1,14 +1,17 @@
 ﻿using Microsoft.Extensions.Logging;
 using Nethereum.Contracts.ContractHandlers;
-using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Web3;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using TrackingChain.Common.Dto;
+using TrackingChain.Common.ExtraInfos;
+using TrackingChain.Common.Interfaces;
 using TrackingChain.TransactionGeneratorCore.SmartContracts;
 
 namespace TrackingChain.TransactionGeneratorCore.Services
 {
-    public class NethereumService : IEthereumService
+    public class NethereumService : IBlockchainService
     {
         // Fields.
         private readonly ILogger<NethereumService> logger;
@@ -25,13 +28,15 @@ namespace TrackingChain.TransactionGeneratorCore.Services
             string dataValue,
             string privateKey,
             int chainNumberId,
-            string chainRpc,
-            string contractAddress)
+            string chainEndpoint,
+            string contractAddress,
+            ContractExtraInfo contractExtraInfo,
+            CancellationToken token)
         {
             var contractHandler = GetContractHandler(
                 privateKey,
                 chainNumberId,
-                chainRpc,
+                chainEndpoint,
                 contractAddress);
 
             var insertTracking = CommonInsertTracking(
@@ -42,25 +47,36 @@ namespace TrackingChain.TransactionGeneratorCore.Services
         }
 
         // Methods.
-        public async Task<TransactionReceipt> InsertTrackingAndWaitForReceiptAsync(
+        public async Task<TransactionDetail> InsertTrackingAndWaitForReceiptAsync(
             string code,
             string dataValue,
             string privateKey,
             int chainNumberId,
-            string chainRpc,
-            string contractAddress)
+            string chainEndpoint,
+            string contractAddress,
+            ContractExtraInfo contractExtraInfo,
+            CancellationToken token)
         {
             var contractHandler = GetContractHandler(
                 privateKey,
                 chainNumberId,
-                chainRpc,
+                chainEndpoint,
                 contractAddress);
 
             var insertTracking = CommonInsertTracking(
                 code,
                 dataValue);
 
-            return await contractHandler.SendRequestAndWaitForReceiptAsync(insertTracking);
+            var ethReceipt = await contractHandler.SendRequestAndWaitForReceiptAsync(insertTracking);
+
+            return new TransactionDetail
+            {
+                BlockHash = ethReceipt.BlockHash,
+                ContractAddress = contractAddress,
+                From = ethReceipt.From,
+                To = ethReceipt.To,
+                TransactionHash = ethReceipt.TransactionHash
+            };
         }
 
         // Helpers.
@@ -77,7 +93,7 @@ namespace TrackingChain.TransactionGeneratorCore.Services
         }
 
         private ContractHandler GetContractHandler(
-            string privateKey, 
+            string privateKey,
             int chainNumberId,
             string chainRpc,
             string contractAddress)

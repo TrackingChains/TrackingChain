@@ -25,8 +25,8 @@ IHost host = Host.CreateDefaultBuilder(args)
 
         //services
         services.AddTransient<IAccountService, AccountService>();
-        services.AddTransient<IEthereumService, NethereumService>();
-        services.AddTransient<ISubstrateClientFactory, ClientFactory>();
+        services.AddTransient<IBlockchainService, NethereumService>();
+        services.AddTransient<IBlockchainService, SubstrateClient>();
         services.AddTransient<ITransactionGeneratorService, TransactionGeneratorService>();
         services.AddTransient<IPoolDequeuerUseCase, PoolDequeuerUseCase>();
         services.AddTransient<IUnitOfWork, UnitOfWork>();

@@ -3,7 +3,7 @@ using TrackingChain.Common.Enums;
 
 namespace TrackingChain.Common.ExtraInfos
 {
-    public class SubstractContractExtraInfo
+    public class ContractExtraInfo
     {
         // Properties.
         public ulong BasicWeight { get; set; } = default!;
@@ -14,6 +14,6 @@ namespace TrackingChain.Common.ExtraInfos
         public SupportedClient SupportedClient { get; set; } = default!;
 
         // Methods.
-        public static SubstractContractExtraInfo FromJson(string json) => JsonSerializer.Deserialize<SubstractContractExtraInfo>(json) ?? new SubstractContractExtraInfo();
+        public static ContractExtraInfo FromJson(string json) => JsonSerializer.Deserialize<ContractExtraInfo>(json) ?? new ContractExtraInfo();
     }
 }

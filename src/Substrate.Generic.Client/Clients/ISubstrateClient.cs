@@ -10,7 +10,7 @@ namespace TrackingChain.Core.Clients
     {
         Account Account { get; set; }
         bool IsConnected { get; }
-        SubstrateClient SubstrateClient { get; }
+        Substrate.NetApi.SubstrateClient SubstrateClient { get; }
 
         Task<bool> ConnectAsync(bool useMetadata, bool standardSubstrate, CancellationToken token);
         Task<string?> ContractsCallAsync(IType dest, BigInteger value, ulong refTime, ulong proofSize, BigInteger? storageDepositLimit, byte[] data, CancellationToken token);

@@ -32,7 +32,7 @@ namespace TrackingChain.Core.Clients
         // Properties.
         public Account Account { get; set; }
         public bool IsConnected => SubstrateClient.IsConnected;
-        public SubstrateClient SubstrateClient { get; }
+        public Substrate.NetApi.SubstrateClient SubstrateClient { get; }
 
         // Public methods.
         public async Task<bool> ConnectAsync(bool useMetadata, bool standardSubstrate, CancellationToken token)

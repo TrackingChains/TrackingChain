@@ -10,6 +10,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TrackingChain.Common.Dto;
 using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
 using TrackingChain.Common.Interfaces;
@@ -19,13 +20,13 @@ using TrackingChain.Core.Helpers;
 
 namespace TrackingChain.Core
 {
-    public class ClientFactory : ISubstrateClientFactory
+    public class SubstrateClient : IBlockchainService
     {
         // Fields.
-        private readonly ILogger<ClientFactory> logger;
+        private readonly ILogger<SubstrateClient> logger;
 
         // Constractor.
-        public ClientFactory(ILogger<ClientFactory> logger)
+        public SubstrateClient(ILogger<SubstrateClient> logger)
         {
             this.logger = logger;
         }
@@ -36,16 +37,16 @@ namespace TrackingChain.Core
             string dataValue,
             string privateKey,
             int chainNumberId,
-            string chainWs,
+            string chainEndpoint,
             string contractAddress,
-            SubstractContractExtraInfo substractContractExtraInfo,
+            ContractExtraInfo contractExtraInfo,
             CancellationToken token)
         {
             ArgumentException.ThrowIfNullOrEmpty(code);
             ArgumentException.ThrowIfNullOrEmpty(dataValue);
             ArgumentException.ThrowIfNullOrEmpty(privateKey);
-            ArgumentException.ThrowIfNullOrEmpty(chainWs);
-            ArgumentNullException.ThrowIfNull(substractContractExtraInfo);
+            ArgumentException.ThrowIfNullOrEmpty(chainEndpoint);
+            ArgumentNullException.ThrowIfNull(contractExtraInfo);
 
             var miniSecret = new MiniSecret(Utils.HexToByteArray(privateKey), ExpandMode.Ed25519);
             var account = Account.Build(KeyType.Sr25519, miniSecret.ExpandToSecret().ToBytes(), miniSecret.GetPair().Public.Key);
@@ -54,14 +55,14 @@ namespace TrackingChain.Core
 
             ISubstrateClient client;
             IType dest;
-            switch (substractContractExtraInfo.SupportedClient)
+            switch (contractExtraInfo.SupportedClient)
             {
                 case SupportedClient.ContractRococo:
-                    client = new ContractRococoClient(account, chainWs); //new ShibuyaNetwork(account, chainWs);
+                    client = new ContractRococoClient(account, chainEndpoint); //new ShibuyaNetwork(account, chainWs);
                     dest = Utils.GetPublicKeyFrom(contractAddress).ToContractRococoAccountId32(); //.ToShibuyaAccountId32();
                     break;
                 case SupportedClient.Shibuya:
-                    client = new ShibuyaClient(account, chainWs); //new ShibuyaNetwork(account, chainWs);
+                    client = new ShibuyaClient(account, chainEndpoint); //new ShibuyaNetwork(account, chainWs);
                     dest = Utils.GetPublicKeyFrom(contractAddress).ToContractRococoAccountId32(); //.ToShibuyaAccountId32();
                     break;
                 default: throw new NotSupportedException("Client not  supported");
@@ -82,7 +83,7 @@ namespace TrackingChain.Core
                 code,
                 dataValue,
                 false,
-                substractContractExtraInfo);
+                contractExtraInfo);
             var hashTx = await client.ContractsCallAsync(
                 dest,
                 insertTrackDto.Value,
@@ -99,7 +100,7 @@ namespace TrackingChain.Core
             string code,
             string dataValue,
             bool closed,
-            SubstractContractExtraInfo substractContractExtraInfo)
+            ContractExtraInfo substractContractExtraInfo)
         {
             // Code.
             var codeHex = Encoding.ASCII.GetBytes(code)

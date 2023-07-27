@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,25 +19,22 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
         // Fields.
         private readonly IAccountService accountService;
         private readonly ApplicationDbContext applicationDbContext;
-        private readonly IEthereumService ethereumService;
+        private readonly IEnumerable<IBlockchainService> blockchainServices;
         private readonly ILogger<PoolDequeuerUseCase> logger;
-        private readonly ISubstrateClientFactory substrateClientFactory;
         private readonly ITransactionGeneratorService transactionGeneratorService;
 
         // Constructors.
         public PoolDequeuerUseCase(
             IAccountService accountService,
             ApplicationDbContext applicationDbContext,
-            IEthereumService ethereumService,
+            IEnumerable<IBlockchainService> blockchainServices,
             ILogger<PoolDequeuerUseCase> logger,
-            ISubstrateClientFactory substrateClientFactory,
             ITransactionGeneratorService transactionGeneratorService)
         {
             this.accountService = accountService;
             this.applicationDbContext = applicationDbContext;
-            this.ethereumService = ethereumService;
+            this.blockchainServices = blockchainServices;
             this.logger = logger;
-            this.substrateClientFactory = substrateClientFactory;
             this.transactionGeneratorService = transactionGeneratorService;
         }
 
@@ -63,23 +61,31 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
 
                 string txHash;
                 if (pool.ChainType == ChainType.EVM)
-                    txHash = await ethereumService.InsertTrackingAsync(
+                {
+                    var blockChainService = blockchainServices.First(x => x.GetType() == typeof(NethereumService));
+                    txHash = await blockChainService.InsertTrackingAsync(
                         pool.Code,
                         pool.DataValue,
                         account.PrivateKey,
                         pool.ChainNumberId,
                         account.GetFirstRandomAvaiableRpcAddress,
-                        pool.SmartContractAddress);
+                        pool.SmartContractAddress,
+                        ContractExtraInfo.FromJson(pool.SmartContractExtraInfo),
+                        CancellationToken.None);
+                }
                 else
-                    txHash = await substrateClientFactory.InsertTrackingAsync(
-                            pool.Code,
-                            pool.DataValue,
-                            account.PrivateKey,
-                            pool.ChainNumberId,
-                            account.GetFirstRandomWsAddress,
-                            pool.SmartContractAddress,
-                            SubstractContractExtraInfo.FromJson(pool.SmartContractExtraInfo),
-                            CancellationToken.None);
+                {
+                    var blockChainService = blockchainServices.First(x => x.GetType() == typeof(SubstrateClient));
+                    txHash = await blockChainService.InsertTrackingAsync(
+                        pool.Code,
+                        pool.DataValue,
+                        account.PrivateKey,
+                        pool.ChainNumberId,
+                        account.GetFirstRandomWsAddress,
+                        pool.SmartContractAddress,
+                        ContractExtraInfo.FromJson(pool.SmartContractExtraInfo),
+                        CancellationToken.None);
+                }
 
                 var txPending = transactionGeneratorService.AddTransactionPendingFroomPool(pool, txHash);
                 await transactionGeneratorService.SetToPendingAsync(txPending);
