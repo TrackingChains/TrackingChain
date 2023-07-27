@@ -114,17 +114,20 @@ namespace Substrate.Generic.Client.Client.Bases
             }
 
             string? subscription = null;
+#pragma warning disable CS0168 // Variable is declared but never used
             try
             {
                 subscription = watchExtrinsic ?
                     await SubstrateClient.Author.SubmitAndWatchExtrinsicAsync(ExtrinsicManger.ActionExtrinsicUpdate, extrinsicMethod, account, _chargeTypeDefault, 64, token)
                     : (await SubstrateClient.Author.SubmitExtrinsicAsync(extrinsicMethod, account, _chargeTypeDefault, 64, token))?.Value ?? "";
             }
-            catch (RemoteInvocationException)
+            catch (RemoteInvocationException e)
             {
-                //Log.Error("RemoteInvocationException: {0}", e.Message);
+                //Log.Error("RemoteInvocationException: {0}", e.Message
+                //Log.Error("RemoteInvocationException: {0}", e.ErrorData);
                 return subscription;
             }
+#pragma warning restore CS0168 // Variable is declared but never used
 
             if (subscription == null)
             {

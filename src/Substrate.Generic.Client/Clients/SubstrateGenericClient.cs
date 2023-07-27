@@ -40,12 +40,11 @@ namespace Substrate.Generic.Client.Clients
             SubstractContractExtraInfo substractContractExtraInfo,
             CancellationToken token)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(code);
-            ArgumentNullException.ThrowIfNullOrEmpty(dataValue);
+            ArgumentException.ThrowIfNullOrEmpty(code);
+            ArgumentException.ThrowIfNullOrEmpty(dataValue);
+            ArgumentException.ThrowIfNullOrEmpty(privateKey);
+            ArgumentException.ThrowIfNullOrEmpty(chainWs);
             ArgumentNullException.ThrowIfNull(substractContractExtraInfo);
-
-            privateKey = "0xe5be9a5092b81bca64be81d212e7f2f9eba183bb7a90954f7b76361f6edb5c0a";
-            contractAddress = "aKpb5m5WBvTA164EdZhkYHU1SHBixY4QPnxbekMDUSfUYGd";
 
             var miniSecret = new MiniSecret(Utils.HexToByteArray(privateKey), ExpandMode.Ed25519);
             var account = Account.Build(KeyType.Sr25519, miniSecret.ExpandToSecret().ToBytes(), miniSecret.GetPair().Public.Key);

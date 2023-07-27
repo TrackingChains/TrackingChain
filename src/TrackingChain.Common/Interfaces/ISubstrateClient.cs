@@ -4,6 +4,10 @@ namespace TrackingChain.Common.Interfaces
 {
     public interface ISubstrateClient
     {
+        /*public async Task<TransactionReceipt> GetTrasactionReceiptAsync(
+            string hashId,
+            string chainRpc);*/
+
         Task<string> InsertTrackingAsync(
             string code,
             string dataValue,
