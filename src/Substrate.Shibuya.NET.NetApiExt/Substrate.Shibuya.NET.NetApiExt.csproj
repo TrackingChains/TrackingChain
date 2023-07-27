@@ -3,8 +3,9 @@
 		<TargetFrameworks>net7.0</TargetFrameworks>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 	</PropertyGroup>
-	<ItemGroup>
-	  <ProjectReference Include="..\..\..\..\..\Substrate.NET.API\Substrate.NetApi\Substrate.NetApi.csproj" />
-	</ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Substrate.NET.API" Version="0.9.7" />
+  </ItemGroup>
 
 </Project>

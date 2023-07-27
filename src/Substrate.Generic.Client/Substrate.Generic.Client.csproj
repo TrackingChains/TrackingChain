@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Substrate.ContractRococo.NET.NetApiExt\Substrate.ContractRococo.NET.NetApiExt.csproj" />
     <ProjectReference Include="..\Substrate.Shibuya.NET.NetApiExt\Substrate.Shibuya.NET.NetApiExt.csproj" />
     <ProjectReference Include="..\TrackingChain.Common\TrackingChain.Common.csproj" />
   </ItemGroup>

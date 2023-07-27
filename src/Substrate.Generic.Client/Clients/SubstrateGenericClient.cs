@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 using TrackingChain.Common.ExtraInfos;
 using TrackingChain.Common.Interfaces;
 using TrackingChain.Core.Dto;
+using TrackingChain.Core.Helpers;
+using TrackingChain.Core.Networks;
 
 namespace Substrate.Generic.Client.Clients
 {
@@ -51,7 +53,8 @@ namespace Substrate.Generic.Client.Clients
 
             //logger.LogInformation("Your address: {address}", Utils.GetAddressFrom(account.Bytes, 5));
 
-            var client = new GenericNetwork(account, chainWs);
+            var client = new ContractRococoNetwork(account, chainWs); //new ShibuyaNetwork(account, chainWs);
+            var dest = Utils.GetPublicKeyFrom(contractAddress).ToContractRococoAccountId32(); //.ToShibuyaAccountId32();
 
             if (!await client.ConnectAsync(true, true, token))
             {
@@ -61,14 +64,14 @@ namespace Substrate.Generic.Client.Clients
 
             //logger.LogInformation("Connected to {url}: {flag}", chainWs, client.IsConnected);
 
-            var dest = Utils.GetPublicKeyFrom(contractAddress).ToAccountId32();
+            
             //var data =   //"0x1ba63d86363617270650000000000000000000000000000000000000000000000000000014616161616100"
             var insertTrackDto = CreateInsertTrackParams(
                 code, 
                 dataValue, 
                 false, 
                 substractContractExtraInfo);
-            var subscriptionId = await client.ContractsCallAsync(
+            var hashTx = await client.ContractsCallAsync(
                 dest, 
                 insertTrackDto.Value, 
                 insertTrackDto.RefTime, 
@@ -78,34 +81,7 @@ namespace Substrate.Generic.Client.Clients
                 1, 
                 false,
                 token);
-            return subscriptionId ?? "";
-            /*
-            if (subscriptionId != null)
-            {
-
-                //logger.LogInformation("SubscriptionId: {subscriptionId}", subscriptionId);
-                var queueInfo = client.ExtrinsicManger.Get(subscriptionId);
-                while (queueInfo != null &&
-                       !queueInfo.IsCompleted)
-                {
-#pragma warning disable CA1848 // Use the LoggerMessage delegates
-#pragma warning disable CA1727 // Use the LoggerMessage delegates
-                    logger.LogInformation("QueueInfo {subscription} [{state}]", subscriptionId, queueInfo.State.ToString());
-#pragma warning restore CA1727 // Use the LoggerMessage delegates
-#pragma warning restore CA1848 // Use the LoggerMessage delegates
-                    Thread.Sleep(1000);
-                    queueInfo = client.ExtrinsicManger.Get(subscriptionId);
-                }
-                await client.DisconnectAsync();
-                //logger.LogInformation("Disconnected from {url}", url);
-                return subscriptionId ?? "";
-            }
-            else
-            {
-                //logger.LogError("Failed to call contract");
-                return "";
-            }
-            */
+            return hashTx ?? "";
         }
 
         // Helpers.
@@ -131,15 +107,15 @@ namespace Substrate.Generic.Client.Clients
             var closedHex = closed ? "01" : "00";
 
             // Calculate storage deposit limit.
-            var itemWeight = new List<BigInteger> { new BigInteger(14000000000) }; // Basic size;
-            itemWeight.AddRange(Enumerable.Repeat(new BigInteger(1000000000), dataValueHex.Length / 2)); // Single Hex Size multiplied for number of bytes.
+            var itemWeight = new List<BigInteger> { new BigInteger(substractContractExtraInfo.BasicWeight) };
+            itemWeight.AddRange(Enumerable.Repeat(new BigInteger(substractContractExtraInfo.ByteWeight), dataValueHex.Length / 2)); 
             var storageDepositLimit = itemWeight.Aggregate((currentSum, item) => currentSum + item);
 
             return new InsertTrackDto
             {
                 DataHex = Utils.HexToByteArray($"{substractContractExtraInfo.InsertTrackSelectorValue}{codeHex}{prefixDataValueHex}{dataValueHex}{closedHex}"),
-                ProofSize = (ulong)125952,
-                RefTime = (ulong)3951114240,
+                ProofSize = substractContractExtraInfo.ProofSize,
+                RefTime = substractContractExtraInfo.RefTime,
                 StorageDepositLimit = storageDepositLimit,
                 Value = new BigInteger(0),
             };
