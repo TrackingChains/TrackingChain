@@ -10,7 +10,6 @@ using System.Numerics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using TrackingChain.Common.Dto;
 using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
 using TrackingChain.Common.Interfaces;
@@ -58,12 +57,12 @@ namespace TrackingChain.Core
             switch (contractExtraInfo.SupportedClient)
             {
                 case SupportedClient.ContractRococo:
-                    client = new ContractRococoClient(account, chainEndpoint); //new ShibuyaNetwork(account, chainWs);
-                    dest = Utils.GetPublicKeyFrom(contractAddress).ToContractRococoAccountId32(); //.ToShibuyaAccountId32();
+                    client = new ContractRococoClient(account, chainEndpoint);
+                    dest = Utils.GetPublicKeyFrom(contractAddress).ToContractRococoAccountId32();
                     break;
                 case SupportedClient.Shibuya:
-                    client = new ShibuyaClient(account, chainEndpoint); //new ShibuyaNetwork(account, chainWs);
-                    dest = Utils.GetPublicKeyFrom(contractAddress).ToContractRococoAccountId32(); //.ToShibuyaAccountId32();
+                    client = new ShibuyaClient(account, chainEndpoint);
+                    dest = Utils.GetPublicKeyFrom(contractAddress).ToContractRococoAccountId32();
                     break;
                 default: throw new NotSupportedException("Client not  supported");
             }
