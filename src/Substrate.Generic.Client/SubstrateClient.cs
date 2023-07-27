@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Schnorrkel.Keys;
+using Substrate.Generic.Client.Helpers;
 using Substrate.NetApi;
 using Substrate.NetApi.Model.Types;
 using System;
@@ -62,7 +63,7 @@ namespace TrackingChain.Core
                     break;
                 case SupportedClient.Shibuya:
                     client = new ShibuyaClient(account, chainEndpoint);
-                    dest = Utils.GetPublicKeyFrom(contractAddress).ToContractRococoAccountId32();
+                    dest = Utils.GetPublicKeyFrom(contractAddress).ToShibuyaAccountId32();
                     break;
                 default: throw new NotSupportedException("Client not  supported");
             }
