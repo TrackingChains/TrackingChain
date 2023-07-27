@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Schnorrkel.Keys;
-using Substrate.Generic.Client.Helpers;
-using Substrate.Generic.Client.Networks;
 using Substrate.NetApi;
 using Substrate.NetApi.Model.Types;
 using System;
@@ -12,21 +10,22 @@ using System.Numerics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
 using TrackingChain.Common.Interfaces;
+using TrackingChain.Core.Clients;
 using TrackingChain.Core.Dto;
 using TrackingChain.Core.Helpers;
-using TrackingChain.Core.Networks;
 
-namespace Substrate.Generic.Client.Clients
+namespace TrackingChain.Core
 {
-    public class SubstrateGenericClient : ISubstrateClient
+    public class ClientFactory : ISubstrateClientFactory
     {
         // Fields.
-        private readonly ILogger<SubstrateGenericClient> logger;
+        private readonly ILogger<ClientFactory> logger;
 
         // Constractor.
-        public SubstrateGenericClient(ILogger<SubstrateGenericClient> logger)
+        public ClientFactory(ILogger<ClientFactory> logger)
         {
             this.logger = logger;
         }
@@ -53,9 +52,22 @@ namespace Substrate.Generic.Client.Clients
 
             //logger.LogInformation("Your address: {address}", Utils.GetAddressFrom(account.Bytes, 5));
 
-            var client = new ContractRococoNetwork(account, chainWs); //new ShibuyaNetwork(account, chainWs);
-            var dest = Utils.GetPublicKeyFrom(contractAddress).ToContractRococoAccountId32(); //.ToShibuyaAccountId32();
+            ISubstrateClient client;
+            IType dest;
+            switch (substractContractExtraInfo.SupportedClient)
+            {
+                case SupportedClient.ContractRococo:
+                    client = new ContractRococoClient(account, chainWs); //new ShibuyaNetwork(account, chainWs);
+                    dest = Utils.GetPublicKeyFrom(contractAddress).ToContractRococoAccountId32(); //.ToShibuyaAccountId32();
+                    break;
+                case SupportedClient.Shibuya:
+                    client = new ShibuyaClient(account, chainWs); //new ShibuyaNetwork(account, chainWs);
+                    dest = Utils.GetPublicKeyFrom(contractAddress).ToContractRococoAccountId32(); //.ToShibuyaAccountId32();
+                    break;
+                default: throw new NotSupportedException("Client not  supported");
+            }
 
+            
             if (!await client.ConnectAsync(true, true, token))
             {
                 //logger.LogError("Failed to connect to node");
@@ -64,22 +76,20 @@ namespace Substrate.Generic.Client.Clients
 
             //logger.LogInformation("Connected to {url}: {flag}", chainWs, client.IsConnected);
 
-            
+
             //var data =   //"0x1ba63d86363617270650000000000000000000000000000000000000000000000000000014616161616100"
             var insertTrackDto = CreateInsertTrackParams(
-                code, 
-                dataValue, 
-                false, 
+                code,
+                dataValue,
+                false,
                 substractContractExtraInfo);
             var hashTx = await client.ContractsCallAsync(
-                dest, 
-                insertTrackDto.Value, 
-                insertTrackDto.RefTime, 
+                dest,
+                insertTrackDto.Value,
+                insertTrackDto.RefTime,
                 insertTrackDto.ProofSize,
                 insertTrackDto.StorageDepositLimit,
-                insertTrackDto.DataHex, 
-                1, 
-                false,
+                insertTrackDto.DataHex,
                 token);
             return hashTx ?? "";
         }
@@ -108,7 +118,7 @@ namespace Substrate.Generic.Client.Clients
 
             // Calculate storage deposit limit.
             var itemWeight = new List<BigInteger> { new BigInteger(substractContractExtraInfo.BasicWeight) };
-            itemWeight.AddRange(Enumerable.Repeat(new BigInteger(substractContractExtraInfo.ByteWeight), dataValueHex.Length / 2)); 
+            itemWeight.AddRange(Enumerable.Repeat(new BigInteger(substractContractExtraInfo.ByteWeight), dataValueHex.Length / 2));
             var storageDepositLimit = itemWeight.Aggregate((currentSum, item) => currentSum + item);
 
             return new InsertTrackDto

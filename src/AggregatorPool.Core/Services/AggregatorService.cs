@@ -56,7 +56,7 @@ namespace TrackingChain.AggregatorPoolCore.Services
         {
             var subquery = applicationDbContext.TransactionTriages
                 .Where(p => p.Completed == false)
-                .GroupBy(p => p.Code)
+                .GroupBy(p => new { p.Code, p.SmartContractId })
                 .Where(g => g.Max(x => x.IsInPool ? 1 : 0) == 0)
                 .Take(max)
                 .Select(g => g.Min(x => x.Id));

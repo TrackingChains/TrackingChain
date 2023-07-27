@@ -2,7 +2,7 @@
 
 namespace TrackingChain.Common.Interfaces
 {
-    public interface ISubstrateClient
+    public interface ISubstrateClientFactory
     {
         /*public async Task<TransactionReceipt> GetTrasactionReceiptAsync(
             string hashId,

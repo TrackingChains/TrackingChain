@@ -1,8 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using Substrate.Generic.Client.Clients;
 using TrackingChain.Common.Interfaces;
+using TrackingChain.Core;
 using TrackingChain.TrackingChainCore.EntityFramework;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TrackingChainCore.Options;
@@ -26,7 +26,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         //services
         services.AddTransient<IAccountService, AccountService>();
         services.AddTransient<IEthereumService, NethereumService>();
-        services.AddTransient<ISubstrateClient, SubstrateGenericClient>();
+        services.AddTransient<ISubstrateClientFactory, ClientFactory>();
         services.AddTransient<ITransactionGeneratorService, TransactionGeneratorService>();
         services.AddTransient<IPoolDequeuerUseCase, PoolDequeuerUseCase>();
         services.AddTransient<IUnitOfWork, UnitOfWork>();

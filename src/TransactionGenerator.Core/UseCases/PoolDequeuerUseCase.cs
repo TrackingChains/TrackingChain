@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TrackingChain.Common.ExtraInfos;
 using TrackingChain.Common.Interfaces;
+using TrackingChain.Core;
 using TrackingChain.TrackingChainCore.Domain.Enums;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TransactionGeneratorCore.Services;
@@ -19,7 +20,7 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
         private readonly ApplicationDbContext applicationDbContext;
         private readonly IEthereumService ethereumService;
         private readonly ILogger<PoolDequeuerUseCase> logger;
-        private readonly ISubstrateClient substrateClient;
+        private readonly ISubstrateClientFactory substrateClientFactory;
         private readonly ITransactionGeneratorService transactionGeneratorService;
 
         // Constructors.
@@ -28,14 +29,14 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
             ApplicationDbContext applicationDbContext,
             IEthereumService ethereumService,
             ILogger<PoolDequeuerUseCase> logger,
-            ISubstrateClient substrateClient,
+            ISubstrateClientFactory substrateClientFactory,
             ITransactionGeneratorService transactionGeneratorService)
         {
             this.accountService = accountService;
             this.applicationDbContext = applicationDbContext;
             this.ethereumService = ethereumService;
             this.logger = logger;
-            this.substrateClient = substrateClient;
+            this.substrateClientFactory = substrateClientFactory;
             this.transactionGeneratorService = transactionGeneratorService;
         }
 
@@ -70,7 +71,7 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                         account.GetFirstRandomAvaiableRpcAddress,
                         pool.SmartContractAddress);
                 else
-                    txHash = await substrateClient.InsertTrackingAsync(
+                    txHash = await substrateClientFactory.InsertTrackingAsync(
                             pool.Code,
                             pool.DataValue,
                             account.PrivateKey,

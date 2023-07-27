@@ -28,9 +28,9 @@ insert into [SmartContract] (Address, ChainNumberId, ChainType, Currency, ExtraI
 insert into [SmartContract] (Address, ChainNumberId, ChainType, Currency, ExtraInfo, Name) values
 ('0x55D64aB19C01e135b86429D9367DfCEE3EF615a3', 1287, 0, 'DEV', '{}', 'Moonbase Test Net')
 insert into [SmartContract] (Address, ChainNumberId, ChainType, Currency, ExtraInfo, Name) values
-('Yo6k7mxeRSK1nA2xrXEXwBruhcqbiMhLVbn3GPyoQUS2vwp', 1000, 1, 'SBY', '{"InsertTrackSelectorValue":"0x1ba63d86","ProofSize":125952,"RefTime":3951114240,"BasicWeight":14000000000,"ByteWeight":1000000000 }', 'Shibuya Test Net INK')
+('Yo6k7mxeRSK1nA2xrXEXwBruhcqbiMhLVbn3GPyoQUS2vwp', 101, 1, 'SBY', '{"InsertTrackSelectorValue":"0x1ba63d86","ProofSize":125952,"RefTime":3951114240,"BasicWeight":14000000000,"ByteWeight":1000000000,"SupportedClient":1}', 'Shibuya Test Net INK')
 insert into [SmartContract] (Address, ChainNumberId, ChainType, Currency, ExtraInfo, Name) values
-('5CiSb6GG9mtpBSDoS52vrQjhmYaRLVKYE7V8rNducjLXma5T', 1000, 1, 'ROC', '{"InsertTrackSelectorValue":"0x1ba63d86","ProofSize":125952,"RefTime":4793859072,"BasicWeight": 4999995,"ByteWeight": 333333}', 'Contract Rococo Test Net INK')
+('5CiSb6GG9mtpBSDoS52vrQjhmYaRLVKYE7V8rNducjLXma5T', 9420, 1, 'ROC', '{"InsertTrackSelectorValue":"0x1ba63d86","ProofSize":125952,"RefTime":4793859072,"BasicWeight": 4999995,"ByteWeight": 333333,"SupportedClient":0}', 'Contract Rococo Test Net INK')
 
 -- Profile
 insert into [ProfileGroups] (Id, AggregationCode, Authority, Category, Name, SmartContractId, Priority) values
