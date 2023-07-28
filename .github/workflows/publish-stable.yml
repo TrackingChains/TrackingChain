@@ -1,0 +1,134 @@
+name: Publish stable release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    name: Release
+
+    strategy:
+      matrix:
+        kind: ['linux', 'linuxselfcontained', 'macos', 'macosselfcontained', 'windows', 'windowsselfcontained']
+        include:
+          - kind: linux
+            os: ubuntu-latest
+            target: linux-x64
+            frameworktype: --no-self-contained
+          - kind: linuxselfcontained
+            os: ubuntu-latest
+            target: linux-x64
+            frameworktype: --self-contained
+          - kind: macos
+            os: macOS-latest
+            target: osx-x64
+            frameworktype: --no-self-contained
+          - kind: macosselfcontained
+            os: macOS-latest
+            target: osx-x64
+            frameworktype: --self-contained
+          - kind: windows
+            os: windows-latest
+            target: win-x64
+            frameworktype: --no-self-contained
+          - kind: windowsselfcontained
+            os: windows-latest
+            target: win-x64
+            frameworktype: --self-contained
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup dotnet 
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+
+      - name: Build Triage.API project
+        shell: bash
+        run: |
+          tag=$(git describe --tags --abbrev=0)
+          release_name="triage-api-$tag-${{ matrix.kind }}"
+          # Build everything
+          dotnet publish src/Triage.API/TriageAPI.csproj --runtime "${{ matrix.target }}" "${{ matrix.frameworktype }}" -c Release -o "$release_name"
+          # Pack files
+          if [ "${{ matrix.target }}" == "win-x64" ]; then
+            7z a -tzip "${release_name}.zip" "./${release_name}/*"
+          else
+            tar czvf "${release_name}.tar.gz" "$release_name"
+          fi
+
+      - name: Build AggregatorPool.Worker project
+        shell: bash
+        run: |
+          tag=$(git describe --tags --abbrev=0)
+          release_name="aggregator-pool-worker-$tag-${{ matrix.kind }}"
+          # Build everything
+          dotnet publish src/AggregatorPool.Worker/AggregatorPool.Worker.csproj --runtime "${{ matrix.target }}" "${{ matrix.frameworktype }}" -c Release -o "$release_name"
+          # Pack files
+          if [ "${{ matrix.target }}" == "win-x64" ]; then
+            7z a -tzip "${release_name}.zip" "./${release_name}/*"
+          else
+            tar czvf "${release_name}.tar.gz" "$release_name"
+          fi
+
+      - name: Build TransactionGenerator.Worker project
+        shell: bash
+        run: |
+          tag=$(git describe --tags --abbrev=0)
+          release_name="transaction-generator-worker-$tag-${{ matrix.kind }}"
+          # Build everything
+          dotnet publish src/TransactionGenerator.Worker/TransactionGenerator.Worker.csproj --runtime "${{ matrix.target }}" "${{ matrix.frameworktype }}" -c Release -o "$release_name"
+          # Pack files
+          if [ "${{ matrix.target }}" == "win-x64" ]; then
+            7z a -tzip "${release_name}.zip" "./${release_name}/*"
+          else
+            tar czvf "${release_name}.tar.gz" "$release_name"
+          fi
+
+      - name: Build TransactionWatcher.Worker project
+        shell: bash
+        run: |
+          tag=$(git describe --tags --abbrev=0)
+          release_name="transaction-watcher-worker-$tag-${{ matrix.kind }}"
+          # Build everything
+          dotnet publish src/TransactionWatcher.Worker/TransactionWatcher.Worker.csproj --runtime "${{ matrix.target }}" "${{ matrix.frameworktype }}" -c Release -o "$release_name"
+          # Pack files
+          if [ "${{ matrix.target }}" == "win-x64" ]; then
+            7z a -tzip "${release_name}.zip" "./${release_name}/*"
+          else
+            tar czvf "${release_name}.tar.gz" "$release_name"
+          fi
+
+      - name: Build Triage.WebApplication project
+        shell: bash
+        run: |
+          tag=$(git describe --tags --abbrev=0)
+          release_name="triage-web-application-$tag-${{ matrix.kind }}"
+          # Build everything
+          dotnet publish src/Triage.WebApplication/Triage.WebApplication.csproj --runtime "${{ matrix.target }}" "${{ matrix.frameworktype }}" -c Release -o "$release_name"
+          # Pack files
+          if [ "${{ matrix.target }}" == "win-x64" ]; then
+            7z a -tzip "${release_name}.zip" "./${release_name}/*"
+          else
+            tar czvf "${release_name}.tar.gz" "$release_name"
+          fi
+          
+      - name: Publish
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            triage-api-*
+            aggregator-pool-worker-*    
+            transaction-generator-worker-*
+            transaction-watcher-worker-*
+            triage-web-application-*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
