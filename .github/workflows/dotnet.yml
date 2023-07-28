@@ -30,6 +30,8 @@ jobs:
       run: dotnet restore src/TransactionWatcher.Worker/TransactionWatcher.Worker.csproj
     - name: Restore Triage.WebApplication dependencies
       run: dotnet restore src/Triage.WebApplication/Triage.WebApplication.csproj
+    - name: Restore TransactionGeneratorCore.Tests dependencies
+      run: dotnet restore test/TransactionGeneratorCore.Tests/TransactionGeneratorCore.Tests.csproj
 
     - name: Build Triage.API
       run: dotnet build src/Triage.API/Triage.API.csproj --no-restore
