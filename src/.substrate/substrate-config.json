@@ -1,0 +1,13 @@
+{
+  "projects": {
+    "net_api": "Substrate.ContractRococo.NET.NetApiExt",
+    "rest_service": "Substrate.ContractRococo.NET.RestService",
+    "rest_client": "Substrate.ContractRococo.NET.RestClient"
+  },
+   "metadata": {
+      "websocket": "wss://rococo-contracts-rpc.polkadot.io"
+   },
+  "rest_client_settings": {
+    "service_assembly": "Substrate.ContractRococo.NET.RestService.dll"
+  }
+}

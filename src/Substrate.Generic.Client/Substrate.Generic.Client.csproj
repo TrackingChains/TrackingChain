@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>TrackingChain.Core</RootNamespace>
+
+    <Authors>Federico Cicciarella based on (https://github.com/SubstrateGaming/Substrate.Chains.NET) </Authors>
+    <Description>Substrate generic client</Description>
+
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Nullable>enable</Nullable>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Configurations>Debug;Release</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Substrate.ContractRococo.NET.NetApiExt\Substrate.ContractRococo.NET.NetApiExt.csproj" />
+    <ProjectReference Include="..\Substrate.Shibuya.NET.NetApiExt\Substrate.Shibuya.NET.NetApiExt.csproj" />
+    <ProjectReference Include="..\TrackingChain.Common\TrackingChain.Common.csproj" />
+  </ItemGroup>
+
+</Project>

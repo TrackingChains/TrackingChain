@@ -1,0 +1,13 @@
+{
+  "projects": {
+    "net_api": "Substrate.Shibuya.NET.NetApiExt",
+    "rest_service": "Substrate.Shibuya.NET.RestService",
+    "rest_client": "Substrate.Shibuya.NET.RestClient"
+  },
+   "metadata": {
+      "websocket": "wss://shibuya.blastapi.io/8508719b-69eb-4c01-92e4-eb902da0fb97"
+   },
+  "rest_client_settings": {
+    "service_assembly": "Substrate.Shibuya.NET.RestService.dll"
+  }
+}

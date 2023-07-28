@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@astar-network/astar-api": "0.1.17",
+    "@astar-network/astar-sdk-core": "0.1.17",
+    "@polkadot/api": "9.13.6",
+    "@polkadot/api-contract": "9.13.6"
+  }
+}
