@@ -9,11 +9,6 @@ jobs:
   release:
     name: Release
 
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-      issues: 'write' #__This fixed the HttpError: Resource not accessible by integration
-
     strategy:
       matrix:
         kind: ['linux', 'linuxselfcontained', 'macos', 'macosselfcontained', 'windows', 'windowsselfcontained']
