@@ -21,15 +21,15 @@ jobs:
       with:
         dotnet-version: 7.0.x
     - name: Restore Triage.API dependencies
-      run: dotnet restore src/Triage.API/Triage.API.csproj --no-restore
+      run: dotnet restore src/Triage.API/Triage.API.csproj
     - name: Restore AggregatorPool.Worker dependencies
-      run: dotnet restore src/AggregatorPool.Worker/AggregatorPool.Worker.csproj --no-restore
+      run: dotnet restore src/AggregatorPool.Worker/AggregatorPool.Worker.csproj
     - name: Restore TransactionGenerator.Worker dependencies
-      run: dotnet restore src/TransactionGenerator.Worker/TransactionGenerator.Worker.csproj --no-restore
+      run: dotnet restore src/TransactionGenerator.Worker/TransactionGenerator.Worker.csproj
     - name: Restore TransactionWatcher.Worker dependencies
-      run: dotnet restore src/TransactionWatcher.Worker/TransactionWatcher.Worker.csproj --no-restore
+      run: dotnet restore src/TransactionWatcher.Worker/TransactionWatcher.Worker.csproj
     - name: Restore Triage.WebApplication dependencies
-      run: dotnet restore src/Triage.WebApplication/Triage.WebApplication.csproj --no-restore
+      run: dotnet restore src/Triage.WebApplication/Triage.WebApplication.csproj
 
     - name: Build Triage.API
       run: dotnet build src/Triage.API/Triage.API.csproj --no-restore
