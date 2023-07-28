@@ -130,3 +130,5 @@ jobs:
             transaction-generator-worker-*
             transaction-watcher-worker-*
             triage-web-application-*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
