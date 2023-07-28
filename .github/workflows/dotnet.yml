@@ -19,10 +19,18 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 7.0.x
     - name: Restore dependencies
       run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
+    - name: Build Triage.API
+      run: dotnet build src/Triage.API/Triage.API.csproj --no-restore
+    - name: Build AggregatorPool.Worker
+      run: dotnet build src/AggregatorPool.Worker/AggregatorPool.Worker.csproj --no-restore
+    - name: Build TransactionGenerator.Worker
+      run: dotnet build src/TransactionGenerator.Worker/TransactionGenerator.Worker.csproj --no-restore
+    - name: Build TransactionWatcher.Worker
+      run: dotnet build src/TransactionWatcher.Worker/TransactionWatcher.Worker.csproj --no-restore
+    - name: Build Triage.WebApplication
+      run: dotnet build src/Triage.WebApplication/Triage.WebApplication.csproj --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test test/TransactionGeneratorCore.Tests/TransactionGeneratorCore.Tests.csproj --no-build --verbosity normal
