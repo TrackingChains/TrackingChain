@@ -70,6 +70,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ContractRococo", "ContractR
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Substrate.ContractRococo.NET.NetApiExt", "src\Substrate.ContractRococo.NET.NetApiExt\Substrate.ContractRococo.NET.NetApiExt.csproj", "{63B31198-F7FB-4599-9EC1-5B5A30AD1907}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Substrate.NetApi", "src\Substrate.NetApi\Substrate.NetApi.csproj", "{F8117FB9-73CA-4971-8B61-88B0148F45E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -136,6 +138,10 @@ Global
 		{63B31198-F7FB-4599-9EC1-5B5A30AD1907}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63B31198-F7FB-4599-9EC1-5B5A30AD1907}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63B31198-F7FB-4599-9EC1-5B5A30AD1907}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8117FB9-73CA-4971-8B61-88B0148F45E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8117FB9-73CA-4971-8B61-88B0148F45E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8117FB9-73CA-4971-8B61-88B0148F45E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8117FB9-73CA-4971-8B61-88B0148F45E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -163,6 +169,7 @@ Global
 		{FD5CA449-754A-464F-8BFE-7F622F9C8372} = {9F044F96-CBE1-4D8D-BB27-9C398CC08840}
 		{36BA3050-8FF5-475D-B181-AAFFDFB367EC} = {615480E3-1DB2-4783-AC35-D2F468E1BAE1}
 		{63B31198-F7FB-4599-9EC1-5B5A30AD1907} = {36BA3050-8FF5-475D-B181-AAFFDFB367EC}
+		{F8117FB9-73CA-4971-8B61-88B0148F45E8} = {615480E3-1DB2-4783-AC35-D2F468E1BAE1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49D58F03-0A69-4F81-BB36-8910F2366114}
