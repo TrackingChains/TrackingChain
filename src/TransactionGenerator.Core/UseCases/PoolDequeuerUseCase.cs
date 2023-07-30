@@ -87,8 +87,8 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                         CancellationToken.None);
                 }
 
-                var txPending = transactionGeneratorService.AddTransactionPendingFroomPool(pool, txHash);
-                await transactionGeneratorService.SetToPendingAsync(txPending);
+                var txPending = transactionGeneratorService.AddTransactionPendingFromPool(pool, txHash);
+                await transactionGeneratorService.SetToPendingAsync(txPending.TrackingId);
 
                 await applicationDbContext.SaveChangesAsync();
             }

@@ -24,8 +24,9 @@ namespace TrackingChain.TransactionGeneratorCore.Services
             this.logger = logger;
         }
 
-        public TransactionPending AddTransactionPendingFroomPool(
-            TransactionPool pool, 
+        // Methods.
+        public TransactionPending AddTransactionPendingFromPool(
+            TransactionPool pool,
             string txHash)
         {
             ArgumentNullException.ThrowIfNull(pool);
@@ -49,7 +50,6 @@ namespace TrackingChain.TransactionGeneratorCore.Services
             return transactionPending;
         }
 
-        // Methods.
         public async Task<IEnumerable<TransactionPool>> GetAvaiableTransactionPoolAsync(
             int max, 
             Guid account)
@@ -65,12 +65,12 @@ namespace TrackingChain.TransactionGeneratorCore.Services
                 .ToListAsync();
         }
 
-        public async Task<TransactionRegistry> SetToPendingAsync(TransactionPending transactionPending)
+        public async Task<TransactionRegistry> SetToPendingAsync(Guid trackingId)
         {
-            ArgumentNullException.ThrowIfNull(transactionPending);
+            ArgumentNullException.ThrowIfNull(trackingId);
 
             var transactionRegistry = await applicationDbContext.TransactionRegistries
-                .FirstOrDefaultAsync(tr => tr.TrackingId == transactionPending.TrackingId);
+                .FirstOrDefaultAsync(tr => tr.TrackingId == trackingId);
 
             if (transactionRegistry is null)
                 throw new InvalidOperationException(); //TODO manage this case
