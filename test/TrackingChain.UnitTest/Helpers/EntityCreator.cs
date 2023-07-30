@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
 using TrackingChain.TrackingChainCore.Domain.Entities;
@@ -9,6 +10,8 @@ namespace TrackingChain.UnitTest.Helpers
 {
     internal static class EntityCreator
     {
+        private static Random random = new Random();
+
         public static IEnumerable<TransactionTriage> CreateTransactionTriage(
             int size,
             List<Guid>? profileGroups = null)
@@ -59,6 +62,31 @@ namespace TrackingChain.UnitTest.Helpers
                     item.ChainType));
 
             return transactionPools;
+        }
+
+        public static IEnumerable<TransactionPending> CreateTransactionPending(IEnumerable<TransactionTriage> transactionTriages)
+        {
+            var transactionPendings = new List<TransactionPending>();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+            foreach (var item in transactionTriages)
+#pragma warning disable CA5394 // No need secure number for test
+                transactionPendings.Add(new TransactionPending(
+                    new string(Enumerable.Repeat(chars, 32).Select(s => s[random.Next(s.Length)]).ToArray()),
+                    item.Code,
+                    item.DataValue,
+                    DateTime.UtcNow.AddMinutes(-30),
+                    item.TrackingIdentify,
+                    item.ReceivedDate,
+                    item.ProfileGroupId,
+                    item.SmartContractId,
+                    item.SmartContractAddress,
+                    item.SmartContractExtraInfo,
+                    item.ChainNumberId,
+                    item.ChainType));
+#pragma warning restore CA5394 // No need secure number for test
+
+            return transactionPendings;
         }
 
         public static IEnumerable<TransactionRegistry> CreateTransactionRegistry(IEnumerable<TransactionTriage> transactionTriages)

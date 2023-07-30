@@ -1,7 +1,7 @@
-﻿using Nethereum.RPC.Eth.DTOs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TrackingChain.Common.Dto;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 
 namespace TrackingChain.TransactionWatcherCore.Services
@@ -11,10 +11,10 @@ namespace TrackingChain.TransactionWatcherCore.Services
         Task<IEnumerable<TransactionPending>> GetTransactionToCheckAsync(
             int max, 
             Guid account);
-        Task SetTransactionPoolCompletedAsync(Guid trackingId);
-        Task SetTransactionTriageCompletedAsync(Guid trackingId); 
+        Task<TransactionPool> SetTransactionPoolCompletedAsync(Guid trackingId);
+        Task<TransactionTriage> SetTransactionTriageCompletedAsync(Guid trackingId); 
         Task<TransactionRegistry> SetToRegistryAsync(
-            TransactionPending transactionPending,
-            TransactionReceipt transactionReceipt);
+            Guid trackingId,
+            TransactionDetail transactionDetail);
     }
 }

@@ -33,13 +33,12 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public DateTime PendingDate { get; private set; }
         public DateTime PoolDate { get; private set; }
         public string? ReceiptBlockHash { get; private set; }
-        public string? ReceiptBlockNumberHex { get; private set; }
-        public string? ReceiptCumulativeGasUsedHex { get; private set; }
-        public string? ReceiptEffectiveGasPriceHex { get; private set; }
+        public string? ReceiptBlockNumber { get; private set; }
+        public string? ReceiptCumulativeGasUsed { get; private set; }
+        public string? ReceiptEffectiveGasPrice { get; private set; }
         public string? ReceiptFrom { get; private set; }
-        public string? ReceiptGasUsedHex { get; private set; }
+        public string? ReceiptGasUsed { get; private set; }
         public string? ReceiptTo { get; private set; }
-        public string? ReceiptTypeHex { get; private set; }
         public DateTime RegistryDate { get; private set; }
 
         // Methods.
@@ -57,23 +56,21 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
 
         public void SetToRegistry(
             string receiptBlockHash,
-            string receiptBlockNumberHex,
-            string receiptCumulativeGasUsedHex,
-            string receiptEffectiveGasPriceHex,
+            string receiptBlockNumber,
+            string receiptCumulativeGasUsed,
+            string receiptEffectiveGasPrice,
             string receiptFrom,
-            string receiptGasUsedHex,
-            string receiptTo,
-            string receiptTypeHex)
+            string receiptGasUsed,
+            string receiptTo)
         {
             TransactionStep = TransactionStep.Completed;
             ReceiptBlockHash = receiptBlockHash;
-            ReceiptBlockNumberHex = receiptBlockNumberHex;
-            ReceiptCumulativeGasUsedHex = receiptCumulativeGasUsedHex;
-            ReceiptEffectiveGasPriceHex = receiptEffectiveGasPriceHex;
+            ReceiptBlockNumber = receiptBlockNumber;
+            ReceiptCumulativeGasUsed = receiptCumulativeGasUsed;
+            ReceiptEffectiveGasPrice = receiptEffectiveGasPrice;
             ReceiptFrom = receiptFrom;
-            ReceiptGasUsedHex = receiptGasUsedHex;
+            ReceiptGasUsed = receiptGasUsed;
             ReceiptTo = receiptTo;
-            ReceiptTypeHex = receiptTypeHex;
             RegistryDate = DateTime.UtcNow;
         }
     }

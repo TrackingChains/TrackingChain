@@ -43,7 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="TransactionWatcher\" />
+    <Folder Include="Triage\" />
   </ItemGroup>
 
 </Project>

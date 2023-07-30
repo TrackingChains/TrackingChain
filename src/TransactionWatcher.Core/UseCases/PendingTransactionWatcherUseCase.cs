@@ -35,7 +35,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
 
         // Methods.
         public async Task<bool> CheckTransactionStatusAsync(
-            int max, 
+            int max,
             Guid accountId)
         {
             var account = await accountService.GetAccountAsync(accountId);
@@ -83,7 +83,20 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                 if (receipt.Status.Value == 1)
                 {
                     pending.SetCompleted();
-                    await transactionWatcherService.SetToRegistryAsync(pending, receipt);
+                    await transactionWatcherService.SetToRegistryAsync(
+                        pending.TrackingId,
+                        new Common.Dto.TransactionDetail
+                        {
+                            BlockHash = receipt.BlockHash,
+                            BlockNumber = receipt.BlockNumber.HexValue,
+                            ContractAddress = receipt.ContractAddress,
+                            CumulativeGasUsed = receipt.CumulativeGasUsed.HexValue,
+                            EffectiveGasPrice = receipt.EffectiveGasPrice.HexValue,
+                            From = receipt.From,
+                            GasUsed = receipt.GasUsed.HexValue,
+                            To = receipt.To,
+                            TransactionHash = receipt.TransactionHash
+                        });
                     await transactionWatcherService.SetTransactionPoolCompletedAsync(pending.TrackingId);
                     await transactionWatcherService.SetTransactionTriageCompletedAsync(pending.TrackingId);
                 }

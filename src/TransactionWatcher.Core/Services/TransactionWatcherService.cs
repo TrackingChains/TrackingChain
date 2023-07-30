@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TrackingChain.Common.Dto;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 
@@ -43,51 +44,62 @@ namespace TrackingChain.TransactionWatcherCore.Services
                 .ToListAsync();
         }
 
-        public async Task SetTransactionPoolCompletedAsync(Guid trackingId)
+        public async Task<TransactionPool> SetTransactionPoolCompletedAsync(Guid trackingId)
         {
             var transactionPool = await applicationDbContext.TransactionPools
                 .Where(tp => tp.TrackingId == trackingId)
                 .FirstOrDefaultAsync();
 
             if (transactionPool is null)
-                return;
-
+            {
+                var ex = new InvalidOperationException("TransactionPool not found");
+                ex.Data.Add("TrackingId", trackingId);
+                throw ex;
+            }
+                
             transactionPool.SetCompleted();
+
+            return transactionPool;
         }
 
-        public async Task SetTransactionTriageCompletedAsync(Guid trackingId)
+        public async Task<TransactionTriage> SetTransactionTriageCompletedAsync(Guid trackingId)
         {
             var transactionTriage = await applicationDbContext.TransactionTriages
                 .Where(tp => tp.TrackingIdentify == trackingId)
                 .FirstOrDefaultAsync();
 
             if (transactionTriage is null)
-                return;
+            {
+                var ex = new InvalidOperationException("transactionTriage not found");
+                ex.Data.Add("TrackingId", trackingId);
+                throw ex;
+            }
 
             transactionTriage.SetCompleted();
+
+            return transactionTriage;
         }
 
         public async Task<TransactionRegistry> SetToRegistryAsync(
-            TransactionPending transactionPending,
-            TransactionReceipt transactionReceipt)
+            Guid trackingId,
+            TransactionDetail transactionDetail)
         {
-            ArgumentNullException.ThrowIfNull(transactionReceipt);
+            ArgumentNullException.ThrowIfNull(transactionDetail);
 
             var transactionRegistry = await applicationDbContext.TransactionRegistries
-                .FirstOrDefaultAsync(tr => tr.TrackingId == transactionPending.TrackingId);
+                .FirstOrDefaultAsync(tr => tr.TrackingId == trackingId);
 
             if (transactionRegistry is null)
                 throw new InvalidOperationException(); //TODO manage this case
 
             transactionRegistry.SetToRegistry(
-                transactionReceipt.BlockHash,
-                transactionReceipt.BlockNumber.HexValue,
-                transactionReceipt.CumulativeGasUsed.HexValue,
-                transactionReceipt.EffectiveGasPrice.HexValue,
-                transactionReceipt.From,
-                transactionReceipt.GasUsed.HexValue,
-                transactionReceipt.To,
-                transactionReceipt.Type.HexValue);
+                transactionDetail.BlockHash,
+                transactionDetail.BlockNumber,
+                transactionDetail.CumulativeGasUsed,
+                transactionDetail.EffectiveGasPrice,
+                transactionDetail.From,
+                transactionDetail.GasUsed,
+                transactionDetail.To);
 
             applicationDbContext.Update(transactionRegistry);
 
