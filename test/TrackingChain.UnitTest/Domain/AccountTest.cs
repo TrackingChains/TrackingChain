@@ -2,7 +2,7 @@
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using Xunit;
 
-namespace TrackingChain.Core.Domain
+namespace TrackingChain.UnitTest.Domain
 {
     public class AccountTest
     {

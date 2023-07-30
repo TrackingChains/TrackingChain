@@ -7,13 +7,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrackingChain.AggregatorPoolCore.Services;
-using TrackingChain.Core.Helpers;
+using TrackingChain.UnitTest.Helpers;
 using TrackingChain.TrackingChainCore.Domain.Enums;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TrackingChainCore.Options;
 using Xunit;
 
-namespace TrackingChain.Core.AggregatorPool
+namespace TrackingChain.UnitTest.AggregatorPool
 {
 #pragma warning disable CA1001 // Not need in unit test
     public class AggregatorServiceTest

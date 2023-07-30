@@ -5,7 +5,7 @@ using TrackingChain.Common.ExtraInfos;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.Domain.Enums;
 
-namespace TrackingChain.Core.Helpers
+namespace TrackingChain.UnitTest.Helpers
 {
     internal static class EntityCreator
     {

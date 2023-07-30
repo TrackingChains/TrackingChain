@@ -6,15 +6,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TrackingChain.Core.Helpers;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.Domain.Enums;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TrackingChainCore.Options;
 using TrackingChain.TransactionGeneratorCore.Services;
+using TrackingChain.UnitTest.Helpers;
 using Xunit;
 
-namespace TrackingChain.Core.TransactionGenerator
+namespace TrackingChain.UnitTest.TransactionGenerator
 {
 #pragma warning disable CA1001 // Not need in unit test
     public class TransactionGeneratorServiceTest
@@ -49,6 +49,7 @@ namespace TrackingChain.Core.TransactionGenerator
             var transactionTriages = EntityCreator.CreateTransactionTriage(1);
             var txPool = EntityCreator.CreateTransactionPool(transactionTriages).First();
             var txHash = "12345-67890";
+
 
             //Act
             var txPending = transactionGeneratorService.AddTransactionPendingFromPool(txPool, txHash);
