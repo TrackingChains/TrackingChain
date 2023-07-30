@@ -42,8 +42,4 @@
     <ProjectReference Include="..\..\src\Triage.WebApplication\Triage.WebApplication.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Triage\" />
-  </ItemGroup>
-
 </Project>
