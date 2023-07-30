@@ -76,12 +76,12 @@ namespace TrackingChain.AggregatorPoolCore.Services
             return await query.ToListAsync();
         }
 
-        public async Task<IEnumerable<TransactionRegistry>> SetToPoolAsync(IEnumerable<TransactionPool> transactionPools)
+        public async Task<IEnumerable<TransactionRegistry>> SetToPoolAsync(IEnumerable<Guid> trackingIds)
         {
-            ArgumentNullException.ThrowIfNull(transactionPools);
+            ArgumentNullException.ThrowIfNull(trackingIds);
 
             var transactionRegistries = await applicationDbContext.TransactionRegistries
-                .Where(tr => transactionPools.Select(tp => tp.TrackingId).Contains(tr.TrackingId))
+                .Where(tr => trackingIds.Contains(tr.TrackingId))
                 .ToListAsync();
 
             //TODO manage this case where any missing

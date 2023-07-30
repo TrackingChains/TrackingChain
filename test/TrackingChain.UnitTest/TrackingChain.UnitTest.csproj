@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>TrackingChain.Core</RootNamespace>
+
+    <Authors>Federico Cicciarella</Authors>
+    <Description>Tracking chain core</Description>
+
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Nullable>enable</Nullable>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Configurations>Debug;Release</Configurations>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.9" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+    <PackageReference Include="Moq" Version="4.18.4" />
+    <PackageReference Include="xunit" Version="2.4.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="3.2.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\AggregatorPool.Worker\AggregatorPool.Worker.csproj" />
+    <ProjectReference Include="..\..\src\Substrate.Generic.Client\Substrate.Generic.Client.csproj" />
+    <ProjectReference Include="..\..\src\TransactionGenerator.Worker\TransactionGenerator.Worker.csproj" />
+    <ProjectReference Include="..\..\src\TransactionWatcher.Worker\TransactionWatcher.Worker.csproj" />
+    <ProjectReference Include="..\..\src\Triage.API\Triage.API.csproj" />
+    <ProjectReference Include="..\..\src\Triage.WebApplication\Triage.WebApplication.csproj" />
+  </ItemGroup>
+
+</Project>

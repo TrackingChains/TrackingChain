@@ -11,6 +11,6 @@ namespace TrackingChain.AggregatorPoolCore.Services
         Task<IEnumerable<TransactionTriage>> GetTransactionToEnqueueAsync(
             int max, 
             IEnumerable<Guid> profileIds);
-        Task<IEnumerable<TransactionRegistry>> SetToPoolAsync(IEnumerable<TransactionPool> transactionPools);
+        Task<IEnumerable<TransactionRegistry>> SetToPoolAsync(IEnumerable<Guid> trackingIds);
     }
 }

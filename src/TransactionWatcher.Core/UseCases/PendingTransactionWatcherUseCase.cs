@@ -59,7 +59,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
 #pragma warning disable CA1031 // Variable is declared but never used
                 try
                 {
-                    receipt = await ethereumService.GetTrasactionReceiptAsync(pending.TxHash, account.GetFirstRandomAvaiableRpcAddress);
+                    receipt = await ethereumService.GetTrasactionReceiptAsync(pending.TxHash, account.GetFirstRandomRpcAddress);
                 }
                 catch (Exception ex)
                 { //TODO after some time is null so going in error and need manual check

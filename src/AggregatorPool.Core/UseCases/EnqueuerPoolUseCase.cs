@@ -33,7 +33,7 @@ namespace TrackingChain.AggregatorPoolCore.UseCases
 
             var queues = aggregatorService.Enqueue(triages);
 
-            await aggregatorService.SetToPoolAsync(queues);
+            await aggregatorService.SetToPoolAsync(queues.Select(q => q.TrackingId));
 
             await unitOfWork.SaveChangesAsync();
 

@@ -68,7 +68,7 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                         pool.DataValue,
                         account.PrivateKey,
                         pool.ChainNumberId,
-                        account.GetFirstRandomAvaiableRpcAddress,
+                        account.GetFirstRandomRpcAddress,
                         pool.SmartContractAddress,
                         ContractExtraInfo.FromJson(pool.SmartContractExtraInfo),
                         CancellationToken.None);

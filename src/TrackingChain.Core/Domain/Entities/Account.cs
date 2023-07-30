@@ -50,7 +50,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
 #pragma warning restore CA5394 // No need secure number
             }
         }
-        public string GetFirstRandomAvaiableRpcAddress
+        public string GetFirstRandomRpcAddress
         {
             get
             {
@@ -63,6 +63,22 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
 #pragma warning disable CA5394 // No need secure number
                 return address[rnd.Next(address.Length)];
 #pragma warning restore CA5394 // No need secure number
+            }
+        }
+
+        public IEnumerable<string> GetWsAddress
+        {
+            get
+            {
+                return ChainWsAddress.Split(";");
+            }
+        }
+
+        public IEnumerable<string> GetRpcAddress
+        {
+            get
+            {
+                return ChainRpcAddress.Split(";");
             }
         }
     }
