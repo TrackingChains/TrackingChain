@@ -1,20 +1,24 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.Domain.Enums;
+using TrackingChain.TrackingChainCore.EntityFramework.Context;
 
 namespace TrackingChain.UnitTest.Helpers
 {
     internal static class EntityCreator
     {
-        private static Random random = new Random();
+        private static readonly Random random = new();
 
         public static IEnumerable<TransactionTriage> CreateTransactionTriage(
             int size,
-            List<Guid>? profileGroups = null)
+            List<Guid>? profileGroups = null,
+            string? codeFixed = null)
         {
             var transactionTriages = new List<TransactionTriage>();
             if (size == 0)
@@ -22,7 +26,7 @@ namespace TrackingChain.UnitTest.Helpers
 
             for (int i = 1; i <= size; i++)
             {
-                var code = $"Code{i}";
+                var code = codeFixed is null ? $"Code{i}" : codeFixed;
                 var dataValue = $"dataValue{i}";
                 var profileGroup = profileGroups != null ? profileGroups[(i - 1) % profileGroups.Count] : Guid.NewGuid();
                 var smartContractId = i;
@@ -138,5 +142,44 @@ namespace TrackingChain.UnitTest.Helpers
             return smartContracts;
         }
 
+        public static async Task CreateFullDatabaseWithProfileAndTriageAsync(
+            int numberOfTriage,
+            Guid primaryProfileAccount, 
+            Guid secondaryProfileAccount, 
+            ApplicationDbContext dbContext,
+            bool includePools = false)
+        {
+            //smart contracts
+            var smartContracts = EntityCreator.CreateSmartContract(2);
+            dbContext.SmartContracts.AddRange(smartContracts);
+
+            //profile group
+            var profileGroupOne = new ProfileGroup(null, null, null, "test unit", smartContracts.ElementAt(0), 0);
+            dbContext.ProfileGroups.Add(profileGroupOne);
+            var profileGroupTwo = new ProfileGroup(null, null, null, "test unit", smartContracts.ElementAt(1), 0);
+            dbContext.ProfileGroups.Add(profileGroupTwo);
+            await dbContext.SaveChangesAsync();
+
+            //account profile group
+            var accountProfileGroupOne = new AccountProfileGroup(primaryProfileAccount, profileGroupOne.Id, 0);
+            dbContext.AccountProfileGroup.Add(accountProfileGroupOne);
+            var accountProfileGroupTwo = new AccountProfileGroup(secondaryProfileAccount, profileGroupTwo.Id, 0);
+            dbContext.AccountProfileGroup.Add(accountProfileGroupTwo);
+            await dbContext.SaveChangesAsync();
+
+            //triage
+            var triages = CreateTransactionTriage(
+                numberOfTriage,
+                profileGroups: new List<Guid> { profileGroupOne.Id, profileGroupTwo.Id });
+            dbContext.TransactionTriages.AddRange(triages);
+            await dbContext.SaveChangesAsync();
+
+            if (includePools)
+            {
+                var pools = CreateTransactionPool(triages);
+                dbContext.TransactionPools.AddRange(pools);
+                await dbContext.SaveChangesAsync();
+            }
+        }
     }
 }

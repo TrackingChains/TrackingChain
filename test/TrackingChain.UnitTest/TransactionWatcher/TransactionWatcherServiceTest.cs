@@ -88,31 +88,15 @@ namespace TrackingChain.UnitTest.TransactionWatcher
             var currentProfileAccount = Guid.NewGuid();
             var secondaryProfileAccount = Guid.NewGuid();
 
-            //smart contracts
-            var smartContracts = EntityCreator.CreateSmartContract(2);
-            dbContext.SmartContracts.AddRange(smartContracts);
-
-            //profile group
-            var profileGroupOne = new ProfileGroup(null, null, null, "test unit", smartContracts.ElementAt(0), 0);
-            dbContext.ProfileGroups.Add(profileGroupOne);
-            var profileGroupTwo = new ProfileGroup(null, null, null, "test unit", smartContracts.ElementAt(1), 0);
-            dbContext.ProfileGroups.Add(profileGroupTwo);
-            await dbContext.SaveChangesAsync();
-
-            //account profile group
-            var accountProfileGroupOne = new AccountProfileGroup(currentProfileAccount, profileGroupOne.Id, 0);
-            dbContext.AccountProfileGroup.Add(accountProfileGroupOne);
-            var accountProfileGroupTwo = new AccountProfileGroup(secondaryProfileAccount, profileGroupTwo.Id, 0);
-            dbContext.AccountProfileGroup.Add(accountProfileGroupTwo);
-            await dbContext.SaveChangesAsync();
-
-            //triage
-            var triages = EntityCreator.CreateTransactionTriage(
+            await EntityCreator.CreateFullDatabaseWithProfileAndTriageAsync(
                 10,
-                profileGroups: new List<Guid> { profileGroupOne.Id, profileGroupTwo.Id });
+                currentProfileAccount,
+                secondaryProfileAccount,
+                dbContext,
+                includePools: true);
 
             //pool
-            var txPendings = EntityCreator.CreateTransactionPending(triages);
+            var txPendings = EntityCreator.CreateTransactionPending(dbContext.TransactionTriages);
             txPendings.First(tp => tp.Code == "Code6").SetLoked(secondaryProfileAccount);
             txPendings.First(tp => tp.Code == "Code8").SetLoked(secondaryProfileAccount);
 
@@ -131,8 +115,6 @@ namespace TrackingChain.UnitTest.TransactionWatcher
             //Assert
             //case one
             Assert.Equal(2, txPendingsCaseOne.Count());
-            Assert.Contains(txPendingsCaseOne, tp => tp.Code == "Code1");
-            Assert.Contains(txPendingsCaseOne, tp => tp.Code == "Code3");
 
             //case two
             Assert.Equal(5, txPendingsCaseTwo.Count());

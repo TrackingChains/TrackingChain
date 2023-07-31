@@ -101,14 +101,6 @@ namespace TrackingChain.TransactionWaitingCore.Services
 
         public async Task<List<TransactionTriage>> GetTransactionReadyForPoolAsync(int max = 100)
         {
-            //var result = applicationDbContext.Pools
-            //                .Where(pool => applicationDbContext.Pools
-            //                    .Where(p => p.Executed == false)
-            //                    .GroupBy(p => p.Code)
-            //                    .Where(g => g.Max(x => x.Queued) == false)
-            //                    .Select(g => g.Min(x => x.Id))
-            //                    .Contains(pool.Id))
-            //                .ToListAsync();
             var subquery = applicationDbContext.TransactionTriages
                                 .Where(p => p.Completed == false)
                                 .GroupBy(p => p.Code)
