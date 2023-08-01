@@ -40,5 +40,16 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
 #pragma warning disable CA1002 // Do not expose generic lists
         public virtual List<Account> Accounts { get; } = new();
 #pragma warning restore CA1002 // Do not expose generic lists
+
+        // Methods
+        public void SetAuthority(string? authority)
+        {
+            Authority = authority;
+        }
+
+        public void SetCategory(string? category)
+        {
+            Category = category;
+        }
     }
 }

@@ -93,6 +93,12 @@ namespace TrackingChain.UnitTest.Helpers
             return transactionPendings;
         }
 
+        public static IEnumerable<TransactionRegistry> CreateTransactionRegistry(int size)
+        {
+            var triages = CreateTransactionTriage(size);
+            return CreateTransactionRegistry(triages);
+        }
+
         public static IEnumerable<TransactionRegistry> CreateTransactionRegistry(IEnumerable<TransactionTriage> transactionTriages)
         {
             var transactionRegistries = new List<TransactionRegistry>();
@@ -156,14 +162,14 @@ namespace TrackingChain.UnitTest.Helpers
             //profile group
             var profileGroupOne = new ProfileGroup(null, null, null, "test unit", smartContracts.ElementAt(0), 0);
             dbContext.ProfileGroups.Add(profileGroupOne);
-            var profileGroupTwo = new ProfileGroup(null, null, null, "test unit", smartContracts.ElementAt(1), 0);
+            var profileGroupTwo = new ProfileGroup(null, null, null, "test unit", smartContracts.ElementAt(1), 1);
             dbContext.ProfileGroups.Add(profileGroupTwo);
             await dbContext.SaveChangesAsync();
 
             //account profile group
             var accountProfileGroupOne = new AccountProfileGroup(primaryProfileAccount, profileGroupOne.Id, 0);
             dbContext.AccountProfileGroup.Add(accountProfileGroupOne);
-            var accountProfileGroupTwo = new AccountProfileGroup(secondaryProfileAccount, profileGroupTwo.Id, 0);
+            var accountProfileGroupTwo = new AccountProfileGroup(secondaryProfileAccount, profileGroupTwo.Id, 1);
             dbContext.AccountProfileGroup.Add(accountProfileGroupTwo);
             await dbContext.SaveChangesAsync();
 

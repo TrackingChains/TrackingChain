@@ -50,9 +50,13 @@ namespace TrackingChain.TransactionWaitingCore.Services
             return transactionRegistry;
         }
 
-        public async Task<TransactionTriage> AddTransactionAsync(string code, string category, string data)
+        public async Task<TransactionTriage> AddTransactionAsync(
+            string authority, 
+            string code, 
+            string category, 
+            string data)
         {
-            var group = await GetSmartContractForTransactionAsync("testAuth", code, category); //TODO dynamic testAuth
+            var group = await GetProfileGroupForTransactionAsync(authority, code, category);
             var smartContract = await registryService.GetSmartContractAsync(group.SmartContractId);
 
             var transactionTriage = new TransactionTriage(
@@ -70,7 +74,7 @@ namespace TrackingChain.TransactionWaitingCore.Services
             return transactionTriage;
         }
 
-        public async Task<ProfileGroup> GetSmartContractForTransactionAsync(
+        public async Task<ProfileGroup> GetProfileGroupForTransactionAsync(
             string authority, 
             string code, 
             string category)
@@ -80,14 +84,17 @@ namespace TrackingChain.TransactionWaitingCore.Services
                                                 .Where(scp => (scp.Authority == authority || scp.Authority == null) &&
                                                               (scp.Category == category || scp.Category == null))
                                                 .ToListAsync();
-
+            /*
+             * Develop for futhur version
+             * 
             var groupWithAggrCodes = transactionGroups.Where(scp => !string.IsNullOrWhiteSpace(scp.AggregationCode));
             foreach(var group in groupWithAggrCodes) { 
                 //TODO first group match return current profile.
             }
+            transactionGroups = transactionGroups.Where(scp => string.IsNullOrWhiteSpace(scp.AggregationCode));
+            */
 
-            var groupNoAggrCodes = transactionGroups.Where(scp => string.IsNullOrWhiteSpace(scp.AggregationCode));
-            if (!groupNoAggrCodes.Any())
+            if (!transactionGroups.Any())
             {
                 var ex = new InvalidOperationException("Smart contract group not found");
                 ex.Data.Add("Authority", authority);
@@ -96,7 +103,7 @@ namespace TrackingChain.TransactionWaitingCore.Services
                 throw ex;
             } 
                 
-            return groupNoAggrCodes.First();
+            return transactionGroups.First();
         }
 
         public async Task<List<TransactionTriage>> GetTransactionReadyForPoolAsync(int max = 100)

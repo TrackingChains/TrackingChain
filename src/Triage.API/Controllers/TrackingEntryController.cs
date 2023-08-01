@@ -40,6 +40,7 @@ namespace TrackingChain.TriageAPI.Controllers
                 return BadRequest();
 
             var trackId = await trackingEntryUseCase.AddTransactionAsync(
+                "GenericAPI",
                 insertTransactionPoolBinding.Code,
                 insertTransactionPoolBinding.Data,
                 insertTransactionPoolBinding.Category);

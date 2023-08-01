@@ -51,6 +51,7 @@ namespace TrackingChain.TriageWebApplication.Pages
             try
             {
                 var result = await trackingEntryUseCase.AddTransactionAsync(
+                    "GenericWabAPI",
                     trackProductBinding.ProductCode, 
                     trackProductBinding.ProductDataJson,
                     trackProductBinding.SelectedChain == 0 ? "Shibuya" : "Moonbase");

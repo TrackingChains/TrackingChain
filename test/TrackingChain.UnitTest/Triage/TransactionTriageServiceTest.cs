@@ -22,6 +22,7 @@ namespace TrackingChain.UnitTest.Triage
     {
         private readonly TransactionTriageService transactionTriageService;
         private readonly ApplicationDbContext dbContext;
+        private readonly Mock<IRegistryService> mockRegistryService;
 
         public TransactionTriageServiceTest()
         {
@@ -34,9 +35,7 @@ namespace TrackingChain.UnitTest.Triage
             var mock = new Mock<IOptionsSnapshot<DatabaseOptions>>();
             mock.Setup(m => m.Value).Returns(databaseOptions);
 
-            var mockRegistryService = new Mock<IRegistryService>();
-            mockRegistryService.Setup(m => m.GetSmartContractAsync(1))
-                .Returns(Task.FromResult(EntityCreator.CreateSmartContract(1).First()));
+            mockRegistryService = new Mock<IRegistryService>();
 
             var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             dbContext = new ApplicationDbContext(options, mock.Object);
@@ -45,6 +44,215 @@ namespace TrackingChain.UnitTest.Triage
                 dbContext,
                 Mock.Of<ILogger<TransactionTriageService>>(),
                 mockRegistryService.Object);
+        }
+
+        [Fact]
+        public async Task GetProfileGroupForTransactionShouldFindContractByCategoryNullAsync()
+        {
+            //Arrange
+            var primaryProfile = Guid.NewGuid();
+            var primaryCategory = "categoryPrime";
+            var secondaryProfile = Guid.NewGuid();
+
+            await EntityCreator.CreateFullDatabaseWithProfileAndTriageAsync(0, primaryProfile, secondaryProfile, dbContext);
+            await dbContext.SaveChangesAsync();
+
+
+            //Act
+            var profileGroup = await transactionTriageService.GetProfileGroupForTransactionAsync("authTest", "TestCode1", primaryCategory);
+
+
+            //Assert
+            Assert.NotNull(profileGroup);
+            Assert.Null(profileGroup.Category);
+            Assert.Equal(1, profileGroup.SmartContractId);
+        }
+
+        [Fact]
+        public async Task GetSmartContractForTransactionShouldFindContractByCategoryNameAsync()
+        {
+            //Arrange
+            var primaryProfile = Guid.NewGuid();
+            var primaryCategory = "categoryPrime";
+            var secondaryProfile = Guid.NewGuid();
+
+            await EntityCreator.CreateFullDatabaseWithProfileAndTriageAsync(0, primaryProfile, secondaryProfile, dbContext);
+            var primaryGroup = await dbContext.AccountProfileGroup
+                .Where(apg => apg.AccountId == primaryProfile)
+                .Include(i => i.ProfileGroup)
+                .Select(apg => apg.ProfileGroup)
+                .SingleAsync();
+            primaryGroup.SetCategory(primaryCategory);
+            dbContext.ProfileGroups.Update(primaryGroup);
+            await dbContext.SaveChangesAsync();
+
+
+            //Act
+            var profileGroup = await transactionTriageService.GetProfileGroupForTransactionAsync("authTest", "TestCode1", primaryCategory);
+
+
+            //Assert
+            Assert.NotNull(profileGroup);
+            Assert.Equal(primaryCategory, profileGroup.Category);
+            Assert.Equal(1, profileGroup.SmartContractId);
+        }
+
+        [Fact]
+        public async Task GetSmartContractForTransactionShouldNotFoundContractByCategoryNameAsync()
+        {
+            //Arrange
+            var primaryProfile = Guid.NewGuid();
+            var primaryCategory = "categoryPrime";
+            var secondaryProfile = Guid.NewGuid();
+            var secondaryCategory = "categorySecond";
+
+            await EntityCreator.CreateFullDatabaseWithProfileAndTriageAsync(0, primaryProfile, secondaryProfile, dbContext);
+            var primaryGroup = await dbContext.AccountProfileGroup
+                .Where(apg => apg.AccountId == primaryProfile)
+                .Include(i => i.ProfileGroup)
+                .Select(apg => apg.ProfileGroup)
+                .SingleAsync();
+            primaryGroup.SetCategory(primaryCategory);
+            dbContext.ProfileGroups.Update(primaryGroup);
+            var secondaryGroup = await dbContext.AccountProfileGroup
+                .Where(apg => apg.AccountId == secondaryProfile)
+                .Include(i => i.ProfileGroup)
+                .Select(apg => apg.ProfileGroup)
+                .SingleAsync();
+            secondaryGroup.SetCategory(secondaryCategory);
+            dbContext.ProfileGroups.Update(secondaryGroup);
+            await dbContext.SaveChangesAsync();
+
+
+            //Act
+            async Task act() => await transactionTriageService.GetProfileGroupForTransactionAsync("authTest", "TestCode1", "CategoryNameNotFound");
+
+
+            //Assert
+            var exception = await Assert.ThrowsAsync<InvalidOperationException>(act);
+            Assert.Equal("Smart contract group not found", exception.Message);
+            Assert.Equal("authTest", exception.Data["Authority"]);
+            Assert.Equal("TestCode1", exception.Data["Code"]);
+            Assert.Equal("CategoryNameNotFound", exception.Data["Category"]);
+        }
+
+        [Fact]
+        public async Task GetProfileGroupForTransactionShouldFindContractByAuthorityNullAsync()
+        {
+            //Arrange
+            var primaryProfile = Guid.NewGuid();
+            var primaryAuth = "authTestPrime";
+            var secondaryProfile = Guid.NewGuid();
+
+            await EntityCreator.CreateFullDatabaseWithProfileAndTriageAsync(0, primaryProfile, secondaryProfile, dbContext);
+            await dbContext.SaveChangesAsync();
+
+
+            //Act
+            var profileGroup = await transactionTriageService.GetProfileGroupForTransactionAsync(primaryAuth, "TestCode1", "TestCategory1");
+
+
+            //Assert
+            Assert.NotNull(profileGroup);
+            Assert.Null(profileGroup.Category);
+            Assert.Equal(1, profileGroup.SmartContractId);
+        }
+
+        [Fact]
+        public async Task GetSmartContractForTransactionShouldFindContractByAuthorityNameAsync()
+        {
+            //Arrange
+            var primaryProfile = Guid.NewGuid();
+            var primaryAuth = "authTestPrime";
+            var secondaryProfile = Guid.NewGuid();
+
+            await EntityCreator.CreateFullDatabaseWithProfileAndTriageAsync(0, primaryProfile, secondaryProfile, dbContext);
+            var primaryGroup = await dbContext.AccountProfileGroup
+                .Where(apg => apg.AccountId == primaryProfile)
+                .Include(i => i.ProfileGroup)
+                .Select(apg => apg.ProfileGroup)
+                .SingleAsync();
+            primaryGroup.SetAuthority(primaryAuth);
+            dbContext.ProfileGroups.Update(primaryGroup);
+            await dbContext.SaveChangesAsync();
+
+
+            //Act
+            var profileGroup = await transactionTriageService.GetProfileGroupForTransactionAsync(primaryAuth, "TestCode1", "TestCategory1");
+
+
+            //Assert
+            Assert.NotNull(profileGroup);
+            Assert.Equal(primaryAuth, profileGroup.Authority);
+            Assert.Equal(1, profileGroup.SmartContractId);
+        }
+
+        [Fact]
+        public async Task GetSmartContractForTransactionShouldNotFoundContractByAuthorityNameAsync()
+        {
+            //Arrange
+            var primaryProfile = Guid.NewGuid();
+            var primaryAuth = "authTestPrime";
+            var secondaryProfile = Guid.NewGuid();
+            var secondaryAuth = "authTestSecond";
+
+            await EntityCreator.CreateFullDatabaseWithProfileAndTriageAsync(0, primaryProfile, secondaryProfile, dbContext);
+            var primaryGroup = await dbContext.AccountProfileGroup
+                .Where(apg => apg.AccountId == primaryProfile)
+                .Include(i => i.ProfileGroup)
+                .Select(apg => apg.ProfileGroup)
+                .SingleAsync();
+            primaryGroup.SetAuthority(primaryAuth);
+            dbContext.ProfileGroups.Update(primaryGroup);
+            var secondaryGroup = await dbContext.AccountProfileGroup
+                .Where(apg => apg.AccountId == secondaryProfile)
+                .Include(i => i.ProfileGroup)
+                .Select(apg => apg.ProfileGroup)
+                .SingleAsync();
+            secondaryGroup.SetAuthority(secondaryAuth);
+            dbContext.ProfileGroups.Update(secondaryGroup);
+            await dbContext.SaveChangesAsync();
+
+
+            //Act
+            async Task act() => await transactionTriageService.GetProfileGroupForTransactionAsync("authNameNotFound", "TestCode1", "CategoryTEst1");
+
+
+            //Assert
+            var exception = await Assert.ThrowsAsync<InvalidOperationException>(act);
+            Assert.Equal("Smart contract group not found", exception.Message);
+            Assert.Equal("authNameNotFound", exception.Data["Authority"]);
+            Assert.Equal("TestCode1", exception.Data["Code"]);
+            Assert.Equal("CategoryTEst1", exception.Data["Category"]);
+        }
+
+        [Fact]
+        public async Task AddTransactionAsync()
+        {
+            //Arrange
+            var primaryProfile = Guid.NewGuid();
+            var primaryAuth = "authTestPrime";
+            var primaryCategory = "categoryTestPrime";
+            var primaryCode = "codeTestPrime";
+            var primaryDataValue = "dataValueTestPrime";
+            var secondaryProfile = Guid.NewGuid();
+
+            await EntityCreator.CreateFullDatabaseWithProfileAndTriageAsync(0, primaryProfile, secondaryProfile, dbContext);
+            await dbContext.SaveChangesAsync();
+
+            mockRegistryService.Setup(m => m.GetSmartContractAsync(1))
+                .Returns(dbContext.SmartContracts.SingleAsync(sc => sc.Id == 1));
+
+
+            //Act
+            var triageResult = await transactionTriageService.AddTransactionAsync(primaryAuth, primaryCode, primaryCategory, primaryDataValue);
+
+
+            //Assert
+            Assert.Equal(primaryCode, triageResult.Code);
+            Assert.Equal(primaryDataValue, triageResult.DataValue);
+            Assert.Equal(1, triageResult.SmartContractId);
+            Assert.NotEqual(Guid.Empty, triageResult.TrackingIdentify);
         }
 
         [Fact]

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.EntityFramework;
 using TrackingChain.TransactionWaitingCore.Services;
@@ -24,17 +25,18 @@ namespace TrackingChain.TransactionTriageCore.UseCases
         }
 
         // Methods.
-        public async Task<string> AddTransactionAsync(
+        public async Task<Guid> AddTransactionAsync(
+            string authority,
             string code, 
             string data, 
             string category)
         {
-            var triage = await transactionTriageService.AddTransactionAsync(code, category, data);
+            var triage = await transactionTriageService.AddTransactionAsync(authority, code, category, data);
             transactionTriageService.AddRegistry(triage);
 
             await unitOfWork.SaveChangesAsync();
 
-            return triage.TrackingIdentify.ToString();
+            return triage.TrackingIdentify;
         }
     }
 }
