@@ -3,19 +3,19 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using System;
-using Xunit;
+using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
+using TrackingChain.Common.Dto;
 using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
 using TrackingChain.Common.Interfaces;
-using TrackingChain.TrackingChainCore.Domain.Entities;
-using TrackingChain.UnitTest.Helpers;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
-using TrackingChain.TransactionWatcherCore.Services;
-using System.Threading.Tasks;
-using TrackingChain.TransactionWatcherCore.UseCases;
-using System.Linq;
 using TrackingChain.TrackingChainCore.Options;
+using TrackingChain.TransactionWatcherCore.Services;
+using TrackingChain.TransactionWatcherCore.UseCases;
+using TrackingChain.UnitTest.Helpers;
+using Xunit;
 
 namespace TrackingChain.UnitTest.TransactionWatcher
 {
@@ -104,21 +104,24 @@ namespace TrackingChain.UnitTest.TransactionWatcher
             mockAccountService
                 .Setup(m => m.GetAccountAsync(primaryProfile))
                 .Returns(Task.FromResult(primaryAccount));
-            var primaryPools = await dbContext.TransactionPools.Take(maxConcurrentThread).ToListAsync();
-            /*mockTransactionGeneratorService
-                .Setup(m => m.GetAvaiableTransactionPoolAsync(maxConcurrentThread, primaryProfile))
-                .Returns(Task.FromResult((IEnumerable<TransactionPool>)primaryPools));
-            mockTransactionGeneratorService
-                .Setup(m => m.AddTransactionPendingFromPool(It.IsAny<TransactionPool>(), It.IsAny<string>()))
-                .Returns(EntityCreator.ConvertToPending(primaryPools.First(), "hashTx"));
+            var primaryPendings = (await dbContext.TransactionPools
+                .Take(maxConcurrentThread)
+                .ToListAsync())
+                .Select(tp => EntityCreator.ConvertToPending(tp, "txHash"));
+            mockTransactionWatcherService
+                .Setup(m => m.GetTransactionToCheckAsync(maxConcurrentThread, primaryProfile))
+                .Returns(Task.FromResult(primaryPendings));
+            mockTransactionWatcherService
+                .Setup(m => m.SetToRegistryAsync(It.IsAny<Guid>(), It.IsAny<TransactionDetail>()))
+                .Returns(Task.FromResult(EntityCreator.ConvertToRegistry(primaryPendings.First())));
 
 
             //Act
-            var dequedResult = await poolDequeuerUseCase.DequeueTransactionAsync(maxConcurrentThread, primaryProfile);
+            var dequedResult = await pendingTransactionWatcherUseCase.CheckTransactionStatusAsync(maxConcurrentThread, primaryProfile);
 
 
             //Assert
-            Assert.True(dequedResult);*/
+            Assert.True(dequedResult);
         }
 
     }

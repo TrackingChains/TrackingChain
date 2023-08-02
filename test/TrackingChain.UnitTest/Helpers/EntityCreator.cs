@@ -13,6 +13,21 @@ namespace TrackingChain.UnitTest.Helpers
     {
         private static readonly Random random = new();
 
+        public static TransactionRegistry ConvertToRegistry(TransactionPending transactionPending)
+        {
+            return new TransactionRegistry(
+                transactionPending.Code,
+                transactionPending.DataValue,
+                transactionPending.TrackingId,
+                transactionPending.SmartContractId,
+                transactionPending.SmartContractAddress,
+                transactionPending.SmartContractExtraInfo,
+                transactionPending.ProfileGroupId,
+                transactionPending.ChainNumberId,
+                transactionPending.ChainType,
+                transactionPending.TriageDate);
+        }
+
         public static TransactionPending ConvertToPending(TransactionPool transactionPool, string txHash)
         {
             return new TransactionPending(
