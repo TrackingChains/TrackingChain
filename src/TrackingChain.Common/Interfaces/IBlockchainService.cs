@@ -1,4 +1,5 @@
-﻿using TrackingChain.Common.Enums;
+﻿using TrackingChain.Common.Dto;
+using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
 
 namespace TrackingChain.Common.Interfaces
@@ -15,15 +16,10 @@ namespace TrackingChain.Common.Interfaces
             ContractExtraInfo contractExtraInfo,
             CancellationToken token);
 
-        /*Task<TransactionDetail> InsertTrackingAndWaitForReceiptAsync(
-            string code,
-            string dataValue,
-            string privateKey,
-            int chainNumberId,
-            string chainEndpoint,
-            string contractAddress,
-            ContractExtraInfo contractExtraInfo,
-            CancellationToken token);*/
+        Task<TransactionDetail> GetTrasactionReceiptAsync(
+            string txHash,
+            string chainEndpoint);
+
         ChainType ProviderType { get; }
     }
 }

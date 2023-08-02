@@ -28,6 +28,25 @@ namespace TrackingChain.TransactionGeneratorCore.Services
         public ChainType ProviderType => ChainType.EVM;
 
         // Public methods.
+        public Task<TransactionDetail> GetTrasactionReceiptAsync(
+            string txHash, 
+            string chainEndpoint)
+        {
+            return Task.FromResult(new TransactionDetail
+            {
+                ContractAddress = "",
+                BlockNumber = "",
+                BlockHash = "",
+                CumulativeGasUsed = "",
+                EffectiveGasPrice = "",
+                From = "",
+                GasUsed = "",
+                Successful = true,
+                To = "",
+                TransactionHash = ""
+            });
+        }
+
         public async Task<string> InsertTrackingAsync(
             string code,
             string dataValue,
@@ -51,7 +70,6 @@ namespace TrackingChain.TransactionGeneratorCore.Services
             return await contractHandler.SendRequestAsync(insertTracking);
         }
 
-        // Methods.
         public async Task<TransactionDetail> InsertTrackingAndWaitForReceiptAsync(
             string code,
             string dataValue,
@@ -108,6 +126,5 @@ namespace TrackingChain.TransactionGeneratorCore.Services
 
             return web3.Eth.GetContractHandler(contractAddress);
         }
-
     }
 }

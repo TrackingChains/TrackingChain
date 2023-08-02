@@ -47,8 +47,6 @@ namespace TrackingChain.UnitTest.TransactionGenerator
             var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             dbContext = new ApplicationDbContext(options, mock.Object);
 
-            IUnitOfWork unitOfWork = new UnitOfWork(Mock.Of<ILogger<UnitOfWork>>(), dbContext);
-
             //account service
             mockAccountService = new Mock<IAccountService>();
 

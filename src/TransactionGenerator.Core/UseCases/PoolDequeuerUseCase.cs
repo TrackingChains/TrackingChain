@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
 using TrackingChain.Common.Interfaces;
-using TrackingChain.Core;
-using TrackingChain.TrackingChainCore.Domain.Enums;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TransactionGeneratorCore.Services;
 

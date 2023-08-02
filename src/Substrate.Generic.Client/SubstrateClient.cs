@@ -11,6 +11,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TrackingChain.Common.Dto;
 using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
 using TrackingChain.Common.Interfaces;
@@ -35,6 +36,25 @@ namespace TrackingChain.Core
         public ChainType ProviderType => ChainType.Substrate;
 
         // Methods.
+        public Task<TransactionDetail> GetTrasactionReceiptAsync(
+            string txHash, 
+            string chainEndpoint)
+        {
+            return Task.FromResult(new TransactionDetail
+            {
+                ContractAddress = "",
+                BlockNumber = "",
+                BlockHash = "",
+                CumulativeGasUsed = "",
+                EffectiveGasPrice = "",
+                From = "",
+                GasUsed = "",
+                Successful = true,
+                To = "",
+                TransactionHash = ""
+            });
+        }
+
         public async Task<string> InsertTrackingAsync(
             string code,
             string dataValue,
@@ -71,7 +91,7 @@ namespace TrackingChain.Core
                 default: throw new NotSupportedException("Client not  supported");
             }
 
-            
+
             if (!await client.ConnectAsync(true, true, token))
             {
                 //logger.LogError("Failed to connect to node");

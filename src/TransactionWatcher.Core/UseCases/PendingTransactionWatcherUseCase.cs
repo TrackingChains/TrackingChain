@@ -2,8 +2,12 @@
 using Microsoft.Extensions.Logging;
 using Nethereum.RPC.Eth.DTOs;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TrackingChain.Common.Dto;
+using TrackingChain.Common.Enums;
+using TrackingChain.Common.Interfaces;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TransactionWatcherCore.Services;
 
@@ -14,7 +18,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
         // Fields.
         private readonly IAccountService accountService;
         private readonly ApplicationDbContext applicationDbContext;
-        private readonly IEthereumService ethereumService;
+        private readonly IEnumerable<IBlockchainService> blockchainServices;
         private readonly ILogger<PendingTransactionWatcherUseCase> logger;
         private readonly ITransactionWatcherService transactionWatcherService;
 
@@ -22,13 +26,13 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
         public PendingTransactionWatcherUseCase(
             IAccountService accountService,
             ApplicationDbContext applicationDbContext,
-            IEthereumService ethereumService,
+            IEnumerable<IBlockchainService> blockchainServices,
             ILogger<PendingTransactionWatcherUseCase> logger,
             ITransactionWatcherService transactionWatcherService)
         {
             this.accountService = accountService;
             this.applicationDbContext = applicationDbContext;
-            this.ethereumService = ethereumService;
+            this.blockchainServices = blockchainServices;
             this.logger = logger;
             this.transactionWatcherService = transactionWatcherService;
         }
@@ -54,12 +58,20 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                     continue;
                 }
 
-                TransactionReceipt receipt;
-#pragma warning disable CS0168 // Variable is declared but never used
+                TransactionDetail transactionDetail;
 #pragma warning disable CA1031 // Variable is declared but never used
                 try
                 {
-                    receipt = await ethereumService.GetTrasactionReceiptAsync(pending.TxHash, account.GetFirstRandomRpcAddress);
+                    if (pending.ChainType == ChainType.EVM)
+                    {
+                        var blockChainService = blockchainServices.First(x => x.ProviderType == ChainType.EVM);
+                        transactionDetail = await blockChainService.GetTrasactionReceiptAsync(pending.TxHash, account.GetFirstRandomRpcAddress);
+                    }
+                    else
+                    {
+                        var blockChainService = blockchainServices.First(x => x.ProviderType == ChainType.Substrate);
+                        transactionDetail = await blockChainService.GetTrasactionReceiptAsync(pending.TxHash, account.GetFirstRandomWsAddress);
+                    }
                 }
                 catch (Exception ex)
                 { //TODO after some time is null so going in error and need manual check
@@ -70,9 +82,8 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                     await applicationDbContext.SaveChangesAsync();
                     return false;
                 }
-#pragma warning restore CS0168 // Variable is declared but never used
 #pragma warning restore CA1031 // Variable is declared but never used
-                if (receipt?.Status is null)
+                if (transactionDetail is null)
                 {
                     //TODO after some time is null so going in error and need manual check
                     pending.Unlock();
@@ -80,23 +91,12 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                     continue;
                 }
 
-                if (receipt.Status.Value == 1)
+                if (transactionDetail.Successful)
                 {
                     pending.SetCompleted();
                     await transactionWatcherService.SetToRegistryAsync(
                         pending.TrackingId,
-                        new Common.Dto.TransactionDetail
-                        {
-                            BlockHash = receipt.BlockHash,
-                            BlockNumber = receipt.BlockNumber.HexValue,
-                            ContractAddress = receipt.ContractAddress,
-                            CumulativeGasUsed = receipt.CumulativeGasUsed.HexValue,
-                            EffectiveGasPrice = receipt.EffectiveGasPrice.HexValue,
-                            From = receipt.From,
-                            GasUsed = receipt.GasUsed.HexValue,
-                            To = receipt.To,
-                            TransactionHash = receipt.TransactionHash
-                        });
+                        transactionDetail);
                     await transactionWatcherService.SetTransactionPoolCompletedAsync(pending.TrackingId);
                     await transactionWatcherService.SetTransactionTriageCompletedAsync(pending.TrackingId);
                 }
