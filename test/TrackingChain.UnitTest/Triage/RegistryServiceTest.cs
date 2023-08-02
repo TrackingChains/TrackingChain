@@ -17,7 +17,7 @@ namespace TrackingChain.UnitTest.Triage
     public class RegistryServiceTest
 #pragma warning restore CA1001 // Not need in unit test
     {
-        private readonly RegistryService registryService;
+        private readonly IRegistryService registryService;
         private readonly ApplicationDbContext dbContext;
 
         public RegistryServiceTest()

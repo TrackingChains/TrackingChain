@@ -1,12 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
 using TrackingChain.TrackingChainCore.Domain.Entities;
-using TrackingChain.TrackingChainCore.Domain.Enums;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 
 namespace TrackingChain.UnitTest.Helpers
@@ -14,6 +12,23 @@ namespace TrackingChain.UnitTest.Helpers
     internal static class EntityCreator
     {
         private static readonly Random random = new();
+
+        public static TransactionPending ConvertToPending(TransactionPool transactionPool, string txHash)
+        {
+            return new TransactionPending(
+                txHash,
+                transactionPool.Code,
+                transactionPool.DataValue,
+                transactionPool.ReceivedDate,
+                transactionPool.TrackingId,
+                transactionPool.TriageDate,
+                transactionPool.ProfileGroupId,
+                transactionPool.SmartContractId,
+                transactionPool.SmartContractAddress,
+                transactionPool.SmartContractExtraInfo,
+                transactionPool.ChainNumberId,
+                transactionPool.ChainType);
+        }
 
         public static IEnumerable<TransactionTriage> CreateTransactionTriage(
             int size,
@@ -31,7 +46,7 @@ namespace TrackingChain.UnitTest.Helpers
                 var profileGroup = profileGroups != null ? profileGroups[(i - 1) % profileGroups.Count] : Guid.NewGuid();
                 var smartContractId = i;
                 var smartContractAddress = $"0x{i}{i}{i}{i}{i}{i}{i}{i}{i}{i}{i}";
-                var smartContractExtraInfo = $"{{testfield:{i}}}";
+                var smartContractExtraInfo = $"{{}}";
                 var smartContractChainNumber = i * 100;
                 var smartContractChainType = i % 2 == 0 ? ChainType.Substrate : ChainType.EVM;
                 transactionTriages.Add(new TransactionTriage(
@@ -164,6 +179,13 @@ namespace TrackingChain.UnitTest.Helpers
             dbContext.ProfileGroups.Add(profileGroupOne);
             var profileGroupTwo = new ProfileGroup(null, null, null, "test unit", smartContracts.ElementAt(1), 1);
             dbContext.ProfileGroups.Add(profileGroupTwo);
+            await dbContext.SaveChangesAsync();
+
+            //profile group
+            var accountOne = new Account(primaryProfileAccount, "ws://test", "https://test", "0x12345");
+            dbContext.Accounts.Add(accountOne);
+            var accountTwo = new Account(secondaryProfileAccount, "ws://test2", "https://test2", "0x54321");
+            dbContext.Accounts.Add(accountTwo);
             await dbContext.SaveChangesAsync();
 
             //account profile group

@@ -19,7 +19,7 @@ namespace TrackingChain.UnitTest.AggregatorPool
     public class AggregatorServiceTest
 #pragma warning restore CA1001 // Not need in unit test
     {
-        private readonly AggregatorService aggregatorService;
+        private readonly IAggregatorService aggregatorService;
         private readonly ApplicationDbContext dbContext;
 
         public AggregatorServiceTest()

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
 using TrackingChain.Common.Interfaces;
 using TrackingChain.Core;
@@ -62,7 +63,7 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                 string txHash;
                 if (pool.ChainType == ChainType.EVM)
                 {
-                    var blockChainService = blockchainServices.First(x => x.GetType() == typeof(NethereumService));
+                    var blockChainService = blockchainServices.First(x => x.ProviderType == ChainType.EVM);
                     txHash = await blockChainService.InsertTrackingAsync(
                         pool.Code,
                         pool.DataValue,
@@ -75,7 +76,7 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                 }
                 else
                 {
-                    var blockChainService = blockchainServices.First(x => x.GetType() == typeof(SubstrateClient));
+                    var blockChainService = blockchainServices.First(x => x.ProviderType == ChainType.Substrate);
                     txHash = await blockChainService.InsertTrackingAsync(
                         pool.Code,
                         pool.DataValue,

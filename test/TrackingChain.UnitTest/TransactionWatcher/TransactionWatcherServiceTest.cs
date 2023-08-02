@@ -3,11 +3,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrackingChain.Common.Dto;
-using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.Domain.Enums;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TrackingChainCore.Options;
@@ -21,7 +19,7 @@ namespace TrackingChain.UnitTest.TransactionWatcher
     public class TransactionWatcherServiceTest
 #pragma warning restore CA1001 // Not need in unit test
     {
-        private readonly TransactionWatcherService transactionWatcherService;
+        private readonly ITransactionWatcherService transactionWatcherService;
         private readonly ApplicationDbContext dbContext;
 
         public TransactionWatcherServiceTest()

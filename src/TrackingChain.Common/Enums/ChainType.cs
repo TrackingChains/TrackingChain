@@ -1,4 +1,4 @@
-﻿namespace TrackingChain.TrackingChainCore.Domain.Enums
+﻿namespace TrackingChain.Common.Enums
 {
     public enum ChainType
     {

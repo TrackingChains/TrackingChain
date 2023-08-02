@@ -1,13 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.Domain.Enums;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TrackingChainCore.Options;
@@ -21,7 +18,7 @@ namespace TrackingChain.UnitTest.TransactionGenerator
     public class TransactionGeneratorServiceTest
 #pragma warning restore CA1001 // Not need in unit test
     {
-        private readonly TransactionGeneratorService transactionGeneratorService;
+        private readonly ITransactionGeneratorService transactionGeneratorService;
         private readonly ApplicationDbContext dbContext;
 
         public TransactionGeneratorServiceTest()

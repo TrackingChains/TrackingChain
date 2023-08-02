@@ -3,26 +3,31 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using TrackingChain.TrackingChainCore.EntityFramework;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
+using TrackingChain.TrackingChainCore.EntityFramework;
 using TrackingChain.TrackingChainCore.Options;
 using TrackingChain.TransactionTriageCore.UseCases;
-using TrackingChain.TransactionWaitingCore.Services;
-using TrackingChain.UnitTest.Helpers;
+using TrackingChain.TransactionWatcherCore.Services;
+using TrackingChain.TransactionWatcherCore.UseCases;
 using Xunit;
 
-namespace TrackingChain.UnitTest.Triage
-{
+namespace TrackingChain.UnitTest.TransactionWatcher
+{/*
 #pragma warning disable CA1001 // Not need in unit test
-    public class TrackingEntryUseCaseTest
+    public class PendingTransactionWatcherUseCaseTest
 #pragma warning restore CA1001 // Not need in unit test
     {
-        private readonly ITrackingEntryUseCase trackingEntryUseCase;
+        private readonly IPendingTransactionWatcherUseCase pendingTransactionWatcherUseCase;
         private readonly ApplicationDbContext dbContext;
+        private readonly Mock<AccountService> mockAccountService;
+        private readonly Mock<EthereumService> ethereumService;
+        private readonly Mock<TransactionWatcherService> mockTransactionWatcherService;
 
-        public TrackingEntryUseCaseTest()
+        public PendingTransactionWatcherUseCaseTest()
         {
             //unit of work
             var databaseOptions = new DatabaseOptions()
@@ -39,15 +44,13 @@ namespace TrackingChain.UnitTest.Triage
 
             IUnitOfWork unitOfWork = new UnitOfWork(Mock.Of<ILogger<UnitOfWork>>(), dbContext);
 
-            //transaction triage service
-            var mockTransactionTriageService = new Mock<ITransactionTriageService>();
-            mockTransactionTriageService
-                .Setup(m => m.AddTransactionAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(Task.FromResult(EntityCreator.CreateTransactionTriage(1).First()));
+            //account service
+            mockAccountService = new Mock<AccountService>();
 
-            trackingEntryUseCase = new TrackingEntryUseCase(
-                Mock.Of<ILogger<TrackingEntryUseCase>>(),
-                mockTransactionTriageService.Object,
+            pendingTransactionWatcherUseCase = new PendingTransactionWatcherUseCase(
+                mockAccountService.Object,
+            mockTransactionTriageService.Object,
+            Mock.Of<ILogger<PendingTransactionWatcherUseCase>>(),
                 unitOfWork);
         }
 
@@ -69,6 +72,7 @@ namespace TrackingChain.UnitTest.Triage
             Assert.NotEqual(Guid.Empty, guidTracking);
         }
 
-    }
+    }*/
 }
+
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json;
+using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
-using TrackingChain.TrackingChainCore.Domain.Enums;
 
 namespace TrackingChain.TrackingChainCore.Domain.Entities
 {

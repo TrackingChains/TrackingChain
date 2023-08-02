@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TrackingChain.Common.Dto;
+using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
 using TrackingChain.Common.Interfaces;
 using TrackingChain.TransactionGeneratorCore.SmartContracts;
@@ -16,11 +17,15 @@ namespace TrackingChain.TransactionGeneratorCore.Services
         // Fields.
         private readonly ILogger<NethereumService> logger;
 
+
         // Constractor.
         public NethereumService(ILogger<NethereumService> logger)
         {
             this.logger = logger;
         }
+
+        // Properties.
+        public ChainType ProviderType => ChainType.EVM;
 
         // Public methods.
         public async Task<string> InsertTrackingAsync(
@@ -103,5 +108,6 @@ namespace TrackingChain.TransactionGeneratorCore.Services
 
             return web3.Eth.GetContractHandler(contractAddress);
         }
+
     }
 }

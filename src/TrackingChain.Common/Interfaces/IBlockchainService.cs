@@ -1,4 +1,5 @@
-﻿using TrackingChain.Common.ExtraInfos;
+﻿using TrackingChain.Common.Enums;
+using TrackingChain.Common.ExtraInfos;
 
 namespace TrackingChain.Common.Interfaces
 {
@@ -23,5 +24,6 @@ namespace TrackingChain.Common.Interfaces
             string contractAddress,
             ContractExtraInfo contractExtraInfo,
             CancellationToken token);*/
+        ChainType ProviderType { get; }
     }
 }

@@ -22,7 +22,7 @@ namespace TrackingChain.UnitTest.AggregatorPool
     public class EnqueuerPoolUseCaseTest
 #pragma warning restore CA1001 // Not need in unit test
     {
-        private readonly EnqueuerPoolUseCase enqueuerPoolUseCase;
+        private readonly IEnqueuerPoolUseCase enqueuerPoolUseCase;
         private readonly ApplicationDbContext dbContext;
         private readonly Mock<IAggregatorService> mockAggregatorService;
 

@@ -31,6 +31,9 @@ namespace TrackingChain.Core
             this.logger = logger;
         }
 
+        // Properties.
+        public ChainType ProviderType => ChainType.Substrate;
+
         // Methods.
         public async Task<string> InsertTrackingAsync(
             string code,

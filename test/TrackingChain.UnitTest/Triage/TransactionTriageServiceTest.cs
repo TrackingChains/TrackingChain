@@ -20,7 +20,7 @@ namespace TrackingChain.UnitTest.Triage
     public class TransactionTriageServiceTest
 #pragma warning restore CA1001 // Not need in unit test
     {
-        private readonly TransactionTriageService transactionTriageService;
+        private readonly ITransactionTriageService transactionTriageService;
         private readonly ApplicationDbContext dbContext;
         private readonly Mock<IRegistryService> mockRegistryService;
 
