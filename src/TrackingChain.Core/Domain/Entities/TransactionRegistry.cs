@@ -39,6 +39,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public string? ReceiptEffectiveGasPrice { get; private set; }
         public string? ReceiptFrom { get; private set; }
         public string? ReceiptGasUsed { get; private set; }
+        public bool? ReceiptSuccessful { get; private set; }
         public string? ReceiptTo { get; private set; }
         public DateTime RegistryDate { get; private set; }
 
@@ -62,6 +63,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             string receiptEffectiveGasPrice,
             string receiptFrom,
             string receiptGasUsed,
+            bool? receiptSuccessful,
             string receiptTo)
         {
             TransactionStep = TransactionStep.Completed;
@@ -71,6 +73,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             ReceiptEffectiveGasPrice = receiptEffectiveGasPrice;
             ReceiptFrom = receiptFrom;
             ReceiptGasUsed = receiptGasUsed;
+            ReceiptSuccessful = receiptSuccessful;
             ReceiptTo = receiptTo;
             RegistryDate = DateTime.UtcNow;
         }

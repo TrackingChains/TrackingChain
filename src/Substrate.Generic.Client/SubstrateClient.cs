@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Numerics;
 using System.Text;
@@ -50,7 +51,9 @@ namespace TrackingChain.Core
             var url = new Uri($"{chainEndpoint.Trim('/')}/api/scan/extrinsic");
 
             using HttpClient httpClient = new();
-            httpClient.DefaultRequestHeaders.Add("Content-Type", "application/json");
+            httpClient.DefaultRequestHeaders
+                .Accept
+                .Add(new MediaTypeWithQualityHeaderValue("application/json"));
             httpClient.DefaultRequestHeaders.Add("X-API-Key", apiKey);
 
             string jsonData = $"{{\"hash\": \"{txHash}\"}}";

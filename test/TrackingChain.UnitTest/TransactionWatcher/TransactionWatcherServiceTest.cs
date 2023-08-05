@@ -213,6 +213,7 @@ namespace TrackingChain.UnitTest.TransactionWatcher
             Assert.Equal(transactionDetail.EffectiveGasPrice, txRegistry.ReceiptEffectiveGasPrice);
             Assert.Equal(transactionDetail.From, txRegistry.ReceiptFrom);
             Assert.Equal(transactionDetail.GasUsed, txRegistry.ReceiptGasUsed);
+            Assert.Equal(transactionDetail.Successful, txRegistry.ReceiptSuccessful);
             Assert.Equal(transactionDetail.To, txRegistry.ReceiptTo);
         }
     }

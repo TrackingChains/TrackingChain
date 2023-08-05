@@ -99,6 +99,7 @@ namespace TrackingChain.TransactionWatcherCore.Services
                 transactionDetail.EffectiveGasPrice,
                 transactionDetail.From,
                 transactionDetail.GasUsed,
+                transactionDetail.Successful,
                 transactionDetail.To);
 
             applicationDbContext.Update(transactionRegistry);

@@ -33,9 +33,9 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             if (forceWatchingFrom.HasValue)
                 WatchingFrom = forceWatchingFrom.Value;
             else
-                WatchingFrom = extraInfo is null || extraInfo.WaitingTimeForWatcherTx == TimeSpan.Zero ?
+                WatchingFrom = extraInfo is null || extraInfo.WaitingSecondsForWatcherTx == 0 ?
                     DateTime.UtcNow.AddSeconds(90) :
-                    DateTime.UtcNow.Add(extraInfo.WaitingTimeForWatcherTx);
+                    DateTime.UtcNow.AddSeconds(extraInfo.WaitingSecondsForWatcherTx);
         }
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         protected TransactionPending() { }
@@ -84,9 +84,10 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             LockedDated = DateTime.UtcNow;
         }
 
-        public void Unlock()
+        public void Unlock(int secondsDelayWatchingFrom = 6)
         {
             Locked = false;
+            WatchingFrom = DateTime.UtcNow.AddSeconds(secondsDelayWatchingFrom);
         }
     }
 }

@@ -24,13 +24,13 @@ insert into [Accounts] (Id, ChainWriterAddress, ChainWatcherAddress, PrivateKey)
 
 -- SmartContract
 insert into [SmartContract] (Address, ChainNumberId, ChainType, Currency, ExtraInfo, Name) values
-('0xa0532A56179Eb1677D33709db82de6b5880f23c6', 81, 0, 'SBY', '{"WaitingTimeForWatcherTx":"0:0:1:30.0"}', 'Shibuya Test Net EVM')
+('0xa0532A56179Eb1677D33709db82de6b5880f23c6', 81, 0, 'SBY', '{"WaitingSecondsForWatcherTx":90}', 'Shibuya Test Net EVM')
 insert into [SmartContract] (Address, ChainNumberId, ChainType, Currency, ExtraInfo, Name) values
-('0x55D64aB19C01e135b86429D9367DfCEE3EF615a3', 1287, 0, 'DEV', '{"WaitingTimeForWatcherTx":"0:0:1:30.0"}', 'Moonbase Test Net')
+('0x55D64aB19C01e135b86429D9367DfCEE3EF615a3', 1287, 0, 'DEV', '{"WaitingSecondsForWatcherTx":90}', 'Moonbase Test Net')
 insert into [SmartContract] (Address, ChainNumberId, ChainType, Currency, ExtraInfo, Name) values
-('Yo6k7mxeRSK1nA2xrXEXwBruhcqbiMhLVbn3GPyoQUS2vwp', 101, 1, 'SBY', '{"InsertTrackSelectorValue":"0x1ba63d86","ProofSize":125952,"RefTime":4793859072,"BasicWeight":14000000000,"ByteWeight":1000000000,"SupportedClient":0,"WaitingTimeForWatcherTx":"0:0:1:30.0"}', 'Shibuya Test Net INK')
+('Yo6k7mxeRSK1nA2xrXEXwBruhcqbiMhLVbn3GPyoQUS2vwp', 101, 1, 'SBY', '{"InsertTrackSelectorValue":"0x1ba63d86","ProofSize":125952,"RefTime":4793859072,"BasicWeight":14000000000,"ByteWeight":1000000000,"SupportedClient":0,"WaitingSecondsForWatcherTx":90}', 'Shibuya Test Net INK')
 insert into [SmartContract] (Address, ChainNumberId, ChainType, Currency, ExtraInfo, Name) values
-('5CiSb6GG9mtpBSDoS52vrQjhmYaRLVKYE7V8rNducjLXma5T', 9420, 1, 'ROC', '{"InsertTrackSelectorValue":"0x1ba63d86","ProofSize":125952,"RefTime":4793859072,"BasicWeight":4999995,"ByteWeight":333333,"SupportedClient":1,"WaitingTimeForWatcherTx":"0:0:1:30.0"}', 'Contract Rococo Test Net INK')
+('5CiSb6GG9mtpBSDoS52vrQjhmYaRLVKYE7V8rNducjLXma5T', 9420, 1, 'ROC', '{"InsertTrackSelectorValue":"0x1ba63d86","ProofSize":125952,"RefTime":4793859072,"BasicWeight":4999995,"ByteWeight":333333,"SupportedClient":1,"WaitingSecondsForWatcherTx":90}', 'Contract Rococo Test Net INK')
 
 -- Profile
 insert into [ProfileGroups] (Id, AggregationCode, Authority, Category, Name, SmartContractId, Priority) values
