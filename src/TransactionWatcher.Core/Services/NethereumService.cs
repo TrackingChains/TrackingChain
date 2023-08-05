@@ -36,19 +36,18 @@ namespace TrackingChain.TransactionWatcherCore.Services
             if (ethReceipt is null)
                 return null;
 
-            return new TransactionDetail
-            {
-                ContractAddress = ethReceipt.From,
-                BlockNumber = ethReceipt.BlockNumber.HexValue,
-                BlockHash = ethReceipt.BlockHash,
-                CumulativeGasUsed = ethReceipt.CumulativeGasUsed.HexValue,
-                EffectiveGasPrice = ethReceipt.EffectiveGasPrice.HexValue,
-                From = ethReceipt.From,
-                GasUsed = ethReceipt.GasUsed.HexValue,
-                Successful = ethReceipt.Status.Value == 1,
-                To = ethReceipt.To,
-                TransactionHash = ethReceipt.TransactionHash
-            };
+            return new TransactionDetail(
+                ethReceipt.BlockHash,
+                ethReceipt.BlockNumber.HexValue,
+                ethReceipt.ContractAddress,
+                ethReceipt.CumulativeGasUsed.HexValue,
+                ethReceipt.EffectiveGasPrice.HexValue,
+                "",
+                ethReceipt.From,
+                ethReceipt.GasUsed.HexValue,
+                ethReceipt.Status.Value == 1,
+                ethReceipt.TransactionHash,
+                ethReceipt.To);
         }
 
         public Task<string> InsertTrackingAsync(string code, string dataValue, string privateKey, int chainNumberId, string chainEndpoint, string contractAddress, ContractExtraInfo contractExtraInfo, CancellationToken token)

@@ -59,38 +59,6 @@ namespace TrackingChain.TransactionGeneratorCore.Services
             return await contractHandler.SendRequestAsync(insertTracking);
         }
 
-        public async Task<TransactionDetail> InsertTrackingAndWaitForReceiptAsync(
-            string code,
-            string dataValue,
-            string privateKey,
-            int chainNumberId,
-            string chainEndpoint,
-            string contractAddress,
-            ContractExtraInfo contractExtraInfo,
-            CancellationToken token)
-        {
-            var contractHandler = GetContractHandler(
-                privateKey,
-                chainNumberId,
-                chainEndpoint,
-                contractAddress);
-
-            var insertTracking = CommonInsertTracking(
-                code,
-                dataValue);
-
-            var ethReceipt = await contractHandler.SendRequestAndWaitForReceiptAsync(insertTracking);
-
-            return new TransactionDetail
-            {
-                BlockHash = ethReceipt.BlockHash,
-                ContractAddress = contractAddress,
-                From = ethReceipt.From,
-                To = ethReceipt.To,
-                TransactionHash = ethReceipt.TransactionHash
-            };
-        }
-
         // Helpers.
         private InsertTrackFunction CommonInsertTracking(
             string code,

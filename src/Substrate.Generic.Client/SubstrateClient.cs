@@ -64,23 +64,18 @@ namespace TrackingChain.Core
                 !watcherResponseDto.data.finalized ||
                 watcherResponseDto.data.pending)
                 return null;
-
-#pragma warning disable CA1305 // Specify IFormatProvider
-            return new TransactionDetail
-            {
-                ContractAddress = "",
-                BlockNumber = watcherResponseDto.data.block_num.ToString(),
-                BlockHash = watcherResponseDto.data.block_hash,
-                CumulativeGasUsed = watcherResponseDto.data.fee_used,
-                EffectiveGasPrice = "",
-                Error = watcherResponseDto.data.error is null ? "" : JsonSerializer.Serialize(watcherResponseDto.data.error),
-                From = watcherResponseDto.data.account_id,
-                GasUsed = "",
-                Successful = watcherResponseDto.data.success,
-                To = "",
-                TransactionHash = watcherResponseDto.data.extrinsic_hash
-            };
-#pragma warning restore CA1305 // Specify IFormatProvider
+            return new TransactionDetail(
+                watcherResponseDto.data.block_hash,
+                watcherResponseDto.data.block_num.ToString(CultureInfo.InvariantCulture),
+                "",
+                watcherResponseDto.data.fee_used,
+                "",
+                watcherResponseDto.data.error is null ? "" : JsonSerializer.Serialize(watcherResponseDto.data.error),
+                watcherResponseDto.data.account_id,
+                "",
+                watcherResponseDto.data.success,
+                watcherResponseDto.data.extrinsic_hash,
+                "");
         }
 
         public async Task<string> InsertTrackingAsync(

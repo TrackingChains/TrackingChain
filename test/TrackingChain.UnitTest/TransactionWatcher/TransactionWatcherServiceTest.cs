@@ -150,16 +150,7 @@ namespace TrackingChain.UnitTest.TransactionWatcher
             var transactionRegistries = EntityCreator.CreateTransactionRegistry(transactionTriages);
             dbContext.TransactionRegistries.AddRange(transactionRegistries);
             dbContext.SaveChanges();
-            var transactionDetail = new TransactionDetail
-            {
-                BlockHash = "1",
-                BlockNumber = "12",
-                CumulativeGasUsed = "987",
-                EffectiveGasPrice = "12",
-                From = "0x9876543",
-                GasUsed = "648",
-                To = "0x123456789"
-            };
+            var transactionDetail = new TransactionDetail("1", "12", "", "987", "12", "", "0x9876543", "648", true, "", "0x123456789");
 
             //Act
             var txRegistry = await transactionWatcherService.SetToRegistryAsync(twoTriage.TrackingIdentify, transactionDetail);
