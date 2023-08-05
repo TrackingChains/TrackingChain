@@ -12,6 +12,7 @@ namespace TrackingChain.Common.ExtraInfos
         public ulong ProofSize { get; set; } = default!;
         public ulong RefTime { get; set; } = default!; 
         public SupportedClient SupportedClient { get; set; } = default!;
+        public TimeSpan WaitingTimeForWatcherTx { get; set; } = default!;
 
         // Methods.
         public static ContractExtraInfo FromJson(string json) => JsonSerializer.Deserialize<ContractExtraInfo>(json) ?? new ContractExtraInfo();

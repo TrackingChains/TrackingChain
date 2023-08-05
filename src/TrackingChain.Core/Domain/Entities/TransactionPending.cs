@@ -1,5 +1,6 @@
 ﻿using System;
 using TrackingChain.Common.Enums;
+using TrackingChain.Common.ExtraInfos;
 
 namespace TrackingChain.TrackingChainCore.Domain.Entities
 {
@@ -18,7 +19,8 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             string smartContractAddress,
             string smartContractExtraInfo,
             int chainNumberId,
-            ChainType chainType)
+            ChainType chainType,
+            DateTime? forceWatchingFrom = null)
             : base(code, data, chainNumberId, chainType, smartContractId, smartContractAddress, smartContractExtraInfo, profileGroupId)
         {
             ReceivedDate = DateTime.UtcNow;
@@ -26,6 +28,14 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             TriageDate = triageDate;
             TxHash = txHash;
             PoolDate = poolDate;
+
+            var extraInfo = ContractExtraInfo.FromJson(smartContractExtraInfo);
+            if (forceWatchingFrom.HasValue)
+                WatchingFrom = forceWatchingFrom.Value;
+            else
+                WatchingFrom = extraInfo is null || extraInfo.WaitingTimeForWatcherTx == TimeSpan.Zero ?
+                    DateTime.UtcNow.AddSeconds(90) :
+                    DateTime.UtcNow.Add(extraInfo.WaitingTimeForWatcherTx);
         }
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         protected TransactionPending() { }
@@ -42,6 +52,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public string TxHash { get; private set; }
         public byte Priority { get; private set; }
         public DateTime PoolDate { get; private set; }
+        public DateTime WatchingFrom { get; private set; }
 
         // Methods.
         public void SetCompleted()
@@ -75,7 +86,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
 
         public void Unlock()
         {
-            Locked= false;
+            Locked = false;
         }
     }
 }

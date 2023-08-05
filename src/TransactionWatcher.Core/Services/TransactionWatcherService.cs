@@ -38,7 +38,7 @@ namespace TrackingChain.TransactionWatcherCore.Services
                       atg => atg.ProfileGroupId,
                       (tp, atg) => tp)
                 .Where(p => p.Locked == false &&
-                            p.ReceivedDate < DateTime.UtcNow.AddSeconds(30)) //TODO set configurable values
+                            p.WatchingFrom < DateTime.UtcNow)
                 .Take(max)
                 .OrderBy(tp => Guid.NewGuid())
                 .ToListAsync();

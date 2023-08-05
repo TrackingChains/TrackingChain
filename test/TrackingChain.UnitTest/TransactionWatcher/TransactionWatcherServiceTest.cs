@@ -94,7 +94,7 @@ namespace TrackingChain.UnitTest.TransactionWatcher
                 includePools: true);
 
             //pool
-            var txPendings = EntityCreator.CreateTransactionPending(dbContext.TransactionTriages);
+            var txPendings = EntityCreator.CreateTransactionPending(dbContext.TransactionTriages, forceWatchingFrom: DateTime.UtcNow.AddSeconds(-10));
             txPendings.First(tp => tp.Code == "Code6").SetLoked(secondaryProfileAccount);
             txPendings.First(tp => tp.Code == "Code8").SetLoked(secondaryProfileAccount);
 
@@ -135,6 +135,54 @@ namespace TrackingChain.UnitTest.TransactionWatcher
             Assert.Contains(txPendingsCaseFour, tp => tp.Code == "Code2");
             Assert.Contains(txPendingsCaseFour, tp => tp.Code == "Code4");
             Assert.Contains(txPendingsCaseFour, tp => tp.Code == "Code10");
+
+            //case five
+            Assert.Empty(txPendingsCaseFive);
+        }
+
+        [Fact]
+        public async Task GetOnlyUnlockedTransactionShouldFilterWatchingFromAsync()
+        {
+            //Arrange
+            var currentProfileAccount = Guid.NewGuid();
+            var secondaryProfileAccount = Guid.NewGuid();
+
+            await EntityCreator.CreateFullDatabaseWithProfileAndTriageAsync(
+                10,
+                currentProfileAccount,
+                secondaryProfileAccount,
+                dbContext,
+                includePools: true);
+
+            //pool
+            var txPendings = EntityCreator.CreateTransactionPending(dbContext.TransactionTriages, forceWatchingFrom: DateTime.UtcNow.AddSeconds(100));
+            txPendings.First(tp => tp.Code == "Code6").SetLoked(secondaryProfileAccount);
+            txPendings.First(tp => tp.Code == "Code8").SetLoked(secondaryProfileAccount);
+
+            dbContext.TransactionPendings.AddRange(txPendings);
+            await dbContext.SaveChangesAsync();
+
+
+            //Act
+            var txPendingsCaseOne = await transactionWatcherService.GetTransactionToCheckAsync(2, currentProfileAccount);
+            var txPendingsCaseTwo = await transactionWatcherService.GetTransactionToCheckAsync(5, currentProfileAccount);
+            var txPendingsCaseThree = await transactionWatcherService.GetTransactionToCheckAsync(7, currentProfileAccount);
+            var txPendingsCaseFour = await transactionWatcherService.GetTransactionToCheckAsync(7, secondaryProfileAccount);
+            var txPendingsCaseFive = await transactionWatcherService.GetTransactionToCheckAsync(7, Guid.NewGuid());
+
+
+            //Assert
+            //case one
+            Assert.Empty(txPendingsCaseOne);
+
+            //case two
+            Assert.Empty(txPendingsCaseTwo);
+
+            //case three
+            Assert.Empty(txPendingsCaseThree);
+
+            //case four
+            Assert.Empty(txPendingsCaseFour);
 
             //case five
             Assert.Empty(txPendingsCaseFive);

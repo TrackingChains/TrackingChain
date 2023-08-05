@@ -98,7 +98,9 @@ namespace TrackingChain.UnitTest.Helpers
             return transactionPools;
         }
 
-        public static IEnumerable<TransactionPending> CreateTransactionPending(IEnumerable<TransactionTriage> transactionTriages)
+        public static IEnumerable<TransactionPending> CreateTransactionPending(
+            IEnumerable<TransactionTriage> transactionTriages, 
+            DateTime? forceWatchingFrom = null)
         {
             var transactionPendings = new List<TransactionPending>();
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -117,7 +119,8 @@ namespace TrackingChain.UnitTest.Helpers
                     item.SmartContractAddress,
                     item.SmartContractExtraInfo,
                     item.ChainNumberId,
-                    item.ChainType));
+                    item.ChainType,
+                    forceWatchingFrom));
 #pragma warning restore CA5394 // No need secure number for test
 
             return transactionPendings;
