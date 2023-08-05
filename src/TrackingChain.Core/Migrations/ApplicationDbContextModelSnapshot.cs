@@ -17,7 +17,7 @@ namespace TrackingChain.Core.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.8")
+                .HasAnnotation("ProductVersion", "7.0.9")
                 .HasAnnotation("Proxies:ChangeTracking", false)
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true)
@@ -31,11 +31,11 @@ namespace TrackingChain.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ChainRpcAddress")
+                    b.Property<string>("ChainWatcherAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ChainWsAddress")
+                    b.Property<string>("ChainWriterAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -200,6 +200,9 @@ namespace TrackingChain.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("WatchingFrom")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("TrackingId");
 
                     b.ToTable("TransactionPendings", (string)null);
@@ -300,25 +303,22 @@ namespace TrackingChain.Core.Migrations
                     b.Property<string>("ReceiptBlockHash")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ReceiptBlockNumberHex")
+                    b.Property<string>("ReceiptBlockNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ReceiptCumulativeGasUsedHex")
+                    b.Property<string>("ReceiptCumulativeGasUsed")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ReceiptEffectiveGasPriceHex")
+                    b.Property<string>("ReceiptEffectiveGasPrice")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReceiptFrom")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ReceiptGasUsedHex")
+                    b.Property<string>("ReceiptGasUsed")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReceiptTo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ReceiptTypeHex")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ReceivedDate")

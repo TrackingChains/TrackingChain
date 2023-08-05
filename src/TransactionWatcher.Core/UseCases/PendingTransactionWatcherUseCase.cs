@@ -1,13 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Nethereum.RPC.Eth.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrackingChain.Common.Dto;
-using TrackingChain.Common.Enums;
 using TrackingChain.Common.Interfaces;
+using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TransactionWatcherCore.Services;
 
@@ -58,50 +57,65 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                     continue;
                 }
 
-                TransactionDetail? transactionDetail;
+                var blockChainService = blockchainServices.First(x => x.ProviderType == pending.ChainType);
+                var (apiUrl, apiKey) = account.GetFirstRandomWatcherAddress;
+                
+                if (!string.IsNullOrWhiteSpace(apiUrl))
+                {
+                    TransactionDetail? transactionDetail;
 #pragma warning disable CA1031 // Variable is declared but never used
-                try
-                {
-                    var blockChainService = blockchainServices.First(x => x.ProviderType == pending.ChainType);
-                    var (apiUrl, apiKey) = account.GetFirstRandomWatcherAddress;
-                    transactionDetail = await blockChainService.GetTrasactionReceiptAsync(pending.TxHash, apiUrl, apiKey);
-                }
-                catch (Exception ex)
-                { //TODO after some time is null so going in error and need manual check
+                    try
+                    {
+                        transactionDetail = await blockChainService.GetTrasactionReceiptAsync(pending.TxHash, apiUrl, apiKey);
+                    }
+                    catch (Exception ex)
+                    { //TODO after some time is null so going in error and need manual check
 #pragma warning disable CA1848 // Use the LoggerMessage delegates
-                    logger.LogError(ex, "Errore in CheckTransactionStatusAsync");
+                        logger.LogError(ex, "Errore in CheckTransactionStatusAsync");
 #pragma warning restore CA1848 // Use the LoggerMessage delegates
-                    pending.Unlock();
-                    await applicationDbContext.SaveChangesAsync();
-                    return false;
-                }
+                        pending.Unlock();
+                        await applicationDbContext.SaveChangesAsync();
+                        return false;
+                    }
 #pragma warning restore CA1031 // Variable is declared but never used
-                if (transactionDetail is null)
-                {
-                    //TODO after some time is null so going in error and need manual check
-                    pending.Unlock();
-                    await applicationDbContext.SaveChangesAsync();
-                    continue;
-                }
+                    if (transactionDetail is null)
+                    {
+                        //TODO after some time is null so going in error and need manual check
+                        pending.Unlock();
+                        await applicationDbContext.SaveChangesAsync();
+                        break;
+                    }
 
-                if (transactionDetail.Successful)
-                {
-                    pending.SetCompleted();
-                    await transactionWatcherService.SetToRegistryAsync(
-                        pending.TrackingId,
-                        transactionDetail);
-                    await transactionWatcherService.SetTransactionPoolCompletedAsync(pending.TrackingId);
-                    await transactionWatcherService.SetTransactionTriageCompletedAsync(pending.TrackingId);
+                    if (transactionDetail.Successful.HasValue &&
+                        transactionDetail.Successful.Value)
+                        await TransactionCompletedAsync(pending, transactionDetail);
+                    else
+                    {
+                        //TODO manage error (Milestone 2)
+                    }
                 }
                 else
                 {
-                    //TODO manage error (Milestone 2)
+                    await TransactionCompletedAsync(pending, new TransactionDetail(true));
                 }
-
+                
                 await applicationDbContext.SaveChangesAsync();
             }
 
             return pendings.Any();
+        }
+
+        // Helpers.
+        private async Task TransactionCompletedAsync(
+            TransactionPending pending, 
+            TransactionDetail transactionDetail)
+        {
+            pending.SetCompleted();
+            await transactionWatcherService.SetToRegistryAsync(
+                pending.TrackingId,
+                transactionDetail);
+            await transactionWatcherService.SetTransactionPoolCompletedAsync(pending.TrackingId);
+            await transactionWatcherService.SetTransactionTriageCompletedAsync(pending.TrackingId);
         }
     }
 }

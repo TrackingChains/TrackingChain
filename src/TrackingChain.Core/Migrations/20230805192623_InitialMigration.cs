@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TrackingChain.Core.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,8 +17,8 @@ namespace TrackingChain.Core.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ChainWsAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ChainRpcAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ChainWriterAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ChainWatcherAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PrivateKey = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -59,6 +59,7 @@ namespace TrackingChain.Core.Migrations
                     TxHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Priority = table.Column<byte>(type: "tinyint", nullable: false),
                     PoolDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    WatchingFrom = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReceivedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -110,13 +111,12 @@ namespace TrackingChain.Core.Migrations
                     PendingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PoolDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ReceiptBlockHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReceiptBlockNumberHex = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReceiptCumulativeGasUsedHex = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReceiptEffectiveGasPriceHex = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReceiptBlockNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReceiptCumulativeGasUsed = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReceiptEffectiveGasPrice = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReceiptFrom = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReceiptGasUsedHex = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReceiptGasUsed = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReceiptTo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReceiptTypeHex = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RegistryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
