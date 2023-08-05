@@ -58,33 +58,16 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                     continue;
                 }
 
-                string txHash;
-                if (pool.ChainType == ChainType.EVM)
-                {
-                    var blockChainService = blockchainServices.First(x => x.ProviderType == ChainType.EVM);
-                    txHash = await blockChainService.InsertTrackingAsync(
-                        pool.Code,
-                        pool.DataValue,
-                        account.PrivateKey,
-                        pool.ChainNumberId,
-                        account.GetFirstRandomRpcAddress,
-                        pool.SmartContractAddress,
-                        ContractExtraInfo.FromJson(pool.SmartContractExtraInfo),
-                        CancellationToken.None);
-                }
-                else
-                {
-                    var blockChainService = blockchainServices.First(x => x.ProviderType == ChainType.Substrate);
-                    txHash = await blockChainService.InsertTrackingAsync(
-                        pool.Code,
-                        pool.DataValue,
-                        account.PrivateKey,
-                        pool.ChainNumberId,
-                        account.GetFirstRandomWsAddress,
-                        pool.SmartContractAddress,
-                        ContractExtraInfo.FromJson(pool.SmartContractExtraInfo),
-                        CancellationToken.None);
-                }
+                var blockChainService = blockchainServices.First(x => x.ProviderType == pool.ChainType);
+                var txHash = await blockChainService.InsertTrackingAsync(
+                    pool.Code,
+                    pool.DataValue,
+                    account.PrivateKey,
+                    pool.ChainNumberId,
+                    account.ChainWriterAddress,
+                    pool.SmartContractAddress,
+                    ContractExtraInfo.FromJson(pool.SmartContractExtraInfo),
+                    CancellationToken.None);
 
                 var txPending = transactionGeneratorService.AddTransactionPendingFromPool(pool, txHash);
                 await transactionGeneratorService.SetToPendingAsync(txPending.TrackingId);

@@ -58,20 +58,13 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                     continue;
                 }
 
-                TransactionDetail transactionDetail;
+                TransactionDetail? transactionDetail;
 #pragma warning disable CA1031 // Variable is declared but never used
                 try
                 {
-                    if (pending.ChainType == ChainType.EVM)
-                    {
-                        var blockChainService = blockchainServices.First(x => x.ProviderType == ChainType.EVM);
-                        transactionDetail = await blockChainService.GetTrasactionReceiptAsync(pending.TxHash, account.GetFirstRandomRpcAddress);
-                    }
-                    else
-                    {
-                        var blockChainService = blockchainServices.First(x => x.ProviderType == ChainType.Substrate);
-                        transactionDetail = await blockChainService.GetTrasactionReceiptAsync(pending.TxHash, account.GetFirstRandomWsAddress);
-                    }
+                    var blockChainService = blockchainServices.First(x => x.ProviderType == pending.ChainType);
+                    var (apiUrl, apiKey) = account.GetFirstRandomWatcherAddress;
+                    transactionDetail = await blockChainService.GetTrasactionReceiptAsync(pending.TxHash, apiUrl, apiKey);
                 }
                 catch (Exception ex)
                 { //TODO after some time is null so going in error and need manual check
@@ -102,7 +95,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                 }
                 else
                 {
-                    //TODO manage error
+                    //TODO manage error (Milestone 2)
                 }
 
                 await applicationDbContext.SaveChangesAsync();

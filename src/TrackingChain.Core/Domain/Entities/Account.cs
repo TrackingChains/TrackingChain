@@ -9,8 +9,8 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         // Constructors.
         public Account(
             Guid profile,
-            string chainWsAddress,
-            string chainRpcAddress,
+            string chainWriterAddress,
+            string chainWatcherAddress,
             string privateKey)
         {
             ArgumentNullException.ThrowIfNullOrEmpty(privateKey);
@@ -18,8 +18,8 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             if (profile == Guid.Empty)
                 throw new ArgumentException($"{nameof(profile)} is empty");
 
-            this.ChainWsAddress = chainWsAddress;
-            this.ChainRpcAddress = chainRpcAddress;
+            this.ChainWriterAddress = chainWriterAddress;
+            this.ChainWatcherAddress = chainWatcherAddress;
             this.PrivateKey = privateKey;
         }
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -28,34 +28,19 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
 
         // Properties.
         public Guid Id { get; private set; }
-        public string ChainWsAddress { get; protected set; }
-        public string ChainRpcAddress { get; protected set; }
+        public string ChainWriterAddress { get; protected set; }
+        public string ChainWatcherAddress { get; protected set; }
         public string PrivateKey { get; private set; }
 #pragma warning disable CA1002 // Do not expose generic lists
         public virtual List<ProfileGroup> ProfileGroups { get; } = new();
 #pragma warning restore CA1002 // Do not expose generic lists
 
-        public string GetFirstRandomWsAddress
+        public string GetFirstRandomWriterAddress
         {
             get
             {
                 
-                var address = ChainWsAddress.Split(";");
-                if (address.Length == 1)
-                    return address.First();
-
-                var rnd = new Random();
-#pragma warning disable CA5394 // No need secure number
-                return address[rnd.Next(address.Length)];
-#pragma warning restore CA5394 // No need secure number
-            }
-        }
-        public string GetFirstRandomRpcAddress
-        {
-            get
-            {
-
-                var address = ChainRpcAddress.Split(";");
+                var address = ChainWriterAddress.Split(";");
                 if (address.Length == 1)
                     return address.First();
 
@@ -66,19 +51,46 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             }
         }
 
-        public IEnumerable<string> GetWsAddress
+        public (string apiUrl, string apiKey) GetFirstRandomWatcherAddress
         {
             get
             {
-                return ChainWsAddress.Split(";");
+                var address = ChainWatcherAddress.Split(";");
+
+                var rnd = new Random();
+#pragma warning disable CA5394 // No need secure number
+                var url = address[rnd.Next(address.Length)];
+#pragma warning restore CA5394 // No need secure number
+
+                var splittedUrl = url.Split('|');
+                return (splittedUrl[0], splittedUrl.Length == 1 ? "" : splittedUrl[1]);
             }
         }
 
-        public IEnumerable<string> GetRpcAddress
+        public IEnumerable<string> GetWriterAddress
         {
             get
             {
-                return ChainRpcAddress.Split(";");
+                return ChainWriterAddress.Split(";");
+            }
+        }
+
+        public IDictionary<string, string> GetWatcherAddress
+        {
+            get
+            {
+                Dictionary<string, string> urlToKey = new();
+                var urls = ChainWatcherAddress.Split(";");
+                foreach (var url in urls)
+                {
+                    int pipeIndex = url.IndexOf('|', StringComparison.InvariantCultureIgnoreCase);
+                    if (pipeIndex >= 0)
+                        urlToKey.Add(url.Substring(0, pipeIndex), url.Substring(pipeIndex + 1, url.Length - pipeIndex - 1));
+                    else
+                        urlToKey.Add(url, "");
+                }
+
+                return urlToKey;
             }
         }
     }

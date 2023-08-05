@@ -28,23 +28,12 @@ namespace TrackingChain.TransactionGeneratorCore.Services
         public ChainType ProviderType => ChainType.EVM;
 
         // Public methods.
-        public Task<TransactionDetail> GetTrasactionReceiptAsync(
-            string txHash, 
-            string chainEndpoint)
+        public Task<TransactionDetail?> GetTrasactionReceiptAsync(
+            string txHash,
+            string chainEndpoint,
+            string? apiKey)
         {
-            return Task.FromResult(new TransactionDetail
-            {
-                ContractAddress = "",
-                BlockNumber = "",
-                BlockHash = "",
-                CumulativeGasUsed = "",
-                EffectiveGasPrice = "",
-                From = "",
-                GasUsed = "",
-                Successful = true,
-                To = "",
-                TransactionHash = ""
-            });
+            throw new System.NotImplementedException();
         }
 
         public async Task<string> InsertTrackingAsync(
@@ -118,11 +107,11 @@ namespace TrackingChain.TransactionGeneratorCore.Services
         private ContractHandler GetContractHandler(
             string privateKey,
             int chainNumberId,
-            string chainRpc,
+            string chainEndpoint,
             string contractAddress)
         {
             var account = new Nethereum.Web3.Accounts.Account(privateKey, chainNumberId);
-            var web3 = new Web3(account, chainRpc);
+            var web3 = new Web3(account, chainEndpoint);
 
             return web3.Eth.GetContractHandler(contractAddress);
         }

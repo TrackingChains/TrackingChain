@@ -7,6 +7,7 @@
         public string ContractAddress { get; set; }
         public string CumulativeGasUsed { get; set; }
         public string EffectiveGasPrice { get; set; }
+        public string Error { get; set; }
         public string From { get; set; }
         public string GasUsed { get; set; }
         public bool Successful { get; set; }

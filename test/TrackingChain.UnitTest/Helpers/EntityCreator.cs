@@ -197,9 +197,9 @@ namespace TrackingChain.UnitTest.Helpers
             await dbContext.SaveChangesAsync();
 
             //profile group
-            var accountOne = new Account(primaryProfileAccount, "ws://test", "https://test", "0x12345");
+            var accountOne = new Account(primaryProfileAccount, "ws://test", "https://watchertest", "0x12345");
             dbContext.Accounts.Add(accountOne);
-            var accountTwo = new Account(secondaryProfileAccount, "ws://test2", "https://test2", "0x54321");
+            var accountTwo = new Account(secondaryProfileAccount, "ws://test2", "https://watchertest2", "0x54321");
             dbContext.Accounts.Add(accountTwo);
             await dbContext.SaveChangesAsync();
 

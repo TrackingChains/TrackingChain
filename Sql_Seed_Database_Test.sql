@@ -4,23 +4,23 @@
 --https://shibuya.subscan.io/account/aKpb5m5WBvTA164EdZhkYHU1SHBixY4QPnxbekMDUSfUYGd
 
 -- Astar Test EVM
-insert into [Accounts] (Id, ChainWsAddress, ChainRpcAddress, PrivateKey) values
-('4F8E591B-6A9C-486E-AB2B-2B42ABBF5B23','wss://shibuya.blastapi.io/c8707e18-84fe-4b15-9665-a2897c0687df', 'https://shibuya.blastapi.io/c8707e18-84fe-4b15-9665-a2897c0687df', '...')
-insert into [Accounts] (Id, ChainWsAddress, ChainRpcAddress, PrivateKey) values
-('5F8E591B-6A9C-486E-AB2B-2B42ABBF5B23', 'wss://shibuya.blastapi.io/7a2921d5-7c0c-411d-b687-4ba57cfbff25', 'https://shibuya.blastapi.io/7a2921d5-7c0c-411d-b687-4ba57cfbff25', '...')
-insert into [Accounts] (Id, ChainWsAddress, ChainRpcAddress, PrivateKey) values
-('6F8E591B-6A9C-486E-AB2B-2B42ABBF5B23','wss://shibuya.blastapi.io/c8707e18-84fe-4b15-9665-a2897c0687df', 'https://shibuya.blastapi.io/c8707e18-84fe-4b15-9665-a2897c0687df', '...')
+insert into [Accounts] (Id, ChainWriterAddress, ChainWatcherAddress, PrivateKey) values
+('4F8E591B-6A9C-486E-AB2B-2B42ABBF5B23','https://shibuya.blastapi.io/c8707e18-84fe-4b15-9665-a2897c0687df', 'https://shibuya.blastapi.io/c8707e18-84fe-4b15-9665-a2897c0687df', '.........')
+insert into [Accounts] (Id, ChainWriterAddress, ChainWatcherAddress, PrivateKey) values
+('5F8E591B-6A9C-486E-AB2B-2B42ABBF5B23', 'https://shibuya.blastapi.io/7a2921d5-7c0c-411d-b687-4ba57cfbff25', 'https://shibuya.blastapi.io/7a2921d5-7c0c-411d-b687-4ba57cfbff25', '.........')
+insert into [Accounts] (Id, ChainWriterAddress, ChainWatcherAddress, PrivateKey) values
+('6F8E591B-6A9C-486E-AB2B-2B42ABBF5B23','https://shibuya.blastapi.io/c8707e18-84fe-4b15-9665-a2897c0687df', 'https://shibuya.blastapi.io/c8707e18-84fe-4b15-9665-a2897c0687df', '.........')
 -- Moonbeam Test EVM
-insert into [Accounts] (Id, ChainWsAddress, ChainRpcAddress, PrivateKey) values
-('8F8E591B-6A9C-486E-AB2B-2B42ABBF5B23','wss://moonbase-alpha.blastapi.io/11cd5d86-565d-4b84-9cac-84cd08511215', 'https://moonbase-alpha.blastapi.io/11cd5d86-565d-4b84-9cac-84cd08511215', '...')
-insert into [Accounts] (Id, ChainWsAddress, ChainRpcAddress, PrivateKey) values
-('9F8E591B-6A9C-486E-AB2B-2B42ABBF5B23','wss://moonbase-alpha.blastapi.io/4e06bea6-56f2-40e0-a400-2e95f07a87e9', 'https://moonbase-alpha.blastapi.io/4e06bea6-56f2-40e0-a400-2e95f07a87e9', '...')
+insert into [Accounts] (Id, ChainWriterAddress, ChainWatcherAddress, PrivateKey) values
+('8F8E591B-6A9C-486E-AB2B-2B42ABBF5B23','https://moonbase-alpha.blastapi.io/11cd5d86-565d-4b84-9cac-84cd08511215', 'https://moonbase-alpha.blastapi.io/11cd5d86-565d-4b84-9cac-84cd08511215', '.........')
+insert into [Accounts] (Id, ChainWriterAddress, ChainWatcherAddress, PrivateKey) values
+('9F8E591B-6A9C-486E-AB2B-2B42ABBF5B23','https://moonbase-alpha.blastapi.io/4e06bea6-56f2-40e0-a400-2e95f07a87e9', 'https://moonbase-alpha.blastapi.io/4e06bea6-56f2-40e0-a400-2e95f07a87e9', '.........')
 -- Astar Test Ink
-insert into [Accounts] (Id, ChainWsAddress, ChainRpcAddress, PrivateKey) values
-('1F8E591B-6A9C-486E-AB2B-2B42ABBF5B23','wss://shibuya.blastapi.io/c8707e18-84fe-4b15-9665-a2897c0687df', 'https://shibuya.blastapi.io/c8707e18-84fe-4b15-9665-a2897c0687df', '...')
+insert into [Accounts] (Id, ChainWriterAddress, ChainWatcherAddress, PrivateKey) values
+('1F8E591B-6A9C-486E-AB2B-2B42ABBF5B23','wss://shibuya.blastapi.io/c8707e18-84fe-4b15-9665-a2897c0687df', 'https://shibuya.api.subscan.io|c5b981ec4efa4ad69a39578e81f1d583', '.........')
 -- Contract Rococo Test Ink
-insert into [Accounts] (Id, ChainWsAddress, ChainRpcAddress, PrivateKey) values
-('2F8E591B-6A9C-486E-AB2B-2B42ABBF5B23','wss://rococo-contracts-rpc.polkadot.io', 'https://rococo-contracts-rpc.polkadot.io', '...')
+insert into [Accounts] (Id, ChainWriterAddress, ChainWatcherAddress, PrivateKey) values
+('2F8E591B-6A9C-486E-AB2B-2B42ABBF5B23','wss://rococo-contracts-rpc.polkadot.io', '', '.........')
 
 -- SmartContract
 insert into [SmartContract] (Address, ChainNumberId, ChainType, Currency, ExtraInfo, Name) values

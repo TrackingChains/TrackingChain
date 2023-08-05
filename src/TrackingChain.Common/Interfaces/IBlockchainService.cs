@@ -16,9 +16,10 @@ namespace TrackingChain.Common.Interfaces
             ContractExtraInfo contractExtraInfo,
             CancellationToken token);
 
-        Task<TransactionDetail> GetTrasactionReceiptAsync(
+        Task<TransactionDetail?> GetTrasactionReceiptAsync(
             string txHash,
-            string chainEndpoint);
+            string chainEndpoint,
+            string? apiKey);
 
         ChainType ProviderType { get; }
     }

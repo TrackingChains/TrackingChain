@@ -7,8 +7,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Numerics;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using TrackingChain.Common.Dto;
@@ -36,23 +39,48 @@ namespace TrackingChain.Core
         public ChainType ProviderType => ChainType.Substrate;
 
         // Methods.
-        public Task<TransactionDetail> GetTrasactionReceiptAsync(
-            string txHash, 
-            string chainEndpoint)
+        public async Task<TransactionDetail?> GetTrasactionReceiptAsync(
+            string txHash,
+            string chainEndpoint,
+            string? apiKey)
         {
-            return Task.FromResult(new TransactionDetail
+            ArgumentNullException.ThrowIfNull(txHash);
+            ArgumentNullException.ThrowIfNull(chainEndpoint);
+
+            var url = new Uri($"{chainEndpoint.Trim('/')}/api/scan/extrinsic");
+
+            using HttpClient httpClient = new();
+            httpClient.DefaultRequestHeaders.Add("Content-Type", "application/json");
+            httpClient.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+
+            string jsonData = $"{{\"hash\": \"{txHash}\"}}";
+            using var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+
+            var response = await httpClient.PostAsync(url, content);
+            response.EnsureSuccessStatusCode();
+            var watcherResponseDto = await response.Content.ReadFromJsonAsync<WatcherResponseDto>();
+
+            if (watcherResponseDto?.data is null ||
+                !watcherResponseDto.data.finalized ||
+                watcherResponseDto.data.pending)
+                return null;
+
+#pragma warning disable CA1305 // Specify IFormatProvider
+            return new TransactionDetail
             {
                 ContractAddress = "",
-                BlockNumber = "",
-                BlockHash = "",
-                CumulativeGasUsed = "",
+                BlockNumber = watcherResponseDto.data.block_num.ToString(),
+                BlockHash = watcherResponseDto.data.block_hash,
+                CumulativeGasUsed = watcherResponseDto.data.fee_used,
                 EffectiveGasPrice = "",
-                From = "",
+                Error = watcherResponseDto.data.error is null ? "" : JsonSerializer.Serialize(watcherResponseDto.data.error),
+                From = watcherResponseDto.data.account_id,
                 GasUsed = "",
-                Successful = true,
+                Successful = watcherResponseDto.data.success,
                 To = "",
-                TransactionHash = ""
-            });
+                TransactionHash = watcherResponseDto.data.extrinsic_hash
+            };
+#pragma warning restore CA1305 // Specify IFormatProvider
         }
 
         public async Task<string> InsertTrackingAsync(
@@ -97,11 +125,8 @@ namespace TrackingChain.Core
                 //logger.LogError("Failed to connect to node");
                 return "";
             }
-
             //logger.LogInformation("Connected to {url}: {flag}", chainWs, client.IsConnected);
 
-
-            //var data =   //"0x1ba63d86363617270650000000000000000000000000000000000000000000000000000014616161616100"
             var insertTrackDto = CreateInsertTrackParams(
                 code,
                 dataValue,
