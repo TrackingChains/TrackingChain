@@ -12,7 +12,7 @@ using TrackingChain.TrackingChainCore.EntityFramework.Context;
 namespace TrackingChain.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230805192623_InitialMigration")]
+    [Migration("20230805232008_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -320,6 +320,9 @@ namespace TrackingChain.Core.Migrations
 
                     b.Property<string>("ReceiptGasUsed")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("ReceiptSuccessful")
+                        .HasColumnType("bit");
 
                     b.Property<string>("ReceiptTo")
                         .HasColumnType("nvarchar(max)");

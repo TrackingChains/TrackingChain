@@ -116,6 +116,7 @@ namespace TrackingChain.Core.Migrations
                     ReceiptEffectiveGasPrice = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReceiptFrom = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReceiptGasUsed = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReceiptSuccessful = table.Column<bool>(type: "bit", nullable: true),
                     ReceiptTo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RegistryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),

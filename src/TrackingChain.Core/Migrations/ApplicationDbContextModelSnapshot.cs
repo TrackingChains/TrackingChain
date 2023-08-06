@@ -318,6 +318,9 @@ namespace TrackingChain.Core.Migrations
                     b.Property<string>("ReceiptGasUsed")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool?>("ReceiptSuccessful")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ReceiptTo")
                         .HasColumnType("nvarchar(max)");
 
