@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
+using TrackingChain.TrackingChainCore.Extensions;
 
 namespace TrackingChain.AggregatorPoolCore.Services
 {
@@ -90,6 +91,11 @@ namespace TrackingChain.AggregatorPoolCore.Services
 
             applicationDbContext.UpdateRange(transactionRegistries);
 
+            transactionRegistries.ForEach(tp => logger.TrackingEntry(
+                tp.Code,
+                tp.DataValue,
+                tp.SmartContractAddress,
+                tp.ProfileGroupId));
             return transactionRegistries;
         }
     }

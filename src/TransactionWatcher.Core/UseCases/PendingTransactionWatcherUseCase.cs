@@ -8,6 +8,7 @@ using TrackingChain.Common.Dto;
 using TrackingChain.Common.Interfaces;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
+using TrackingChain.TrackingChainCore.Extensions;
 using TrackingChain.TransactionWatcherCore.Services;
 
 namespace TrackingChain.TransactionWatcherCore.UseCases
@@ -98,7 +99,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                 {
                     await TransactionCompletedAsync(pending, new TransactionDetail(true));
                 }
-                
+
                 await applicationDbContext.SaveChangesAsync();
             }
 
@@ -116,6 +117,8 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                 transactionDetail);
             await transactionWatcherService.SetTransactionPoolCompletedAsync(pending.TrackingId);
             await transactionWatcherService.SetTransactionTriageCompletedAsync(pending.TrackingId);
+
+            logger.TransactionCompleted(pending.TrackingId, transactionDetail.Successful);
         }
     }
 }

@@ -44,7 +44,6 @@ namespace TrackingChain.TriageAPI.Controllers
                 insertTransactionPoolBinding.Code,
                 insertTransactionPoolBinding.Data,
                 insertTransactionPoolBinding.Category);
-
             return Ok(trackId);
         }
     }

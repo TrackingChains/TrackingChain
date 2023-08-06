@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Serilog.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
 using TrackingChain.Common.Interfaces;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
+using TrackingChain.TrackingChainCore.Extensions;
 using TrackingChain.TransactionGeneratorCore.Services;
 
 namespace TrackingChain.TransactionGeneratorCore.UseCases
@@ -71,8 +73,9 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
 
                 var txPending = transactionGeneratorService.AddTransactionPendingFromPool(pool, txHash);
                 await transactionGeneratorService.SetToPendingAsync(txPending.TrackingId);
-
                 await applicationDbContext.SaveChangesAsync();
+
+                logger.TransactionOnChain(txPending.TrackingId, txPending.TxHash, txPending.SmartContractAddress);
             }
 
             return pools.Any();

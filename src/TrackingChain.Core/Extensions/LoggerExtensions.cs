@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
+using System.Net.Quic;
 
 namespace TrackingChain.TrackingChainCore.Extensions
 {
     /*
      * Always group similar log delegates by type, always use incremental event ids.
-     * Last event id is: 12
+     * Last event id is: 14
      */
     public static class LoggerExtensions
     {
@@ -78,6 +79,26 @@ namespace TrackingChain.TrackingChainCore.Extensions
                 LogLevel.Information,
                 new EventId(12, nameof(EndPendingTransactionCheckerWorker)),
                 "Pending transaction checker END.");
+        private static readonly Action<ILogger, Guid, bool?, Exception> _transactionCompleted =
+            LoggerMessage.Define<Guid, bool?>(
+                LogLevel.Information,
+                new EventId(16, nameof(TransactionCompleted)),
+                "Transaction Completed for TrackingGuid:{TrackingGuid}\tSuccessful:{Successful}");
+        private static readonly Action<ILogger, string, string, string, Guid, Exception> _trackingEntry =
+            LoggerMessage.Define<string, string, string, Guid>(
+                LogLevel.Information,
+                new EventId(13, nameof(TrackingEntry)),
+                "Tracking Entry for Code:{Code}\tData:{DataValue}\tCategory:{Category}\tProfileGroup:{ProfileGroup}");
+        private static readonly Action<ILogger, Guid, string, string, Exception> _transactionOnChain =
+            LoggerMessage.Define<Guid, string, string>(
+                LogLevel.Information,
+                new EventId(15, nameof(TransactionOnChain)),
+                "Transaction OnChain for TrackingGuid:{TrackingGuid}\tTxHash:{TxHash}\tSmartContracAddress:{SmartContracAddress}");
+        private static readonly Action<ILogger, Guid, string, string, Exception> _transactionInPool =
+            LoggerMessage.Define<Guid, string, string>(
+                LogLevel.Information,
+                new EventId(14, nameof(TransactionInPool)),
+                "Transaction InPool for TrackingGuid:{TrackingGuid}\tTxHash:{TxHash}\tSmartContracAddress:{SmartContracAddress}");
         //*** WARNING LOGS ***
         //*** ERROR LOGS ***
 
@@ -108,6 +129,13 @@ namespace TrackingChain.TrackingChainCore.Extensions
             _startPoolEnqueuerWorker(logger, null!);
         public static void StartPendingTransactionCheckerWorker(this ILogger logger) =>
             _startPendingTransactionCheckerWorker(logger, null!);
-        
+        public static void TransactionCompleted(this ILogger logger, Guid trackingGuid, bool? successful) =>
+            _transactionCompleted(logger, trackingGuid, successful, null!);
+        public static void TrackingEntry(this ILogger logger, string code, string dataValue, string category, Guid profileGroup) =>
+            _trackingEntry(logger, code, dataValue, category, profileGroup, null!);
+        public static void TransactionInPool(this ILogger logger, Guid trackingGuid, string txHash, string smartContracAddress) =>
+            _transactionInPool(logger, trackingGuid, txHash, smartContracAddress, null!);
+        public static void TransactionOnChain(this ILogger logger, Guid trackingGuid, string txHash, string smartContracAddress) =>
+            _transactionOnChain(logger, trackingGuid, txHash, smartContracAddress, null!);
     }
 }
