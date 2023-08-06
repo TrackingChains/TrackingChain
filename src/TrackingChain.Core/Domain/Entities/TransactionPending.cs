@@ -67,7 +67,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             Completed = true;
         }
 
-        public void SetLoked(Guid accountId)
+        public void SetLocked(Guid accountId)
         {
             if (accountId == Guid.Empty)
                 throw new ArgumentNullException(nameof(accountId));
@@ -87,6 +87,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public void Unlock(int secondsDelayWatchingFrom = 6)
         {
             Locked = false;
+            LockedBy = null;
             WatchingFrom = DateTime.UtcNow.AddSeconds(secondsDelayWatchingFrom);
         }
     }

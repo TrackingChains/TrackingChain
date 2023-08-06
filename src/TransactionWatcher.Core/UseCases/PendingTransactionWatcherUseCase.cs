@@ -49,7 +49,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
             {
                 try
                 {
-                    pending.SetLoked(account.Id);
+                    pending.SetLocked(account.Id);
                     await applicationDbContext.SaveChangesAsync();
                 }
                 catch (DbUpdateException)
