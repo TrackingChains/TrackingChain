@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace TrackingChain.TransactionGeneratorCore.SmartContracts
+namespace TrackingChain.TransactionGeneratorCore.SmartContracts.EVM
 {
     public static class Base32Encoding
     {
