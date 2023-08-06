@@ -23,11 +23,10 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             TrackingId = trackingIdentify;
             TriageDate = triageDate;
         }
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         protected TransactionRegistry() { }
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         // Properties.
+        public string? LastTransactionHash { get; private set; }
         public Guid TrackingId { get; private set; }
         public TransactionStep TransactionStep { get; private set; }
         public DateTime TriageDate { get; private set; }
@@ -40,6 +39,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public string? ReceiptFrom { get; private set; }
         public string? ReceiptGasUsed { get; private set; }
         public bool? ReceiptSuccessful { get; private set; }
+        public string? ReceiptTransactionHash { get; private set; }
         public string? ReceiptTo { get; private set; }
         public DateTime RegistryDate { get; private set; }
 

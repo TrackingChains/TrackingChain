@@ -73,7 +73,7 @@ namespace TrackingChain.TransactionGeneratorCore.Services
                 .FirstOrDefaultAsync(tr => tr.TrackingId == trackingId);
 
             if (transactionRegistry is null)
-                throw new InvalidOperationException(); //TODO manage this case
+                throw new InvalidOperationException(); //TODO MileStone 2
 
             transactionRegistry.SetToPending();
 

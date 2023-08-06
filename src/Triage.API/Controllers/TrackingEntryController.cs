@@ -31,7 +31,7 @@ namespace TrackingChain.TriageAPI.Controllers
         /// </summary>
         /// <response code="200">Product info</response>
         [HttpPost("Product")]
-        [ProducesResponseType(typeof(string), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> InsertProductStatusAsync(InsertTransactionPoolBinding insertTransactionPoolBinding)
