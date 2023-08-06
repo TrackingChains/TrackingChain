@@ -19,6 +19,7 @@ namespace TrackingChain.Core.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ChainWriterAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ChainWatcherAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PrivateKey = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
