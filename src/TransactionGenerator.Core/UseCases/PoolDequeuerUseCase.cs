@@ -72,7 +72,7 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                     CancellationToken.None);
 
                 var txPending = transactionGeneratorService.AddTransactionPendingFromPool(pool, txHash);
-                await transactionGeneratorService.SetToPendingAsync(txPending.TrackingId);
+                await transactionGeneratorService.SetToPendingAsync(txPending.TrackingId, txHash);
                 await applicationDbContext.SaveChangesAsync();
 
                 logger.TransactionOnChain(txPending.TrackingId, txPending.TxHash, txPending.SmartContractAddress);

@@ -50,8 +50,9 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             PoolDate = DateTime.UtcNow;
         }
         
-        public void SetToPending()
+        public void SetToPending(string lastTransactionHash)
         {
+            LastTransactionHash = lastTransactionHash;
             TransactionStep = TransactionStep.Pending;
             PendingDate = DateTime.UtcNow;
         }
