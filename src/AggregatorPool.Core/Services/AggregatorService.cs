@@ -91,9 +91,8 @@ namespace TrackingChain.AggregatorPoolCore.Services
 
             applicationDbContext.UpdateRange(transactionRegistries);
 
-            transactionRegistries.ForEach(tp => logger.TrackingEntry(
-                tp.Code,
-                tp.DataValue,
+            transactionRegistries.ForEach(tp => logger.TransactionInPool(
+                tp.TrackingId,
                 tp.SmartContractAddress,
                 tp.ProfileGroupId));
             return transactionRegistries;

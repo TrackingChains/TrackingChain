@@ -93,21 +93,21 @@ namespace TrackingChain.TrackingChainCore.Extensions
                 LogLevel.Information,
                 new EventId(16, nameof(TransactionCompleted)),
                 "Transaction Completed for TrackingGuid:{TrackingGuid}\tSuccessful:{Successful}");
-        private static readonly Action<ILogger, string, string, string, Guid, Exception> _trackingEntry =
-            LoggerMessage.Define<string, string, string, Guid>(
+        private static readonly Action<ILogger, string, string, string, string, Guid, Exception> _trackingEntry =
+            LoggerMessage.Define<string, string, string, string, Guid>(
                 LogLevel.Information,
                 new EventId(13, nameof(TrackingEntry)),
-                "Tracking Entry for Code:{Code}\tData:{DataValue}\tCategory:{Category}\tProfileGroup:{ProfileGroup}");
+                "Tracking Entry for Code:{Code}\tData:{DataValue}\tCategory:{Category}\tSmartContract:{SmartContract}\tProfileGroup:{ProfileGroup}");
         private static readonly Action<ILogger, Guid, string, string, Exception> _transactionOnChain =
             LoggerMessage.Define<Guid, string, string>(
                 LogLevel.Information,
                 new EventId(15, nameof(TransactionOnChain)),
                 "Transaction OnChain for TrackingGuid:{TrackingGuid}\tTxHash:{TxHash}\tSmartContracAddress:{SmartContracAddress}");
-        private static readonly Action<ILogger, Guid, string, string, Exception> _transactionInPool =
-            LoggerMessage.Define<Guid, string, string>(
+        private static readonly Action<ILogger, Guid, string, Guid, Exception> _transactionInPool =
+            LoggerMessage.Define<Guid, string, Guid>(
                 LogLevel.Information,
                 new EventId(14, nameof(TransactionInPool)),
-                "Transaction InPool for TrackingGuid:{TrackingGuid}\tTxHash:{TxHash}\tSmartContracAddress:{SmartContracAddress}");
+                "Transaction InPool for TrackingGuid:{TrackingGuid}\tSmartContracAddress:{SmartContracAddress}\tProfileGroup:{ProfileGroup}");
         //*** WARNING LOGS ***
         //*** ERROR LOGS ***
         private static readonly Action<ILogger, Guid, Exception> _childCheckerTaskInError =
@@ -165,10 +165,10 @@ namespace TrackingChain.TrackingChainCore.Extensions
             _startPendingTransactionCheckerWorker(logger, null!);
         public static void TransactionCompleted(this ILogger logger, Guid trackingGuid, bool? successful) =>
             _transactionCompleted(logger, trackingGuid, successful, null!);
-        public static void TrackingEntry(this ILogger logger, string code, string dataValue, string category, Guid profileGroup) =>
-            _trackingEntry(logger, code, dataValue, category, profileGroup, null!);
-        public static void TransactionInPool(this ILogger logger, Guid trackingGuid, string txHash, string smartContracAddress) =>
-            _transactionInPool(logger, trackingGuid, txHash, smartContracAddress, null!);
+        public static void TrackingEntry(this ILogger logger, string code, string dataValue, string category, string smartContracAddress, Guid profileGroup) =>
+            _trackingEntry(logger, code, dataValue, category, smartContracAddress, profileGroup, null!);
+        public static void TransactionInPool(this ILogger logger, Guid trackingGuid, string smartContracAddress, Guid profileGroup) =>
+            _transactionInPool(logger, trackingGuid, smartContracAddress, profileGroup, null!);
         public static void TransactionOnChain(this ILogger logger, Guid trackingGuid, string txHash, string smartContracAddress) =>
             _transactionOnChain(logger, trackingGuid, txHash, smartContracAddress, null!);
     }

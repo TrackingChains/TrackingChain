@@ -39,7 +39,8 @@ namespace TrackingChain.TransactionTriageCore.UseCases
 
             logger.TrackingEntry(
                 triage.Code, 
-                triage.DataValue, 
+                triage.DataValue,
+                category,
                 triage.SmartContractAddress, 
                 triage.ProfileGroupId);
             return triage.TrackingIdentify;
