@@ -1,7 +1,7 @@
 ﻿using Nethereum.ABI.FunctionEncoding.Attributes;
 using System.Numerics;
 
-namespace TrackingChain.TransactionGeneratorCore.SmartContracts
+namespace TrackingChain.TransactionGeneratorCore.SmartContracts.EVM
 {
     public class StatusData
     {

@@ -8,7 +8,7 @@ using TrackingChain.Common.Dto;
 using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
 using TrackingChain.Common.Interfaces;
-using TrackingChain.TransactionGeneratorCore.SmartContracts;
+using TrackingChain.TransactionGeneratorCore.SmartContracts.EVM;
 
 namespace TrackingChain.TransactionGeneratorCore.Services
 {
