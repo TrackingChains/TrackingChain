@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
-using Nethereum.RPC.Eth.Blocks;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
