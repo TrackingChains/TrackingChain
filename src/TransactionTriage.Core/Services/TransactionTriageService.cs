@@ -85,7 +85,7 @@ namespace TrackingChain.TransactionWaitingCore.Services
                                                               (scp.Category == category || scp.Category == null))
                                                 .ToListAsync();
             /*
-             * Develop for futhur version
+             * Develop for futhur version  (MileStone 3)
              * 
             var groupWithAggrCodes = transactionGroups.Where(scp => !string.IsNullOrWhiteSpace(scp.AggregationCode));
             foreach(var group in groupWithAggrCodes) { 

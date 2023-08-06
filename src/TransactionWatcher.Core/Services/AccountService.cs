@@ -31,7 +31,11 @@ namespace TrackingChain.TransactionWatcherCore.Services
                 .FirstOrDefaultAsync();
 
             if (account is null)
-                throw new InvalidOperationException(""); //TODO manage error
+            {
+                var ex = new InvalidOperationException("Account not found");
+                ex.Data.Add("AccountGuid", accountId);
+                throw ex;
+            }
 
             return account;
         }

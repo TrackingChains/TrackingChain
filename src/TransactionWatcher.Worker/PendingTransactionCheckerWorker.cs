@@ -48,7 +48,7 @@ namespace TransactionWatcherWorker
         // Helpers.
         private async Task RunSingleAccountAsync(Guid taskId, CancellationToken stoppingToken)
         {
-            logger.StartChildPoolDequeuerTask(taskId);
+            logger.StartChildCheckerTask(taskId);
             while (!stoppingToken.IsCancellationRequested)
             {
                 using var scope = serviceProvider.CreateScope();
@@ -57,23 +57,19 @@ namespace TransactionWatcherWorker
                 var poolDequeuerUseCase = scope.ServiceProvider.GetRequiredService<IPendingTransactionWatcherUseCase>();
 
                 bool dequeued = false;
-#pragma warning disable CS0168 // Variable is declared but never used
                 try
                 {
                     dequeued = await poolDequeuerUseCase.CheckTransactionStatusAsync(checkerOptions.Accounts.Count, taskId);
                 }
-#pragma warning disable CA1031 // 
+#pragma warning disable CA1031 // We need fot catch all problems.
                 catch (Exception ex)
                 {
-#pragma warning disable CA1848 // Use the LoggerMessage delegates
-                    logger.LogError(ex, "Errore in DoAsyncWork");
-#pragma warning restore CA1848 // Use the LoggerMessage delegates
+                    logger.ChildCheckerTaskInError(taskId, ex);
                 }
-#pragma warning restore CS0168 // Variable is declared but never used
-#pragma warning restore CA1031 // 
+#pragma warning restore CA1031 // Do not catch general exception types
                 await Task.Delay(dequeued ? 100 : 1000, stoppingToken);
             }
-            logger.EndChildPoolDequeuerTask(taskId);
+            logger.EndChildCheckerTask(taskId);
         }
     }
 }

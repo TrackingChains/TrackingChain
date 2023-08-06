@@ -67,7 +67,7 @@ namespace TrackingChain.AggregatorPoolCore.Services
 
             if (profileIds.Any())
             {
-                // TODO non sono sicuro che serva, forse dobbiamo introdurre la possibilità di raggruppare o per Code o per Gruppo (configurabile a scelta)
+                // (MileStone 3)
                 var subqueryAccountProfiles = applicationDbContext.Accounts
                     .Where(ap => profileIds.Contains(ap.Id));
                 query = query.Join(subqueryAccountProfiles, tt => tt.ProfileGroupId, ap => ap.Id, (tt, ap) => tt);
@@ -85,7 +85,7 @@ namespace TrackingChain.AggregatorPoolCore.Services
                 .Where(tr => trackingIds.Contains(tr.TrackingId))
                 .ToListAsync();
 
-            //TODO manage this case where any missing
+            //TODO manage this case where any missing (MileStone 3)
 
             transactionRegistries.ForEach(tp => tp.SetToPool());
 
