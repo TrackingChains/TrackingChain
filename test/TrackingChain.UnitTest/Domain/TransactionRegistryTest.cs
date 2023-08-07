@@ -1,4 +1,5 @@
 ﻿using System;
+using TrackingChain.Common.Dto;
 using TrackingChain.Common.Enums;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.Domain.Enums;
@@ -160,6 +161,7 @@ namespace TrackingChain.UnitTest.Domain
             var receiptFrom = "receiptFromTest";
             var receiptGasUsed = "receiptGasUsedTest";
             var receiptSuccessful = true;
+            var receiptTransactionHash = "receiptTransactionHashTest";
             var receiptTo = "receiptToTest";
 
 
@@ -172,6 +174,7 @@ namespace TrackingChain.UnitTest.Domain
                 receiptFrom,
                 receiptGasUsed,
                 receiptSuccessful,
+                receiptTransactionHash,
                 receiptTo);
 
 
@@ -184,6 +187,7 @@ namespace TrackingChain.UnitTest.Domain
             Assert.Equal(receiptFrom, transactionRegistry.ReceiptFrom);
             Assert.Equal(receiptGasUsed, transactionRegistry.ReceiptGasUsed);
             Assert.Equal(receiptSuccessful, transactionRegistry.ReceiptSuccessful);
+            Assert.Equal(receiptTransactionHash, transactionRegistry.ReceiptTransactionHash);
             Assert.Equal(receiptTo, transactionRegistry.ReceiptTo);
         }
     }

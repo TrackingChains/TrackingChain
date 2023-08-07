@@ -65,6 +65,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             string receiptFrom,
             string receiptGasUsed,
             bool? receiptSuccessful,
+            string receiptTransactionHash,
             string receiptTo)
         {
             TransactionStep = TransactionStep.Completed;
@@ -75,6 +76,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             ReceiptFrom = receiptFrom;
             ReceiptGasUsed = receiptGasUsed;
             ReceiptSuccessful = receiptSuccessful;
+            ReceiptTransactionHash = receiptTransactionHash;
             ReceiptTo = receiptTo;
             RegistryDate = DateTime.UtcNow;
         }

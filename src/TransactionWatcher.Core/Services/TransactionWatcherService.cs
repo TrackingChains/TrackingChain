@@ -104,6 +104,7 @@ namespace TrackingChain.TransactionWatcherCore.Services
                 transactionDetail.From,
                 transactionDetail.GasUsed,
                 transactionDetail.Successful,
+                transactionDetail.TransactionHash,
                 transactionDetail.To);
 
             applicationDbContext.Update(transactionRegistry);
