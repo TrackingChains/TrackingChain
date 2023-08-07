@@ -55,6 +55,7 @@ builder.Services.AddHostedService<MigratorDBHostedService>();
 //services
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<IRegistryService, RegistryService>();
+builder.Services.AddTransient<IAnalyticUseCase, AnalyticUseCase>();
 builder.Services.AddTransient<ITrackingEntryUseCase, TrackingEntryUseCase>();
 builder.Services.AddTransient<ITransactionTriageService, TransactionTriageService>();
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();

@@ -42,8 +42,10 @@ namespace TrackingChain.TransactionTriageCore.UseCases
         public async Task<IEnumerable<TrackingModelView>> GetTrackingFailedsAsync(int size, int page)
         {
             var transactionRegistries = await dbContext.TransactionRegistries
-                .Where(tr => tr.ReceiptSuccessful.HasValue &&
+                .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
+                             tr.ReceiptSuccessful.HasValue &&
                              !tr.ReceiptSuccessful.Value)
+                .Skip(size * (page - 1))
                 .Take(size)
                 .OrderBy(tr => tr.ReceivedDate)
                 .ToListAsync();
@@ -55,6 +57,7 @@ namespace TrackingChain.TransactionTriageCore.UseCases
         {
             var transactionRegistries = await dbContext.TransactionRegistries
                 .Where(tr => tr.TransactionStep == TransactionStep.Pending)
+                .Skip(size * (page - 1))
                 .Take(size)
                 .OrderBy(tr => tr.ReceivedDate)
                 .ToListAsync();
@@ -66,6 +69,7 @@ namespace TrackingChain.TransactionTriageCore.UseCases
         {
             var transactionRegistries = await dbContext.TransactionRegistries
                 .Where(tr => tr.TransactionStep == TransactionStep.Pool)
+                .Skip(size * (page - 1))
                 .Take(size)
                 .OrderBy(tr => tr.ReceivedDate)
                 .ToListAsync();
@@ -88,8 +92,10 @@ namespace TrackingChain.TransactionTriageCore.UseCases
         public async Task<IEnumerable<TrackingModelView>> GetTrackingSuccessfullyAsync(int size, int page)
         {
             var transactionRegistries = await dbContext.TransactionRegistries
-                .Where(tr => tr.ReceiptSuccessful.HasValue &&
-                             tr.ReceiptSuccessful.Value)
+                .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
+                             (!tr.ReceiptSuccessful.HasValue ||
+                               tr.ReceiptSuccessful.Value))
+                .Skip(size * (page - 1))
                 .Take(size)
                 .OrderBy(tr => tr.ReceivedDate)
                 .ToListAsync();
@@ -101,16 +107,12 @@ namespace TrackingChain.TransactionTriageCore.UseCases
         {
             var transactionRegistries = await dbContext.TransactionRegistries
                 .Where(tr => tr.TransactionStep == TransactionStep.Triage)
+                .Skip(size * (page - 1))
                 .Take(size)
                 .OrderBy(tr => tr.ReceivedDate)
                 .ToListAsync();
 
             return transactionRegistries.Select(TrackingModelView.FromEntity);
-        }
-
-        public Task<IEnumerable<TrackingModelView>> SearchTrackingAsync(Guid profileGroup, string Code)
-        {
-            throw new NotImplementedException();
         }
     }
 }
