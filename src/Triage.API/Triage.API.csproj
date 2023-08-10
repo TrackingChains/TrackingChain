@@ -14,9 +14,12 @@
 	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
 	  <Configurations>Debug;Release</Configurations>
 	  <UserSecretsId>ed80446a-ddb9-49a8-be20-5a49f6a89539</UserSecretsId>
-	  <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-	  <DockerfileContext>..\..</DockerfileContext>
-	  <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
+
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/TrackingChains</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <RepositoryUrl>https://github.com/TrackingChains/TrackingChain</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -36,6 +39,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TransactionTriage.Core\TransactionTriage.Core.csproj" />
+    <None Include="../../README.md" Pack="true" PackagePath="\" />
+    <None Include="../../LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
 
 </Project>
