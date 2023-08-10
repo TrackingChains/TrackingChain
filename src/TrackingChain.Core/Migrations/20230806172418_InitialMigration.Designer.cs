@@ -12,7 +12,7 @@ using TrackingChain.TrackingChainCore.EntityFramework.Context;
 namespace TrackingChain.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230805232008_InitialMigration")]
+    [Migration("20230806172418_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -39,6 +39,10 @@ namespace TrackingChain.Core.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ChainWriterAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -294,6 +298,9 @@ namespace TrackingChain.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("LastTransactionHash")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("PendingDate")
                         .HasColumnType("datetime2");
 
@@ -325,6 +332,9 @@ namespace TrackingChain.Core.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ReceiptTo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReceiptTransactionHash")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ReceivedDate")

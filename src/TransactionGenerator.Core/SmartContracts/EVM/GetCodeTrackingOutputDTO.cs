@@ -1,7 +1,7 @@
 ﻿using Nethereum.ABI.FunctionEncoding.Attributes;
 using System.Collections.Generic;
 
-namespace TrackingChain.TransactionGeneratorCore.SmartContracts
+namespace TrackingChain.TransactionGeneratorCore.SmartContracts.EVM
 {
 
     [FunctionOutput]

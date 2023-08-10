@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft;
+using Microsoft.Extensions.Logging;
 using Schnorrkel.Keys;
 using Substrate.Generic.Client.Helpers;
 using Substrate.NetApi;
@@ -29,11 +30,15 @@ namespace TrackingChain.Core
     {
         // Fields.
         private readonly ILogger<SubstrateClient> logger;
+        private readonly ILoggerFactory loggerFactory;
 
         // Constractor.
-        public SubstrateClient(ILogger<SubstrateClient> logger)
+        public SubstrateClient(
+            ILogger<SubstrateClient> logger,
+            ILoggerFactory loggerFactory)
         {
             this.logger = logger;
+            this.loggerFactory = loggerFactory;
         }
 
         // Properties.
@@ -107,23 +112,22 @@ namespace TrackingChain.Core
             switch (contractExtraInfo.SupportedClient)
             {
                 case SupportedClient.ContractRococo:
-                    client = new ContractRococoClient(account, chainEndpoint);
+                    client = new ContractRococoClient(account, loggerFactory.CreateLogger<ContractRococoClient>(), chainEndpoint);
                     dest = Utils.GetPublicKeyFrom(contractAddress).ToContractRococoAccountId32();
                     break;
                 case SupportedClient.Shibuya:
-                    client = new ShibuyaClient(account, chainEndpoint);
+                    client = new ShibuyaClient(account, loggerFactory.CreateLogger<ShibuyaClient>(), chainEndpoint);
                     dest = Utils.GetPublicKeyFrom(contractAddress).ToShibuyaAccountId32();
                     break;
-                default: throw new NotSupportedException("Client not  supported");
+                default: 
+                    var ex = new NotSupportedException("Client not supported");
+                    ex.AddData("Client", contractExtraInfo.SupportedClient);
+                    throw ex;
             }
 
 
             if (!await client.ConnectAsync(true, true, token))
-            {
-                //logger.LogError("Failed to connect to node");
                 return "";
-            }
-            //logger.LogInformation("Connected to {url}: {flag}", chainWs, client.IsConnected);
 
             var insertTrackDto = CreateInsertTrackParams(
                 code,

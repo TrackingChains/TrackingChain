@@ -95,8 +95,8 @@ namespace TrackingChain.UnitTest.TransactionWatcher
 
             //pool
             var txPendings = EntityCreator.CreateTransactionPending(dbContext.TransactionTriages, forceWatchingFrom: DateTime.UtcNow.AddSeconds(-10));
-            txPendings.First(tp => tp.Code == "Code6").SetLoked(secondaryProfileAccount);
-            txPendings.First(tp => tp.Code == "Code8").SetLoked(secondaryProfileAccount);
+            txPendings.First(tp => tp.Code == "Code6").SetLocked(secondaryProfileAccount);
+            txPendings.First(tp => tp.Code == "Code8").SetLocked(secondaryProfileAccount);
 
             dbContext.TransactionPendings.AddRange(txPendings);
             await dbContext.SaveChangesAsync();
@@ -156,8 +156,8 @@ namespace TrackingChain.UnitTest.TransactionWatcher
 
             //pool
             var txPendings = EntityCreator.CreateTransactionPending(dbContext.TransactionTriages, forceWatchingFrom: DateTime.UtcNow.AddSeconds(100));
-            txPendings.First(tp => tp.Code == "Code6").SetLoked(secondaryProfileAccount);
-            txPendings.First(tp => tp.Code == "Code8").SetLoked(secondaryProfileAccount);
+            txPendings.First(tp => tp.Code == "Code6").SetLocked(secondaryProfileAccount);
+            txPendings.First(tp => tp.Code == "Code8").SetLocked(secondaryProfileAccount);
 
             dbContext.TransactionPendings.AddRange(txPendings);
             await dbContext.SaveChangesAsync();

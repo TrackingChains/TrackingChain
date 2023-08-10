@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Nethereum.RPC.Eth.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +28,7 @@ namespace TrackingChain.TransactionWatcherCore.Services
         // Methods.
 
         public async Task<IEnumerable<TransactionPending>> GetTransactionToCheckAsync(
-            int max, 
+            int max,
             Guid account)
         {
             return await applicationDbContext.TransactionPendings
@@ -56,7 +55,7 @@ namespace TrackingChain.TransactionWatcherCore.Services
                 ex.Data.Add("TrackingId", trackingId);
                 throw ex;
             }
-                
+
             transactionPool.SetCompleted();
 
             return transactionPool;
@@ -90,7 +89,11 @@ namespace TrackingChain.TransactionWatcherCore.Services
                 .FirstOrDefaultAsync(tr => tr.TrackingId == trackingId);
 
             if (transactionRegistry is null)
-                throw new InvalidOperationException(); //TODO manage this case
+            {
+                var ex = new InvalidOperationException("Account not found");
+                ex.Data.Add("TrackingId", transactionRegistry);
+                throw ex;
+            }
 
             transactionRegistry.SetToRegistry(
                 transactionDetail.BlockHash,
@@ -100,6 +103,7 @@ namespace TrackingChain.TransactionWatcherCore.Services
                 transactionDetail.From,
                 transactionDetail.GasUsed,
                 transactionDetail.Successful,
+                transactionDetail.TransactionHash,
                 transactionDetail.To);
 
             applicationDbContext.Update(transactionRegistry);

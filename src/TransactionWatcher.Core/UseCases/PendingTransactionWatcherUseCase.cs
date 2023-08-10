@@ -8,6 +8,7 @@ using TrackingChain.Common.Dto;
 using TrackingChain.Common.Interfaces;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
+using TrackingChain.TrackingChainCore.Extensions;
 using TrackingChain.TransactionWatcherCore.Services;
 
 namespace TrackingChain.TransactionWatcherCore.UseCases
@@ -48,7 +49,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
             {
                 try
                 {
-                    pending.SetLoked(account.Id);
+                    pending.SetLocked(account.Id);
                     await applicationDbContext.SaveChangesAsync();
                 }
                 catch (DbUpdateException)
@@ -63,24 +64,24 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                 if (!string.IsNullOrWhiteSpace(apiUrl))
                 {
                     TransactionDetail? transactionDetail;
-#pragma warning disable CA1031 // Variable is declared but never used
+
                     try
                     {
                         transactionDetail = await blockChainService.GetTrasactionReceiptAsync(pending.TxHash, apiUrl, apiKey);
                     }
+#pragma warning disable CA1031 // We need fot catch all problems.
                     catch (Exception ex)
-                    { //TODO after some time is null so going in error and need manual check
-#pragma warning disable CA1848 // Use the LoggerMessage delegates
-                        logger.LogError(ex, "Errore in CheckTransactionStatusAsync");
-#pragma warning restore CA1848 // Use the LoggerMessage delegates
+#pragma warning restore CA1031 // Do not catch general exception types
+                    { //TODO after some time is null so going in error and need manual check  (MileStone2)
+
+                        logger.GetTrasactionReceiptInError(pending.TrackingId, pending.TxHash, apiUrl, ex);
                         pending.Unlock();
                         await applicationDbContext.SaveChangesAsync();
                         return false;
                     }
-#pragma warning restore CA1031 // Variable is declared but never used
                     if (transactionDetail is null)
                     {
-                        //TODO after some time is null so going in error and need manual check
+                        //TODO after some time is null so going in error and need manual check (MileStone2)
                         pending.Unlock();
                         await applicationDbContext.SaveChangesAsync();
                         break;
@@ -98,7 +99,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                 {
                     await TransactionCompletedAsync(pending, new TransactionDetail(true));
                 }
-                
+
                 await applicationDbContext.SaveChangesAsync();
             }
 
@@ -116,6 +117,8 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                 transactionDetail);
             await transactionWatcherService.SetTransactionPoolCompletedAsync(pending.TrackingId);
             await transactionWatcherService.SetTransactionTriageCompletedAsync(pending.TrackingId);
+
+            logger.TransactionCompleted(pending.TrackingId, transactionDetail.Successful);
         }
     }
 }

@@ -39,6 +39,10 @@ namespace TrackingChain.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PrivateKey")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -291,6 +295,9 @@ namespace TrackingChain.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("LastTransactionHash")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("PendingDate")
                         .HasColumnType("datetime2");
 
@@ -322,6 +329,9 @@ namespace TrackingChain.Core.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ReceiptTo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReceiptTransactionHash")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ReceivedDate")

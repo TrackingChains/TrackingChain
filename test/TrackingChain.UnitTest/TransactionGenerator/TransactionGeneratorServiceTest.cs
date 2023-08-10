@@ -139,6 +139,7 @@ namespace TrackingChain.UnitTest.TransactionGenerator
             //Arrange
             var transactionTriages = EntityCreator.CreateTransactionTriage(5);
             var twoTriage = transactionTriages.First(i => i.Code == "Code2");
+            var lastTxHash = "0x1234567890";
 
             var transactionRegistries = EntityCreator.CreateTransactionRegistry(transactionTriages);
             dbContext.TransactionRegistries.AddRange(transactionRegistries);
@@ -146,12 +147,13 @@ namespace TrackingChain.UnitTest.TransactionGenerator
 
 
             //Act
-            var txRegistry = await transactionGeneratorService.SetToPendingAsync(twoTriage.TrackingIdentify);
+            var txRegistry = await transactionGeneratorService.SetToPendingAsync(twoTriage.TrackingIdentify, lastTxHash);
             await dbContext.SaveChangesAsync();
 
 
             //Assert
             Assert.Equal(TransactionStep.Pending, txRegistry.TransactionStep);
+            Assert.Equal(lastTxHash, txRegistry.LastTransactionHash);
         }
     }
 }

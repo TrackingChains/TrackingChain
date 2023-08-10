@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
+using TrackingChain.TrackingChainCore.Extensions;
 
 namespace TrackingChain.AggregatorPoolCore.Services
 {
@@ -66,7 +67,7 @@ namespace TrackingChain.AggregatorPoolCore.Services
 
             if (profileIds.Any())
             {
-                // TODO non sono sicuro che serva, forse dobbiamo introdurre la possibilità di raggruppare o per Code o per Gruppo (configurabile a scelta)
+                // (MileStone 3)
                 var subqueryAccountProfiles = applicationDbContext.Accounts
                     .Where(ap => profileIds.Contains(ap.Id));
                 query = query.Join(subqueryAccountProfiles, tt => tt.ProfileGroupId, ap => ap.Id, (tt, ap) => tt);
@@ -84,12 +85,16 @@ namespace TrackingChain.AggregatorPoolCore.Services
                 .Where(tr => trackingIds.Contains(tr.TrackingId))
                 .ToListAsync();
 
-            //TODO manage this case where any missing
+            //TODO manage this case where any missing (MileStone 3)
 
             transactionRegistries.ForEach(tp => tp.SetToPool());
 
             applicationDbContext.UpdateRange(transactionRegistries);
 
+            transactionRegistries.ForEach(tp => logger.TransactionInPool(
+                tp.TrackingId,
+                tp.SmartContractAddress,
+                tp.ProfileGroupId));
             return transactionRegistries;
         }
     }

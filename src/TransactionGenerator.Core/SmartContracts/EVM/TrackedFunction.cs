@@ -1,7 +1,7 @@
 ﻿using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 
-namespace TrackingChain.TransactionGeneratorCore.SmartContracts
+namespace TrackingChain.TransactionGeneratorCore.SmartContracts.EVM
 {
     [Function("_trackedProducts", "bytes32")]
     public class TrackedFunction : FunctionMessage

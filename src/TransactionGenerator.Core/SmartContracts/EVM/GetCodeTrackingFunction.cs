@@ -1,9 +1,10 @@
 ﻿using Nethereum.ABI.FunctionEncoding.Attributes;
+using Nethereum.Contracts;
 
-namespace TrackingChain.TransactionGeneratorCore.SmartContracts
+namespace TrackingChain.TransactionGeneratorCore.SmartContracts.EVM
 {
-    [FunctionOutput]
-    public class TrackedOutputDTO : IFunctionOutputDTO
+    [Function("GetCodeTracking", typeof(GetCodeTrackingOutputDTO))]
+    public class GetCodeTrackingFunction : FunctionMessage
     {
         [Parameter("bytes32", "code", 1)]
 #pragma warning disable CA1819 // Properties should not return arrays

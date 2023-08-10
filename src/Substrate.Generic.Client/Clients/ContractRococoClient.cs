@@ -1,4 +1,5 @@
-﻿using StreamJsonRpc;
+﻿using Microsoft.Extensions.Logging;
+using StreamJsonRpc;
 using Substrate.ContractRococo.NET.NetApiExt.Generated;
 using Substrate.ContractRococo.NET.NetApiExt.Generated.Model.sp_core.crypto;
 using Substrate.ContractRococo.NET.NetApiExt.Generated.Model.sp_runtime.multiaddress;
@@ -21,14 +22,19 @@ namespace TrackingChain.Core.Clients
     {
         // Fields.
         private readonly ChargeType chargeTypeDefault;
+        private readonly ILogger<ContractRococoClient> logger;
 
         // Constructors.
-        public ContractRococoClient(Account account, string url)
+        public ContractRococoClient(
+            Account account,
+            ILogger<ContractRococoClient> logger,
+            string url)
         {
-            Account = account;
-            chargeTypeDefault = ChargeTransactionPayment.Default();
+            this.Account = account;
+            this.chargeTypeDefault = ChargeTransactionPayment.Default();
+            this.logger = logger;
 
-            SubstrateClient = new SubstrateClientExt(new Uri(url), chargeTypeDefault);
+            this.SubstrateClient = new SubstrateClientExt(new Uri(url), chargeTypeDefault);
         }
 
         // Properties.
@@ -37,22 +43,13 @@ namespace TrackingChain.Core.Clients
         public Substrate.NetApi.SubstrateClient SubstrateClient { get; }
 
         // Public methods.
-        public async Task<bool> ConnectAsync(bool useMetadata, bool standardSubstrate, CancellationToken token)
+        public async Task<bool> ConnectAsync(
+            bool useMetadata, 
+            bool standardSubstrate, 
+            CancellationToken token)
         {
             if (!IsConnected)
-            {
-                try
-                {
-                    await SubstrateClient.ConnectAsync(useMetadata, standardSubstrate, token);
-                }
-#pragma warning disable CA1031 // Use generic event handler instances
-                catch (Exception)
-#pragma warning disable CA1031 // Use generic event handler instances
-                {
-                    //Log.Error("BaseClient.ConnectAsync: {0}",
-                    //e.ToString());
-                }
-            }
+                await SubstrateClient.ConnectAsync(useMetadata, standardSubstrate, token);
 
             return IsConnected;
         }
@@ -120,31 +117,20 @@ namespace TrackingChain.Core.Clients
             CancellationToken token)
         {
             if (account == null)
-            {
-                //Log.Warning("Account is null!");
                 return null;
-            }
 
             if (!IsConnected)
-            {
-                //Log.Warning("Currently not connected to the network!");
                 return null;
-            }
 
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
-#pragma warning disable CS0168 // Variable is declared but never used
             try
             {
                 return (await SubstrateClient.Author.SubmitExtrinsicAsync(extrinsicMethod, account, chargeTypeDefault, 64, token))?.Value ?? "";
             }
-            catch (RemoteInvocationException e)
+            catch (RemoteInvocationException ex)
             {
-                //Log.Error("RemoteInvocationException: {0}", e.Message
-                //Log.Error("RemoteInvocationException: {0}", e.ErrorData);
+                logger.SubmitExtrinsicError(ex);
                 return "";
             }
-#pragma warning restore CS0168 // Variable is declared but never used
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
         }
 
     }

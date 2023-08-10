@@ -1,14 +1,2 @@
 ﻿<ul class="navbar-nav">
-    @if (User?.Identity?.IsAuthenticated == true)
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-page="/signout-oidc" title="Logout">Logout</a>
-        </li>
-    }
-    else
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-page="/signin-oidc" title="Login">Login</a>
-        </li>
-    }
 </ul>

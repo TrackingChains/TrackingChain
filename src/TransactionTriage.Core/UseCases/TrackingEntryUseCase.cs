@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.EntityFramework;
+using TrackingChain.TrackingChainCore.Extensions;
 using TrackingChain.TransactionWaitingCore.Services;
 
 namespace TrackingChain.TransactionTriageCore.UseCases
@@ -27,8 +28,8 @@ namespace TrackingChain.TransactionTriageCore.UseCases
         // Methods.
         public async Task<Guid> AddTransactionAsync(
             string authority,
-            string code, 
-            string data, 
+            string code,
+            string data,
             string category)
         {
             var triage = await transactionTriageService.AddTransactionAsync(authority, code, category, data);
@@ -36,6 +37,12 @@ namespace TrackingChain.TransactionTriageCore.UseCases
 
             await unitOfWork.SaveChangesAsync();
 
+            logger.TrackingEntry(
+                triage.Code, 
+                triage.DataValue,
+                category,
+                triage.SmartContractAddress, 
+                triage.ProfileGroupId);
             return triage.TrackingIdentify;
         }
     }

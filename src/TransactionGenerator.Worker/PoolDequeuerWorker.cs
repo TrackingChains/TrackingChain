@@ -60,21 +60,16 @@ namespace TrackingChain.TransactionGeneratorWorker
                 var poolDequeuerUseCase = scope.ServiceProvider.GetRequiredService<IPoolDequeuerUseCase>();
 
                 bool dequeued = false;
-#pragma warning disable CS0168 // Variable is declared but never used
                 try
                 {
                     dequeued = await poolDequeuerUseCase.DequeueTransactionAsync(dequeuerOptions.Accounts.Count, taskId);
                 }
-#pragma warning disable CA1031 // 
+#pragma warning disable CA1031 // We need fot catch all problems.
                 catch (Exception ex)
+#pragma warning restore CA1031 // Do not catch general exception types
                 {
-#pragma warning disable CA1848 // Use the LoggerMessage delegates
-                    logger.LogError(ex, "Errore in DoAsyncWork");
-#pragma warning restore CA1848 // Use the LoggerMessage delegates
+                    logger.ChildPoolDequeuerTaskInError(taskId, ex);
                 }
-#pragma warning restore CS0168 // Variable is declared but never used
-
-#pragma warning restore CA1031 // 
                 await Task.Delay(dequeued ? 500 : 1000, stoppingToken);
             }
             logger.EndChildPoolDequeuerTask(taskId);

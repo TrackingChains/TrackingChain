@@ -56,5 +56,11 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             LockedBy = accountId;
             LockedDated = DateTime.UtcNow;
         }
+
+        public void Unlock()
+        {
+            Locked = false;
+            LockedBy = null;
+        }
     }
 }

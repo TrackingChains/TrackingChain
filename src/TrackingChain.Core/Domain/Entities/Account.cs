@@ -11,6 +11,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             Guid profile,
             string chainWriterAddress,
             string chainWatcherAddress,
+            string name,
             string privateKey)
         {
             ArgumentNullException.ThrowIfNullOrEmpty(privateKey);
@@ -20,6 +21,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
 
             this.ChainWriterAddress = chainWriterAddress;
             this.ChainWatcherAddress = chainWatcherAddress;
+            this.Name = name;
             this.PrivateKey = privateKey;
         }
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -30,6 +32,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public Guid Id { get; private set; }
         public string ChainWriterAddress { get; protected set; }
         public string ChainWatcherAddress { get; protected set; }
+        public string Name { get; protected set; }
         public string PrivateKey { get; private set; }
 #pragma warning disable CA1002 // Do not expose generic lists
         public virtual List<ProfileGroup> ProfileGroups { get; } = new();
@@ -85,7 +88,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
                 {
                     int pipeIndex = url.IndexOf('|', StringComparison.InvariantCultureIgnoreCase);
                     if (pipeIndex >= 0)
-                        urlToKey.Add(url.Substring(0, pipeIndex), url.Substring(pipeIndex + 1, url.Length - pipeIndex - 1));
+                        urlToKey.Add(url[..pipeIndex], url.Substring(pipeIndex + 1, url.Length - pipeIndex - 1));
                     else
                         urlToKey.Add(url, "");
                 }

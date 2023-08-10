@@ -19,6 +19,7 @@ namespace TrackingChain.Core.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ChainWriterAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ChainWatcherAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PrivateKey = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -106,6 +107,7 @@ namespace TrackingChain.Core.Migrations
                 columns: table => new
                 {
                     TrackingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LastTransactionHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TransactionStep = table.Column<int>(type: "int", nullable: false),
                     TriageDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PendingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -117,6 +119,7 @@ namespace TrackingChain.Core.Migrations
                     ReceiptFrom = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReceiptGasUsed = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReceiptSuccessful = table.Column<bool>(type: "bit", nullable: true),
+                    ReceiptTransactionHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReceiptTo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RegistryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
