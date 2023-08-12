@@ -40,13 +40,13 @@ namespace TrackingChain.TriageWebApplication.Pages
         }
 
         // GET
-        public async Task OnGet()
+        public async Task OnGetAsync()
         {
             await PopulateComboBoxAsync();
         }
 
         // POST
-        public async Task OnPostSubmit(TrackingBinding trackingBinding)
+        public async Task OnPostSubmitAsync(TrackingBinding trackingBinding)
         {
             ArgumentNullException.ThrowIfNull(trackingBinding);
 

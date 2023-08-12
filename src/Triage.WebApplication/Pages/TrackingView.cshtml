@@ -3,12 +3,12 @@
 @{
 }
 <div class="text-center">
-    <h1 class="display-4">Tracking Products</h1>
+    <h1 class="display-4">Tracking View</h1>
     <form method="post">
         <table>
             <tr>
-                <td>Product Code: </td>
-                <td><input type="text" name="productCode" /></td>
+                <td>Tracking Id:</td>
+                <td><input type="text" name="TrackingId" /></td>
             </tr>
             <tr>
                 <td><input type="submit" value="Submit" asp-page-handler="Submit" /></td>
@@ -16,10 +16,10 @@
         </table>
         <hr />
         <div>
-            @if (!string.IsNullOrWhiteSpace(Model.ProductCode))
+            @if (Model.TrackingProductModelViews.Any())
             {
 
-                <h3>Product Code: @Model.ProductCode </h3>
+                <h3>Code: @Model.TrackingProductModelViews.First().Code </h3>
             }
             @foreach (var item in Model.TrackingProductModelViews)
             {
@@ -30,5 +30,6 @@
                 </p>
             }
         </div>
+        <span>@Model.Result</span>
     </form>
 </div>

@@ -2,11 +2,11 @@
 
 namespace TrackingChain.TriageWebApplication.ModelView
 {
-    public class TrackingProductModelView
+    public class TrackingModelView
     {
-        public string ProductCode { get; set; } = default!;
+        public string Code { get; set; } = default!;
         public string DataValue { get; set; } = default!;
         public DateTime Timestamp { get; set; } = default!;
-        public string BlockNumber { get; set; } = default!;
+        public long BlockNumber { get; set; } = default!;
     }
 }

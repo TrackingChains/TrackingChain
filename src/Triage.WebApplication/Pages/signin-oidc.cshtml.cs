@@ -8,7 +8,7 @@ namespace TrackingChain.TriageWebApplication.Pages
     public class signin_oidcModel : PageModel
     {
         // Methods.
-        public IActionResult OnGetAsync(string? returnUrl = null) =>
+        public IActionResult OnGet(string? returnUrl = null) =>
              Redirect(returnUrl ?? Url.Content("~/"));
     }
 }

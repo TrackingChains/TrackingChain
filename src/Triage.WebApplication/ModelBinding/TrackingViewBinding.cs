@@ -6,6 +6,6 @@ namespace TrackingChain.TriageWebApplication.ModelBinding
     public class TrackingViewBinding
     {
         [BindProperty]
-        public Guid Id { get; set; } = default!;
+        public Guid TrackingId { get; set; } = default!;
     }
 }

@@ -45,11 +45,11 @@ namespace TrackingChain.Substrate.Generic.Client
 
         // Methods.
         public async Task<TrackingChainData?> GetTrasactionDataAsync(
-            string code, 
-            string contractAddress, 
-            string chainEndpoint, 
-            int chainNumberId, 
-            ContractExtraInfo contractExtraInfo, 
+            string code,
+            string contractAddress,
+            string chainEndpoint,
+            int chainNumberId,
+            ContractExtraInfo contractExtraInfo,
             CancellationToken token)
         {
             ArgumentNullException.ThrowIfNull(code);
@@ -80,7 +80,7 @@ namespace TrackingChain.Substrate.Generic.Client
 
             if (!await client.ConnectAsync(true, true, token))
                 return null;
-
+            /*
             var getTrackingModel = CreateGetTrackingCode(
                 code,
                 contractExtraInfo);
@@ -92,7 +92,31 @@ namespace TrackingChain.Substrate.Generic.Client
                 getTrackingModel.StorageDepositLimit,
                 getTrackingModel.DataHex,
                 token);
-            return null;
+            */
+            return new TrackingChainData
+            {
+                Code = code,
+                DataValues = new List<DataDetail> {
+                    new DataDetail
+                    {
+                        BlockNumber = 1,
+                        DataValue = Encoding.ASCII.GetBytes("One"),
+                        Timestamp = DateTime.UtcNow.AddDays(-3).Ticks
+                    },
+                    new DataDetail
+                    {
+                        BlockNumber = 2,
+                        DataValue = Encoding.ASCII.GetBytes("Two"),
+                        Timestamp = DateTime.UtcNow.AddDays(-2).Ticks
+                    },
+                    new DataDetail
+                    {
+                        BlockNumber = 3,
+                        DataValue = Encoding.ASCII.GetBytes("Three"),
+                        Timestamp = DateTime.UtcNow.AddDays(-1).Ticks
+                    }
+                  }
+            };
         }
 
         public async Task<TransactionDetail?> GetTrasactionReceiptAsync(
@@ -169,7 +193,7 @@ namespace TrackingChain.Substrate.Generic.Client
                     client = new ShibuyaClient(account, loggerFactory.CreateLogger<ShibuyaClient>(), chainEndpoint);
                     dest = Utils.GetPublicKeyFrom(contractAddress).ToShibuyaAccountId32();
                     break;
-                default: 
+                default:
                     var ex = new NotSupportedException("Client not supported");
                     ex.AddData("Client", contractExtraInfo.SupportedClient);
                     throw ex;
