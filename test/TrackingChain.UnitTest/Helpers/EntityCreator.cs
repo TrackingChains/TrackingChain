@@ -61,6 +61,7 @@ namespace TrackingChain.UnitTest.Helpers
                 var profileGroup = profileGroups != null ? profileGroups[(i - 1) % profileGroups.Count] : Guid.NewGuid();
                 var smartContractId = i;
                 var smartContractAddress = $"0x{i}{i}{i}{i}{i}{i}{i}{i}{i}{i}{i}";
+                var smartContractEndpoint = $"http://read{i}.ext";
                 var smartContractExtraInfo = $"{{}}";
                 var smartContractChainNumber = i * 100;
                 var smartContractChainType = i % 2 == 0 ? ChainType.Substrate : ChainType.EVM;
@@ -171,7 +172,7 @@ namespace TrackingChain.UnitTest.Helpers
                     $"name{i}",
                     new ContractExtraInfo
                     {
-                        BasicWeight = 1,
+                        InsertTrackBasicWeight = 1,
                         ByteWeight = 2,
                         InsertTrackSelectorValue = "aaa",
                         SupportedClient = i % 2 == 0 ? SupportedClient.Shibuya : SupportedClient.Shibuya

@@ -9,6 +9,6 @@ namespace TrackingChain.TransactionGeneratorCore.Services
     {
         TransactionPending AddTransactionPendingFromPool(TransactionPool pool, string txHash);
         Task<IEnumerable<TransactionPool>> GetAvaiableTransactionPoolAsync(int max, Guid account);
-        Task<TransactionRegistry> SetToPendingAsync(Guid trackingId, string lastTransactionHash);
+        Task<TransactionRegistry> SetToPendingAsync(Guid trackingId, string lastTransactionHash, string smartContractEndpoint);
     }
 }

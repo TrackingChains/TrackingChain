@@ -119,7 +119,7 @@ namespace TrackingChain.UnitTest.Triage
             //Arrange
             var entityTransactionRegistries = EntityCreator.CreateTransactionRegistry(10);
             foreach (var item in entityTransactionRegistries)
-                item.SetToPending("0x2345678");
+                item.SetToPending("0x2345678", "http://test");
             dbContext.TransactionRegistries.AddRange(entityTransactionRegistries);
             dbContext.SaveChanges();
 

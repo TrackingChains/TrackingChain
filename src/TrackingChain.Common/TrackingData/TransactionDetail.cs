@@ -1,4 +1,6 @@
-﻿namespace TrackingChain.Common.Dto
+﻿using System;
+
+namespace TrackingChain.Common.Dto
 {
     public class TransactionDetail
     {

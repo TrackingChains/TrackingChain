@@ -16,6 +16,19 @@
         </table>
         <hr />
         <div>
+            @if (!string.IsNullOrWhiteSpace(Model.ProductCode))
+            {
+
+                <h3>Product Code: @Model.ProductCode </h3>
+            }
+            @foreach (var item in Model.TrackingProductModelViews)
+            {
+                <p>
+                    <span>Data Value: @item.DataValue</span>
+                    <br />
+                    <span>Timestamp: @item.Timestamp</span>
+                </p>
+            }
         </div>
     </form>
 </div>

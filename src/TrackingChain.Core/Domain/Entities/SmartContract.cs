@@ -16,8 +16,8 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             string name,
             ContractExtraInfo substractContractExtraInfo)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(address);
-            ArgumentNullException.ThrowIfNullOrEmpty(name);
+            ArgumentException.ThrowIfNullOrEmpty(address);
+            ArgumentException.ThrowIfNullOrEmpty(name);
 
             this.Address = address;
             this.ChainNumberId = chainNumberId;

@@ -65,7 +65,10 @@ namespace TrackingChain.TransactionGeneratorCore.Services
                 .ToListAsync();
         }
 
-        public async Task<TransactionRegistry> SetToPendingAsync(Guid trackingId, string lastTransactionHash)
+        public async Task<TransactionRegistry> SetToPendingAsync(
+            Guid trackingId, 
+            string lastTransactionHash, 
+            string smartContractEndpoint)
         {
             ArgumentNullException.ThrowIfNull(trackingId);
 
@@ -75,7 +78,7 @@ namespace TrackingChain.TransactionGeneratorCore.Services
             if (transactionRegistry is null)
                 throw new InvalidOperationException(); //TODO next MileStone
 
-            transactionRegistry.SetToPending(lastTransactionHash);
+            transactionRegistry.SetToPending(lastTransactionHash, smartContractEndpoint);
 
             applicationDbContext.Update(transactionRegistry);
 

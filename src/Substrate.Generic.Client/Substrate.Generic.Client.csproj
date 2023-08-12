@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <RootNamespace>TrackingChain.Core</RootNamespace>
+    <RootNamespace>TrackingChain.Substrate.Generic.Client</RootNamespace>
 
     <Authors>Federico Cicciarella based on (https://github.com/SubstrateGaming/Substrate.Chains.NET) </Authors>
     <Description>Substrate generic client</Description>

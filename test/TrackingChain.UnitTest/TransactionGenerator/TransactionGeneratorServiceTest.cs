@@ -140,6 +140,7 @@ namespace TrackingChain.UnitTest.TransactionGenerator
             var transactionTriages = EntityCreator.CreateTransactionTriage(5);
             var twoTriage = transactionTriages.First(i => i.Code == "Code2");
             var lastTxHash = "0x1234567890";
+            var smartContratEndpoint = "http://endpoint.ext";
 
             var transactionRegistries = EntityCreator.CreateTransactionRegistry(transactionTriages);
             dbContext.TransactionRegistries.AddRange(transactionRegistries);
@@ -147,7 +148,7 @@ namespace TrackingChain.UnitTest.TransactionGenerator
 
 
             //Act
-            var txRegistry = await transactionGeneratorService.SetToPendingAsync(twoTriage.TrackingIdentify, lastTxHash);
+            var txRegistry = await transactionGeneratorService.SetToPendingAsync(twoTriage.TrackingIdentify, lastTxHash, smartContratEndpoint);
             await dbContext.SaveChangesAsync();
 
 

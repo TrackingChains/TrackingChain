@@ -46,18 +46,18 @@ namespace TrackingChain.TriageWebApplication.Pages
         }
 
         // POST
-        public async Task OnPostSubmit(TrackProductBinding trackProductBinding)
+        public async Task OnPostSubmit(TrackingBinding trackingBinding)
         {
-            ArgumentNullException.ThrowIfNull(trackProductBinding);
+            ArgumentNullException.ThrowIfNull(trackingBinding);
 
             await PopulateComboBoxAsync();
             try
             {
                 var result = await trackingEntryUseCase.AddTransactionAsync(
                     "GenericWabAPI",
-                    trackProductBinding.ProductCode,
-                    trackProductBinding.ProductDataJson,
-                    ChainOptions.ElementAt(trackProductBinding.SelectedChain).Text);
+                    trackingBinding.Code,
+                    trackingBinding.DataValue,
+                    ChainOptions.ElementAt(trackingBinding.SelectedChain).Text);
                 Result = $"Status: Ok, Tx Hash: {result}";
             }
 #pragma warning disable CA1031 // 

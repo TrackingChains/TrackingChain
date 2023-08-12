@@ -15,7 +15,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             int priority)
         {
             ArgumentNullException.ThrowIfNull(smartContract);
-            ArgumentNullException.ThrowIfNullOrEmpty(name);
+            ArgumentException.ThrowIfNullOrEmpty(name);
 
             this.AggregationCode = aggregationCode;
             this.Authority = authority;

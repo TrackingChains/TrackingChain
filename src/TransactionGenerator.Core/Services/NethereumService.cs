@@ -28,6 +28,17 @@ namespace TrackingChain.TransactionGeneratorCore.Services
         public ChainType ProviderType => ChainType.EVM;
 
         // Public methods.
+        public Task<TransactionDetail?> GetTrasactionDataAsync(
+            string code,
+            string contractAddress, 
+            string chainEndpoint, 
+            int chainNumberId, 
+            ContractExtraInfo contractExtraInfo, 
+            CancellationToken token)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public Task<TransactionDetail?> GetTrasactionReceiptAsync(
             string txHash,
             string chainEndpoint,

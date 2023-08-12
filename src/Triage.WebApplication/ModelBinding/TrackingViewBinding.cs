@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace TrackingChain.TriageWebApplication.ModelBinding
 {
-    public class TrackViewProductBinding
+    public class TrackingViewBinding
     {
         [BindProperty]
-        public string ProductCode { get; set; } = default!;
+        public Guid Id { get; set; } = default!;
     }
 }

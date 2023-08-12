@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <RootNamespace>TrackingChain.Common</RootNamespace>
+    <RootNamespace>TrackingChain.TransactionRecoveryWorker</RootNamespace>
 
     <Authors>Federico Cicciarella</Authors>
-    <Description>Tracking chain core</Description>
+    <Description>Aggregator</Description>
 
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Nullable>enable</Nullable>
@@ -16,7 +16,6 @@
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/TrackingChains</PackageProjectUrl>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RepositoryUrl>https://github.com/TrackingChains/TrackingChain</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -25,6 +24,10 @@
   <ItemGroup>
     <None Include="../../README.md" Pack="true" PackagePath="\" />
     <None Include="../../LICENSE" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TransactionRecovery.Core\TransactionRecovery.Core.csproj" />
   </ItemGroup>
 
 </Project>

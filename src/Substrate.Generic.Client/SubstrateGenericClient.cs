@@ -1,7 +1,6 @@
 ﻿using Microsoft;
 using Microsoft.Extensions.Logging;
 using Schnorrkel.Keys;
-using Substrate.Generic.Client.Helpers;
 using Substrate.NetApi;
 using Substrate.NetApi.Model.Types;
 using System;
@@ -20,21 +19,21 @@ using TrackingChain.Common.Dto;
 using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
 using TrackingChain.Common.Interfaces;
-using TrackingChain.Core.Clients;
-using TrackingChain.Core.Dto;
-using TrackingChain.Core.Helpers;
+using TrackingChain.Substrate.Generic.Client.Clients;
+using TrackingChain.Substrate.Generic.Client.Dto;
+using TrackingChain.Substrate.Generic.Client.Helpers;
 
-namespace TrackingChain.Core
+namespace TrackingChain.Substrate.Generic.Client
 {
-    public class SubstrateClient : IBlockchainService
+    public class SubstrateGenericClient : IBlockchainService
     {
         // Fields.
-        private readonly ILogger<SubstrateClient> logger;
+        private readonly ILogger<SubstrateGenericClient> logger;
         private readonly ILoggerFactory loggerFactory;
 
         // Constractor.
-        public SubstrateClient(
-            ILogger<SubstrateClient> logger,
+        public SubstrateGenericClient(
+            ILogger<SubstrateGenericClient> logger,
             ILoggerFactory loggerFactory)
         {
             this.logger = logger;
@@ -45,6 +44,57 @@ namespace TrackingChain.Core
         public ChainType ProviderType => ChainType.Substrate;
 
         // Methods.
+        public async Task<TransactionDetail?> GetTrasactionDataAsync(
+            string code, 
+            string contractAddress, 
+            string chainEndpoint, 
+            int chainNumberId, 
+            ContractExtraInfo contractExtraInfo, 
+            CancellationToken token)
+        {
+            ArgumentNullException.ThrowIfNull(code);
+            ArgumentNullException.ThrowIfNull(contractAddress);
+            ArgumentNullException.ThrowIfNull(chainEndpoint);
+            ArgumentNullException.ThrowIfNull(contractExtraInfo);
+
+            var miniSecret = new MiniSecret(Utils.HexToByteArray("0x"), ExpandMode.Ed25519);
+            var account = Account.Build(KeyType.Sr25519, miniSecret.ExpandToSecret().ToBytes(), miniSecret.GetPair().Public.Key);
+
+            ISubstrateClient client;
+            IType dest;
+            switch (contractExtraInfo.SupportedClient)
+            {
+                case SupportedClient.ContractRococo:
+                    client = new ContractRococoClient(account, loggerFactory.CreateLogger<ContractRococoClient>(), chainEndpoint);
+                    dest = Utils.GetPublicKeyFrom(contractAddress).ToContractRococoAccountId32();
+                    break;
+                case SupportedClient.Shibuya:
+                    client = new ShibuyaClient(account, loggerFactory.CreateLogger<ShibuyaClient>(), chainEndpoint);
+                    dest = Utils.GetPublicKeyFrom(contractAddress).ToShibuyaAccountId32();
+                    break;
+                default:
+                    var ex = new NotSupportedException("Client not supported");
+                    ex.AddData("Client", contractExtraInfo.SupportedClient);
+                    throw ex;
+            }
+
+            if (!await client.ConnectAsync(true, true, token))
+                return null;
+
+            var getTrackingModel = CreateGetTrackingCode(
+                code,
+                contractExtraInfo);
+            var hashTx = await client.ContractsCallAsync(
+                dest,
+                getTrackingModel.Value,
+                getTrackingModel.RefTime,
+                getTrackingModel.ProofSize,
+                getTrackingModel.StorageDepositLimit,
+                getTrackingModel.DataHex,
+                token);
+            return null;
+        }
+
         public async Task<TransactionDetail?> GetTrasactionReceiptAsync(
             string txHash,
             string chainEndpoint,
@@ -66,7 +116,7 @@ namespace TrackingChain.Core
 
             var response = await httpClient.PostAsync(url, content);
             response.EnsureSuccessStatusCode();
-            var watcherResponseDto = await response.Content.ReadFromJsonAsync<WatcherResponseDto>();
+            var watcherResponseDto = await response.Content.ReadFromJsonAsync<WatcherResponseModelView>();
 
             if (watcherResponseDto?.data is null ||
                 !watcherResponseDto.data.finalized ||
@@ -146,7 +196,7 @@ namespace TrackingChain.Core
         }
 
         // Helpers.
-        private InsertTrackDto CreateInsertTrackParams(
+        private TrackingChainCallerModel CreateInsertTrackParams(
             string code,
             string dataValue,
             bool closed,
@@ -168,15 +218,38 @@ namespace TrackingChain.Core
             var closedHex = closed ? "01" : "00";
 
             // Calculate storage deposit limit.
-            var itemWeight = new List<BigInteger> { new BigInteger(substractContractExtraInfo.BasicWeight) };
+            var itemWeight = new List<BigInteger> { new BigInteger(substractContractExtraInfo.InsertTrackBasicWeight) };
             itemWeight.AddRange(Enumerable.Repeat(new BigInteger(substractContractExtraInfo.ByteWeight), dataValueHex.Length / 2));
             var storageDepositLimit = itemWeight.Aggregate((currentSum, item) => currentSum + item);
 
-            return new InsertTrackDto
+            return new TrackingChainCallerModel
             {
                 DataHex = Utils.HexToByteArray($"{substractContractExtraInfo.InsertTrackSelectorValue}{codeHex}{prefixDataValueHex}{dataValueHex}{closedHex}"),
-                ProofSize = substractContractExtraInfo.ProofSize,
-                RefTime = substractContractExtraInfo.RefTime,
+                ProofSize = substractContractExtraInfo.InsertTrackProofSize,
+                RefTime = substractContractExtraInfo.InsertTrackRefTime,
+                StorageDepositLimit = storageDepositLimit,
+                Value = new BigInteger(0),
+            };
+        }
+
+        private TrackingChainCallerModel CreateGetTrackingCode(
+            string code,
+            ContractExtraInfo substractContractExtraInfo)
+        {
+            // Code.
+            var codeHex = Encoding.ASCII.GetBytes(code)
+                .Select(b => b.ToString("x2", CultureInfo.InvariantCulture))
+                .Aggregate((acc, str) => acc + str)
+                .PadRight(64, '0');
+
+            // Calculate storage deposit limit.
+            var storageDepositLimit = new BigInteger(substractContractExtraInfo.InsertTrackBasicWeight);
+
+            return new TrackingChainCallerModel
+            {
+                DataHex = Utils.HexToByteArray($"{substractContractExtraInfo.GetTrackSelectorValue}{codeHex}"),
+                ProofSize = 1000000,
+                RefTime = 1,
                 StorageDepositLimit = storageDepositLimit,
                 Value = new BigInteger(0),
             };

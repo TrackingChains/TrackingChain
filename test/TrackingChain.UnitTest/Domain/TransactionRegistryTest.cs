@@ -1,5 +1,4 @@
 ﻿using System;
-using TrackingChain.Common.Dto;
 using TrackingChain.Common.Enums;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.Domain.Enums;
@@ -60,7 +59,6 @@ namespace TrackingChain.UnitTest.Domain
             //Arrange
             string code = "CodeTest";
             string data = "DataTest";
-            var poolDate = new DateTime(1987, 7, 23, 03, 15, 0, 0);
             var trackingIdentify = Guid.NewGuid();
             var triageDate = new DateTime(1987, 7, 23, 02, 15, 0, 0);
             var profileGroupId = Guid.NewGuid();
@@ -81,15 +79,17 @@ namespace TrackingChain.UnitTest.Domain
                 chainType,
                 triageDate);
             var txHash = "0x098765";
+            var smartContractEndpoint = "http://endpoint.ext";
 
 
             //Act
-            transactionRegistry.SetToPending(txHash);
+            transactionRegistry.SetToPending(txHash, smartContractEndpoint);
 
 
             //Assert
             Assert.Equal(TransactionStep.Pending, transactionRegistry.TransactionStep);
             Assert.Equal(txHash, transactionRegistry.LastTransactionHash);
+            Assert.Equal(smartContractEndpoint, transactionRegistry.SmartContractEndpoint);
         }
 
         [Fact]
@@ -98,7 +98,6 @@ namespace TrackingChain.UnitTest.Domain
             //Arrange
             string code = "CodeTest";
             string data = "DataTest";
-            var poolDate = new DateTime(1987, 7, 23, 03, 15, 0, 0);
             var trackingIdentify = Guid.NewGuid();
             var triageDate = new DateTime(1987, 7, 23, 02, 15, 0, 0);
             var profileGroupId = Guid.NewGuid();
@@ -134,7 +133,6 @@ namespace TrackingChain.UnitTest.Domain
             //Arrange
             string code = "CodeTest";
             string data = "DataTest";
-            var poolDate = new DateTime(1987, 7, 23, 03, 15, 0, 0);
             var trackingIdentify = Guid.NewGuid();
             var triageDate = new DateTime(1987, 7, 23, 02, 15, 0, 0);
             var profileGroupId = Guid.NewGuid();
@@ -189,6 +187,90 @@ namespace TrackingChain.UnitTest.Domain
             Assert.Equal(receiptSuccessful, transactionRegistry.ReceiptSuccessful);
             Assert.Equal(receiptTransactionHash, transactionRegistry.ReceiptTransactionHash);
             Assert.Equal(receiptTo, transactionRegistry.ReceiptTo);
+        }
+
+        [Fact]
+        public void GetFirstRandomEndpointAddressShouldBeReturnEndpointWhenPopulated()
+        {
+            //Arrange
+            string code = "CodeTest";
+            string data = "DataTest";
+            var trackingIdentify = Guid.NewGuid();
+            var triageDate = new DateTime(1987, 7, 23, 02, 15, 0, 0);
+            var profileGroupId = Guid.NewGuid();
+            var smartContractId = 10;
+            var smartContractAddress = "0x1234";
+            var smartContractExtraInfo = "{}";
+            var chainNumberId = 1001;
+            var chainType = ChainType.Substrate;
+            var transactionRegistry = new TransactionRegistry(
+                code,
+                data,
+                trackingIdentify,
+                smartContractId,
+                smartContractAddress,
+                smartContractExtraInfo,
+                profileGroupId,
+                chainNumberId,
+                chainType,
+                triageDate);
+            var txHash = "0x098765";
+            var smartContractEndpoint = "http://endpoint.one.ext;http://endpoint.two.ext;http://endpoint.three.ext;";
+            transactionRegistry.SetToPending(txHash, smartContractEndpoint);
+
+
+            //Act
+            var endpointRandomOne = transactionRegistry.GetFirstRandomEndpointAddress;
+            var endpointRandomTwo = transactionRegistry.GetFirstRandomEndpointAddress;
+            var endpointRandomThree = transactionRegistry.GetFirstRandomEndpointAddress;
+
+
+            //Assert
+            Assert.NotNull(endpointRandomOne);
+            Assert.Contains(endpointRandomOne, smartContractEndpoint, StringComparison.InvariantCulture);
+            Assert.NotNull(endpointRandomTwo);
+            Assert.Contains(endpointRandomTwo, smartContractEndpoint, StringComparison.InvariantCulture);
+            Assert.NotNull(endpointRandomThree);
+            Assert.Contains(endpointRandomThree, smartContractEndpoint, StringComparison.InvariantCulture);
+        }
+
+        [Fact]
+        public void GetFirstRandomEndpointAddressShouldBeReturnNullWhenEmpty()
+        {
+            //Arrange
+            string code = "CodeTest";
+            string data = "DataTest";
+            var trackingIdentify = Guid.NewGuid();
+            var triageDate = new DateTime(1987, 7, 23, 02, 15, 0, 0);
+            var profileGroupId = Guid.NewGuid();
+            var smartContractId = 10;
+            var smartContractAddress = "0x1234";
+            var smartContractExtraInfo = "{}";
+            var chainNumberId = 1001;
+            var chainType = ChainType.Substrate;
+            var transactionRegistry = new TransactionRegistry(
+                code,
+                data,
+                trackingIdentify,
+                smartContractId,
+                smartContractAddress,
+                smartContractExtraInfo,
+                profileGroupId,
+                chainNumberId,
+                chainType,
+                triageDate);
+
+
+            //Act
+            var endpointRandomOne = transactionRegistry.GetFirstRandomEndpointAddress;
+            var endpointRandomTwo = transactionRegistry.GetFirstRandomEndpointAddress;
+            var endpointRandomThree = transactionRegistry.GetFirstRandomEndpointAddress;
+
+
+            //Assert
+            Assert.Null(endpointRandomOne);
+            Assert.Null(endpointRandomTwo);
+            Assert.Null(endpointRandomThree);
         }
     }
 }

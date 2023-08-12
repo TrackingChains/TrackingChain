@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using TrackingChain.Common.Enums;
 using TrackingChain.TrackingChainCore.Domain.Enums;
 
@@ -42,6 +43,25 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public string? ReceiptTransactionHash { get; private set; }
         public string? ReceiptTo { get; private set; }
         public DateTime RegistryDate { get; private set; }
+        public string? SmartContractEndpoint { get; protected set; }
+
+        public string? GetFirstRandomEndpointAddress
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(SmartContractEndpoint))
+                    return null;
+
+                var address = SmartContractEndpoint.Split(";");
+                if (address.Length == 1)
+                    return address.First();
+
+                var rnd = new Random();
+#pragma warning disable CA5394 // No need secure number
+                return address[rnd.Next(address.Length)];
+#pragma warning restore CA5394 // No need secure number
+            }
+        }
 
         // Methods.
         public void SetToPool()
@@ -50,9 +70,12 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             PoolDate = DateTime.UtcNow;
         }
         
-        public void SetToPending(string lastTransactionHash)
+        public void SetToPending(
+            string lastTransactionHash, 
+            string smartContractEndpoint)
         {
             LastTransactionHash = lastTransactionHash;
+            SmartContractEndpoint = smartContractEndpoint;
             TransactionStep = TransactionStep.Pending;
             PendingDate = DateTime.UtcNow;
         }

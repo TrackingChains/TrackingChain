@@ -2,13 +2,13 @@
 
 namespace TrackingChain.TriageWebApplication.ModelBinding
 {
-    public class TrackProductBinding
+    public class TrackingBinding
     {
         [BindProperty]
-        public string ProductCode { get; set; } = default!;
+        public string Code { get; set; } = default!;
 
         [BindProperty]
-        public string ProductDataJson { get; set; } = default!;
+        public string DataValue { get; set; } = default!;
 
         [BindProperty]
         public int SelectedChain { get; set; }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Nethereum.Web3;
+using Nethereum.Web3.Accounts;
 using System.Threading;
 using System.Threading.Tasks;
 using TrackingChain.Common.Dto;
@@ -25,6 +26,17 @@ namespace TrackingChain.TransactionWatcherCore.Services
         public ChainType ProviderType => ChainType.EVM;
 
         // Public methods.
+        public Task<TransactionDetail?> GetTrasactionDataAsync(
+            string code, 
+            string contractAddress, 
+            string chainEndpoint, 
+            int chainNumberId, 
+            ContractExtraInfo contractExtraInfo, 
+            CancellationToken token)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public async Task<TransactionDetail?> GetTrasactionReceiptAsync(
             string txHash,
             string chainEndpoint,
@@ -49,8 +61,15 @@ namespace TrackingChain.TransactionWatcherCore.Services
                 ethReceipt.TransactionHash,
                 ethReceipt.To);
         }
-
-        public Task<string> InsertTrackingAsync(string code, string dataValue, string privateKey, int chainNumberId, string chainEndpoint, string contractAddress, ContractExtraInfo contractExtraInfo, CancellationToken token)
+        public Task<string> InsertTrackingAsync(
+            string code,
+            string dataValue,
+            string privateKey,
+            int chainNumberId,
+            string chainEndpoint,
+            string contractAddress,
+            ContractExtraInfo contractExtraInfo,
+            CancellationToken token)
         {
             throw new System.NotImplementedException();
         }

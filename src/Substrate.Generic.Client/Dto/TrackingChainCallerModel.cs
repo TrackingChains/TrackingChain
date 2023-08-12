@@ -1,8 +1,8 @@
 ﻿using System.Numerics;
 
-namespace TrackingChain.Core.Dto
+namespace TrackingChain.Substrate.Generic.Client.Dto
 {
-    public class InsertTrackDto
+    public class TrackingChainCallerModel
     {
 #pragma warning disable CA1819 // Properties should not return arrays
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

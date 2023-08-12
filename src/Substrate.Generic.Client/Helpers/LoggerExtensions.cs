@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TrackingChain.Core.Helpers
+namespace TrackingChain.Substrate.Generic.Client.Helpers
 {
     /*
      * Always group similar log delegates by type, always use incremental event ids.
