@@ -101,19 +101,19 @@ namespace TrackingChain.Substrate.Generic.Client
                     {
                         BlockNumber = 1,
                         DataValue = Encoding.ASCII.GetBytes("One"),
-                        Timestamp = DateTime.UtcNow.AddDays(-3).Ticks
+                        Timestamp = 1234567
                     },
                     new DataDetail
                     {
                         BlockNumber = 2,
                         DataValue = Encoding.ASCII.GetBytes("Two"),
-                        Timestamp = DateTime.UtcNow.AddDays(-2).Ticks
+                        Timestamp = 223456711
                     },
                     new DataDetail
                     {
                         BlockNumber = 3,
                         DataValue = Encoding.ASCII.GetBytes("Three"),
-                        Timestamp = DateTime.UtcNow.AddDays(-1).Ticks
+                        Timestamp = 323456711
                     }
                   }
             };

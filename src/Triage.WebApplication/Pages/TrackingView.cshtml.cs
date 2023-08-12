@@ -43,6 +43,7 @@ namespace TrackingChain.TriageWebApplication.Pages
         private List<TrackingModelView> trackingProduct { get; set; }
         public IReadOnlyCollection<TrackingModelView> TrackingProductModelViews { get { return trackingProduct; } }
 
+        // GET
         public void OnGet()
         {
         }

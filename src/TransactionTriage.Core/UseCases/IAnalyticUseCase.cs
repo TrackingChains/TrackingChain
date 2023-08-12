@@ -14,5 +14,6 @@ namespace TrackingChain.TransactionTriageCore.UseCases
         Task<IEnumerable<TrackingModelView>> GetTrackingPendingsAsync(int size, int page);
         Task<IEnumerable<TrackingModelView>> GetTrackingPoolsAsync(int size, int page);
         Task<IEnumerable<TrackingModelView>> GetTrackingTriagesAsync(int size, int page);
+        Task<TrackingStatusStatisticModelView> GetTrackingStatusStatisticAsync();
     }
 }
