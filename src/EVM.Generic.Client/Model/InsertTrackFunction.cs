@@ -1,7 +1,7 @@
 ﻿using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 
-namespace TrackingChain.TransactionGeneratorCore.SmartContracts.EVM
+namespace TrackingChain.EVM.Generic.Client.Model
 {
     [Function("InsertTrack")]
     public class InsertTrackFunction : FunctionMessage

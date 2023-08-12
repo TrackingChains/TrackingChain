@@ -2,7 +2,9 @@
 {
     public class DataDetail
     {
-        public virtual string DataValue { get; set; } = default!;
+#pragma warning disable CA1819 // Properties should not return arrays
+        public virtual byte[] DataValue { get; set; } = default!;
+#pragma warning restore CA1819 // Properties should not return arrays
         public virtual long Timestamp { get; set; }
         public virtual long BlockNumber { get; set; }
     }

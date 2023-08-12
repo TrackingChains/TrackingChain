@@ -1,3 +1,4 @@
+using EVM.Generic.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;

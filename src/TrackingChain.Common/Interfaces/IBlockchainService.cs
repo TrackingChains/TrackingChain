@@ -8,7 +8,7 @@ namespace TrackingChain.Common.Interfaces
 {
     public interface IBlockchainService
     {
-        Task<TransactionDetail?> GetTrasactionDataAsync(
+        Task<TrackingChainData?> GetTrasactionDataAsync(
             string code,
             string contractAddress,
             string chainEndpoint,

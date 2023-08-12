@@ -1,9 +1,8 @@
 ﻿using Nethereum.ABI.FunctionEncoding.Attributes;
 using System.Collections.Generic;
 
-namespace TrackingChain.TransactionGeneratorCore.SmartContracts.EVM
+namespace TrackingChain.EVM.Generic.Client.Model
 {
-
     [FunctionOutput]
     public class GetCodeTrackingOutputDTO : IFunctionOutputDTO
     {

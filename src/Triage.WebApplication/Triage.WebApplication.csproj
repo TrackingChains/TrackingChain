@@ -18,6 +18,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/TrackingChains</PackageProjectUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/TrackingChains/TrackingChain</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <IsPackable>true</IsPackable>

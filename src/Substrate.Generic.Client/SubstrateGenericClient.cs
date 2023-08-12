@@ -44,7 +44,7 @@ namespace TrackingChain.Substrate.Generic.Client
         public ChainType ProviderType => ChainType.Substrate;
 
         // Methods.
-        public async Task<TransactionDetail?> GetTrasactionDataAsync(
+        public async Task<TrackingChainData?> GetTrasactionDataAsync(
             string code, 
             string contractAddress, 
             string chainEndpoint, 
