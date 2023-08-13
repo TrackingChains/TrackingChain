@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TrackingChain.Common.Dto;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 
 namespace TrackingChain.TransactionGeneratorCore.Services
