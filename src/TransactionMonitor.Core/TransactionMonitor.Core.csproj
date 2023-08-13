@@ -28,8 +28,4 @@
     <None Include="../../LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>

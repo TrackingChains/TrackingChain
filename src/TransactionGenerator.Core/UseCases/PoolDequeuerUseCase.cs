@@ -40,10 +40,10 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
 
         // Methods.
         public async Task<bool> DequeueTransactionAsync(
-            int max, 
+            int max,
             Guid accountId,
             int reTryAfterSeconds,
-            int saveAsErrorAfterSeconds)
+            int errorAfterReTry)
         {
             var account = await accountService.GetAccountAsync(accountId);
             var pools = await transactionGeneratorService.GetAvaiableTransactionPoolAsync(max, accountId);
@@ -81,29 +81,29 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
 #pragma warning disable CA1031 // We need fot catch all problems.
                 catch (Exception ex)
 #pragma warning restore CA1031 // Do not catch general exception types
-                { 
+                {
                     logger.TrasactionGenerationInError(pool.TrackingId, writerEndpointAddress, ex);
-                    if (pool.ReceivedDate.AddSeconds(saveAsErrorAfterSeconds) < DateTime.UtcNow)
+                    if (pool.ErrorTimes >= errorAfterReTry)
                     {
                         await TransactionCompletedInErrorAsync(pool);
                         await applicationDbContext.SaveChangesAsync();
-                        break;
-                    }  
+                        return true;
+                    }
                     else
                     {
-                        pool.Unlock(reTryAfterSeconds);
+                        pool.UnlockFromError(reTryAfterSeconds);
                         await applicationDbContext.SaveChangesAsync();
-                        break;
+                        return true;
                     }
                 }
-                
+
                 var txPending = transactionGeneratorService.AddTransactionPendingFromPool(pool, txHash);
                 await transactionGeneratorService.SetToPendingAsync(txPending.TrackingId, txHash, account.ChainWriterAddress);
                 await applicationDbContext.SaveChangesAsync();
 
                 logger.TransactionOnChain(txPending.TrackingId, txPending.TxHash, txPending.SmartContractAddress);
 
-                break;
+                return true;
             }
 
             return pools.Any();

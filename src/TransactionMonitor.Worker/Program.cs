@@ -21,8 +21,8 @@ IHost host = Host.CreateDefaultBuilder(args)
         //config
         var databaseSection = hostContext.Configuration.GetSection("Database");
         services.Configure<DatabaseOptions>(databaseSection);
-        var recoveryOptions = hostContext.Configuration.GetSection("Recovery");
-        services.Configure<RecoveryOptions>(recoveryOptions);
+        var recoveryOptions = hostContext.Configuration.GetSection("Monitor");
+        services.Configure<MonitorOptions>(recoveryOptions);
 
         //database
         services.AddDbContext<ApplicationDbContext>();
@@ -32,7 +32,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddTransient<IBlockchainService, SubstrateGenericClient>();
         services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-        services.AddHostedService<TransactionFailedRecoveryWorker>();
+        services.AddHostedService<TransactionLockedWorker>();
     })
     .UseSerilog((hostingContext, services, loggerConfiguration) => loggerConfiguration
     .ReadFrom.Configuration(hostingContext.Configuration)

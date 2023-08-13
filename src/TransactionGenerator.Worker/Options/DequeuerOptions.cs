@@ -11,6 +11,6 @@ namespace TrackingChain.TransactionGeneratorWorker.Options
 #pragma warning restore CA2227 // Collection properties should be read only
 #pragma warning restore CA1002 // Do not expose generic lists
         public int ReTryAfterSeconds { get; set; }
-        public int SaveAsErrorAfterSeconds { get; set; }
+        public int ErrorAfterReTry { get; set; }
     }
 }

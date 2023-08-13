@@ -35,7 +35,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public DateTime? LockedDated { get; private set; }
         public byte Priority { get; private set; }
         public DateTime TriageDate { get; private set; }
-        public int UnlockTimes { get; private set; }
+        public int ErrorTimes { get; private set; }
 
 
         // Methods.
@@ -61,17 +61,19 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             LockedDated = DateTime.UtcNow;
         }
 
-        public void Unlock()
-        {
-            Locked = false;
-            LockedBy = null;
-        }
         public void Unlock(int secondsDelayGeneratingFrom = 6)
         {
-            UnlockTimes++;
             Locked = false;
             LockedBy = null;
-            GeneratingFrom = DateTime.UtcNow.AddSeconds(secondsDelayGeneratingFrom * UnlockTimes);
+            GeneratingFrom = DateTime.UtcNow.AddSeconds(secondsDelayGeneratingFrom);
+        }
+
+        public void UnlockFromError(int secondsDelayGeneratingFrom = 6)
+        {
+            ErrorTimes++;
+            Locked = false;
+            LockedBy = null;
+            GeneratingFrom = DateTime.UtcNow.AddSeconds(secondsDelayGeneratingFrom * ErrorTimes);
         }
     }
 }

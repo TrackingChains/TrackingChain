@@ -9,6 +9,6 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
             int max, 
             Guid accountId,
             int reTryAfterSeconds,
-            int saveAsErrorAfterSeconds);
+            int errorAfterReTry);
     }
 }

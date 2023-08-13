@@ -43,7 +43,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
             int max,
             Guid accountId,
             int reTryAfterSeconds,
-            int saveAsErrorAfterSeconds)
+            int errorAfterReTry)
         {
             var account = await accountService.GetAccountAsync(accountId);
             var pendings = await transactionWatcherService.GetTransactionToCheckAsync(max, accountId);
@@ -74,26 +74,26 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
 #pragma warning disable CA1031 // We need fot catch all problems.
                     catch (Exception ex)
 #pragma warning restore CA1031 // Do not catch general exception types
-                    { //TODO after some time is null so going in error and need manual check  (MileStone2)
+                    {
                         logger.GetTrasactionReceiptInError(pending.TrackingId, pending.TxHash, apiUrl, ex);
-                        if (pending.ReceivedDate.AddSeconds(saveAsErrorAfterSeconds) < DateTime.UtcNow)
+                        if (pending.ErrorTimes >= errorAfterReTry)
                             transactionDetail = new TransactionDetail(TransactionErrorReason.GetTrasactionReceiptExpection);
                         else
                         {
-                            pending.Unlock(reTryAfterSeconds);
+                            pending.UnlockFromError(reTryAfterSeconds);
                             await applicationDbContext.SaveChangesAsync();
-                            break;
+                            return true;
                         }
                     }
                     if (transactionDetail is null)
                     {
-                        if (pending.ReceivedDate.AddSeconds(saveAsErrorAfterSeconds) < DateTime.UtcNow)
+                        if (pending.ErrorTimes >= errorAfterReTry)
                             transactionDetail = new TransactionDetail(TransactionErrorReason.TransactionNotFound);
                         else
                         {
-                            pending.Unlock(reTryAfterSeconds);
+                            pending.UnlockFromError(reTryAfterSeconds);
                             await applicationDbContext.SaveChangesAsync();
-                            break;
+                            return true;
                         }
                     }
                 }
@@ -102,6 +102,8 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
 
                 await TransactionExecutedAsync(pending, transactionDetail);
                 await applicationDbContext.SaveChangesAsync();
+
+                return true;
             }
 
             return pendings.Any();
@@ -112,14 +114,9 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
             TransactionPending pending, 
             TransactionDetail transactionDetail)
         {
-            if (transactionDetail.Successful.HasValue &&
-                transactionDetail.Successful.Value)
-            {
-                pending.SetCompleted();
-                await transactionWatcherService.SetTransactionPoolCompletedAsync(pending.TrackingId);
-                await transactionWatcherService.SetTransactionTriageCompletedAsync(pending.TrackingId);
-            }
-            
+            pending.SetCompleted();
+            await transactionWatcherService.SetTransactionTriageCompletedAsync(pending.TrackingId);
+            await transactionWatcherService.SetTransactionPoolCompletedAsync(pending.TrackingId);
             await transactionWatcherService.SetToRegistryAsync(
                 pending.TrackingId,
                 transactionDetail);
