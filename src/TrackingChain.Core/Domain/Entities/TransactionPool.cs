@@ -22,17 +22,21 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             ReceivedDate = DateTime.UtcNow;
             TrackingId = trackingIdentify;
             TriageDate = triageDate;
+            GeneratingFrom = ReceivedDate;
         }
         protected TransactionPool() { }
 
         // Properties.
         public Guid TrackingId { get; private set; }
         public bool Completed { get; private set; }
+        public DateTime GeneratingFrom { get; private set; }
         public bool Locked { get; private set; }
         public Guid? LockedBy { get; private set; }
         public DateTime? LockedDated { get; private set; }
-        public DateTime TriageDate { get; private set; }
         public byte Priority { get; private set; }
+        public DateTime TriageDate { get; private set; }
+        public int UnlockTimes { get; private set; }
+
 
         // Methods.
         public void SetCompleted()
@@ -61,6 +65,13 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         {
             Locked = false;
             LockedBy = null;
+        }
+        public void Unlock(int secondsDelayGeneratingFrom = 6)
+        {
+            UnlockTimes++;
+            Locked = false;
+            LockedBy = null;
+            GeneratingFrom = DateTime.UtcNow.AddSeconds(secondsDelayGeneratingFrom * UnlockTimes);
         }
     }
 }

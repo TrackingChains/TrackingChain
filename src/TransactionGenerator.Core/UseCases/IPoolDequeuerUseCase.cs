@@ -5,6 +5,10 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
 {
     public interface IPoolDequeuerUseCase
     {
-        Task<bool> DequeueTransactionAsync(int max, Guid accountId);
+        Task<bool> DequeueTransactionAsync(
+            int max, 
+            Guid accountId,
+            int reTryAfterSeconds,
+            int saveAsErrorAfterSeconds);
     }
 }

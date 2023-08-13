@@ -50,6 +50,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public DateTime? LockedDated { get; private set; }
         public DateTime TriageDate { get; private set; }
         public string TxHash { get; private set; }
+        public int UnlockTimes { get; private set; }
         public byte Priority { get; private set; }
         public DateTime PoolDate { get; private set; }
         public DateTime WatchingFrom { get; private set; }
@@ -86,9 +87,10 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
 
         public void Unlock(int secondsDelayWatchingFrom = 6)
         {
+            UnlockTimes++;
             Locked = false;
             LockedBy = null;
-            WatchingFrom = DateTime.UtcNow.AddSeconds(secondsDelayWatchingFrom);
+            WatchingFrom = DateTime.UtcNow.AddSeconds(secondsDelayWatchingFrom * UnlockTimes);
         }
     }
 }

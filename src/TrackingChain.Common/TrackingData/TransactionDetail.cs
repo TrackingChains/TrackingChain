@@ -1,4 +1,5 @@
 ﻿using System;
+using TrackingChain.Common.Enums;
 
 namespace TrackingChain.Common.Dto
 {
@@ -8,7 +9,7 @@ namespace TrackingChain.Common.Dto
         public TransactionDetail(bool undefined)
         {
             if (!undefined)
-                throw new ArgumentException($"Constrcutor for undefined detail");
+                throw new ArgumentException($"Constructor for undefined detail");
 
             BlockHash = "";
             BlockNumber = "";
@@ -20,6 +21,24 @@ namespace TrackingChain.Common.Dto
             GasUsed = "";
             Undefined = undefined;
             Successful = null;
+            TransactionHash = "";
+            To = "";
+        }
+
+        public TransactionDetail(TransactionErrorReason transactionErrorReason)
+        {
+            TransactionErrorReason = transactionErrorReason;
+
+            BlockHash = "";
+            BlockNumber = "";
+            ContractAddress = "";
+            CumulativeGasUsed = "";
+            EffectiveGasPrice = "";
+            Error = "";
+            From = "";
+            GasUsed = "";
+            Undefined = false;
+            Successful = false;
             TransactionHash = "";
             To = "";
         }
@@ -37,6 +56,9 @@ namespace TrackingChain.Common.Dto
             string transactionHash,
             string to)
         {
+            if (!successful)
+                TransactionErrorReason = Enums.TransactionErrorReason.TransactionFinalizedInError;
+
             BlockHash = blockHash;
             BlockNumber = blockNumber;
             ContractAddress = contractAddress;
@@ -62,6 +84,7 @@ namespace TrackingChain.Common.Dto
         public string GasUsed { get; set; }
         public bool Undefined { get; set; }
         public bool? Successful { get; set; }
+        public TransactionErrorReason? TransactionErrorReason { get; set; }
         public string TransactionHash { get; set; }
         public string To { get; set; }
     }

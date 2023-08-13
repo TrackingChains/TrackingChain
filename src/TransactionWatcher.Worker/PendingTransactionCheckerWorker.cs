@@ -59,7 +59,11 @@ namespace TransactionWatcherWorker
                 bool dequeued = false;
                 try
                 {
-                    dequeued = await poolDequeuerUseCase.CheckTransactionStatusAsync(checkerOptions.Accounts.Count, taskId);
+                    dequeued = await poolDequeuerUseCase.CheckTransactionStatusAsync(
+                        checkerOptions.Accounts.Count, 
+                        taskId, 
+                        checkerOptions.ReTryAfterSeconds, 
+                        checkerOptions.SaveAsErrorAfterSeconds);
                 }
 #pragma warning disable CA1031 // We need fot catch all problems.
                 catch (Exception ex)

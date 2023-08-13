@@ -57,6 +57,7 @@ namespace TrackingChain.TransactionWatcherCore.Services
             }
 
             transactionPool.SetCompleted();
+            applicationDbContext.Update(transactionPool);
 
             return transactionPool;
         }
@@ -75,6 +76,7 @@ namespace TrackingChain.TransactionWatcherCore.Services
             }
 
             transactionTriage.SetCompleted();
+            applicationDbContext.Update(transactionTriage);
 
             return transactionTriage;
         }

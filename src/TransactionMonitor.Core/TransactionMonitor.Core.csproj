@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <RootNamespace>TrackingChain.TransactionRecoveryCore</RootNamespace>
+    <RootNamespace>TrackingChain.TransactionMonitorCore</RootNamespace>
 
     <Authors>Federico Cicciarella</Authors>
     <Description>Aggregator</Description>
