@@ -1,0 +1,52 @@
+﻿@page
+@model TrackingChain.TriageWebApplication.Pages.Admin.ProfileGroups.CreateModel
+
+<h4>ProfileGroup</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ProfileGroup.AggregationCode" class="control-label"></label>
+                <input asp-for="ProfileGroup.AggregationCode" class="form-control" />
+                <span asp-validation-for="ProfileGroup.AggregationCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProfileGroup.Authority" class="control-label"></label>
+                <input asp-for="ProfileGroup.Authority" class="form-control" />
+                <span asp-validation-for="ProfileGroup.Authority" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProfileGroup.Category" class="control-label"></label>
+                <input asp-for="ProfileGroup.Category" class="form-control" />
+                <span asp-validation-for="ProfileGroup.Category" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProfileGroup.Name" class="control-label"></label>
+                <input asp-for="ProfileGroup.Name" class="form-control" />
+                <span asp-validation-for="ProfileGroup.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProfileGroup.SmartContractId" class="control-label"></label>
+                <select asp-for="ProfileGroup.SmartContractId" class ="form-control" asp-items="ViewBag.SmartContractId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProfileGroup.Priority" class="control-label"></label>
+                <input asp-for="ProfileGroup.Priority" class="form-control" />
+                <span asp-validation-for="ProfileGroup.Priority" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

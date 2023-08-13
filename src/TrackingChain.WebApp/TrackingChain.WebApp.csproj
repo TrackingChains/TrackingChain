@@ -43,6 +43,21 @@
     <None Include="../../README.md" Pack="true" PackagePath="\" />
     <None Include="../../LICENSE" Pack="true" PackagePath="" />
     <None Include="compilerconfig.json" />
+    <None Include="Pages\Admin\Accounts\Create.cshtml" />
+    <None Include="Pages\Admin\Accounts\Delete.cshtml" />
+    <None Include="Pages\Admin\Accounts\Details.cshtml" />
+    <None Include="Pages\Admin\Accounts\Edit.cshtml" />
+    <None Include="Pages\Admin\Accounts\Index.cshtml" />
+    <None Include="Pages\Admin\ProfileGroups\Create.cshtml" />
+    <None Include="Pages\Admin\ProfileGroups\Delete.cshtml" />
+    <None Include="Pages\Admin\ProfileGroups\Details.cshtml" />
+    <None Include="Pages\Admin\ProfileGroups\Edit.cshtml" />
+    <None Include="Pages\Admin\ProfileGroups\Index.cshtml" />
+    <None Include="Pages\Admin\Smartcontracts\Create.cshtml" />
+    <None Include="Pages\Admin\Smartcontracts\Delete.cshtml" />
+    <None Include="Pages\Admin\Smartcontracts\Details.cshtml" />
+    <None Include="Pages\Admin\Smartcontracts\Edit.cshtml" />
+    <None Include="Pages\Admin\Smartcontracts\Index.cshtml" />
   </ItemGroup>
 
 </Project>
