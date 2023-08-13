@@ -1,0 +1,59 @@
+﻿@page
+@model TrackingChain.TriageWebApplication.Pages.Admin.Trackings.PoolsModel
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionPool[0].TrackingId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionPool[0].Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionPool[0].Locked)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionPool[0].Completed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionPool[0].ReceivedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionPool[0].TriageDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.TransactionPool)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TrackingId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Locked)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Completed)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReceivedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TriageDate)
+                </td>
+                <td>
+                    <a asp-page="./PoolDetails" asp-route-id="@item.TrackingId">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
