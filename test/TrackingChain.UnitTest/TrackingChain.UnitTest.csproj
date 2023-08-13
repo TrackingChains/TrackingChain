@@ -39,7 +39,7 @@
     <ProjectReference Include="..\..\src\TransactionGenerator.Worker\TransactionGenerator.Worker.csproj" />
     <ProjectReference Include="..\..\src\TransactionWatcher.Worker\TransactionWatcher.Worker.csproj" />
     <ProjectReference Include="..\..\src\Triage.API\Triage.API.csproj" />
-    <ProjectReference Include="..\..\src\Triage.WebApplication\Triage.WebApplication.csproj" />
+    <ProjectReference Include="..\..\src\Triage.WebApplication\TrackingChain.WebApp.csproj" />
   </ItemGroup>
 
 </Project>
