@@ -35,60 +35,63 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.TransactionRegistry.PoolDate)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptBlockHash)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TransactionRegistry.ReceiptBlockHash)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptBlockNumber)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TransactionRegistry.ReceiptBlockNumber)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptCumulativeGasUsed)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TransactionRegistry.ReceiptCumulativeGasUsed)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptEffectiveGasPrice)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TransactionRegistry.ReceiptEffectiveGasPrice)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptFrom)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TransactionRegistry.ReceiptFrom)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptGasUsed)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TransactionRegistry.ReceiptGasUsed)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptReceived)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TransactionRegistry.ReceiptReceived)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptTransactionHash)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TransactionRegistry.ReceiptTransactionHash)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptTo)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TransactionRegistry.ReceiptTo)
-        </dd>
+        @if (Model.TransactionRegistry.ReceiptReceived)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptBlockHash)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TransactionRegistry.ReceiptBlockHash)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptBlockNumber)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TransactionRegistry.ReceiptBlockNumber)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptCumulativeGasUsed)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TransactionRegistry.ReceiptCumulativeGasUsed)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptEffectiveGasPrice)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TransactionRegistry.ReceiptEffectiveGasPrice)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptFrom)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TransactionRegistry.ReceiptFrom)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptGasUsed)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TransactionRegistry.ReceiptGasUsed)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptReceived)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TransactionRegistry.ReceiptReceived)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptTransactionHash)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TransactionRegistry.ReceiptTransactionHash)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptTo)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TransactionRegistry.ReceiptTo)
+            </dd>
+        }
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.TransactionRegistry.RegistryDate)
         </dt>
@@ -155,12 +158,12 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.TransactionRegistry.ProfileGroupId)
         </dd>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TransactionRegistry.Status)
-        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.TransactionRegistry.Status)
         </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TransactionRegistry.Status)
+        </dd>
     </dl>
 </div>
 <div>

@@ -7,7 +7,7 @@ namespace TrackingChain.TransactionMonitorCore.Services
 {
     public interface ITransactionMonitorService
     {
-        Task<IEnumerable<TransactionRegistry>> GetTransactionInErrorAsync(int max);
+        Task<IEnumerable<TransactionRegistry>> GetTransactionWaitingToReTryAsync(int max);
         Task<IEnumerable<TransactionTriage>> GetTransactionTriageAsync(IEnumerable<Guid> ids);
         Task<IEnumerable<TransactionPool>> GetTransactionPoolAsync(IEnumerable<Guid> ids);
         Task<IEnumerable<TransactionPending>> GetTransactionPendingAsync(IEnumerable<Guid> ids);

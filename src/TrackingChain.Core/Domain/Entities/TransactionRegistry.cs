@@ -93,6 +93,13 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
 
         public void SetToCanceled()
         {
+            if (Status != RegistryStatus.Error)
+            {
+                var ex = new InvalidOperationException("SetWaitingToReTry when in status not permited");
+                ex.Data.Add("TrackingId", TrackingId);
+                ex.Data.Add("Status", Status);
+                throw ex;
+            }
             TransactionStep = TransactionStep.Completed;
             Status = RegistryStatus.CanceledDueToError;
         }
@@ -132,6 +139,18 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             ErrorTime++;
             Status = RegistryStatus.Error;
             TransactionErrorReason = transactionErrorReason;
+        }
+
+        public void SetWaitingToReTry()
+        {
+            if (Status != RegistryStatus.Error)
+            {
+                var ex = new InvalidOperationException("SetWaitingToReTry when in status not permited");
+                ex.Data.Add("TrackingId", TrackingId);
+                ex.Data.Add("Status", Status);
+                throw ex;
+            }
+            Status = RegistryStatus.WaitingToReTry;
         }
     }
 }

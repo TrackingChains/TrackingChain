@@ -34,7 +34,7 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
             int max,
             int failedReTryTimes)
         {
-            var registries = await transactionMonitorService.GetTransactionInErrorAsync(max);
+            var registries = await transactionMonitorService.GetTransactionWaitingToReTryAsync(max);
             var triages = await transactionMonitorService.GetTransactionTriageAsync(registries.Select(r => r.TrackingId));
             var pools = await transactionMonitorService.GetTransactionPoolAsync(registries.Select(r => r.TrackingId));
             var pendings = await transactionMonitorService.GetTransactionPendingAsync(registries.Select(r => r.TrackingId));

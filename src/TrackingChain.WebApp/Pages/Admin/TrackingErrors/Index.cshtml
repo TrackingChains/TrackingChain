@@ -1,0 +1,52 @@
+﻿@page
+@model TrackingChain.TriageWebApplication.Pages.Admin.TrackingErrors.IndexModel
+@{
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionRegistry[0].TrackingId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionRegistry[0].Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionRegistry[0].TriageDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionRegistry[0].TransactionStep)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionRegistry[0].TransactionErrorReason)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.TransactionRegistry)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TrackingId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TriageDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TransactionStep)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TransactionErrorReason)
+                </td>
+                <td>
+                    <a asp-page="./Manage" asp-route-id="@item.TrackingId">Manage</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
