@@ -1,7 +1,14 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Win32;
+using System;
+using System.Threading.Tasks;
+using TrackingChain.Common.Dto;
 using TrackingChain.Common.Enums;
+using TrackingChain.Core.Domain.Enums;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.Domain.Enums;
+using TrackingChain.TransactionWatcherCore.Services;
+using TrackingChain.UnitTest.Helpers;
 using Xunit;
 
 namespace TrackingChain.UnitTest.Domain
@@ -184,9 +191,9 @@ namespace TrackingChain.UnitTest.Domain
             Assert.Equal(receiptEffectiveGasPrice, transactionRegistry.ReceiptEffectiveGasPrice);
             Assert.Equal(receiptFrom, transactionRegistry.ReceiptFrom);
             Assert.Equal(receiptGasUsed, transactionRegistry.ReceiptGasUsed);
-            Assert.Equal(receiptSuccessful, transactionRegistry.ReceiptSuccessful);
             Assert.Equal(receiptTransactionHash, transactionRegistry.ReceiptTransactionHash);
             Assert.Equal(receiptTo, transactionRegistry.ReceiptTo);
+            Assert.Equal(RegistryStatus.SuccessfullyCompleted, transactionRegistry.Status);
         }
 
         [Fact]
@@ -271,6 +278,168 @@ namespace TrackingChain.UnitTest.Domain
             Assert.Null(endpointRandomOne);
             Assert.Null(endpointRandomTwo);
             Assert.Null(endpointRandomThree);
+        }
+
+        [Fact]
+        public void SetToRegistrySuccessfulShouldSetInSuccess()
+        {
+            //Arrange
+            string code = "CodeTest";
+            string data = "DataTest";
+            var trackingIdentify = Guid.NewGuid();
+            var triageDate = new DateTime(1987, 7, 23, 02, 15, 0, 0);
+            var profileGroupId = Guid.NewGuid();
+            var smartContractId = 10;
+            var smartContractAddress = "0x1234";
+            var smartContractExtraInfo = "{}";
+            var chainNumberId = 1001;
+            var chainType = ChainType.Substrate;
+            var transactionRegistry = new TransactionRegistry(
+                code,
+                data,
+                trackingIdentify,
+                smartContractId,
+                smartContractAddress,
+                smartContractExtraInfo,
+                profileGroupId,
+                chainNumberId,
+                chainType,
+                triageDate);
+            var receiptBlockHash = "receiptBlockHashTest";
+            var receiptBlockNumber = "receiptBlockNumberTest";
+            var receiptCumulativeGasUsed = "receiptCumulativeGasUsedTest";
+            var receiptEffectiveGasPrice = "receiptEffectiveGasPriceTest";
+            var receiptFrom = "receiptFromTest";
+            var receiptGasUsed = "receiptGasUsedTest";
+            var receiptSuccessful = true;
+            var receiptTransactionHash = "receiptTransactionHashTest";
+            var receiptTo = "receiptToTest";
+
+
+            //Act
+            transactionRegistry.SetToRegistry(
+                receiptBlockHash,
+                receiptBlockNumber,
+                receiptCumulativeGasUsed,
+                receiptEffectiveGasPrice,
+                receiptFrom,
+                receiptGasUsed,
+                receiptSuccessful,
+                receiptTransactionHash,
+                receiptTo);
+
+
+            //Assert
+            Assert.Equal(TransactionStep.Completed, transactionRegistry.TransactionStep);
+            Assert.Equal(RegistryStatus.SuccessfullyCompleted, transactionRegistry.Status);
+        }
+
+        [Fact]
+        public void SetToRegistryUnuccessfulShouldSetInError()
+        {
+            //Arrange
+            string code = "CodeTest";
+            string data = "DataTest";
+            var trackingIdentify = Guid.NewGuid();
+            var triageDate = new DateTime(1987, 7, 23, 02, 15, 0, 0);
+            var profileGroupId = Guid.NewGuid();
+            var smartContractId = 10;
+            var smartContractAddress = "0x1234";
+            var smartContractExtraInfo = "{}";
+            var chainNumberId = 1001;
+            var chainType = ChainType.Substrate;
+            var transactionRegistry = new TransactionRegistry(
+                code,
+                data,
+                trackingIdentify,
+                smartContractId,
+                smartContractAddress,
+                smartContractExtraInfo,
+                profileGroupId,
+                chainNumberId,
+                chainType,
+                triageDate);
+            var receiptBlockHash = "receiptBlockHashTest";
+            var receiptBlockNumber = "receiptBlockNumberTest";
+            var receiptCumulativeGasUsed = "receiptCumulativeGasUsedTest";
+            var receiptEffectiveGasPrice = "receiptEffectiveGasPriceTest";
+            var receiptFrom = "receiptFromTest";
+            var receiptGasUsed = "receiptGasUsedTest";
+            var receiptSuccessful = false;
+            var receiptTransactionHash = "receiptTransactionHashTest";
+            var receiptTo = "receiptToTest";
+
+
+            //Act
+            transactionRegistry.SetToRegistry(
+                receiptBlockHash,
+                receiptBlockNumber,
+                receiptCumulativeGasUsed,
+                receiptEffectiveGasPrice,
+                receiptFrom,
+                receiptGasUsed,
+                receiptSuccessful,
+                receiptTransactionHash,
+                receiptTo);
+
+
+            //Assert
+            Assert.Equal(TransactionStep.Completed, transactionRegistry.TransactionStep);
+            Assert.Equal(RegistryStatus.Error, transactionRegistry.Status);
+        }
+
+        [Fact]
+        public void SetToRegistryReceptMissionShouldSetInSuccess()
+        {
+            //Arrange
+            string code = "CodeTest";
+            string data = "DataTest";
+            var trackingIdentify = Guid.NewGuid();
+            var triageDate = new DateTime(1987, 7, 23, 02, 15, 0, 0);
+            var profileGroupId = Guid.NewGuid();
+            var smartContractId = 10;
+            var smartContractAddress = "0x1234";
+            var smartContractExtraInfo = "{}";
+            var chainNumberId = 1001;
+            var chainType = ChainType.Substrate;
+            var transactionRegistry = new TransactionRegistry(
+                code,
+                data,
+                trackingIdentify,
+                smartContractId,
+                smartContractAddress,
+                smartContractExtraInfo,
+                profileGroupId,
+                chainNumberId,
+                chainType,
+                triageDate);
+            var receiptBlockHash = "";
+            var receiptBlockNumber = "";
+            var receiptCumulativeGasUsed = "";
+            var receiptEffectiveGasPrice = "";
+            var receiptFrom = "";
+            var receiptGasUsed = "";
+            bool? receiptSuccessful = null;
+            var receiptTransactionHash = "";
+            var receiptTo = "";
+
+
+            //Act
+            transactionRegistry.SetToRegistry(
+                receiptBlockHash,
+                receiptBlockNumber,
+                receiptCumulativeGasUsed,
+                receiptEffectiveGasPrice,
+                receiptFrom,
+                receiptGasUsed,
+                receiptSuccessful,
+                receiptTransactionHash,
+                receiptTo);
+
+
+            //Assert
+            Assert.Equal(TransactionStep.Completed, transactionRegistry.TransactionStep);
+            Assert.Equal(RegistryStatus.SuccessfullyCompleted, transactionRegistry.Status);
         }
     }
 }

@@ -59,10 +59,10 @@ namespace TrackingChain.TrackingChainCore.Extensions
                 LogLevel.Information,
                 new EventId(19, nameof(EndPendingTransactionCheckerWorker)),
                 "Pending transaction checker END.");
-        private static readonly Action<ILogger, Exception> _endTransactionFailedRecoveryWorker =
+        private static readonly Action<ILogger, Exception> _endTransactionFailedWorker =
             LoggerMessage.Define(
                 LogLevel.Information,
-                new EventId(12, nameof(EndTransactionFailedRecoveryWorker)),
+                new EventId(12, nameof(EndTransactionFailedWorker)),
                 "Transaction failed recovery END.");
         private static readonly Action<ILogger, Exception> _endTransactionLockedWorker =
             LoggerMessage.Define(
@@ -104,11 +104,11 @@ namespace TrackingChain.TrackingChainCore.Extensions
                 LogLevel.Information,
                 new EventId(22, nameof(StartTransactionLockedWorker)),
                 "Transaction Locked Worker running.");
-        private static readonly Action<ILogger, Exception> _startTransactionFailedRecoveryWorker =
+        private static readonly Action<ILogger, Exception> _startTransactionFailedWorker =
             LoggerMessage.Define(
                 LogLevel.Information,
-                new EventId(11, nameof(StartTransactionFailedRecoveryWorker)),
-                "Start Transaction Failed Recovery Worker running.");
+                new EventId(11, nameof(StartTransactionFailedWorker)),
+                "Start Transaction Failed Worker running.");
         private static readonly Action<ILogger, Guid, bool?, Exception> _transactionCompleted =
             LoggerMessage.Define<Guid, bool?>(
                 LogLevel.Information,
@@ -174,10 +174,10 @@ namespace TrackingChain.TrackingChainCore.Extensions
             _endPoolEnqueuerWorker(logger, null!);
         public static void EndPendingTransactionCheckerWorker(this ILogger logger) =>
             _endPendingTransactionCheckerWorker(logger, null!);
+        public static void EndTransactionFailedWorker(this ILogger logger) =>
+            _endTransactionFailedWorker(logger, null!);
         public static void EndTransactionLockedWorker(this ILogger logger) =>
-            _endTransactionLockedWorker(logger, null!); 
-        public static void EndTransactionFailedRecoveryWorker(this ILogger logger) =>
-            _endTransactionFailedRecoveryWorker(logger, null!);
+            _endTransactionLockedWorker(logger, null!);
         public static void GetTrasactionReceiptInError(this ILogger logger, Guid trackingGuid, string txHash, string apiUrl, Exception exception) =>
             _getTrasactionReceiptInError(logger, trackingGuid, txHash, apiUrl, exception);
         public static void RunMigrateDbTransactionPool(this ILogger logger, string dbContextName) =>
@@ -198,8 +198,8 @@ namespace TrackingChain.TrackingChainCore.Extensions
             _startPoolEnqueuerWorker(logger, null!);
         public static void StartPendingTransactionCheckerWorker(this ILogger logger) =>
             _startPendingTransactionCheckerWorker(logger, null!);
-        public static void StartTransactionFailedRecoveryWorker(this ILogger logger) =>
-            _startTransactionFailedRecoveryWorker(logger, null!);
+        public static void StartTransactionFailedWorker(this ILogger logger) =>
+            _startTransactionFailedWorker(logger, null!);
         public static void StartTransactionLockedWorker(this ILogger logger) =>
             _startTransactionLockedWorker(logger, null!);
         public static void TransactionGenerationCompletedInError(this ILogger logger, Guid trackingGuid) =>

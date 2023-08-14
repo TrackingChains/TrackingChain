@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using TrackingChain.Core.Domain.Enums;
 using TrackingChain.TrackingChainCore.Domain.Enums;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TransactionTriageCore.ModelViews;
@@ -38,8 +39,7 @@ namespace TrackingChain.TransactionTriageCore.UseCases
                     Count = group.Count(),
                     ErrorCount = group.Count(tr =>
                         tr.TransactionStep == TransactionStep.Completed &&
-                        tr.ReceiptSuccessful.HasValue &&
-                        !tr.ReceiptSuccessful.Value)
+                        tr.Status == RegistryStatus.Error)
                 })
                 .ToListAsync();
 
@@ -74,8 +74,8 @@ namespace TrackingChain.TransactionTriageCore.UseCases
         {
             var transactionRegistries = await dbContext.TransactionRegistries
                 .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
-                             tr.ReceiptSuccessful.HasValue &&
-                             !tr.ReceiptSuccessful.Value)
+                             (tr.Status == RegistryStatus.Error ||
+                              tr.Status == RegistryStatus.CanceledDueToError))
                 .Skip(size * (page - 1))
                 .Take(size)
                 .OrderBy(tr => tr.ReceivedDate)
@@ -124,8 +124,7 @@ namespace TrackingChain.TransactionTriageCore.UseCases
         {
             var transactionRegistries = await dbContext.TransactionRegistries
                 .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
-                             (!tr.ReceiptSuccessful.HasValue ||
-                               tr.ReceiptSuccessful.Value))
+                             tr.Status == RegistryStatus.SuccessfullyCompleted)
                 .Skip(size * (page - 1))
                 .Take(size)
                 .OrderBy(tr => tr.ReceivedDate)

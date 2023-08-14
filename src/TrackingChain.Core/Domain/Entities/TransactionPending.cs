@@ -1,6 +1,7 @@
 ﻿using System;
 using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
+using TrackingChain.Core.Domain.Enums;
 
 namespace TrackingChain.TrackingChainCore.Domain.Entities
 {
@@ -48,6 +49,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public bool Locked { get; private set; }
         public Guid? LockedBy { get; private set; }
         public DateTime? LockedDated { get; private set; }
+        public PendingStatus Status { get; private set; }
         public DateTime TriageDate { get; private set; }
         public string TxHash { get; private set; }
         public int ErrorTimes { get; private set; }
@@ -83,12 +85,14 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             Locked = true;
             LockedBy = accountId;
             LockedDated = DateTime.UtcNow;
+            Status = PendingStatus.InProgress;
         }
 
         public void Unlock(int secondsDelayWatchingFrom = 6)
         {
             Locked = false;
             LockedBy = null;
+            Status = PendingStatus.WaitingForWorker;
             WatchingFrom = DateTime.UtcNow.AddSeconds(secondsDelayWatchingFrom);
         }
 
@@ -97,6 +101,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             ErrorTimes++;
             Locked = false;
             LockedBy = null;
+            Status = PendingStatus.WaitingForWorker;
             WatchingFrom = DateTime.UtcNow.AddSeconds(secondsDelayWatchingFrom * ErrorTimes);
         }
     }

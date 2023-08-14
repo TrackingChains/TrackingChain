@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TrackingChain.Common.Enums;
+using TrackingChain.Core.Domain.Enums;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.Domain.Enums;
 
@@ -17,7 +13,7 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
             DateTime registryDate,
             DateTime pendingDate,
             DateTime poolDate,
-            bool? receiptSuccessful,
+            RegistryStatus status,
             TransactionStep transactionStep)
         {
             TrackingId = trackingIdentify;
@@ -25,13 +21,13 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
             RegistryDate = registryDate;
             PendingDate = pendingDate;
             PoolDate = poolDate;
-            ReceiptSuccessful= receiptSuccessful;
+            Status = status;
             TransactionStep = transactionStep;
         }
 
         // Properties.
-        public bool? ReceiptSuccessful { get; private set; }
         public DateTime RegistryDate { get; private set; }
+        public RegistryStatus Status { get; private set; }
         public Guid TrackingId { get; private set; }
         public TransactionStep TransactionStep { get; private set; }
         public DateTime TriageDate { get; private set; }
@@ -49,7 +45,7 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
                 transactionRegistry.RegistryDate,
                 transactionRegistry.PendingDate,
                 transactionRegistry.PoolDate,
-                transactionRegistry.ReceiptSuccessful,
+                transactionRegistry.Status,
                 transactionRegistry.TransactionStep);
         }
     }

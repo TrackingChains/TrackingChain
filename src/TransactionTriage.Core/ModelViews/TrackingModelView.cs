@@ -29,7 +29,7 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
             string? receiptEffectiveGasPrice,
             string? receiptFrom,
             string? receiptGasUsed,
-            bool? receiptSuccessful,
+            bool receiptReceived,
             string? receiptTransactionHash,
             string? receiptTo,
             TransactionStep transactionStep)
@@ -54,7 +54,7 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
             ReceiptEffectiveGasPrice = receiptEffectiveGasPrice;
             ReceiptFrom = receiptFrom;
             ReceiptGasUsed = receiptGasUsed;
-            ReceiptSuccessful = receiptSuccessful;
+            ReceiptReceived = receiptReceived;
             ReceiptTransactionHash = receiptTransactionHash;
             ReceiptTo = receiptTo;
             TrackingId = trackingIdentify;
@@ -75,7 +75,7 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
         public string? ReceiptEffectiveGasPrice { get; private set; }
         public string? ReceiptFrom { get; private set; }
         public string? ReceiptGasUsed { get; private set; }
-        public bool? ReceiptSuccessful { get; private set; }
+        public bool? ReceiptReceived { get; private set; }
         public string? ReceiptTo { get; private set; }
         public string? ReceiptTransactionHash { get; private set; }
         public DateTime RegistryDate { get; private set; }
@@ -117,7 +117,7 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
                 transactionRegistry.ReceiptEffectiveGasPrice,
                 transactionRegistry.ReceiptFrom,
                 transactionRegistry.ReceiptGasUsed,
-                transactionRegistry.ReceiptSuccessful,
+                transactionRegistry.ReceiptReceived,
                 transactionRegistry.ReceiptTransactionHash,
                 transactionRegistry.ReceiptTo,
                 transactionRegistry.TransactionStep);
@@ -149,7 +149,7 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
                 null,
                 null,
                 null,
-                null,
+                false,
                 null,
                 null,
                 TransactionStep.Triage);
@@ -181,7 +181,7 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
                 null,
                 null,
                 null,
-                null,
+                false,
                 null,
                 null,
                 TransactionStep.Pool);
@@ -213,7 +213,7 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
                 null,
                 null,
                 null,
-                null,
+                false,
                 null,
                 null,
                 TransactionStep.Pending);
