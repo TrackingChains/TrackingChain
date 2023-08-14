@@ -69,9 +69,9 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         }
 
         // Methods.
-        public void Reprocessable()
+        public void Reprocessable(TransactionStep restartFromStep)
         {
-            TransactionStep = TransactionStep.Pool;
+            TransactionStep = restartFromStep;
             Status = RegistryStatus.InProgress;
         }
         

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TrackingChain.Common.Enums;
 using TrackingChain.Core.Domain.Enums;
 using TrackingChain.TrackingChainCore.Domain.Entities;
+using TrackingChain.TrackingChainCore.Domain.Enums;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TransactionMonitorCore.Services;
 
@@ -87,55 +88,60 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
                 IEnumerable<TransactionPending> pendings,
                 TransactionRegistry registry)
         {
-            registry.Reprocessable();
-
             var pool = pools.FirstOrDefault(p => p.TrackingId == registry.TrackingId);
-            var pending = pendings.FirstOrDefault(p => p.TrackingId == registry.TrackingId);
-
-            if (pool is null &&
-                pending is null)
+            if (pool is null)
             {
                 registry.SetToCanceled();
                 //TODO log unable to manage this status. (missing pool item)
                 //TODO maybe check the triage status
+                return;
             }
 
-            if (pool is not null &&
-                pending is null)
+            if (registry.TransactionStep == TransactionStep.Pool)
             {
-                pool.Reprocessable();
-            }
-            else if (pool is not null &&
-                    pending is null)
-            {
-                pool.Reprocessable();
-                applicationDbContext.Update(pool);
-            }
-            else if (pool is not null &&
-                     pending is not null &&
-                     pending.Status == PendingStatus.Done)
-            {
-                if (registry.TransactionErrorReason == TransactionErrorReason.TransactionNotFound ||
-                    registry.TransactionErrorReason == TransactionErrorReason.TransactionFinalizedInError)
+                if (registry.TransactionErrorReason == TransactionErrorReason.UnableToSendTransactionOnChain)
                 {
+                    registry.Reprocessable(TransactionStep.Pool);
                     pool.Reprocessable();
                     applicationDbContext.Update(pool);
-                    applicationDbContext.Remove(pending);
-                }
-                else if (registry.TransactionErrorReason == TransactionErrorReason.GetTrasactionReceiptExpection)
-                {
-                    pending.Reprocessable();
-                    applicationDbContext.Update(pending);
                 }
                 else
                 {
                     //TODO log unable to manage this status. log case and try to investigate
                 }
             }
-            else
+            else if (registry.TransactionStep == TransactionStep.Pending)
             {
-                //TODO log unable to manage this status. log case and try to investigate
+                var pending = pendings.FirstOrDefault(p => p.TrackingId == registry.TrackingId);
+                if (pending is null)
+                {
+                    return;
+                    //TODO recreate pending
+                    //pending = new TransactionPending();
+                    //LOG the problem as warning
+                }
+
+                if (registry.TransactionErrorReason == TransactionErrorReason.TransactionNotFound ||
+                    registry.TransactionErrorReason == TransactionErrorReason.TransactionFinalizedInError)
+                {
+                    registry.Reprocessable(TransactionStep.Pool);
+                    pool.Reprocessable();
+                    applicationDbContext.Update(pool);
+                    applicationDbContext.Remove(pending);
+                }
+                else if (registry.TransactionErrorReason == TransactionErrorReason.GetTrasactionReceiptExpection)
+                {
+                    registry.Reprocessable(TransactionStep.Pending);
+                    pending.Reprocessable();
+                }
+                else
+                {
+                    //TODO log unable to manage this status. log case and try to investigate
+                }
             }
+
+
+            //TODO all cancelled registry to Completed in each Tables TX
         }
     }
 }

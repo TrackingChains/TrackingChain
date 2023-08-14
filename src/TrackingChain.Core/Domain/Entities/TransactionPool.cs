@@ -1,7 +1,6 @@
 ﻿using System;
 using TrackingChain.Common.Enums;
 using TrackingChain.Core.Domain.Enums;
-using TrackingChain.TrackingChainCore.Domain.Enums;
 
 namespace TrackingChain.TrackingChainCore.Domain.Entities
 {
