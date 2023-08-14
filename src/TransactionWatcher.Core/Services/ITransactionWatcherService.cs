@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TrackingChain.Common.Dto;
+using TrackingChain.Common.Enums;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 
 namespace TrackingChain.TransactionWatcherCore.Services
@@ -13,8 +14,11 @@ namespace TrackingChain.TransactionWatcherCore.Services
             Guid account);
         Task<TransactionPool> SetTransactionPoolCompletedAsync(Guid trackingId);
         Task<TransactionTriage> SetTransactionTriageCompletedAsync(Guid trackingId); 
-        Task<TransactionRegistry> SetToRegistryAsync(
+        Task<TransactionRegistry> SetToRegistryCompletedAsync(
             Guid trackingId,
             TransactionDetail transactionDetail);
+        Task<TransactionRegistry> SetToRegistryErrorAsync(
+            Guid trackingId,
+            TransactionErrorReason transactionErrorReason);
     }
 }

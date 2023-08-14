@@ -57,7 +57,7 @@ namespace TrackingChain.Common.Dto
             string to)
         {
             if (!successful)
-                TransactionErrorReason = Enums.TransactionErrorReason.TransactionFinalizedInError;
+                throw new ArgumentException($"Constructor for TransactionErrorReason detail");
 
             BlockHash = blockHash;
             BlockNumber = blockNumber;

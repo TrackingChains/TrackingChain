@@ -114,7 +114,7 @@ namespace TrackingChain.UnitTest.TransactionWatcher
                 .Setup(m => m.GetTransactionToCheckAsync(maxConcurrentThread, primaryProfile))
                 .Returns(Task.FromResult(primaryPendings));
             mockTransactionWatcherService
-                .Setup(m => m.SetToRegistryAsync(It.IsAny<Guid>(), It.IsAny<TransactionDetail>()))
+                .Setup(m => m.SetToRegistryCompletedAsync(It.IsAny<Guid>(), It.IsAny<TransactionDetail>()))
                 .Returns(Task.FromResult(EntityCreator.ConvertToRegistry(primaryPendings.First())));
 
 

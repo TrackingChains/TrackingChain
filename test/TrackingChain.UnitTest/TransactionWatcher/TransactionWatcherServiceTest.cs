@@ -202,7 +202,7 @@ namespace TrackingChain.UnitTest.TransactionWatcher
             var transactionDetail = new TransactionDetail("1", "12", "", "987", "12", "", "0x9876543", "648", true, "", "0x123456789");
 
             //Act
-            var txRegistry = await transactionWatcherService.SetToRegistryAsync(twoTriage.TrackingIdentify, transactionDetail);
+            var txRegistry = await transactionWatcherService.SetToRegistryCompletedAsync(twoTriage.TrackingIdentify, transactionDetail);
             await dbContext.SaveChangesAsync();
 
 

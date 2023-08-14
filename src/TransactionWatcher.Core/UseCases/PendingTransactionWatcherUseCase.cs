@@ -114,20 +114,32 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
             TransactionPending pending, 
             TransactionDetail transactionDetail)
         {
-            await transactionWatcherService.SetToRegistryAsync(
-                    pending.TrackingId,
-                    transactionDetail);
-
             if (!transactionDetail.Successful.HasValue ||
                 transactionDetail.Successful.Value)
             {
                 pending.SetCompleted();
+                await transactionWatcherService.SetToRegistryCompletedAsync(
+                    pending.TrackingId,
+                    transactionDetail);
                 await transactionWatcherService.SetTransactionTriageCompletedAsync(pending.TrackingId);
                 await transactionWatcherService.SetTransactionPoolCompletedAsync(pending.TrackingId);
             }
             else
-                pending.SetStatusDone();
+            {
+                if (transactionDetail.TransactionErrorReason is null)
+                {
+                    var ex = new InvalidOperationException("TransactionErrorReason is mandatory");
+                    ex.Data.Add("TrackingId", pending.TrackingId);
+                    throw ex;
+                }
+                    
+                await transactionWatcherService.SetToRegistryErrorAsync(
+                    pending.TrackingId,
+                    transactionDetail.TransactionErrorReason.Value);
 
+                pending.SetStatusDone();
+            }
+                
             logger.TransactionWatcher(pending.TrackingId, transactionDetail.Successful);
         }
     }

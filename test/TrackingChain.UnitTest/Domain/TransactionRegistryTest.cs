@@ -171,7 +171,7 @@ namespace TrackingChain.UnitTest.Domain
 
 
             //Act
-            transactionRegistry.SetToRegistry(
+            transactionRegistry.SetToRegistryCompleted(
                 receiptBlockHash,
                 receiptBlockNumber,
                 receiptCumulativeGasUsed,
@@ -180,8 +180,7 @@ namespace TrackingChain.UnitTest.Domain
                 receiptGasUsed,
                 receiptSuccessful,
                 receiptTransactionHash,
-                receiptTo,
-                null);
+                receiptTo);
 
 
             //Assert
@@ -318,7 +317,7 @@ namespace TrackingChain.UnitTest.Domain
 
 
             //Act
-            transactionRegistry.SetToRegistry(
+            transactionRegistry.SetToRegistryCompleted(
                 receiptBlockHash,
                 receiptBlockNumber,
                 receiptCumulativeGasUsed,
@@ -327,8 +326,7 @@ namespace TrackingChain.UnitTest.Domain
                 receiptGasUsed,
                 receiptSuccessful,
                 receiptTransactionHash,
-                receiptTo, 
-                null);
+                receiptTo);
 
 
             //Assert
@@ -361,33 +359,14 @@ namespace TrackingChain.UnitTest.Domain
                 chainNumberId,
                 chainType,
                 triageDate);
-            var receiptBlockHash = "receiptBlockHashTest";
-            var receiptBlockNumber = "receiptBlockNumberTest";
-            var receiptCumulativeGasUsed = "receiptCumulativeGasUsedTest";
-            var receiptEffectiveGasPrice = "receiptEffectiveGasPriceTest";
-            var receiptFrom = "receiptFromTest";
-            var receiptGasUsed = "receiptGasUsedTest";
-            var receiptSuccessful = false;
-            var receiptTransactionHash = "receiptTransactionHashTest";
-            var receiptTo = "receiptToTest";
 
 
             //Act
-            transactionRegistry.SetToRegistry(
-                receiptBlockHash,
-                receiptBlockNumber,
-                receiptCumulativeGasUsed,
-                receiptEffectiveGasPrice,
-                receiptFrom,
-                receiptGasUsed,
-                receiptSuccessful,
-                receiptTransactionHash,
-                receiptTo,
-                TransactionErrorReason.UnableToSendTransactionOnChain);
+            transactionRegistry.SetToRegistryError(TransactionErrorReason.UnableToSendTransactionOnChain);
 
 
             //Assert
-            Assert.Equal(TransactionStep.Completed, transactionRegistry.TransactionStep);
+            Assert.Equal(TransactionStep.Triage, transactionRegistry.TransactionStep);
             Assert.Equal(RegistryStatus.Error, transactionRegistry.Status);
             Assert.Equal(TransactionErrorReason.UnableToSendTransactionOnChain, transactionRegistry.TransactionErrorReason);
         }
@@ -429,7 +408,7 @@ namespace TrackingChain.UnitTest.Domain
 
 
             //Act
-            transactionRegistry.SetToRegistry(
+            transactionRegistry.SetToRegistryCompleted(
                 receiptBlockHash,
                 receiptBlockNumber,
                 receiptCumulativeGasUsed,
@@ -438,8 +417,7 @@ namespace TrackingChain.UnitTest.Domain
                 receiptGasUsed,
                 receiptSuccessful,
                 receiptTransactionHash,
-                receiptTo,
-                null);
+                receiptTo);
 
 
             //Assert

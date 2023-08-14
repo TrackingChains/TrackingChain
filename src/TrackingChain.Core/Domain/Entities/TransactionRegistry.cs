@@ -97,7 +97,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             Status = RegistryStatus.CanceledDueToError;
         }
 
-        public void SetToRegistry(
+        public void SetToRegistryCompleted(
             string receiptBlockHash,
             string receiptBlockNumber,
             string receiptCumulativeGasUsed,
@@ -106,11 +106,14 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             string receiptGasUsed,
             bool? receiptSuccessful,
             string receiptTransactionHash,
-            string receiptTo,
-            TransactionErrorReason? transactionErrorReason)
+            string receiptTo)
         {
+            if (receiptSuccessful.HasValue &&
+                !receiptSuccessful.Value)
+                throw new InvalidOperationException("use SetToRegistryError");
+
             TransactionStep = TransactionStep.Completed;
-            TransactionErrorReason = transactionErrorReason;
+            TransactionErrorReason = null;
             ReceiptBlockHash = receiptBlockHash;
             ReceiptBlockNumber = receiptBlockNumber;
             ReceiptCumulativeGasUsed = receiptCumulativeGasUsed;
@@ -121,15 +124,14 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             ReceiptTo = receiptTo;
             RegistryDate = DateTime.UtcNow;
             ReceiptReceived = receiptSuccessful.HasValue;
+            Status = RegistryStatus.SuccessfullyCompleted;
+        }
 
-            if (receiptSuccessful.HasValue &&
-                !receiptSuccessful.Value)
-            {
-                Status = RegistryStatus.Error;
-                ErrorTime++;
-            }
-            else
-                Status = RegistryStatus.SuccessfullyCompleted;
+        public void SetToRegistryError(TransactionErrorReason transactionErrorReason)
+        {
+            ErrorTime++;
+            Status = RegistryStatus.Error;
+            TransactionErrorReason = transactionErrorReason;
         }
     }
 }

@@ -98,7 +98,7 @@ namespace TrackingChain.TransactionGeneratorCore.Services
 
             var transactionDetail = new TransactionDetail(TransactionErrorReason.UnableToSendTransactionOnChain);
 
-            transactionRegistry.SetToRegistry(
+            transactionRegistry.SetToRegistryCompleted(
                 transactionDetail.BlockHash,
                 transactionDetail.BlockNumber,
                 transactionDetail.CumulativeGasUsed,
@@ -107,8 +107,7 @@ namespace TrackingChain.TransactionGeneratorCore.Services
                 transactionDetail.GasUsed,
                 transactionDetail.Successful,
                 transactionDetail.TransactionHash,
-                transactionDetail.To,
-                transactionDetail.TransactionErrorReason);
+                transactionDetail.To);
 
             applicationDbContext.Update(transactionRegistry);
 
