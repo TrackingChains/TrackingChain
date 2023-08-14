@@ -33,6 +33,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public string? LastTransactionHash { get; private set; }
         public Guid TrackingId { get; private set; }
         public TransactionStep TransactionStep { get; private set; }
+        public TransactionErrorReason? TransactionErrorReason { get; set; }
         public DateTime TriageDate { get; private set; }
         public DateTime PendingDate { get; private set; }
         public DateTime PoolDate { get; private set; }
@@ -68,6 +69,12 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         }
 
         // Methods.
+        public void Reprocessable()
+        {
+            TransactionStep = TransactionStep.Pool;
+            Status = RegistryStatus.InProgress;
+        }
+        
         public void SetToPool()
         {
             TransactionStep = TransactionStep.Pool;
@@ -84,6 +91,12 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             PendingDate = DateTime.UtcNow;
         }
 
+        public void SetToCanceled()
+        {
+            TransactionStep = TransactionStep.Completed;
+            Status = RegistryStatus.CanceledDueToError;
+        }
+
         public void SetToRegistry(
             string receiptBlockHash,
             string receiptBlockNumber,
@@ -93,9 +106,11 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             string receiptGasUsed,
             bool? receiptSuccessful,
             string receiptTransactionHash,
-            string receiptTo)
+            string receiptTo,
+            TransactionErrorReason? transactionErrorReason)
         {
             TransactionStep = TransactionStep.Completed;
+            TransactionErrorReason = transactionErrorReason;
             ReceiptBlockHash = receiptBlockHash;
             ReceiptBlockNumber = receiptBlockNumber;
             ReceiptCumulativeGasUsed = receiptCumulativeGasUsed;

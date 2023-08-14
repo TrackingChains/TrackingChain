@@ -39,7 +39,7 @@ namespace TrackingChain.TransactionMonitorWorker
                 var logger = loggerFactory.CreateLogger<TransactionLockedWorker>();
                 var transactionLockedUseCase = scope.ServiceProvider.GetRequiredService<ITransactionLockedUseCase>();
 
-                await transactionLockedUseCase.ReProcessAsync(monitorOptions.MaxUnlockTimeout, monitorOptions.UnlockUncompletedAfterSeconds);
+                await transactionLockedUseCase.ReProcessAsync(monitorOptions.GetMaxUnlockTimeout, monitorOptions.UnlockUncompletedAfterSeconds);
 
                 await Task.Delay(1500, stoppingToken);
             }

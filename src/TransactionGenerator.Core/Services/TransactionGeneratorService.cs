@@ -107,7 +107,8 @@ namespace TrackingChain.TransactionGeneratorCore.Services
                 transactionDetail.GasUsed,
                 transactionDetail.Successful,
                 transactionDetail.TransactionHash,
-                transactionDetail.To);
+                transactionDetail.To,
+                transactionDetail.TransactionErrorReason);
 
             applicationDbContext.Update(transactionRegistry);
 

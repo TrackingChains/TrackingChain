@@ -180,7 +180,8 @@ namespace TrackingChain.UnitTest.Domain
                 receiptGasUsed,
                 receiptSuccessful,
                 receiptTransactionHash,
-                receiptTo);
+                receiptTo,
+                null);
 
 
             //Assert
@@ -326,7 +327,8 @@ namespace TrackingChain.UnitTest.Domain
                 receiptGasUsed,
                 receiptSuccessful,
                 receiptTransactionHash,
-                receiptTo);
+                receiptTo, 
+                null);
 
 
             //Assert
@@ -380,12 +382,14 @@ namespace TrackingChain.UnitTest.Domain
                 receiptGasUsed,
                 receiptSuccessful,
                 receiptTransactionHash,
-                receiptTo);
+                receiptTo,
+                TransactionErrorReason.UnableToSendTransactionOnChain);
 
 
             //Assert
             Assert.Equal(TransactionStep.Completed, transactionRegistry.TransactionStep);
             Assert.Equal(RegistryStatus.Error, transactionRegistry.Status);
+            Assert.Equal(TransactionErrorReason.UnableToSendTransactionOnChain, transactionRegistry.TransactionErrorReason);
         }
 
         [Fact]
@@ -434,7 +438,8 @@ namespace TrackingChain.UnitTest.Domain
                 receiptGasUsed,
                 receiptSuccessful,
                 receiptTransactionHash,
-                receiptTo);
+                receiptTo,
+                null);
 
 
             //Assert

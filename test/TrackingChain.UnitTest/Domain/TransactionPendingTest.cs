@@ -1,5 +1,6 @@
 ﻿using System;
 using TrackingChain.Common.Enums;
+using TrackingChain.Core.Domain.Enums;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using Xunit;
 
@@ -56,6 +57,7 @@ namespace TrackingChain.UnitTest.Domain
             Assert.Equal(smartContractExtraInfo, transactionPending.SmartContractExtraInfo);
             Assert.Equal(chainNumberId, transactionPending.ChainNumberId);
             Assert.Equal(chainType, transactionPending.ChainType);
+            Assert.Equal(PendingStatus.WaitingForWorker, transactionPending.Status);
             Assert.Equal(forceWatchingFrom, transactionPending.WatchingFrom);
         }
 

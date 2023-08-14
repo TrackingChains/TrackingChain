@@ -92,7 +92,7 @@ namespace TrackingChain.TransactionWatcherCore.Services
 
             if (transactionRegistry is null)
             {
-                var ex = new InvalidOperationException("Account not found");
+                var ex = new InvalidOperationException("Registry not found");
                 ex.Data.Add("TrackingId", transactionRegistry);
                 throw ex;
             }
@@ -106,12 +106,12 @@ namespace TrackingChain.TransactionWatcherCore.Services
                 transactionDetail.GasUsed,
                 transactionDetail.Successful,
                 transactionDetail.TransactionHash,
-                transactionDetail.To);
+                transactionDetail.To,
+                transactionDetail.TransactionErrorReason);
 
             applicationDbContext.Update(transactionRegistry);
 
             return transactionRegistry;
         }
-
     }
 }

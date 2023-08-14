@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TrackingChain.Core.Domain.Enums;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 
@@ -48,6 +49,36 @@ namespace TrackingChain.TransactionMonitorCore.Services
                              tp.GeneratingFrom.AddSeconds(timeoutSeconds) < DateTime.UtcNow)
                 .OrderBy(tp => tp.GeneratingFrom)
                 .Take(max)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<TransactionRegistry>> GetTransactionInErrorAsync(int max)
+        {
+            return await applicationDbContext.TransactionRegistries
+                .Where(tr => tr.Status == RegistryStatus.Error)
+                .OrderBy(tp => tp.ReceivedDate)
+                .Take(max)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<TransactionPending>> GetTransactionPendingAsync(IEnumerable<Guid> ids)
+        {
+            return await applicationDbContext.TransactionPendings
+                .Where(tr => ids.Contains(tr.TrackingId))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<TransactionPool>> GetTransactionPoolAsync(IEnumerable<Guid> ids)
+        {
+            return await applicationDbContext.TransactionPools
+                .Where(tr => ids.Contains(tr.TrackingId))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<TransactionTriage>> GetTransactionTriageAsync(IEnumerable<Guid> ids)
+        {
+            return await applicationDbContext.TransactionTriages
+                .Where(tr => ids.Contains(tr.TrackingIdentify))
                 .ToListAsync();
         }
     }

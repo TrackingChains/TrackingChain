@@ -109,11 +109,11 @@ namespace TrackingChain.TrackingChainCore.Extensions
                 LogLevel.Information,
                 new EventId(11, nameof(StartTransactionFailedWorker)),
                 "Start Transaction Failed Worker running.");
-        private static readonly Action<ILogger, Guid, bool?, Exception> _transactionCompleted =
+        private static readonly Action<ILogger, Guid, bool?, Exception> _transactionWatcher =
             LoggerMessage.Define<Guid, bool?>(
                 LogLevel.Information,
-                new EventId(16, nameof(TransactionCompleted)),
-                "Transaction Completed for TrackingGuid:{TrackingGuid}\tSuccessful:{Successful}");
+                new EventId(16, nameof(TransactionWatcher)),
+                "Transaction Wacther for TrackingGuid:{TrackingGuid}\tSuccessful:{Successful}");
         private static readonly Action<ILogger, string, string, string, string, Guid, Exception> _trackingEntry =
             LoggerMessage.Define<string, string, string, string, Guid>(
                 LogLevel.Information,
@@ -206,14 +206,13 @@ namespace TrackingChain.TrackingChainCore.Extensions
             _transactionGenerationCompletedInError(logger, trackingGuid, null!);
         public static void TrasactionGenerationInError(this ILogger logger, Guid trackingGuid, string endpoint, Exception exception) =>
             _trasactionGenerationInError(logger, trackingGuid, endpoint, exception);
-        public static void TransactionCompleted(this ILogger logger, Guid trackingGuid, bool? successful) =>
-            _transactionCompleted(logger, trackingGuid, successful, null!);
+        public static void TransactionWatcher(this ILogger logger, Guid trackingGuid, bool? successful) =>
+            _transactionWatcher(logger, trackingGuid, successful, null!);
         public static void TrackingEntry(this ILogger logger, string code, string dataValue, string category, string smartContracAddress, Guid profileGroup) =>
             _trackingEntry(logger, code, dataValue, category, smartContracAddress, profileGroup, null!);
         public static void TransactionInPool(this ILogger logger, Guid trackingGuid, string smartContracAddress, Guid profileGroup) =>
             _transactionInPool(logger, trackingGuid, smartContracAddress, profileGroup, null!);
         public static void TransactionOnChain(this ILogger logger, Guid trackingGuid, string txHash, string smartContracAddress) =>
             _transactionOnChain(logger, trackingGuid, txHash, smartContracAddress, null!);
-        
     }
 }

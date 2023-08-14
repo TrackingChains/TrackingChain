@@ -112,9 +112,8 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
         // Helpers.
         private async Task TransactionCompletedInErrorAsync(TransactionPool pool)
         {
-            pool.SetCompleted();
+            pool.SetStatusError();
 
-            await transactionGeneratorService.SetTransactionTriageErrorCompletedAsync(pool.TrackingId);
             await transactionGeneratorService.SetToRegistryErrorAsync(pool.TrackingId);
 
             logger.TransactionGenerationCompletedInError(pool.TrackingId);

@@ -29,6 +29,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             TriageDate = triageDate;
             TxHash = txHash;
             PoolDate = poolDate;
+            Status = PendingStatus.WaitingForWorker;
 
             var extraInfo = ContractExtraInfo.FromJson(smartContractExtraInfo);
             if (forceWatchingFrom.HasValue)
@@ -45,6 +46,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         // Properties.
         public Guid TrackingId { get; private set; }
         public bool Completed { get; private set; }
+        public int ErrorTimes { get; private set; }
         public bool IsInProgress { get; private set; }
         public bool Locked { get; private set; }
         public Guid? LockedBy { get; private set; }
@@ -52,12 +54,18 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public PendingStatus Status { get; private set; }
         public DateTime TriageDate { get; private set; }
         public string TxHash { get; private set; }
-        public int ErrorTimes { get; private set; }
         public byte Priority { get; private set; }
         public DateTime PoolDate { get; private set; }
         public DateTime WatchingFrom { get; private set; }
 
         // Methods.
+        public void Reprocessable()
+        {
+            ErrorTimes = 0;
+            Status = PendingStatus.WaitingForWorker;
+            Unlock();
+        }
+
         public void SetCompleted()
         {
             if (Completed)
@@ -68,6 +76,12 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             }
 
             Completed = true;
+            Status = PendingStatus.Done;
+        }
+
+        public void SetStatusError()
+        {
+            Status = PendingStatus.Error;
         }
 
         public void SetLocked(Guid accountId)
@@ -86,6 +100,11 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             LockedBy = accountId;
             LockedDated = DateTime.UtcNow;
             Status = PendingStatus.InProgress;
+        }
+
+        public void SetStatusDone()
+        {
+            Status = PendingStatus.Done;
         }
 
         public void Unlock(int secondsDelayWatchingFrom = 6)

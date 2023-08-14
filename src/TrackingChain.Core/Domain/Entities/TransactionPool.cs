@@ -1,5 +1,7 @@
 ﻿using System;
 using TrackingChain.Common.Enums;
+using TrackingChain.Core.Domain.Enums;
+using TrackingChain.TrackingChainCore.Domain.Enums;
 
 namespace TrackingChain.TrackingChainCore.Domain.Entities
 {
@@ -29,19 +31,27 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         // Properties.
         public Guid TrackingId { get; private set; }
         public bool Completed { get; private set; }
+        public int ErrorTimes { get; private set; }
         public DateTime GeneratingFrom { get; private set; }
         public bool Locked { get; private set; }
         public Guid? LockedBy { get; private set; }
         public DateTime? LockedDated { get; private set; }
         public byte Priority { get; private set; }
+        public PoolStatus Status { get; private set; }
         public DateTime TriageDate { get; private set; }
-        public int ErrorTimes { get; private set; }
-
 
         // Methods.
+        public void Reprocessable()
+        {
+            ErrorTimes = 0;
+            Status = PoolStatus.WaitingForWorker;
+            Unlock();
+        }
+
         public void SetCompleted()
         {
             Completed = true;
+            Status = PoolStatus.Done;
         }
 
         public void SetLocked(Guid accountId)
@@ -59,6 +69,17 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             Locked = true;
             LockedBy = accountId;
             LockedDated = DateTime.UtcNow;
+            Status = PoolStatus.InProgress;
+        }
+
+        public void SetStatusDone()
+        {
+            Status = PoolStatus.Done;
+        }
+
+        public void SetStatusError()
+        {
+            Status = PoolStatus.Error;
         }
 
         public void Unlock(int secondsDelayGeneratingFrom = 6)
@@ -66,6 +87,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             Locked = false;
             LockedBy = null;
             GeneratingFrom = DateTime.UtcNow.AddSeconds(secondsDelayGeneratingFrom);
+            Status = PoolStatus.WaitingForWorker;
         }
 
         public void UnlockFromError(int secondsDelayGeneratingFrom = 6)
@@ -74,6 +96,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             Locked = false;
             LockedBy = null;
             GeneratingFrom = DateTime.UtcNow.AddSeconds(secondsDelayGeneratingFrom * ErrorTimes);
+            Status = PoolStatus.WaitingForWorker;
         }
     }
 }
