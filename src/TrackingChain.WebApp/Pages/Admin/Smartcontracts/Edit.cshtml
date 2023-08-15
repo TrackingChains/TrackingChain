@@ -1,54 +1,51 @@
 ﻿@page
 @model TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts.EditModel
 
-<h4>SmartContract</h4>
+<h4>Smart Contract</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="SmartContract.Id" />
-            <div class="form-group">
-                <label asp-for="SmartContract.Address" class="control-label"></label>
-                <input asp-for="SmartContract.Address" class="form-control" />
-                <span asp-validation-for="SmartContract.Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SmartContract.ChainNumberId" class="control-label"></label>
-                <input asp-for="SmartContract.ChainNumberId" class="form-control" />
-                <span asp-validation-for="SmartContract.ChainNumberId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SmartContract.ChainType" class="control-label"></label>
-                <select asp-for="SmartContract.ChainType" class="form-control"></select>
-                <span asp-validation-for="SmartContract.ChainType" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SmartContract.Currency" class="control-label"></label>
-                <input asp-for="SmartContract.Currency" class="form-control" />
-                <span asp-validation-for="SmartContract.Currency" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SmartContract.ExtraInfo" class="control-label"></label>
-                <input asp-for="SmartContract.ExtraInfo" class="form-control" />
-                <span asp-validation-for="SmartContract.ExtraInfo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SmartContract.Name" class="control-label"></label>
-                <input asp-for="SmartContract.Name" class="form-control" />
-                <span asp-validation-for="SmartContract.Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-page="./Index">Back to List</a>
+<div class="form-container">
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="SmartContract.Id" />
+        <div class="form-group">
+            <label asp-for="SmartContract.Address" class="control-label"></label>
+            <input asp-for="SmartContract.Address" class="form-control" />
+            <span asp-validation-for="SmartContract.Address" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="SmartContract.ChainNumberId" class="control-label"></label>
+            <input asp-for="SmartContract.ChainNumberId" class="form-control" />
+            <span asp-validation-for="SmartContract.ChainNumberId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="SmartContract.ChainType" class="control-label"></label>
+            <select asp-for="SmartContract.ChainType" class="form-control"></select>
+            <span asp-validation-for="SmartContract.ChainType" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="SmartContract.Currency" class="control-label"></label>
+            <input asp-for="SmartContract.Currency" class="form-control" />
+            <span asp-validation-for="SmartContract.Currency" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="SmartContract.ExtraInfo" class="control-label"></label>
+            <input asp-for="SmartContract.ExtraInfo" class="form-control" />
+            <span asp-validation-for="SmartContract.ExtraInfo" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="SmartContract.Name" class="control-label"></label>
+            <input asp-for="SmartContract.Name" class="form-control" />
+            <span asp-validation-for="SmartContract.Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>
+    <a asp-page="./Index" class="backedit-link">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

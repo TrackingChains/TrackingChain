@@ -3,42 +3,39 @@
 
 <h4>Account</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Account.Id" />
-            <div class="form-group">
-                <label asp-for="Account.ChainWriterAddress" class="control-label"></label>
-                <input asp-for="Account.ChainWriterAddress" class="form-control" />
-                <span asp-validation-for="Account.ChainWriterAddress" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Account.ChainWatcherAddress" class="control-label"></label>
-                <input asp-for="Account.ChainWatcherAddress" class="form-control" />
-                <span asp-validation-for="Account.ChainWatcherAddress" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Account.Name" class="control-label"></label>
-                <input asp-for="Account.Name" class="form-control" />
-                <span asp-validation-for="Account.Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Account.PrivateKey" class="control-label"></label>
-                <input asp-for="Account.PrivateKey" class="form-control" />
-                <span asp-validation-for="Account.PrivateKey" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-page="./Index">Back to List</a>
+<div class="form-container">
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Account.Id" />
+        <div class="form-group">
+            <label asp-for="Account.ChainWriterAddress" class="control-label">Chain Writer Address</label>
+            <input asp-for="Account.ChainWriterAddress" class="form-control" />
+            <span asp-validation-for="Account.ChainWriterAddress" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Account.ChainWatcherAddress" class="control-label">Chain Watcher Address</label>
+            <input asp-for="Account.ChainWatcherAddress" class="form-control" />
+            <span asp-validation-for="Account.ChainWatcherAddress" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Account.Name" class="control-label">Name</label>
+            <input asp-for="Account.Name" class="form-control" />
+            <span asp-validation-for="Account.Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Account.PrivateKey" class="control-label">Private Key</label>
+            <input asp-for="Account.PrivateKey" class="form-control" />
+            <span asp-validation-for="Account.PrivateKey" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>
+    <a asp-page="./Index" class="backedit-link">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
