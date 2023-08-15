@@ -24,3 +24,51 @@ body {
 .percentage {
   background: repeating-linear-gradient( to right, #ddd, #ddd 1px, #fff 1px, #fff 5% );
 }
+
+.tracking-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+  .tracking-table th,
+  .tracking-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+  }
+
+  .tracking-table th {
+    background-color: #f2f2f2;
+  }
+
+  .tracking-table tbody tr:hover {
+    background-color: #f0f0f0;
+  }
+
+  .tracking-table a.btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+.trackingsection {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+}
+
+  .trackingsection dd {
+    word-wrap: break-word;
+  }
+
+.back-link {
+  margin-top: 10px;
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+}

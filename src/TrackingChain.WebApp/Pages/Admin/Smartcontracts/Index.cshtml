@@ -1,10 +1,11 @@
 ﻿@page
 @model TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts.IndexModel
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
+<div class="container mt-4">
+    <a class="btn btn-primary" asp-page="Create">Create New</a>
+
+    <div class="table-responsive mt-4">
+        <table class="table custom-table">
     <thead>
         <tr>
             <th>
@@ -44,11 +45,13 @@
                 @Html.DisplayFor(modelItem => item.Currency)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                    <a class="btn btn-info btn-sm" asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-info btn-sm" asp-page="./Details" asp-route-id="@item.Id">Details</a>
+                    <a class="btn btn-danger btn-sm" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+    </div>
+</div>

@@ -3,50 +3,56 @@
 @{
 }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TransactionRegistry[0].TrackingId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TransactionRegistry[0].Code)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TransactionRegistry[0].TriageDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TransactionRegistry[0].TransactionStep)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TransactionRegistry[0].TransactionErrorReason)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.TransactionRegistry)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TrackingId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Code)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TriageDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TransactionStep)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TransactionErrorReason)
-                </td>
-                <td>
-                    <a asp-page="./Manage" asp-route-id="@item.TrackingId">Manage</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="container mt-4">
+    <a class="btn btn-primary" asp-page="Create">Create New</a>
+
+    <div class="table-responsive mt-4">
+        <table class="table custom-table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TransactionRegistry[0].TrackingId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TransactionRegistry[0].Code)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TransactionRegistry[0].TriageDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TransactionRegistry[0].TransactionStep)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TransactionRegistry[0].TransactionErrorReason)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.TransactionRegistry)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TrackingId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Code)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TriageDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TransactionStep)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TransactionErrorReason)
+                        </td>
+                        <td>
+                            <a class="btn btn-info btn-sm" asp-page="./Manage" asp-route-id="@item.TrackingId">Manage</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

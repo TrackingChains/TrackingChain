@@ -1,53 +1,53 @@
 ﻿@page
 @model TrackingChain.TriageWebApplication.Pages.Admin.Trackings.TriagesModel
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TransactionTriage[0].TrackingIdentify)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TransactionTriage[0].Code)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TransactionTriage[0].IsInPool)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TransactionTriage[0].Completed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TransactionTriage[0].ReceivedDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.TransactionTriage)
-        {
+
+<div class="table-responsive mt-4">
+    <table class="tracking-table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TrackingIdentify)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Code)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsInPool)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Completed)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ReceivedDate)
-                </td>
-                <td>
-                    <a asp-page="./TriageDetails" asp-route-id="@item.Id">Details</a>
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.TransactionTriage[0].TrackingIdentify)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TransactionTriage[0].Code)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TransactionTriage[0].IsInPool)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TransactionTriage[0].Completed)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TransactionTriage[0].ReceivedDate)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.TransactionTriage)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TrackingIdentify)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsInPool)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Completed)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReceivedDate)
+                    </td>
+                    <td>
+                        <a class="btn btn-info btn-sm" asp-page="./TriageDetails" asp-route-id="@item.Id">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
