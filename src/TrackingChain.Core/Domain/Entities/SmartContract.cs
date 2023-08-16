@@ -39,5 +39,22 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public string ExtraInfo { get; private set; }
         public string Name { get; private set; }
         public virtual ProfileGroup? ProfileGroup { get; private set; } = default!;
+
+        // Methods.
+        public void Update(
+            string address,
+            int chainNumberId,
+            ChainType chainType,
+            string currency,
+            string extraInfo,
+            string name)
+        {
+            Address = address;
+            ChainNumberId = chainNumberId;
+            ChainType = chainType;
+            Currency = currency;
+            ExtraInfo = extraInfo;
+            Name = name;
+        }
     }
 }

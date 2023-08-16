@@ -1,4 +1,6 @@
-﻿namespace TrackingChain.TransactionTriageCore.ModelViews
+﻿using System;
+
+namespace TrackingChain.TransactionTriageCore.ModelViews
 {
     public class TrackingStatusStatisticModelView
     {
@@ -25,7 +27,7 @@
             if (total == 0)
                 return 0;
 
-            return (value / total) * 100;
+            return (int)Math.Round(value / (decimal)total * 100);
         }
 
         private int CalculatePercentageOnSuccessful(int value)

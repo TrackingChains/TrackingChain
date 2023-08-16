@@ -4,6 +4,7 @@ namespace TrackingChain.TriageWebApplication.ModelBinding
 {
     public class TrackingBinding
     {
+        // Properties.
         [BindProperty]
         public string Code { get; set; } = default!;
 

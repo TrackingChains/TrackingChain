@@ -7,9 +7,9 @@
         Transaction Status
     </dt>
     <dd class="percentage percentage-@Model.TrackingStatus.TriagePercentage color-lightgreen"><span class="text">Triage: @Model.TrackingStatus.Triage (@Model.TrackingStatus.TriagePercentage%)</span></dd>
-    <dd class="percentage percentage-@Model.TrackingStatus.PoolPercentage color-green"><span class="text">Pool: @Model.TrackingStatus.Triage (@Model.TrackingStatus.PoolPercentage%)</span></dd>
-    <dd class="percentage percentage-@Model.TrackingStatus.PendingPercentage color-blue"><span class="text">Pending: @Model.TrackingStatus.Triage (@Model.TrackingStatus.PendingPercentage%)</span></dd>
-    <dd class="percentage percentage-@Model.TrackingStatus.ErrorPercentage color-red"><span class="text">Error: @Model.TrackingStatus.Triage (@Model.TrackingStatus.ErrorPercentage%)</span></dd>
+    <dd class="percentage percentage-@Model.TrackingStatus.PoolPercentage color-green"><span class="text">Pool: @Model.TrackingStatus.Pool (@Model.TrackingStatus.PoolPercentage%)</span></dd>
+    <dd class="percentage percentage-@Model.TrackingStatus.PendingPercentage color-blue"><span class="text">Pending: @Model.TrackingStatus.Pending (@Model.TrackingStatus.PendingPercentage%)</span></dd>
+    <dd class="percentage percentage-@Model.TrackingStatus.ErrorPercentage color-red"><span class="text">Error: @Model.TrackingStatus.Error (@Model.TrackingStatus.ErrorPercentage%)</span></dd>
 </dl>
 
 <dl>
@@ -17,5 +17,5 @@
         Transaction Result
     </dt>
     <dd class="percentage percentage-@Model.TrackingStatus.SuccessfulPercentage color-green"><span class="text">Success: @Model.TrackingStatus.Successful (@Model.TrackingStatus.SuccessfulPercentage%)</span></dd>
-    <dd class="percentage percentage-@Model.TrackingStatus.ErrorPercentageOnSuccessful color-red"><span class="text">Error: @Model.TrackingStatus.Triage (@Model.TrackingStatus.ErrorPercentageOnSuccessful%)</span></dd>
+    <dd class="percentage percentage-@Model.TrackingStatus.ErrorPercentageOnSuccessful color-red"><span class="text">Error: @Model.TrackingStatus.Error (@Model.TrackingStatus.ErrorPercentageOnSuccessful%)</span></dd>
 </dl>

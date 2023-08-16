@@ -51,5 +51,22 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         {
             Category = category;
         }
+
+        // Methods.
+        public void Update(
+            string? aggregationCode,
+            string? authority,
+            string? category,
+            string name,
+            long smartContractId,
+            int priority)
+        {
+            AggregationCode = aggregationCode;
+            Authority = authority;
+            Category = category;
+            Name = name;
+            SmartContractId = smartContractId;
+            Priority = priority;
+        }
     }
 }

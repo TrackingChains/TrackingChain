@@ -96,5 +96,18 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
                 return urlToKey;
             }
         }
+
+        // Methods.
+        public void Update(
+            string chainWriterAddress, 
+            string chainWatcherAddress, 
+            string name, 
+            string privateKey)
+        {
+            ChainWriterAddress = chainWriterAddress;
+            ChainWatcherAddress = chainWatcherAddress;
+            Name = name;
+            PrivateKey = privateKey;
+        }
     }
 }

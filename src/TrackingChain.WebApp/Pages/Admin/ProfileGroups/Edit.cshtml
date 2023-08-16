@@ -6,36 +6,36 @@
 <div class="form-container">
     <form method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" asp-for="ProfileGroup.Id" />
+        <input type="hidden" asp-for="ProfileGroupBinding.Id" />
         <div class="form-group">
-            <label asp-for="ProfileGroup.AggregationCode" class="control-label"></label>
-            <input asp-for="ProfileGroup.AggregationCode" class="form-control" />
-            <span asp-validation-for="ProfileGroup.AggregationCode" class="text-danger"></span>
+            <label asp-for="ProfileGroupBinding.AggregationCode" class="control-label"></label>
+            <input asp-for="ProfileGroupBinding.AggregationCode" class="form-control" />
+            <span asp-validation-for="ProfileGroupBinding.AggregationCode" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="ProfileGroup.Authority" class="control-label"></label>
-            <input asp-for="ProfileGroup.Authority" class="form-control" />
-            <span asp-validation-for="ProfileGroup.Authority" class="text-danger"></span>
+            <label asp-for="ProfileGroupBinding.Authority" class="control-label"></label>
+            <input asp-for="ProfileGroupBinding.Authority" class="form-control" />
+            <span asp-validation-for="ProfileGroupBinding.Authority" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="ProfileGroup.Category" class="control-label"></label>
-            <input asp-for="ProfileGroup.Category" class="form-control" />
-            <span asp-validation-for="ProfileGroup.Category" class="text-danger"></span>
+            <label asp-for="ProfileGroupBinding.Category" class="control-label"></label>
+            <input asp-for="ProfileGroupBinding.Category" class="form-control" />
+            <span asp-validation-for="ProfileGroupBinding.Category" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="ProfileGroup.Name" class="control-label"></label>
-            <input asp-for="ProfileGroup.Name" class="form-control" />
-            <span asp-validation-for="ProfileGroup.Name" class="text-danger"></span>
+            <label asp-for="ProfileGroupBinding.Name" class="control-label"></label>
+            <input asp-for="ProfileGroupBinding.Name" class="form-control" />
+            <span asp-validation-for="ProfileGroupBinding.Name" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="ProfileGroup.SmartContractId" class="control-label"></label>
-            <select asp-for="ProfileGroup.SmartContractId" class="form-control" asp-items="ViewBag.SmartContractId"></select>
-            <span asp-validation-for="ProfileGroup.SmartContractId" class="text-danger"></span>
+            <label asp-for="ProfileGroupBinding.SmartContractId" class="control-label"></label>
+            <select asp-for="ProfileGroupBinding.SmartContractId" class="form-control" asp-items="ViewBag.SmartContractId"></select>
+            <span asp-validation-for="ProfileGroupBinding.SmartContractId" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="ProfileGroup.Priority" class="control-label"></label>
-            <input asp-for="ProfileGroup.Priority" class="form-control" />
-            <span asp-validation-for="ProfileGroup.Priority" class="text-danger"></span>
+            <label asp-for="ProfileGroupBinding.Priority" class="control-label"></label>
+            <input asp-for="ProfileGroupBinding.Priority" class="form-control" />
+            <span asp-validation-for="ProfileGroupBinding.Priority" class="text-danger"></span>
         </div>
         <div class="form-group">
             <input type="submit" value="Save" class="btn btn-primary" />
