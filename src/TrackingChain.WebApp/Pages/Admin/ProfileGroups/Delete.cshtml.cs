@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
+using TrackingChain.TriageWebApplication.ModelBinding;
 
 namespace TrackingChain.TriageWebApplication.Pages.Admin.ProfileGroups
 {
@@ -21,7 +22,7 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.ProfileGroups
         public bool AlreadyUsedProfileGroup { get; set; } = default!;
 
         [BindProperty]
-        public ProfileGroup ProfileGroup { get; set; } = default!;
+        public ProfileGroupBinding ProfileGroupBinding { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -37,7 +38,7 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.ProfileGroups
             if (profilegroup == null)
                 return NotFound();
             else
-                ProfileGroup = profilegroup;
+                ProfileGroupBinding = new ProfileGroupBinding(profilegroup);
 
             return Page();
         }
@@ -51,8 +52,7 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.ProfileGroups
 
             if (profilegroup != null)
             {
-                ProfileGroup = profilegroup;
-                dbContext.ProfileGroups.Remove(ProfileGroup);
+                dbContext.ProfileGroups.Remove(profilegroup);
                 await dbContext.SaveChangesAsync();
             }
 

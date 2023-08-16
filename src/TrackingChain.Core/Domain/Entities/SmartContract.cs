@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
@@ -38,7 +39,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public string Currency { get; private set; }
         public string ExtraInfo { get; private set; }
         public string Name { get; private set; }
-        public virtual ProfileGroup? ProfileGroup { get; private set; } = default!;
+        public virtual ICollection<ProfileGroup> ProfileGroups { get; private set; } = default!;
 
         // Methods.
         public void Update(

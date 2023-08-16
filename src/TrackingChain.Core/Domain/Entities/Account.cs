@@ -8,16 +8,12 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
     {
         // Constructors.
         public Account(
-            Guid profile,
             string chainWriterAddress,
             string chainWatcherAddress,
             string name,
             string privateKey)
         {
             ArgumentNullException.ThrowIfNullOrEmpty(privateKey);
-
-            if (profile == Guid.Empty)
-                throw new ArgumentException($"{nameof(profile)} is empty");
 
             this.ChainWriterAddress = chainWriterAddress;
             this.ChainWatcherAddress = chainWatcherAddress;

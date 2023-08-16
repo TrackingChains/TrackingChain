@@ -24,5 +24,6 @@ namespace TrackingChain.TriageWebApplication.ModelBinding
         public string ChainWatcherAddress { get; set; } = default!;
         public string Name { get; set; } = default!;
         public string PrivateKey { get; set; } = default!;
+        public Guid Profile { get; set; } = default!;
     }
 }

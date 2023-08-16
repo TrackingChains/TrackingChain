@@ -19,7 +19,6 @@ namespace TrackingChain.TriageWebApplication.ModelBinding
             Currency = smartContract.Currency;
             ExtraInfo = smartContract.ExtraInfo;
             Name = smartContract.Name;
-            ProfileGroupId = smartContract.ProfileGroup?.Id  ?? Guid.Empty;
         }
 
         // Properties.
@@ -30,6 +29,5 @@ namespace TrackingChain.TriageWebApplication.ModelBinding
         public string Currency { get; set; } = default!;
         public string ExtraInfo { get; set; } = default!;
         public string Name { get; set; } = default!;
-        public Guid ProfileGroupId { get; private set; } = default!;
     }
 }
