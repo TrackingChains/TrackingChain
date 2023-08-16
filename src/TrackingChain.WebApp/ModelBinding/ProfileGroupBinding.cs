@@ -22,11 +22,11 @@ namespace TrackingChain.TriageWebApplication.ModelBinding
 
         // Properties.
         public Guid Id { get; private set; }
-        public string? AggregationCode { get; private set; }
-        public string? Authority { get; private set; }
-        public string? Category { get; private set; }
-        public string Name { get; private set; } = default!;
+        public string? AggregationCode { get; set; }
+        public string? Authority { get; set; }
+        public string? Category { get; set; }
+        public string Name { get; set; } = default!;
         public long SmartContractId { get; set; }
-        public int Priority { get; private set; }
+        public int Priority { get; set; }
     }
 }
