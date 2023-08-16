@@ -21,7 +21,7 @@ namespace TrackingChain.TriageWebApplication.ModelBinding
         }
 
         // Properties.
-        public Guid Id { get; private set; }
+        public Guid Id { get; set; }
         public string? AggregationCode { get; set; }
         public string? Authority { get; set; }
         public string? Category { get; set; }
