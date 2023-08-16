@@ -57,7 +57,9 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.AccountProfileGroups
             if (accountProfileGroup == null)
                 return NotFound();
 
-            accountProfileGroup.Update(AccountProfileGroupBinding.Priority);
+            accountProfileGroup.Update(
+                AccountProfileGroupBinding.Name,
+                AccountProfileGroupBinding.Priority);
             dbContext.Update(accountProfileGroup);
 
             await dbContext.SaveChangesAsync();

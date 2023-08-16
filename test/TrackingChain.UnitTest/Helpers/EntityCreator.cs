@@ -207,9 +207,9 @@ namespace TrackingChain.UnitTest.Helpers
             await dbContext.SaveChangesAsync();
 
             //account profile group
-            var accountProfileGroupOne = new AccountProfileGroup(primaryProfileAccount, profileGroupOne.Id, 0);
+            var accountProfileGroupOne = new AccountProfileGroup("primaryName", primaryProfileAccount, profileGroupOne.Id, 0);
             dbContext.AccountProfileGroup.Add(accountProfileGroupOne);
-            var accountProfileGroupTwo = new AccountProfileGroup(secondaryProfileAccount, profileGroupTwo.Id, 1);
+            var accountProfileGroupTwo = new AccountProfileGroup("secondaryName", secondaryProfileAccount, profileGroupTwo.Id, 1);
             dbContext.AccountProfileGroup.Add(accountProfileGroupTwo);
             await dbContext.SaveChangesAsync();
 

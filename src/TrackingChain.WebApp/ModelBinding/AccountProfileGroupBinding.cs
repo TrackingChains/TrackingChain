@@ -15,6 +15,7 @@ namespace TrackingChain.TriageWebApplication.ModelBinding
             AccountName = accountProfileGroup.Account.Name;
             ProfileGroupId = accountProfileGroup.ProfileGroupId;
             ProfileGroupName = accountProfileGroup.ProfileGroup.Name;
+            Name = accountProfileGroup.Name;
             Priority = accountProfileGroup.Priority;
         }
 
@@ -23,6 +24,7 @@ namespace TrackingChain.TriageWebApplication.ModelBinding
         public string AccountName { get; set; } = default!;
         public Guid ProfileGroupId { get; set; }
         public string ProfileGroupName { get; set; } = default!;
+        public string Name { get; set; } = default!;
         public int Priority { get; set; }
     }
 }

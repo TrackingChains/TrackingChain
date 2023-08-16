@@ -65,7 +65,11 @@ namespace TrackingChain.UnitTest.Triage
             //Arrange
             var entityTransactionRegistries = EntityCreator.CreateTransactionRegistry(10);
             foreach (var item in entityTransactionRegistries)
+            {
+                item.SetToRegistryError(TransactionErrorReason.UnableToSendTransactionOnChain);
                 item.SetToCanceled();
+            }
+                
             dbContext.TransactionRegistries.AddRange(entityTransactionRegistries);
             dbContext.SaveChanges();
 

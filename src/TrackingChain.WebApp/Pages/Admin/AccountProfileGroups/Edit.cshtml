@@ -11,6 +11,11 @@
         <input type="hidden" asp-for="AccountProfileGroupBinding.AccountName" />
         <input type="hidden" asp-for="AccountProfileGroupBinding.ProfileGroupName" />
         <div class="form-group">
+            <label asp-for="AccountProfileGroupBinding.Name" class="control-label"></label>
+            <input asp-for="AccountProfileGroupBinding.Name" class="form-control" />
+            <span asp-validation-for="AccountProfileGroupBinding.Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
             <label asp-for="AccountProfileGroupBinding.Priority" class="control-label"></label>
             <input asp-for="AccountProfileGroupBinding.Priority" class="form-control" />
             <span asp-validation-for="AccountProfileGroupBinding.Priority" class="text-danger"></span>
