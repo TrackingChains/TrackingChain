@@ -17,7 +17,9 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts
         }
 
         [BindProperty]
-      public SmartContract SmartContract { get; set; } = default!;
+        public bool AlreadyUsedSmartContract { get; set; } = default!;
+        [BindProperty]
+        public SmartContract SmartContract { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(long? id)
         {
@@ -28,11 +30,13 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts
 
             var smartcontract = await dbContext.SmartContracts.FirstOrDefaultAsync(m => m.Id == id);
 
+            AlreadyUsedSmartContract = await dbContext.TransactionRegistries.AnyAsync(m => m.SmartContractId == id);
+
             if (smartcontract == null)
             {
                 return NotFound();
             }
-            else 
+            else
             {
                 SmartContract = smartcontract;
             }
@@ -49,6 +53,10 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts
 
             if (smartcontract != null)
             {
+                if (await dbContext.TransactionRegistries.AnyAsync(m => m.SmartContractId == id))
+                {
+                    return RedirectToPage("./Index");
+                }
                 SmartContract = smartcontract;
                 dbContext.SmartContracts.Remove(SmartContract);
                 await dbContext.SaveChangesAsync();
