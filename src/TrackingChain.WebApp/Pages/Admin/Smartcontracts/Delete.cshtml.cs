@@ -18,6 +18,7 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts
 
         [BindProperty]
         public bool AlreadyUsedSmartContract { get; set; } = default!;
+
         [BindProperty]
         public SmartContract SmartContract { get; set; } = default!;
 

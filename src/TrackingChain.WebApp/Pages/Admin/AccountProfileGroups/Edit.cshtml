@@ -1,0 +1,29 @@
+﻿@page
+@model TrackingChain.TriageWebApplication.Pages.Admin.AccountProfileGroups.EditModel
+
+<h4>Account to Profile Group</h4>
+<hr />
+<div class="form-container">
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="AccountProfileGroupBinding.AccountId" />
+        <input type="hidden" asp-for="AccountProfileGroupBinding.ProfileGroupId" />
+        <input type="hidden" asp-for="AccountProfileGroupBinding.AccountName" />
+        <input type="hidden" asp-for="AccountProfileGroupBinding.ProfileGroupName" />
+        <div class="form-group">
+            <label asp-for="AccountProfileGroupBinding.Priority" class="control-label"></label>
+            <input asp-for="AccountProfileGroupBinding.Priority" class="form-control" />
+            <span asp-validation-for="AccountProfileGroupBinding.Priority" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>
+    <a asp-page="./Index" class="backedit-link">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

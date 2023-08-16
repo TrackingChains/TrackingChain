@@ -18,7 +18,10 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.ProfileGroups
         }
 
         [BindProperty]
-      public ProfileGroup ProfileGroup { get; set; } = default!;
+        public bool AlreadyUsedProfileGroup { get; set; } = default!;
+
+        [BindProperty]
+        public ProfileGroup ProfileGroup { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -29,23 +32,21 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.ProfileGroups
 
             var profilegroup = await dbContext.ProfileGroups.FirstOrDefaultAsync(m => m.Id == id);
 
+            AlreadyUsedProfileGroup = await dbContext.AccountProfileGroup.AnyAsync(m => m.ProfileGroupId == id);
+
             if (profilegroup == null)
-            {
                 return NotFound();
-            }
-            else 
-            {
+            else
                 ProfileGroup = profilegroup;
-            }
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(Guid? id)
         {
             if (id == null || dbContext.ProfileGroups == null)
-            {
                 return NotFound();
-            }
+
             var profilegroup = await dbContext.ProfileGroups.FindAsync(id);
 
             if (profilegroup != null)

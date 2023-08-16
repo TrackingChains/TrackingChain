@@ -27,5 +27,11 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public int Priority { get; private set; }
         public virtual Account Account { get; set; } = default!;
         public virtual ProfileGroup ProfileGroup { get; set; } = default!;
+
+        // Methods.
+        public void Update(int priority)
+        {
+            Priority = priority;
+        }
     }
 }

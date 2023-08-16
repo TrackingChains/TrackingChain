@@ -18,6 +18,9 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Accounts
         }
 
         [BindProperty]
+        public bool AlreadyUsedAccount { get; set; } = default!;
+
+        [BindProperty]
         public Account Account { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
@@ -29,23 +32,21 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Accounts
 
             var account = await dbContext.Accounts.FirstOrDefaultAsync(m => m.Id == id);
 
+            AlreadyUsedAccount = await dbContext.AccountProfileGroup.AnyAsync(m => m.AccountId == id);
+
             if (account == null)
-            {
                 return NotFound();
-            }
             else
-            {
                 Account = account;
-            }
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(Guid? id)
         {
             if (id == null || dbContext.Accounts == null)
-            {
                 return NotFound();
-            }
+
             var account = await dbContext.Accounts.FindAsync(id);
 
             if (account != null)
