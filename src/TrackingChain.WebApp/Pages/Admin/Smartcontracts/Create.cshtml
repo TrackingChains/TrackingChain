@@ -1,5 +1,14 @@
 ﻿@page
+@using TrackingChain.Common.Enums;
 @model TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts.CreateModel
+@{
+    var chainTypeEnumValues = Enum.GetValues(typeof(ChainType)).Cast<ChainType>().Select(e => new SelectListItem
+            {
+                Value = e.ToString(),
+                Text = e.ToString()
+            }).ToList();
+    var chainTypeSelectList = new SelectList(chainTypeEnumValues, "Value", "Text");
+}
 
 <h4>SmartContract</h4>
 <hr />
@@ -8,34 +17,34 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="SmartContract.Address" class="control-label"></label>
-                <input asp-for="SmartContract.Address" class="form-control" />
-                <span asp-validation-for="SmartContract.Address" class="text-danger"></span>
+                <label asp-for="SmartContractBinding.Address" class="control-label"></label>
+                <input asp-for="SmartContractBinding.Address" class="form-control" />
+                <span asp-validation-for="SmartContractBinding.Address" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SmartContract.ChainNumberId" class="control-label"></label>
-                <input asp-for="SmartContract.ChainNumberId" class="form-control" />
-                <span asp-validation-for="SmartContract.ChainNumberId" class="text-danger"></span>
+                <label asp-for="SmartContractBinding.ChainNumberId" class="control-label"></label>
+                <input asp-for="SmartContractBinding.ChainNumberId" class="form-control" />
+                <span asp-validation-for="SmartContractBinding.ChainNumberId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SmartContract.ChainType" class="control-label"></label>
-                <select asp-for="SmartContract.ChainType" class="form-control"></select>
-                <span asp-validation-for="SmartContract.ChainType" class="text-danger"></span>
+                <label asp-for="SmartContractBinding.ChainType" class="control-label"></label>
+                <select asp-for="SmartContractBinding.ChainType" class="form-control" asp-items="chainTypeSelectList"></select>
+                <span asp-validation-for="SmartContractBinding.ChainType" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SmartContract.Currency" class="control-label"></label>
-                <input asp-for="SmartContract.Currency" class="form-control" />
-                <span asp-validation-for="SmartContract.Currency" class="text-danger"></span>
+                <label asp-for="SmartContractBinding.Currency" class="control-label"></label>
+                <input asp-for="SmartContractBinding.Currency" class="form-control" />
+                <span asp-validation-for="SmartContractBinding.Currency" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SmartContract.ExtraInfo" class="control-label"></label>
-                <input asp-for="SmartContract.ExtraInfo" class="form-control" />
-                <span asp-validation-for="SmartContract.ExtraInfo" class="text-danger"></span>
+                <label asp-for="SmartContractBinding.ExtraInfo" class="control-label"></label>
+                <input asp-for="SmartContractBinding.ExtraInfo" class="form-control" />
+                <span asp-validation-for="SmartContractBinding.ExtraInfo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SmartContract.Name" class="control-label"></label>
-                <input asp-for="SmartContract.Name" class="form-control" />
-                <span asp-validation-for="SmartContract.Name" class="text-danger"></span>
+                <label asp-for="SmartContractBinding.Name" class="control-label"></label>
+                <input asp-for="SmartContractBinding.Name" class="form-control" />
+                <span asp-validation-for="SmartContractBinding.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
