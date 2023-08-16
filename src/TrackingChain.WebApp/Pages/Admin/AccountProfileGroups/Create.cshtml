@@ -7,6 +7,8 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="AccountProfileGroupBinding.AccountName" value="create" />
+            <input type="hidden" asp-for="AccountProfileGroupBinding.ProfileGroupName" value="create" />
             <div class="form-group">
                 <label asp-for="AccountProfileGroupBinding.Name" class="control-label"></label>
                 <input asp-for="AccountProfileGroupBinding.Name" class="form-control" />

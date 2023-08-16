@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
+using TrackingChain.TriageWebApplication.ModelBinding;
 
 namespace TrackingChain.TriageWebApplication.Pages.Admin.AccountProfileGroups
 {
@@ -18,7 +19,7 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.AccountProfileGroups
         }
 
         [BindProperty]
-        public AccountProfileGroup AccountProfileGroup { get; set; } = default!;
+        public AccountProfileGroupBinding AccountProfileGroupBinding { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? accountId, Guid? profileGroupId)
         {
@@ -35,7 +36,7 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.AccountProfileGroups
             if (accountProfileGroup == null)
                 return NotFound();
 
-            AccountProfileGroup = accountProfileGroup;
+            AccountProfileGroupBinding = new AccountProfileGroupBinding(accountProfileGroup);
 
             return Page();
         }
@@ -54,8 +55,7 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.AccountProfileGroups
                                           m.ProfileGroupId == profileGroupId);
             if (accountprofilegroup != null)
             {
-                AccountProfileGroup = accountprofilegroup;
-                dbContext.AccountProfileGroup.Remove(AccountProfileGroup);
+                dbContext.AccountProfileGroup.Remove(accountprofilegroup);
                 await dbContext.SaveChangesAsync();
             }
 
