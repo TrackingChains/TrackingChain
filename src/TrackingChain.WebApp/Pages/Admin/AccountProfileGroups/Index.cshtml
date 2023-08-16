@@ -9,6 +9,9 @@
             <thead>
                 <tr>
                     <th>
+                        @Html.DisplayNameFor(model => model.AccountProfileGroups[0].Name)
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => model.AccountProfileGroups[0].Account)
                     </th>
                     <th>
@@ -24,6 +27,9 @@
                 @foreach (var item in Model.AccountProfileGroups)
                 {
                     <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Account.Name)
                         </td>
