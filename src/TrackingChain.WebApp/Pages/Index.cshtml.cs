@@ -17,9 +17,9 @@ namespace TrackingChain.TriageWebApplication.Pages
         }
 
         // GET
-        public void OnGet()
+        public IActionResult OnGet()
         {
-
+            return RedirectToPage("Monitor");
         }
     }
 }
