@@ -62,13 +62,22 @@
         }
         Showing @itemShowStart of @itemShowEnd items out of @Model.TotalItems.
     </div>
-    @if (Model.SmartContracts.HasPreviousPage)
-    {
-        <a asp-page="./Index" class="pagination" asp-route-pageIndex="@(Model.SmartContracts.PageIndex - 1)">Previous</a>
-    }
+    <div class="pagination">
+        @if (Model.SmartContracts.HasPreviousPage)
+        {
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="1">First</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.SmartContracts.PageIndex - 1)">Previous</a>
+        }
 
-    @if (Model.SmartContracts.HasNextPage)
-    {
-        <a asp-page="./Index" class="pagination" asp-route-pageIndex="@(Model.SmartContracts.PageIndex + 1)">Next</a>
-    }
+        @for (int i = Math.Max(1, Model.SmartContracts.PageIndex - 2); i <= Math.Min(Model.SmartContracts.TotalPages, Model.SmartContracts.PageIndex + 2); i++)
+        {
+            <a class="page-link @(i == Model.SmartContracts.PageIndex ? "active" : "")" asp-page="./Index" asp-route-pageIndex="@i">@i</a>
+        }
+
+        @if (Model.SmartContracts.HasNextPage)
+        {
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.SmartContracts.PageIndex + 1)">Next</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@Model.SmartContracts.TotalPages">Last</a>
+        }
+    </div>
 </div>

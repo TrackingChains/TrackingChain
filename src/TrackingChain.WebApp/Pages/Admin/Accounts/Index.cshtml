@@ -38,13 +38,22 @@
         }
         Showing @itemShowStart of @itemShowEnd items out of @Model.TotalItems.
     </div>
-    @if (Model.Accounts.HasPreviousPage)
-    {
-        <a asp-page="./Index" class="pagination" asp-route-pageIndex="@(Model.Accounts.PageIndex - 1)">Previous</a>
-    }
+    <div class="pagination">
+        @if (Model.Accounts.HasPreviousPage)
+        {
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="1">First</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.Accounts.PageIndex - 1)">Previous</a>
+        }
 
-    @if (Model.Accounts.HasNextPage)
-    {
-        <a asp-page="./Index" class="pagination" asp-route-pageIndex="@(Model.Accounts.PageIndex + 1)">Next</a>
-    }
+        @for (int i = Math.Max(1, Model.Accounts.PageIndex - 2); i <= Math.Min(Model.Accounts.TotalPages, Model.Accounts.PageIndex + 2); i++)
+        {
+            <a class="page-link @(i == Model.Accounts.PageIndex ? "active" : "")" asp-page="./Index" asp-route-pageIndex="@i">@i</a>
+        }
+
+        @if (Model.Accounts.HasNextPage)
+        {
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.Accounts.PageIndex + 1)">Next</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@Model.Accounts.TotalPages">Last</a>
+        }
+    </div>
 </div>

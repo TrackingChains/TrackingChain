@@ -1,7 +1,8 @@
 ﻿@page
 @model TrackingChain.TriageWebApplication.Pages.Admin.Trackings.PendingsModel
 
-<div class="table-responsive mt-4">
+<div class="container mt-4">
+    <div class="table-responsive mt-4">
     <table class="tracking-table">
         <thead>
             <tr>
@@ -55,29 +56,30 @@
             }
         </tbody>
     </table>
-</div>
-<div class="total-items">
-    @{
-        var itemShowEnd = Model.PageSize * (Model.TransactionPendings.PageIndex - 1) + Model.TransactionPendings.Count;
-        var itemShowStart = itemShowEnd - Model.TransactionPendings.Count + 1;
-    }
-    Showing @itemShowStart of @itemShowEnd items out of @Model.TotalItems.
-</div>
-<div class="pagination">
-    @if (Model.TransactionPendings.HasPreviousPage)
-    {
-        <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="1">First</a>
-        <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="@(Model.TransactionPendings.PageIndex - 1)">Previous</a>
-    }
+    </div>
+    <div class="total-items">
+        @{
+            var itemShowEnd = Model.PageSize * (Model.TransactionPendings.PageIndex - 1) + Model.TransactionPendings.Count;
+            var itemShowStart = itemShowEnd - Model.TransactionPendings.Count + 1;
+        }
+        Showing @itemShowStart of @itemShowEnd items out of @Model.TotalItems.
+    </div>
+    <div class="pagination">
+        @if (Model.TransactionPendings.HasPreviousPage)
+        {
+            <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="1">First</a>
+            <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="@(Model.TransactionPendings.PageIndex - 1)">Previous</a>
+        }
 
-    @for (int i = Math.Max(1, Model.TransactionPendings.PageIndex - 2); i <= Math.Min(Model.TransactionPendings.TotalPages, Model.TransactionPendings.PageIndex + 2); i++)
-    {
-        <a class="page-link @(i == Model.TransactionPendings.PageIndex ? "active" : "")" asp-page="./Pendings" asp-route-pageIndex="@i">@i</a>
-    }
+        @for (int i = Math.Max(1, Model.TransactionPendings.PageIndex - 2); i <= Math.Min(Model.TransactionPendings.TotalPages, Model.TransactionPendings.PageIndex + 2); i++)
+        {
+            <a class="page-link @(i == Model.TransactionPendings.PageIndex ? "active" : "")" asp-page="./Pendings" asp-route-pageIndex="@i">@i</a>
+        }
 
-    @if (Model.TransactionPendings.HasNextPage)
-    {
-        <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="@(Model.TransactionPendings.PageIndex + 1)">Next</a>
-        <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="@Model.TransactionPendings.TotalPages">Last</a>
-    }
+        @if (Model.TransactionPendings.HasNextPage)
+        {
+            <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="@(Model.TransactionPendings.PageIndex + 1)">Next</a>
+            <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="@Model.TransactionPendings.TotalPages">Last</a>
+        }
+    </div>
 </div>
