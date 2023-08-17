@@ -50,7 +50,7 @@
                             @Html.DisplayFor(modelItem => item.TriageDate)
                         </td>
                         <td>
-                            <a asp-page="./PoolDetails" asp-route-id="@item.TrackingId">Details</a>
+                            <a class="btn btn-info btn-sm" asp-page="./PoolDetails" asp-route-id="@item.TrackingId">Details</a>
                         </td>
                     </tr>
                 }
