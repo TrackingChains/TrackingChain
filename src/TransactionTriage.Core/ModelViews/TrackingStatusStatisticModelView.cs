@@ -1,4 +1,6 @@
-﻿namespace TrackingChain.TransactionTriageCore.ModelViews
+﻿using System;
+
+namespace TrackingChain.TransactionTriageCore.ModelViews
 {
     public class TrackingStatusStatisticModelView
     {
@@ -17,6 +19,14 @@
         public int ErrorPercentageOnSuccessful => CalculatePercentageOnSuccessful(Error);
         public int SuccessfulPercentage => CalculatePercentageOnSuccessful(Successful);
 
+
+        public int TimingAvgTriageToPool { get; set; }
+        public int TimingAvgPoolToPending { get; set; }
+        public int TimingAvgPendingToCompleted { get; set; }
+        public int TimingAvgTriageToCompleted { get; set; }
+        public int TimingMinAvgLastMonthTriageToCompleted { get; set; }
+        public int TimingMaxAvgLastMonthTriageToCompleted { get; set; }
+
         //Helpers.
 
         private int CalculatePercentage(int value)
@@ -25,7 +35,7 @@
             if (total == 0)
                 return 0;
 
-            return (value / total) * 100;
+            return (int)Math.Round(value / (decimal)total * 100);
         }
 
         private int CalculatePercentageOnSuccessful(int value)

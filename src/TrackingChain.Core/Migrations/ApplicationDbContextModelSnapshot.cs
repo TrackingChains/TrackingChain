@@ -60,6 +60,10 @@ namespace TrackingChain.Core.Migrations
                     b.Property<Guid>("ProfileGroupId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Priority")
                         .HasColumnType("int");
 
@@ -97,8 +101,7 @@ namespace TrackingChain.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SmartContractId")
-                        .IsUnique();
+                    b.HasIndex("SmartContractId");
 
                     b.ToTable("ProfileGroups", (string)null);
                 });
@@ -466,8 +469,8 @@ namespace TrackingChain.Core.Migrations
             modelBuilder.Entity("TrackingChain.TrackingChainCore.Domain.Entities.ProfileGroup", b =>
                 {
                     b.HasOne("TrackingChain.TrackingChainCore.Domain.Entities.SmartContract", "SmartContract")
-                        .WithOne("ProfileGroup")
-                        .HasForeignKey("TrackingChain.TrackingChainCore.Domain.Entities.ProfileGroup", "SmartContractId")
+                        .WithMany("ProfileGroups")
+                        .HasForeignKey("SmartContractId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -476,7 +479,7 @@ namespace TrackingChain.Core.Migrations
 
             modelBuilder.Entity("TrackingChain.TrackingChainCore.Domain.Entities.SmartContract", b =>
                 {
-                    b.Navigation("ProfileGroup");
+                    b.Navigation("ProfileGroups");
                 });
 #pragma warning restore 612, 618
         }

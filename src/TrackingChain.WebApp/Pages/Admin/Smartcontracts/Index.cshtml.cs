@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 
@@ -20,15 +16,20 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts
         }
 
 #pragma warning disable CA2227 // Collection properties should be read only
-        public IList<SmartContract> SmartContract { get;set; } = default!;
+        public PaginatedList<SmartContract> SmartContracts { get; set; } = default!;
 #pragma warning restore CA2227 // Collection properties should be read only
+        public int PageSize { get; set; } = 5;
+        public int PageIndex { get; set; } = 1;
+        public int TotalItems { get; private set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(int pageIndex = 1)
         {
-            if (dbContext.SmartContracts != null)
-            {
-                SmartContract = await dbContext.SmartContracts.ToListAsync();
-            }
+            var query = dbContext.SmartContracts;
+
+            TotalItems = await query.CountAsync();
+
+            PageIndex = pageIndex;
+            SmartContracts = await PaginatedList<SmartContract>.CreateAsync(query, PageIndex, PageSize);
         }
     }
 }

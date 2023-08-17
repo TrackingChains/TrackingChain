@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
+using TrackingChain.TriageWebApplication.ModelBinding;
 
 namespace TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts
 {
@@ -18,47 +19,41 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts
 
         [BindProperty]
         public bool AlreadyUsedSmartContract { get; set; } = default!;
+
         [BindProperty]
-        public SmartContract SmartContract { get; set; } = default!;
+        public SmartContractBinding SmartContractBinding { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(long? id)
         {
-            if (id == null || dbContext.SmartContracts == null)
-            {
+            if (id == null || 
+                dbContext.SmartContracts == null)
                 return NotFound();
-            }
 
             var smartcontract = await dbContext.SmartContracts.FirstOrDefaultAsync(m => m.Id == id);
 
             AlreadyUsedSmartContract = await dbContext.TransactionRegistries.AnyAsync(m => m.SmartContractId == id);
 
             if (smartcontract == null)
-            {
                 return NotFound();
-            }
             else
-            {
-                SmartContract = smartcontract;
-            }
+                SmartContractBinding = new SmartContractBinding(smartcontract);
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(long? id)
         {
             if (id == null || dbContext.SmartContracts == null)
-            {
                 return NotFound();
-            }
+
             var smartcontract = await dbContext.SmartContracts.FindAsync(id);
 
             if (smartcontract != null)
             {
                 if (await dbContext.TransactionRegistries.AnyAsync(m => m.SmartContractId == id))
-                {
                     return RedirectToPage("./Index");
-                }
-                SmartContract = smartcontract;
-                dbContext.SmartContracts.Remove(SmartContract);
+
+                dbContext.SmartContracts.Remove(smartcontract);
                 await dbContext.SaveChangesAsync();
             }
 

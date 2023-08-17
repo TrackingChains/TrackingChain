@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 using System.Threading.Tasks;
+using TrackingChain.Common.ExtraInfos;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
+using TrackingChain.TriageWebApplication.ModelBinding;
 
 namespace TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts
 {
@@ -13,6 +16,8 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts
         public CreateModel(ApplicationDbContext context)
         {
             dbContext = context;
+            ErrorMessage = "";
+            SmartContractBinding = new SmartContractBinding();
         }
 
         public IActionResult OnGet()
@@ -21,18 +26,40 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts
         }
 
         [BindProperty]
-        public SmartContract SmartContract { get; set; } = default!;
-        
+        public SmartContractBinding SmartContractBinding { get; set; } = default!;
+        public string ErrorMessage { get; set; } = default!;
+
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || dbContext.SmartContracts == null || SmartContract == null)
+          if (!ModelState.IsValid || 
+                dbContext.SmartContracts == null || 
+                SmartContractBinding == null)
+                return Page();
+
+            ContractExtraInfo contractExtraInfo;
+            try
             {
+                contractExtraInfo = ContractExtraInfo.FromJson(SmartContractBinding.ExtraInfo);
+            }
+#pragma warning disable CA1031 // Do not catch general exception types
+            catch (Exception)
+            {
+                ErrorMessage = "Contract ExtraInfo json not valid";
                 return Page();
             }
+#pragma warning restore CA1031 // Do not catch general exception types
 
-            dbContext.SmartContracts.Add(SmartContract);
+            var smartContract = new SmartContract(
+                SmartContractBinding.Address,
+                SmartContractBinding.ChainNumberId,
+                SmartContractBinding.ChainType,
+                SmartContractBinding.Currency,
+                SmartContractBinding.Name,
+                contractExtraInfo);
+            dbContext.SmartContracts.Add(smartContract);
+
             await dbContext.SaveChangesAsync();
 
             return RedirectToPage("./Index");

@@ -2,20 +2,50 @@
 @model TrackingChain.TriageWebApplication.Pages.MonitorModel
 @{
 }
-<dl>
-    <dt>
-        Transaction Status
-    </dt>
-    <dd class="percentage percentage-@Model.TrackingStatus.TriagePercentage color-lightgreen"><span class="text">Triage: @Model.TrackingStatus.Triage (@Model.TrackingStatus.TriagePercentage%)</span></dd>
-    <dd class="percentage percentage-@Model.TrackingStatus.PoolPercentage color-green"><span class="text">Pool: @Model.TrackingStatus.Triage (@Model.TrackingStatus.PoolPercentage%)</span></dd>
-    <dd class="percentage percentage-@Model.TrackingStatus.PendingPercentage color-blue"><span class="text">Pending: @Model.TrackingStatus.Triage (@Model.TrackingStatus.PendingPercentage%)</span></dd>
-    <dd class="percentage percentage-@Model.TrackingStatus.ErrorPercentage color-red"><span class="text">Error: @Model.TrackingStatus.Triage (@Model.TrackingStatus.ErrorPercentage%)</span></dd>
-</dl>
+<div class="timing-table-container">
+    <dl>
+        <dt>
+            Transaction Status
+        </dt>
+        <dd class="percentage percentage-@Model.TrackingStatus.TriagePercentage color-lightgreen"><span class="text">Triage: @Model.TrackingStatus.Triage (@Model.TrackingStatus.TriagePercentage%)</span></dd>
+        <dd class="percentage percentage-@Model.TrackingStatus.PoolPercentage color-green"><span class="text">Pool: @Model.TrackingStatus.Pool (@Model.TrackingStatus.PoolPercentage%)</span></dd>
+        <dd class="percentage percentage-@Model.TrackingStatus.PendingPercentage color-blue"><span class="text">Pending: @Model.TrackingStatus.Pending (@Model.TrackingStatus.PendingPercentage%)</span></dd>
+        <dd class="percentage percentage-@Model.TrackingStatus.ErrorPercentage color-red"><span class="text">Error: @Model.TrackingStatus.Error (@Model.TrackingStatus.ErrorPercentage%)</span></dd>
+    </dl>
 
-<dl>
-    <dt>
-        Transaction Result
-    </dt>
-    <dd class="percentage percentage-@Model.TrackingStatus.SuccessfulPercentage color-green"><span class="text">Success: @Model.TrackingStatus.Successful (@Model.TrackingStatus.SuccessfulPercentage%)</span></dd>
-    <dd class="percentage percentage-@Model.TrackingStatus.ErrorPercentageOnSuccessful color-red"><span class="text">Error: @Model.TrackingStatus.Triage (@Model.TrackingStatus.ErrorPercentageOnSuccessful%)</span></dd>
-</dl>
+    <dl>
+        <dt>
+            Transaction Results
+        </dt>
+        <dd class="percentage percentage-@Model.TrackingStatus.SuccessfulPercentage color-green"><span class="text">Success: @Model.TrackingStatus.Successful (@Model.TrackingStatus.SuccessfulPercentage%)</span></dd>
+        <dd class="percentage percentage-@Model.TrackingStatus.ErrorPercentageOnSuccessful color-red"><span class="text">Error: @Model.TrackingStatus.Error (@Model.TrackingStatus.ErrorPercentageOnSuccessful%)</span></dd>
+    </dl>
+
+    <h4 style="text-align: center;">Transaction Timings</h4>
+    <div class="data-grid">
+        <div class="data-row">
+            <div class="data-label">Timing Avg Triage to Pool</div>
+            <div class="data-value">@Model.TrackingStatus.TimingAvgTriageToPool ms.</div>
+        </div>
+        <div class="data-row">
+            <div class="data-label">Timing Avg Pool to Pending</div>
+            <div class="data-value">@Model.TrackingStatus.TimingAvgPoolToPending ms.</div>
+        </div>
+        <div class="data-row">
+            <div class="data-label">Timing Avg Pending to Completed</div>
+            <div class="data-value">@Model.TrackingStatus.TimingAvgPendingToCompleted ms.</div>
+        </div>
+        <div class="data-row">
+            <div class="data-label">Timing Avg Triage to Completed</div>
+            <div class="data-value">@Model.TrackingStatus.TimingAvgTriageToCompleted ms.</div>
+        </div>
+        <div class="data-row">
+            <div class="data-label">Timing Min Avg Last Month Triage to Completed</div>
+            <div class="data-value">@Model.TrackingStatus.TimingMinAvgLastMonthTriageToCompleted ms.</div>
+        </div>
+        <div class="data-row">
+            <div class="data-label">Timing Max Avg Last Month Triage to Completed</div>
+            <div class="data-value">@Model.TrackingStatus.TimingMaxAvgLastMonthTriageToCompleted ms.</div>
+        </div>
+    </div>
+</div>

@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
+using TrackingChain.TriageWebApplication.ModelBinding;
 
 namespace TrackingChain.TriageWebApplication.Pages.Admin.ProfileGroups
 {
@@ -18,7 +19,10 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.ProfileGroups
         }
 
         [BindProperty]
-      public ProfileGroup ProfileGroup { get; set; } = default!;
+        public bool AlreadyUsedProfileGroup { get; set; } = default!;
+
+        [BindProperty]
+        public ProfileGroupBinding ProfileGroupBinding { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -29,29 +33,26 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.ProfileGroups
 
             var profilegroup = await dbContext.ProfileGroups.FirstOrDefaultAsync(m => m.Id == id);
 
+            AlreadyUsedProfileGroup = await dbContext.AccountProfileGroup.AnyAsync(m => m.ProfileGroupId == id);
+
             if (profilegroup == null)
-            {
                 return NotFound();
-            }
-            else 
-            {
-                ProfileGroup = profilegroup;
-            }
+            else
+                ProfileGroupBinding = new ProfileGroupBinding(profilegroup);
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(Guid? id)
         {
             if (id == null || dbContext.ProfileGroups == null)
-            {
                 return NotFound();
-            }
+
             var profilegroup = await dbContext.ProfileGroups.FindAsync(id);
 
             if (profilegroup != null)
             {
-                ProfileGroup = profilegroup;
-                dbContext.ProfileGroups.Remove(ProfileGroup);
+                dbContext.ProfileGroups.Remove(profilegroup);
                 await dbContext.SaveChangesAsync();
             }
 

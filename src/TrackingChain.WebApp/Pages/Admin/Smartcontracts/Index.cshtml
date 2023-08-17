@@ -6,52 +6,78 @@
 
     <div class="table-responsive mt-4">
         <table class="table custom-table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.SmartContract[0].Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SmartContract[0].Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SmartContract[0].ChainNumberId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SmartContract[0].ChainType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SmartContract[0].Currency)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.SmartContract) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ChainNumberId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ChainType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Currency)
-            </td>
-            <td>
-                    <a class="btn btn-info btn-sm" asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
-                    <a class="btn btn-info btn-sm" asp-page="./Details" asp-route-id="@item.Id">Details</a>
-                    <a class="btn btn-danger btn-sm" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SmartContracts[0].Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SmartContracts[0].Address)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SmartContracts[0].ChainNumberId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SmartContracts[0].ChainType)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SmartContracts[0].Currency)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.SmartContracts)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ChainNumberId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ChainType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Currency)
+                        </td>
+                        <td>
+                            <a class="btn btn-info btn-sm" asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
+                            <a class="btn btn-info btn-sm" asp-page="./Details" asp-route-id="@item.Id">Details</a>
+                            <a class="btn btn-danger btn-sm" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="total-items">
+        @{
+            var itemShowEnd = Model.PageSize * (Model.SmartContracts.PageIndex - 1) + Model.SmartContracts.Count;
+            var itemShowStart = itemShowEnd - Model.SmartContracts.Count + 1;
+        }
+        Showing @itemShowStart of @itemShowEnd items out of @Model.TotalItems.
+    </div>
+    <div class="pagination">
+        @if (Model.SmartContracts.HasPreviousPage)
+        {
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="1">First</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.SmartContracts.PageIndex - 1)">Previous</a>
+        }
+
+        @for (int i = Math.Max(1, Model.SmartContracts.PageIndex - 2); i <= Math.Min(Model.SmartContracts.TotalPages, Model.SmartContracts.PageIndex + 2); i++)
+        {
+            <a class="page-link @(i == Model.SmartContracts.PageIndex ? "active" : "")" asp-page="./Index" asp-route-pageIndex="@i">@i</a>
+        }
+
+        @if (Model.SmartContracts.HasNextPage)
+        {
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.SmartContracts.PageIndex + 1)">Next</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@Model.SmartContracts.TotalPages">Last</a>
+        }
     </div>
 </div>

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
@@ -17,15 +16,20 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Trackings
         }
 
 #pragma warning disable CA2227 // Collection properties should be read only
-        public IList<TransactionPending> TransactionPending { get;set; } = default!;
+        public PaginatedList<TransactionPending> TransactionPendings { get; set; } = default!;
 #pragma warning restore CA2227 // Collection properties should be read only
+        public int PageSize { get; set; } = 5;
+        public int PageIndex { get; set; } = 1;
+        public int TotalItems { get; private set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(int pageIndex = 1)
         {
-            if (dbContext.TransactionPendings != null)
-            {
-                TransactionPending = await dbContext.TransactionPendings.ToListAsync();
-            }
+            var query = dbContext.TransactionPendings;
+
+            TotalItems = await query.CountAsync();
+
+            PageIndex = pageIndex;
+            TransactionPendings = await PaginatedList<TransactionPending>.CreateAsync(query, PageIndex, PageSize);
         }
     }
 }

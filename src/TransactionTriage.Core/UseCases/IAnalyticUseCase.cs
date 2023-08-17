@@ -9,6 +9,8 @@ namespace TrackingChain.TransactionTriageCore.UseCases
     {
         Task<TrackingModelView?> GetTrackingAsync(Guid trackingGuid);
         Task<IEnumerable<TrackingModelView>> GetTrackingFailedsAsync(int size, int page);
+        Task<IEnumerable<TrackingModelView>> GetTrackingHistoryAsync(Guid trackingGuid);
+        Task<IEnumerable<TrackingModelView>> GetTrackingHistoryAsync(string code, long smartContractId);
         Task<TrackingStatusModelView?> GetTrackingStatusAsync(Guid trackingGuid);
         Task<IEnumerable<TrackingModelView>> GetTrackingSuccessfullyAsync(int size, int page);
         Task<IEnumerable<TrackingModelView>> GetTrackingPendingsAsync(int size, int page);

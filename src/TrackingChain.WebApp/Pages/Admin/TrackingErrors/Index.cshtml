@@ -1,7 +1,5 @@
 ﻿@page
 @model TrackingChain.TriageWebApplication.Pages.Admin.TrackingErrors.IndexModel
-@{
-}
 
 <div class="container mt-4">
     <div class="table-responsive mt-4">
@@ -9,25 +7,25 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.TransactionRegistry[0].TrackingId)
+                        @Html.DisplayNameFor(model => model.TransactionRegistries[0].TrackingId)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.TransactionRegistry[0].Code)
+                        @Html.DisplayNameFor(model => model.TransactionRegistries[0].Code)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.TransactionRegistry[0].TriageDate)
+                        @Html.DisplayNameFor(model => model.TransactionRegistries[0].TriageDate)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.TransactionRegistry[0].TransactionStep)
+                        @Html.DisplayNameFor(model => model.TransactionRegistries[0].TransactionStep)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.TransactionRegistry[0].TransactionErrorReason)
+                        @Html.DisplayNameFor(model => model.TransactionRegistries[0].TransactionErrorReason)
                     </th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.TransactionRegistry)
+                @foreach (var item in Model.TransactionRegistries)
                 {
                     <tr>
                         <td>
@@ -52,5 +50,30 @@
                 }
             </tbody>
         </table>
+    </div>
+    <div class="total-items">
+        @{
+            var itemShowEnd = Model.PageSize * (Model.TransactionRegistries.PageIndex - 1) + Model.TransactionRegistries.Count;
+            var itemShowStart = itemShowEnd - Model.TransactionRegistries.Count + 1;
+        }
+        Showing @itemShowStart of @itemShowEnd items out of @Model.TotalItems.
+    </div>
+    <div class="pagination">
+        @if (Model.TransactionRegistries.HasPreviousPage)
+        {
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="1">First</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.TransactionRegistries.PageIndex - 1)">Previous</a>
+        }
+
+        @for (int i = Math.Max(1, Model.TransactionRegistries.PageIndex - 2); i <= Math.Min(Model.TransactionRegistries.TotalPages, Model.TransactionRegistries.PageIndex + 2); i++)
+        {
+            <a class="page-link @(i == Model.TransactionRegistries.PageIndex ? "active" : "")" asp-page="./Index" asp-route-pageIndex="@i">@i</a>
+        }
+
+        @if (Model.TransactionRegistries.HasNextPage)
+        {
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.TransactionRegistries.PageIndex + 1)">Next</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@Model.TransactionRegistries.TotalPages">Last</a>
+        }
     </div>
 </div>

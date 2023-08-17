@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
+using TrackingChain.TriageWebApplication.ModelBinding;
 
 namespace TrackingChain.TriageWebApplication.Pages.Admin.ProfileGroups
 {
@@ -18,23 +20,35 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.ProfileGroups
 
         public IActionResult OnGet()
         {
-        ViewData["SmartContractId"] = new SelectList(dbContext.SmartContracts, "Id", "Name");
+            ViewData["SmartContractId"] = new SelectList(dbContext.SmartContracts, "Id", "Name");
             return Page();
         }
 
         [BindProperty]
-        public ProfileGroup ProfileGroup { get; set; } = default!;
-        
+        public ProfileGroupBinding ProfileGroupBinding { get; set; } = default!;
+
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || dbContext.ProfileGroups == null || ProfileGroup == null)
-            {
+            if (!ModelState.IsValid ||
+                  dbContext.ProfileGroups == null ||
+                  ProfileGroupBinding == null)
                 return Page();
-            }
 
-            dbContext.ProfileGroups.Add(ProfileGroup);
+            var smartContarct = await dbContext.SmartContracts.FirstOrDefaultAsync(sc => sc.Id == ProfileGroupBinding.SmartContractId);
+            if (smartContarct == null)
+                return NotFound();
+
+            var profileGroup = new ProfileGroup(
+                ProfileGroupBinding.AggregationCode,
+                ProfileGroupBinding.Authority,
+                ProfileGroupBinding.Category,
+                ProfileGroupBinding.Name,
+                smartContarct,
+                ProfileGroupBinding.Priority);
+            dbContext.ProfileGroups.Add(profileGroup);
+
             await dbContext.SaveChangesAsync();
 
             return RedirectToPage("./Index");

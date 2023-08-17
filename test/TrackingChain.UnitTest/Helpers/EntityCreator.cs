@@ -200,16 +200,16 @@ namespace TrackingChain.UnitTest.Helpers
             await dbContext.SaveChangesAsync();
 
             //profile group
-            var accountOne = new Account(primaryProfileAccount, "ws://test", "https://watchertest", "TestAccount", "0x12345");
+            var accountOne = new Account("ws://test", "https://watchertest", "TestAccount", "0x12345");
             dbContext.Accounts.Add(accountOne);
-            var accountTwo = new Account(secondaryProfileAccount, "ws://test2", "https://watchertest2", "TestAccount", "0x54321");
+            var accountTwo = new Account("ws://test2", "https://watchertest2", "TestAccount", "0x54321");
             dbContext.Accounts.Add(accountTwo);
             await dbContext.SaveChangesAsync();
 
             //account profile group
-            var accountProfileGroupOne = new AccountProfileGroup(primaryProfileAccount, profileGroupOne.Id, 0);
+            var accountProfileGroupOne = new AccountProfileGroup("primaryName", primaryProfileAccount, profileGroupOne.Id, 0);
             dbContext.AccountProfileGroup.Add(accountProfileGroupOne);
-            var accountProfileGroupTwo = new AccountProfileGroup(secondaryProfileAccount, profileGroupTwo.Id, 1);
+            var accountProfileGroupTwo = new AccountProfileGroup("secondaryName", secondaryProfileAccount, profileGroupTwo.Id, 1);
             dbContext.AccountProfileGroup.Add(accountProfileGroupTwo);
             await dbContext.SaveChangesAsync();
 

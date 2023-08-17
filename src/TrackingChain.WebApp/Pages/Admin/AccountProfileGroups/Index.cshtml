@@ -1,0 +1,75 @@
+﻿@page
+@model TrackingChain.TriageWebApplication.Pages.Admin.AccountProfileGroups.IndexModel
+
+<div class="container mt-4">
+    <a class="btn btn-primary" asp-page="Create">Create New</a>
+    <div class="table-responsive mt-4">
+        <table class="table custom-table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AccountProfileGroups[0].Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AccountProfileGroups[0].Account)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AccountProfileGroups[0].ProfileGroup)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AccountProfileGroups[0].Priority)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.AccountProfileGroups)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Account.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProfileGroup.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Priority)
+                        </td>
+                        <td>
+                            <a class="btn btn-info btn-sm" asp-page="./Edit" asp-route-accountId="@item.AccountId" asp-route-profileGroupId="@item.ProfileGroupId">Edit</a>
+                            <a class="btn btn-danger btn-sm" asp-page="./Delete" asp-route-accountId="@item.AccountId" asp-route-profileGroupId="@item.ProfileGroupId">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="total-items">
+        @{
+            var itemShowEnd = Model.PageSize * (Model.AccountProfileGroups.PageIndex - 1) + Model.AccountProfileGroups.Count;
+            var itemShowStart = itemShowEnd - Model.AccountProfileGroups.Count + 1;
+        }
+        Showing @itemShowStart of @itemShowEnd items out of @Model.TotalItems.
+    </div>
+    <div class="pagination">
+        @if (Model.AccountProfileGroups.HasPreviousPage)
+        {
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="1">First</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.AccountProfileGroups.PageIndex - 1)">Previous</a>
+        }
+
+        @for (int i = Math.Max(1, Model.AccountProfileGroups.PageIndex - 2); i <= Math.Min(Model.AccountProfileGroups.TotalPages, Model.AccountProfileGroups.PageIndex + 2); i++)
+        {
+            <a class="page-link @(i == Model.AccountProfileGroups.PageIndex ? "active" : "")" asp-page="./Index" asp-route-pageIndex="@i">@i</a>
+        }
+
+        @if (Model.AccountProfileGroups.HasNextPage)
+        {
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.AccountProfileGroups.PageIndex + 1)">Next</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@Model.AccountProfileGroups.TotalPages">Last</a>
+        }
+    </div>
+</div>

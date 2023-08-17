@@ -3,10 +3,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
-using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
+using TrackingChain.TriageWebApplication.ModelBinding;
 
 namespace TrackingChain.TriageWebApplication.Pages.Admin.ProfileGroups
 {
@@ -20,7 +19,7 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.ProfileGroups
         }
 
         [BindProperty]
-        public ProfileGroup ProfileGroup { get; set; } = default!;
+        public ProfileGroupBinding ProfileGroupBinding { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -29,13 +28,15 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.ProfileGroups
                 return NotFound();
             }
 
-            var profilegroup =  await dbContext.ProfileGroups.FirstOrDefaultAsync(m => m.Id == id);
+            var profilegroup = await dbContext.ProfileGroups.FirstOrDefaultAsync(m => m.Id == id);
             if (profilegroup == null)
             {
                 return NotFound();
             }
-            ProfileGroup = profilegroup;
-           ViewData["SmartContractId"] = new SelectList(dbContext.SmartContracts, "Id", "Name");
+
+            ProfileGroupBinding = new ProfileGroupBinding(profilegroup);
+            ViewData["SmartContractId"] = new SelectList(dbContext.SmartContracts, "Id", "Name");
+
             return Page();
         }
 
@@ -44,34 +45,28 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.ProfileGroups
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
 
-            dbContext.Attach(ProfileGroup).State = EntityState.Modified;
+            var profileGroup = await dbContext.ProfileGroups.FirstOrDefaultAsync(m => m.Id == ProfileGroupBinding.Id);
+            if (profileGroup == null)
+                return NotFound();
 
-            try
-            {
-                await dbContext.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProfileGroupExists(ProfileGroup.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            var smartContract = await dbContext.SmartContracts.FirstOrDefaultAsync(m => m.Id == ProfileGroupBinding.SmartContractId);
+            if (smartContract == null)
+                return NotFound();
+
+            profileGroup.Update(
+               ProfileGroupBinding.AggregationCode,
+               ProfileGroupBinding.Authority,
+               ProfileGroupBinding.Category,
+               ProfileGroupBinding.Name,
+               ProfileGroupBinding.SmartContractId,
+               ProfileGroupBinding.Priority);
+            dbContext.Update(profileGroup);
+
+            await dbContext.SaveChangesAsync();
 
             return RedirectToPage("./Index");
-        }
-
-        private bool ProfileGroupExists(Guid id)
-        {
-          return (dbContext.ProfileGroups?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

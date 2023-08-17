@@ -1,5 +1,5 @@
 ﻿@page
-@model TrackingChain.TriageWebApplication.Pages.TrackingViewModel
+@model TrackingChain.TriageWebApplication.Pages.TrackingViewerModel
 @{
 }
 <div class="text-center">
@@ -20,14 +20,20 @@
             {
 
                 <h3>Code: @Model.TrackingProductModelViews.First().Code </h3>
+                @foreach (var item in Model.TrackingProductModelViews)
+                {
+                    <p>
+                        <span>Data Value: @item.DataValue</span>
+                        <br />
+                        <span>Timestamp: @item.Timestamp</span>
+                        <br />
+                        <span>BlockNumber: @item.BlockNumber</span>
+                    </p>
+                }
             }
-            @foreach (var item in Model.TrackingProductModelViews)
+            else
             {
-                <p>
-                    <span>Data Value: @item.DataValue</span>
-                    <br />
-                    <span>Timestamp: @item.Timestamp</span>
-                </p>
+                <h3>Tracking not found</h3>
             }
         </div>
         <span>@Model.Result</span>
