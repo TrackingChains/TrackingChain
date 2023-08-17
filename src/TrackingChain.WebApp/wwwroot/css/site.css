@@ -126,3 +126,39 @@ header {
   display: block;
   margin-top: 15px;
 }
+
+/*PAGINATION*/
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+  .pagination a.page-link {
+    white-space: nowrap; /* Evita il testo a capo */
+    display: inline-block; /* Visualizza i link sulla stessa riga */
+    padding: 5px 10px;
+    margin: 0 5px;
+    color: #007bff;
+    text-decoration: none;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+    .pagination a.page-link:hover {
+      background-color: #007bff;
+      color: white;
+    }
+
+  .pagination .disabled {
+    color: #6c757d;
+    pointer-events: none;
+    cursor: default;
+  }
+
+  .pagination a.active {
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #007bff;
+  }

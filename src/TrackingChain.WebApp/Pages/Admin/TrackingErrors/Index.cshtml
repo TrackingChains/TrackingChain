@@ -9,25 +9,25 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.TransactionRegistry[0].TrackingId)
+                        @Html.DisplayNameFor(model => model.TransactionRegistries[0].TrackingId)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.TransactionRegistry[0].Code)
+                        @Html.DisplayNameFor(model => model.TransactionRegistries[0].Code)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.TransactionRegistry[0].TriageDate)
+                        @Html.DisplayNameFor(model => model.TransactionRegistries[0].TriageDate)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.TransactionRegistry[0].TransactionStep)
+                        @Html.DisplayNameFor(model => model.TransactionRegistries[0].TransactionStep)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.TransactionRegistry[0].TransactionErrorReason)
+                        @Html.DisplayNameFor(model => model.TransactionRegistries[0].TransactionErrorReason)
                     </th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.TransactionRegistry)
+                @foreach (var item in Model.TransactionRegistries)
                 {
                     <tr>
                         <td>
@@ -53,4 +53,20 @@
             </tbody>
         </table>
     </div>
+    <div class="total-items">
+        @{
+            var itemShowEnd = Model.PageSize * (Model.TransactionRegistries.PageIndex - 1) + Model.TransactionRegistries.Count;
+            var itemShowStart = itemShowEnd - Model.TransactionRegistries.Count + 1;
+        }
+        Showing @itemShowStart of @itemShowEnd items out of @Model.TotalItems.
+    </div>
+    @if (Model.TransactionRegistries.HasPreviousPage)
+    {
+        <a asp-page="./Index" class="pagination" asp-route-pageIndex="@(Model.TransactionRegistries.PageIndex - 1)">Previous</a>
+    }
+
+    @if (Model.TransactionRegistries.HasNextPage)
+    {
+        <a asp-page="./Index" class="pagination" asp-route-pageIndex="@(Model.TransactionRegistries.PageIndex + 1)">Next</a>
+    }
 </div>

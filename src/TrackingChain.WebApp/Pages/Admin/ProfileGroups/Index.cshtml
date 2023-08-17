@@ -9,22 +9,22 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.ProfileGroup[0].Name)
+                        @Html.DisplayNameFor(model => model.ProfileGroups[0].Name)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.ProfileGroup[0].Category)
+                        @Html.DisplayNameFor(model => model.ProfileGroups[0].Category)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.ProfileGroup[0].SmartContract)
+                        @Html.DisplayNameFor(model => model.ProfileGroups[0].SmartContract)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.ProfileGroup[0].Priority)
+                        @Html.DisplayNameFor(model => model.ProfileGroups[0].Priority)
                     </th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.ProfileGroup)
+                @foreach (var item in Model.ProfileGroups)
                 {
                     <tr>
                         <td>
@@ -49,4 +49,20 @@
             </tbody>
         </table>
     </div>
+    <div class="total-items">
+        @{
+            var itemShowEnd = Model.PageSize * (Model.ProfileGroups.PageIndex - 1) + Model.ProfileGroups.Count;
+            var itemShowStart = itemShowEnd - Model.ProfileGroups.Count + 1;
+        }
+        Showing @itemShowStart of @itemShowEnd items out of @Model.TotalItems.
+    </div>
+    @if (Model.ProfileGroups.HasPreviousPage)
+    {
+        <a asp-page="./Index" class="pagination" asp-route-pageIndex="@(Model.ProfileGroups.PageIndex - 1)">Previous</a>
+    }
+
+    @if (Model.ProfileGroups.HasNextPage)
+    {
+        <a asp-page="./Index" class="pagination" asp-route-pageIndex="@(Model.ProfileGroups.PageIndex + 1)">Next</a>
+    }
 </div>

@@ -7,25 +7,25 @@
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.TransactionTriage[0].TrackingIdentify)
+                    @Html.DisplayNameFor(model => model.TransactionTriages[0].TrackingIdentify)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TransactionTriage[0].Code)
+                    @Html.DisplayNameFor(model => model.TransactionTriages[0].Code)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TransactionTriage[0].IsInPool)
+                    @Html.DisplayNameFor(model => model.TransactionTriages[0].IsInPool)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TransactionTriage[0].Completed)
+                    @Html.DisplayNameFor(model => model.TransactionTriages[0].Completed)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TransactionTriage[0].ReceivedDate)
+                    @Html.DisplayNameFor(model => model.TransactionTriages[0].ReceivedDate)
                 </th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.TransactionTriage)
+            @foreach (var item in Model.TransactionTriages)
             {
                 <tr>
                     <td>
@@ -50,4 +50,29 @@
             }
         </tbody>
     </table>
+</div>
+<div class="total-items">
+    @{
+        var itemShowEnd = Model.PageSize * (Model.TransactionTriages.PageIndex - 1) + Model.TransactionTriages.Count;
+        var itemShowStart = itemShowEnd - Model.TransactionTriages.Count + 1;
+    }
+    Showing @itemShowStart of @itemShowEnd items out of @Model.TotalItems.
+</div>
+<div class="pagination">
+    @if (Model.TransactionTriages.HasPreviousPage)
+    {
+        <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="1">First</a>
+        <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="@(Model.TransactionTriages.PageIndex - 1)">Previous</a>
+    }
+
+    @for (int i = Math.Max(1, Model.TransactionTriages.PageIndex - 2); i <= Math.Min(Model.TransactionTriages.TotalPages, Model.TransactionTriages.PageIndex + 2); i++)
+    {
+        <a class="page-link @(i == Model.TransactionTriages.PageIndex ? "active" : "")" asp-page="./Pendings" asp-route-pageIndex="@i">@i</a>
+    }
+
+    @if (Model.TransactionTriages.HasNextPage)
+    {
+        <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="@(Model.TransactionTriages.PageIndex + 1)">Next</a>
+        <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="@Model.TransactionTriages.TotalPages">Last</a>
+    }
 </div>

@@ -9,13 +9,13 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.Account[0].Name)
+                        @Html.DisplayNameFor(model => model.Accounts[0].Name)
                     </th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Account)
+                @foreach (var item in Model.Accounts)
                 {
                     <tr>
                         <td>
@@ -31,4 +31,20 @@
             </tbody>
         </table>
     </div>
+    <div class="total-items">
+        @{
+            var itemShowEnd = Model.PageSize * (Model.Accounts.PageIndex - 1) + Model.Accounts.Count;
+            var itemShowStart = itemShowEnd - Model.Accounts.Count + 1;
+        }
+        Showing @itemShowStart of @itemShowEnd items out of @Model.TotalItems.
+    </div>
+    @if (Model.Accounts.HasPreviousPage)
+    {
+        <a asp-page="./Index" class="pagination" asp-route-pageIndex="@(Model.Accounts.PageIndex - 1)">Previous</a>
+    }
+
+    @if (Model.Accounts.HasNextPage)
+    {
+        <a asp-page="./Index" class="pagination" asp-route-pageIndex="@(Model.Accounts.PageIndex + 1)">Next</a>
+    }
 </div>

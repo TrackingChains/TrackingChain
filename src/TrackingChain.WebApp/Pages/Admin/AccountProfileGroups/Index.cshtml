@@ -1,6 +1,5 @@
 ﻿@page
 @model TrackingChain.TriageWebApplication.Pages.Admin.AccountProfileGroups.IndexModel
-
 <div class="container mt-4">
     <a class="btn btn-primary" asp-page="Create">Create New</a>
 
@@ -48,4 +47,20 @@
             </tbody>
         </table>
     </div>
+    <div class="total-items">
+        @{
+            var itemShowEnd = Model.PageSize * (Model.AccountProfileGroups.PageIndex - 1) + Model.AccountProfileGroups.Count;
+            var itemShowStart = itemShowEnd - Model.AccountProfileGroups.Count + 1;
+        }
+        Showing @itemShowStart of @itemShowEnd items out of @Model.TotalItems.
+    </div>
+    @if (Model.AccountProfileGroups.HasPreviousPage)
+    {
+        <a asp-page="./Index" class="pagination" asp-route-pageIndex="@(Model.AccountProfileGroups.PageIndex - 1)">Previous</a>
+    }
+
+    @if (Model.AccountProfileGroups.HasNextPage)
+    {
+        <a asp-page="./Index" class="pagination" asp-route-pageIndex="@(Model.AccountProfileGroups.PageIndex + 1)">Next</a>
+    }
 </div>
