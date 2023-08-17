@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using TrackingChain.Core.Domain.Enums;
+using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.Domain.Enums;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TransactionTriageCore.ModelViews;
@@ -68,6 +69,34 @@ namespace TrackingChain.TransactionTriageCore.UseCases
                 return null;
 
             return TrackingModelView.FromEntity(transactionRegistry);
+        }
+
+        public async Task<IEnumerable<TrackingModelView>> GetTrackingHistoryAsync(Guid trackingGuid)
+        {
+            var transactionRegistry = await dbContext.TransactionRegistries
+                .Where(tr => tr.TrackingId == trackingGuid)
+                .FirstOrDefaultAsync();
+
+            if (transactionRegistry is null)
+                return Array.Empty<TrackingModelView>();
+
+            return await GetTrackingHistoryAsync(
+                transactionRegistry.Code, 
+                transactionRegistry.SmartContractId);
+        }
+
+        public async Task<IEnumerable<TrackingModelView>> GetTrackingHistoryAsync(
+            string code, 
+            long smartContractId)
+        {
+            var transactionRegistries = await dbContext.TransactionRegistries
+                .Where(tr => tr.Status == RegistryStatus.SuccessfullyCompleted &&
+                             tr.SmartContractId == smartContractId &&
+                             tr.Code == code)
+                .OrderBy(tr => tr.ReceivedDate)
+                .ToListAsync();
+
+            return transactionRegistries.Select(TrackingModelView.FromEntity);
         }
 
         public async Task<IEnumerable<TrackingModelView>> GetTrackingFailedsAsync(int size, int page)
