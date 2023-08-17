@@ -39,7 +39,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
         }
 
         // Methods.
-        public async Task<bool> CheckTransactionStatusAsync(
+        public async Task<Guid> CheckTransactionStatusAsync(
             int max,
             Guid accountId,
             int reTryAfterSeconds,
@@ -82,7 +82,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                         {
                             pending.UnlockFromError(reTryAfterSeconds);
                             await applicationDbContext.SaveChangesAsync();
-                            return true;
+                            return pending.TrackingId;
                         }
                     }
                     if (transactionDetail is null)
@@ -93,7 +93,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                         {
                             pending.UnlockFromError(reTryAfterSeconds);
                             await applicationDbContext.SaveChangesAsync();
-                            return true;
+                            return pending.TrackingId;
                         }
                     }
                 }
@@ -103,10 +103,10 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                 await TransactionExecutedAsync(pending, transactionDetail);
                 await applicationDbContext.SaveChangesAsync();
 
-                return true;
+                return pending.TrackingId;
             }
 
-            return pendings.Any();
+            return Guid.Empty;
         }
 
         // Helpers.
@@ -137,7 +137,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                     pending.TrackingId,
                     transactionDetail.TransactionErrorReason.Value);
 
-                pending.SetStatusDone();
+                pending.SetStatusError();
             }
                 
             logger.TransactionWatcher(pending.TrackingId, transactionDetail.Successful);

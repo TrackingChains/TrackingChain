@@ -39,7 +39,7 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
         }
 
         // Methods.
-        public async Task<bool> DequeueTransactionAsync(
+        public async Task<Guid> DequeueTransactionAsync(
             int max,
             Guid accountId,
             int reTryAfterSeconds,
@@ -87,13 +87,13 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                     {
                         await TransactionCompletedInErrorAsync(pool);
                         await applicationDbContext.SaveChangesAsync();
-                        return true;
+                        return pool.TrackingId;
                     }
                     else
                     {
                         pool.UnlockFromError(reTryAfterSeconds);
                         await applicationDbContext.SaveChangesAsync();
-                        return true;
+                        return pool.TrackingId;
                     }
                 }
 
@@ -103,10 +103,10 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
 
                 logger.TransactionOnChain(txPending.TrackingId, txPending.TxHash, txPending.SmartContractAddress);
 
-                return true;
+                return pool.TrackingId;
             }
 
-            return pools.Any();
+            return Guid.Empty;
         }
 
         // Helpers.
