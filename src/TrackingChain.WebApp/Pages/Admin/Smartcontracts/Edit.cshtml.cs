@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TrackingChain.Common.Enums;
+using TrackingChain.Common.ExtraInfos;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TriageWebApplication.ModelBinding;
 
@@ -23,6 +24,7 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts
 
         [BindProperty]
         public SmartContractBinding SmartContractBinding { get; set; } = default!;
+        public string ErrorMessage { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(long? id)
         {
@@ -48,6 +50,19 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts
             var smartContract = await dbContext.SmartContracts.FirstOrDefaultAsync(m => m.Id == SmartContractBinding.Id);
             if (smartContract == null)
                 return NotFound();
+
+            ContractExtraInfo contractExtraInfo;
+            try
+            {
+                contractExtraInfo = ContractExtraInfo.FromJson(SmartContractBinding.ExtraInfo);
+            }
+#pragma warning disable CA1031 // Do not catch general exception types
+            catch (Exception)
+            {
+                ErrorMessage = "Contract ExtraInfo json not valid";
+                return Page();
+            }
+#pragma warning restore CA1031 // Do not catch general exception types
 
             smartContract.Update(
                SmartContractBinding.Address,
