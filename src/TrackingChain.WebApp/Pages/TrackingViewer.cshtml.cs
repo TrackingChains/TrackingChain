@@ -65,7 +65,9 @@ namespace TrackingChain.TriageWebApplication.Pages
             {
                 var item = new TrackingDataModelView();
                 item.Code = itemTracked.Code;
-                item.BlockNumber = itemTracked.ReceiptBlockNumber ?? "Missing Receipt";
+                item.BlockNumber = string.IsNullOrWhiteSpace(itemTracked.ReceiptBlockNumber) ? 
+                    "Missing Receipt (Substrate chain will be impletented in Milestone 4)" :
+                    itemTracked.ReceiptBlockNumber;
                 item.DataValue = itemTracked.DataValue;
                 item.Timestamp = itemTracked.RegistryDate;
                 trackingProduct.Add(item);
