@@ -32,6 +32,7 @@ namespace TrackingChain.TransactionTriageCore.UseCases
         // Methods.
         public async Task<TrackingStatusStatisticModelView> GetTrackingStatusStatisticAsync()
         {
+            // Items.
             var transactionStatistics = await dbContext.TransactionRegistries
                 .GroupBy(tr => tr.TransactionStep)
                 .Select(group => new
@@ -44,6 +45,41 @@ namespace TrackingChain.TransactionTriageCore.UseCases
                 })
                 .ToListAsync();
 
+            // Timings.
+            var averageTriage = await dbContext.TransactionRegistries
+               .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
+                            tr.Status == RegistryStatus.SuccessfullyCompleted)
+               .Select(tr => EF.Functions.DateDiffMillisecond(tr.TriageDate, tr.PoolDate))
+               .AverageAsync();
+            var averagePool = await dbContext.TransactionRegistries
+               .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
+                            tr.Status == RegistryStatus.SuccessfullyCompleted)
+               .Select(tr => EF.Functions.DateDiffMillisecond(tr.PoolDate, tr.PendingDate))
+               .AverageAsync();
+            var averagePending = await dbContext.TransactionRegistries
+               .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
+                            tr.Status == RegistryStatus.SuccessfullyCompleted)
+               .Select(tr => EF.Functions.DateDiffMillisecond(tr.PendingDate, tr.RegistryDate))
+               .AverageAsync();
+            var averageCompleted = await dbContext.TransactionRegistries
+               .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
+                            tr.Status == RegistryStatus.SuccessfullyCompleted)
+               .Select(tr => EF.Functions.DateDiffMillisecond(tr.TriageDate, tr.RegistryDate))
+               .AverageAsync();
+            var minCompletedTime = await dbContext.TransactionRegistries
+               .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
+                            tr.Status == RegistryStatus.SuccessfullyCompleted &&
+                            tr.TriageDate.AddMonths(1) > DateTime.UtcNow)
+               .Select(tr => EF.Functions.DateDiffMillisecond(tr.TriageDate, tr.RegistryDate))
+               .MinAsync();
+            var maxCompletedTime = await dbContext.TransactionRegistries
+               .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
+                            tr.Status == RegistryStatus.SuccessfullyCompleted &&
+                            tr.TriageDate.AddMonths(1) > DateTime.UtcNow)
+               .Select(tr => EF.Functions.DateDiffMillisecond(tr.TriageDate, tr.RegistryDate))
+               .MaxAsync();
+
+
             return new TrackingStatusStatisticModelView
             {
                 Error = transactionStatistics.Sum(stat => stat.ErrorCount),
@@ -55,7 +91,13 @@ namespace TrackingChain.TransactionTriageCore.UseCases
                     .FirstOrDefault(stat => stat.TransactionStep == TransactionStep.Triage)?.Count ?? 0,
                 Successful = transactionStatistics
                     .Where(stat => stat.TransactionStep == TransactionStep.Completed)
-                    .Sum(stat => stat.Count - stat.ErrorCount)
+                    .Sum(stat => stat.Count - stat.ErrorCount),
+                TimingAvgTriageToPool = (int)averageTriage,
+                TimingAvgPoolToPending = (int)averagePool,
+                TimingAvgPendingToCompleted = (int)averagePending,
+                TimingAvgTriageToCompleted = (int)averageCompleted,
+                TimingMinAvgLastMonthTriageToCompleted = (int)minCompletedTime,
+                TimingMaxAvgLastMonthTriageToCompleted = (int)maxCompletedTime,
             };
         }
 
@@ -81,12 +123,12 @@ namespace TrackingChain.TransactionTriageCore.UseCases
                 return Array.Empty<TrackingModelView>();
 
             return await GetTrackingHistoryAsync(
-                transactionRegistry.Code, 
+                transactionRegistry.Code,
                 transactionRegistry.SmartContractId);
         }
 
         public async Task<IEnumerable<TrackingModelView>> GetTrackingHistoryAsync(
-            string code, 
+            string code,
             long smartContractId)
         {
             var transactionRegistries = await dbContext.TransactionRegistries

@@ -19,6 +19,14 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
         public int ErrorPercentageOnSuccessful => CalculatePercentageOnSuccessful(Error);
         public int SuccessfulPercentage => CalculatePercentageOnSuccessful(Successful);
 
+
+        public int TimingAvgTriageToPool { get; set; }
+        public int TimingAvgPoolToPending { get; set; }
+        public int TimingAvgPendingToCompleted { get; set; }
+        public int TimingAvgTriageToCompleted { get; set; }
+        public int TimingMinAvgLastMonthTriageToCompleted { get; set; }
+        public int TimingMaxAvgLastMonthTriageToCompleted { get; set; }
+
         //Helpers.
 
         private int CalculatePercentage(int value)
