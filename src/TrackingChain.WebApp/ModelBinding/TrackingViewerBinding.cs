@@ -3,7 +3,7 @@ using System;
 
 namespace TrackingChain.TriageWebApplication.ModelBinding
 {
-    public class TrackingViewBinding
+    public class TrackingViewerBinding
     {
         // Properties.
         [BindProperty]
