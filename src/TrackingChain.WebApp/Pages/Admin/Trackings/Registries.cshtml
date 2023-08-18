@@ -3,6 +3,17 @@
 
 <div class="container mt-4">
     <div class="table-responsive mt-4">
+        <form asp-page="./Registries" method="get">
+            <div class="form-actions no-color">
+                <p>
+                    Find by Code or TrackingId:
+                    <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+                    <input type="submit" value="Search" class="btn btn-primary" /> |
+                    <a asp-page="./Registries">Back to full List</a>
+                </p>
+            </div>
+        </form>
+
         <table class="tracking-table">
             <thead>
                 <tr>
@@ -53,21 +64,23 @@
         Showing @itemShowStart of @itemShowEnd items out of @Model.TotalItems.
     </div>
     <div class="pagination">
-        @if (Model.TransactionRegistries.HasPreviousPage)
+        @if (Model.Registries.HasPreviousPage &&
+        Model.Registries.TotalPages > 5)
         {
-            <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="1">First</a>
-            <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="@(Model.TransactionRegistries.PageIndex - 1)">Previous</a>
+            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="1" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">First</a>
+            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="@(Model.Registries.PageIndex - 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Previous</a>
         }
 
-        @for (int i = Math.Max(1, Model.TransactionRegistries.PageIndex - 2); i <= Math.Min(Model.TransactionRegistries.TotalPages, Model.TransactionRegistries.PageIndex + 2); i++)
+        @for (int i = Math.Max(1, Model.Registries.PageIndex - 2); i <= Math.Min(Model.Registries.TotalPages, Model.Registries.PageIndex + 2); i++)
         {
-            <a class="page-link @(i == Model.TransactionRegistries.PageIndex ? "active" : "")" asp-page="./Pendings" asp-route-pageIndex="@i">@i</a>
+            <a class="page-link @(i == Model.Registries.PageIndex ? "active" : "")" asp-page="./Triages" asp-route-pageIndex="@i" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">@i</a>
         }
 
-        @if (Model.TransactionRegistries.HasNextPage)
+        @if (Model.Registries.HasNextPage &&
+        Model.Registries.TotalPages > 5)
         {
-            <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="@(Model.TransactionRegistries.PageIndex + 1)">Next</a>
-            <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="@Model.TransactionRegistries.TotalPages">Last</a>
+            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="@(Model.Registries.PageIndex + 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Next</a>
+            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="@Model.Registries.TotalPages" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Last</a>
         }
     </div>
 </div>

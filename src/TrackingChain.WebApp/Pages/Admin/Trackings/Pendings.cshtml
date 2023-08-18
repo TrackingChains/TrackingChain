@@ -3,59 +3,70 @@
 
 <div class="container mt-4">
     <div class="table-responsive mt-4">
-    <table class="tracking-table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.TransactionPendings[0].TrackingId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.TransactionPendings[0].Code)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.TransactionPendings[0].Locked)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.TransactionPendings[0].Completed)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.TransactionPendings[0].ReceivedDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.TransactionPendings[0].TriageDate)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.TransactionPendings)
-            {
+        <form asp-page="./PendingDetails" method="get">
+            <div class="form-actions no-color">
+                <p>
+                    Find by Code or TrackingId:
+                    <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+                    <input type="submit" value="Search" class="btn btn-primary" /> |
+                    <a asp-page="./PendingDetails">Back to full List</a>
+                </p>
+            </div>
+        </form>
+
+        <table class="tracking-table">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TrackingId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Code)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Locked)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Completed)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ReceivedDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TriageDate)
-                    </td>
-                    <td>
-                            <a class="btn btn-info btn-sm" asp-page="./PendingDetails" asp-route-id="@item.TrackingId">Details</a>
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TransactionPendings[0].TrackingId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TransactionPendings[0].Code)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TransactionPendings[0].Locked)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TransactionPendings[0].Completed)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TransactionPendings[0].ReceivedDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TransactionPendings[0].TriageDate)
+                    </th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.TransactionPendings)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TrackingId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Code)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Locked)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Completed)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ReceivedDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TriageDate)
+                        </td>
+                        <td>
+                            <a class="btn btn-info btn-sm" asp-page="./PendingDetails" asp-route-id="@item.TrackingId">Details</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
     <div class="total-items">
         @{
@@ -65,21 +76,23 @@
         Showing @itemShowStart of @itemShowEnd items out of @Model.TotalItems.
     </div>
     <div class="pagination">
-        @if (Model.TransactionPendings.HasPreviousPage)
+        @if (Model.Pendings.HasPreviousPage &&
+        Model.Pendings.TotalPages > 5)
         {
-            <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="1">First</a>
-            <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="@(Model.TransactionPendings.PageIndex - 1)">Previous</a>
+            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="1" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">First</a>
+            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="@(Model.Pendings.PageIndex - 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Previous</a>
         }
 
-        @for (int i = Math.Max(1, Model.TransactionPendings.PageIndex - 2); i <= Math.Min(Model.TransactionPendings.TotalPages, Model.TransactionPendings.PageIndex + 2); i++)
+        @for (int i = Math.Max(1, Model.Pendings.PageIndex - 2); i <= Math.Min(Model.Pendings.TotalPages, Model.TransactionTriages.PageIndex + 2); i++)
         {
-            <a class="page-link @(i == Model.TransactionPendings.PageIndex ? "active" : "")" asp-page="./Pendings" asp-route-pageIndex="@i">@i</a>
+            <a class="page-link @(i == Model.Pendings.PageIndex ? "active" : "")" asp-page="./Triages" asp-route-pageIndex="@i" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">@i</a>
         }
 
-        @if (Model.TransactionPendings.HasNextPage)
+        @if (Model.Pendings.HasNextPage &&
+        Model.Pendings.TotalPages > 5)
         {
-            <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="@(Model.TransactionPendings.PageIndex + 1)">Next</a>
-            <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="@Model.TransactionPendings.TotalPages">Last</a>
+            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="@(Model.Pendings.PageIndex + 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Next</a>
+            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="@Model.Pendings.TotalPages" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Last</a>
         }
     </div>
 </div>

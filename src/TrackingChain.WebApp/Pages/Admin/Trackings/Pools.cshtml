@@ -3,6 +3,17 @@
 
 <div class="container mt-4">
     <div class="table-responsive mt-4">
+        <form asp-page="./Pools" method="get">
+            <div class="form-actions no-color">
+                <p>
+                    Find by Code or TrackingId:
+                    <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+                    <input type="submit" value="Search" class="btn btn-primary" /> |
+                    <a asp-page="./Pools">Back to full List</a>
+                </p>
+            </div>
+        </form>
+
         <table class="tracking-table">
             <thead>
                 <tr>
@@ -65,21 +76,23 @@
         Showing @itemShowStart of @itemShowEnd items out of @Model.TotalItems.
     </div>
     <div class="pagination">
-        @if (Model.TransactionPools.HasPreviousPage)
+        @if (Model.Pools.HasPreviousPage &&
+        Model.Pools.TotalPages > 5)
         {
-            <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="1">First</a>
-            <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="@(Model.TransactionPools.PageIndex - 1)">Previous</a>
+            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="1" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">First</a>
+            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="@(Model.Pools.PageIndex - 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Previous</a>
         }
 
-        @for (int i = Math.Max(1, Model.TransactionPools.PageIndex - 2); i <= Math.Min(Model.TransactionPools.TotalPages, Model.TransactionPools.PageIndex + 2); i++)
+        @for (int i = Math.Max(1, Model.Pools.PageIndex - 2); i <= Math.Min(Model.Pools.TotalPages, Model.Pools.PageIndex + 2); i++)
         {
-            <a class="page-link @(i == Model.TransactionPools.PageIndex ? "active" : "")" asp-page="./Pendings" asp-route-pageIndex="@i">@i</a>
+            <a class="page-link @(i == Model.Pools.PageIndex ? "active" : "")" asp-page="./Triages" asp-route-pageIndex="@i" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">@i</a>
         }
 
-        @if (Model.TransactionPools.HasNextPage)
+        @if (Model.Pools.HasNextPage &&
+        Model.Pools.TotalPages > 5)
         {
-            <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="@(Model.TransactionPools.PageIndex + 1)">Next</a>
-            <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="@Model.TransactionPools.TotalPages">Last</a>
+            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="@(Model.Pools.PageIndex + 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Next</a>
+            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="@Model.Pools.TotalPages" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Last</a>
         }
     </div>
 </div>
