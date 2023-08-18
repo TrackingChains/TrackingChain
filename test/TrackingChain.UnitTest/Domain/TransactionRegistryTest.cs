@@ -1,14 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Win32;
-using System;
-using System.Threading.Tasks;
-using TrackingChain.Common.Dto;
+﻿using System;
 using TrackingChain.Common.Enums;
 using TrackingChain.Core.Domain.Enums;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.Domain.Enums;
-using TrackingChain.TransactionWatcherCore.Services;
-using TrackingChain.UnitTest.Helpers;
 using Xunit;
 
 namespace TrackingChain.UnitTest.Domain
@@ -103,27 +97,7 @@ namespace TrackingChain.UnitTest.Domain
         public void ShouldBeSetToPool()
         {
             //Arrange
-            string code = "CodeTest";
-            string data = "DataTest";
-            var trackingIdentify = Guid.NewGuid();
-            var triageDate = new DateTime(1987, 7, 23, 02, 15, 0, 0);
-            var profileGroupId = Guid.NewGuid();
-            var smartContractId = 10;
-            var smartContractAddress = "0x1234";
-            var smartContractExtraInfo = "{}";
-            var chainNumberId = 1001;
-            var chainType = ChainType.Substrate;
-            var transactionRegistry = new TransactionRegistry(
-                code,
-                data,
-                trackingIdentify,
-                smartContractId,
-                smartContractAddress,
-                smartContractExtraInfo,
-                profileGroupId,
-                chainNumberId,
-                chainType,
-                triageDate);
+            TransactionRegistry transactionRegistry = CreateGenericEntity();
 
 
             //Act
@@ -138,27 +112,7 @@ namespace TrackingChain.UnitTest.Domain
         public void SetToRegistryShouldBePopolateReceptData()
         {
             //Arrange
-            string code = "CodeTest";
-            string data = "DataTest";
-            var trackingIdentify = Guid.NewGuid();
-            var triageDate = new DateTime(1987, 7, 23, 02, 15, 0, 0);
-            var profileGroupId = Guid.NewGuid();
-            var smartContractId = 10;
-            var smartContractAddress = "0x1234";
-            var smartContractExtraInfo = "{}";
-            var chainNumberId = 1001;
-            var chainType = ChainType.Substrate;
-            var transactionRegistry = new TransactionRegistry(
-                code,
-                data,
-                trackingIdentify,
-                smartContractId,
-                smartContractAddress,
-                smartContractExtraInfo,
-                profileGroupId,
-                chainNumberId,
-                chainType,
-                triageDate);
+            TransactionRegistry transactionRegistry = CreateGenericEntity();
             var receiptBlockHash = "receiptBlockHashTest";
             var receiptBlockNumber = "receiptBlockNumberTest";
             var receiptCumulativeGasUsed = "receiptCumulativeGasUsedTest";
@@ -245,27 +199,7 @@ namespace TrackingChain.UnitTest.Domain
         public void GetFirstRandomEndpointAddressShouldBeReturnNullWhenEmpty()
         {
             //Arrange
-            string code = "CodeTest";
-            string data = "DataTest";
-            var trackingIdentify = Guid.NewGuid();
-            var triageDate = new DateTime(1987, 7, 23, 02, 15, 0, 0);
-            var profileGroupId = Guid.NewGuid();
-            var smartContractId = 10;
-            var smartContractAddress = "0x1234";
-            var smartContractExtraInfo = "{}";
-            var chainNumberId = 1001;
-            var chainType = ChainType.Substrate;
-            var transactionRegistry = new TransactionRegistry(
-                code,
-                data,
-                trackingIdentify,
-                smartContractId,
-                smartContractAddress,
-                smartContractExtraInfo,
-                profileGroupId,
-                chainNumberId,
-                chainType,
-                triageDate);
+            TransactionRegistry transactionRegistry = CreateGenericEntity();
 
 
             //Act
@@ -284,27 +218,7 @@ namespace TrackingChain.UnitTest.Domain
         public void SetToRegistrySuccessfulShouldSetInSuccess()
         {
             //Arrange
-            string code = "CodeTest";
-            string data = "DataTest";
-            var trackingIdentify = Guid.NewGuid();
-            var triageDate = new DateTime(1987, 7, 23, 02, 15, 0, 0);
-            var profileGroupId = Guid.NewGuid();
-            var smartContractId = 10;
-            var smartContractAddress = "0x1234";
-            var smartContractExtraInfo = "{}";
-            var chainNumberId = 1001;
-            var chainType = ChainType.Substrate;
-            var transactionRegistry = new TransactionRegistry(
-                code,
-                data,
-                trackingIdentify,
-                smartContractId,
-                smartContractAddress,
-                smartContractExtraInfo,
-                profileGroupId,
-                chainNumberId,
-                chainType,
-                triageDate);
+            TransactionRegistry transactionRegistry = CreateGenericEntity();
             var receiptBlockHash = "receiptBlockHashTest";
             var receiptBlockNumber = "receiptBlockNumberTest";
             var receiptCumulativeGasUsed = "receiptCumulativeGasUsedTest";
@@ -338,27 +252,7 @@ namespace TrackingChain.UnitTest.Domain
         public void SetToRegistryUnuccessfulShouldSetInError()
         {
             //Arrange
-            string code = "CodeTest";
-            string data = "DataTest";
-            var trackingIdentify = Guid.NewGuid();
-            var triageDate = new DateTime(1987, 7, 23, 02, 15, 0, 0);
-            var profileGroupId = Guid.NewGuid();
-            var smartContractId = 10;
-            var smartContractAddress = "0x1234";
-            var smartContractExtraInfo = "{}";
-            var chainNumberId = 1001;
-            var chainType = ChainType.Substrate;
-            var transactionRegistry = new TransactionRegistry(
-                code,
-                data,
-                trackingIdentify,
-                smartContractId,
-                smartContractAddress,
-                smartContractExtraInfo,
-                profileGroupId,
-                chainNumberId,
-                chainType,
-                triageDate);
+            TransactionRegistry transactionRegistry = CreateGenericEntity();
 
 
             //Act
@@ -375,27 +269,7 @@ namespace TrackingChain.UnitTest.Domain
         public void SetToRegistryReceptMissionShouldSetInSuccess()
         {
             //Arrange
-            string code = "CodeTest";
-            string data = "DataTest";
-            var trackingIdentify = Guid.NewGuid();
-            var triageDate = new DateTime(1987, 7, 23, 02, 15, 0, 0);
-            var profileGroupId = Guid.NewGuid();
-            var smartContractId = 10;
-            var smartContractAddress = "0x1234";
-            var smartContractExtraInfo = "{}";
-            var chainNumberId = 1001;
-            var chainType = ChainType.Substrate;
-            var transactionRegistry = new TransactionRegistry(
-                code,
-                data,
-                trackingIdentify,
-                smartContractId,
-                smartContractAddress,
-                smartContractExtraInfo,
-                profileGroupId,
-                chainNumberId,
-                chainType,
-                triageDate);
+            TransactionRegistry transactionRegistry = CreateGenericEntity();
             var receiptBlockHash = "";
             var receiptBlockNumber = "";
             var receiptCumulativeGasUsed = "";
@@ -423,6 +297,33 @@ namespace TrackingChain.UnitTest.Domain
             //Assert
             Assert.Equal(TransactionStep.Completed, transactionRegistry.TransactionStep);
             Assert.Equal(RegistryStatus.SuccessfullyCompleted, transactionRegistry.Status);
+        }
+
+        // Helpers.
+        private static TransactionRegistry CreateGenericEntity()
+        {
+            string code = "CodeTest";
+            string data = "DataTest";
+            var trackingIdentify = Guid.NewGuid();
+            var triageDate = new DateTime(1987, 7, 23, 02, 15, 0, 0);
+            var profileGroupId = Guid.NewGuid();
+            var smartContractId = 10;
+            var smartContractAddress = "0x1234";
+            var smartContractExtraInfo = "{}";
+            var chainNumberId = 1001;
+            var chainType = ChainType.Substrate;
+            var transactionRegistry = new TransactionRegistry(
+                code,
+                data,
+                trackingIdentify,
+                smartContractId,
+                smartContractAddress,
+                smartContractExtraInfo,
+                profileGroupId,
+                chainNumberId,
+                chainType,
+                triageDate);
+            return transactionRegistry;
         }
     }
 }
