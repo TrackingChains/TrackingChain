@@ -21,7 +21,11 @@
                         @Html.DisplayNameFor(model => model.TransactionPools[0].TrackingId)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.TransactionPools[0].Code)
+                        <a asp-page="./Pools"
+                           asp-route-sortOrder="@Model.CodeSort"
+                           asp-route-currentFilter="@Model.CurrentFilter">
+                            @Html.DisplayNameFor(model => model.TransactionPools[0].Code)
+                        </a>
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.TransactionPools[0].Locked)
@@ -30,7 +34,11 @@
                         @Html.DisplayNameFor(model => model.TransactionPools[0].Completed)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.TransactionPools[0].ReceivedDate)
+                        <a asp-page="./Pools"
+                           asp-route-sortOrder="@Model.ReceivedDateSort"
+                           asp-route-currentFilter="@Model.CurrentFilter">
+                            @Html.DisplayNameFor(model => model.TransactionPools[0].ReceivedDate)
+                        </a>
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.TransactionPools[0].TriageDate)
@@ -76,23 +84,23 @@
         Showing @itemShowStart of @itemShowEnd items out of @Model.TotalItems.
     </div>
     <div class="pagination">
-        @if (Model.Pools.HasPreviousPage &&
-        Model.Pools.TotalPages > 5)
+        @if (Model.TransactionPools.HasPreviousPage &&
+        Model.TransactionPools.TotalPages > 5)
         {
-            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="1" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">First</a>
-            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="@(Model.Pools.PageIndex - 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Previous</a>
+            <a class="page-link" asp-page="./Pools" asp-route-pageIndex="1" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">First</a>
+            <a class="page-link" asp-page="./Pools" asp-route-pageIndex="@(Model.TransactionPools.PageIndex - 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Previous</a>
         }
 
-        @for (int i = Math.Max(1, Model.Pools.PageIndex - 2); i <= Math.Min(Model.Pools.TotalPages, Model.Pools.PageIndex + 2); i++)
+        @for (int i = Math.Max(1, Model.TransactionPools.PageIndex - 2); i <= Math.Min(Model.TransactionPools.TotalPages, Model.TransactionPools.PageIndex + 2); i++)
         {
-            <a class="page-link @(i == Model.Pools.PageIndex ? "active" : "")" asp-page="./Triages" asp-route-pageIndex="@i" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">@i</a>
+            <a class="page-link @(i == Model.TransactionPools.PageIndex ? "active" : "")" asp-page="./Pools" asp-route-pageIndex="@i" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">@i</a>
         }
 
-        @if (Model.Pools.HasNextPage &&
-        Model.Pools.TotalPages > 5)
+        @if (Model.TransactionPools.HasNextPage &&
+        Model.TransactionPools.TotalPages > 5)
         {
-            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="@(Model.Pools.PageIndex + 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Next</a>
-            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="@Model.Pools.TotalPages" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Last</a>
+            <a class="page-link" asp-page="./Pools" asp-route-pageIndex="@(Model.TransactionPools.PageIndex + 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Next</a>
+            <a class="page-link" asp-page="./Pools" asp-route-pageIndex="@Model.TransactionPools.TotalPages" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Last</a>
         }
     </div>
 </div>

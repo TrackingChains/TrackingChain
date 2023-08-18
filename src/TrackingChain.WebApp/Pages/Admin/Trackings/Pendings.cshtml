@@ -3,13 +3,13 @@
 
 <div class="container mt-4">
     <div class="table-responsive mt-4">
-        <form asp-page="./PendingDetails" method="get">
+        <form asp-page="./Pendings" method="get">
             <div class="form-actions no-color">
                 <p>
                     Find by Code or TrackingId:
                     <input type="text" name="SearchString" value="@Model.CurrentFilter" />
                     <input type="submit" value="Search" class="btn btn-primary" /> |
-                    <a asp-page="./PendingDetails">Back to full List</a>
+                    <a asp-page="./Pendings">Back to full List</a>
                 </p>
             </div>
         </form>
@@ -21,7 +21,11 @@
                         @Html.DisplayNameFor(model => model.TransactionPendings[0].TrackingId)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.TransactionPendings[0].Code)
+                        <a asp-page="./Pendings"
+                           asp-route-sortOrder="@Model.CodeSort"
+                           asp-route-currentFilter="@Model.CurrentFilter">
+                            @Html.DisplayNameFor(model => model.TransactionPendings[0].Code)
+                        </a>
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.TransactionPendings[0].Locked)
@@ -30,7 +34,11 @@
                         @Html.DisplayNameFor(model => model.TransactionPendings[0].Completed)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.TransactionPendings[0].ReceivedDate)
+                        <a asp-page="./Pendings"
+                           asp-route-sortOrder="@Model.ReceivedDateSort"
+                           asp-route-currentFilter="@Model.CurrentFilter">
+                            @Html.DisplayNameFor(model => model.TransactionPendings[0].ReceivedDate)
+                        </a>
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.TransactionPendings[0].TriageDate)
@@ -76,23 +84,23 @@
         Showing @itemShowStart of @itemShowEnd items out of @Model.TotalItems.
     </div>
     <div class="pagination">
-        @if (Model.Pendings.HasPreviousPage &&
-        Model.Pendings.TotalPages > 5)
+        @if (Model.TransactionPendings.HasPreviousPage &&
+        Model.TransactionPendings.TotalPages > 5)
         {
-            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="1" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">First</a>
-            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="@(Model.Pendings.PageIndex - 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Previous</a>
+            <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="1" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">First</a>
+            <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="@(Model.TransactionPendings.PageIndex - 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Previous</a>
         }
 
-        @for (int i = Math.Max(1, Model.Pendings.PageIndex - 2); i <= Math.Min(Model.Pendings.TotalPages, Model.TransactionTriages.PageIndex + 2); i++)
+        @for (int i = Math.Max(1, Model.TransactionPendings.PageIndex - 2); i <= Math.Min(Model.TransactionPendings.TotalPages, Model.TransactionPendings.PageIndex + 2); i++)
         {
-            <a class="page-link @(i == Model.Pendings.PageIndex ? "active" : "")" asp-page="./Triages" asp-route-pageIndex="@i" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">@i</a>
+            <a class="page-link @(i == Model.TransactionPendings.PageIndex ? "active" : "")" asp-page="./Pendings" asp-route-pageIndex="@i" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">@i</a>
         }
 
-        @if (Model.Pendings.HasNextPage &&
-        Model.Pendings.TotalPages > 5)
+        @if (Model.TransactionPendings.HasNextPage &&
+        Model.TransactionPendings.TotalPages > 5)
         {
-            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="@(Model.Pendings.PageIndex + 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Next</a>
-            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="@Model.Pendings.TotalPages" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Last</a>
+            <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="@(Model.TransactionPendings.PageIndex + 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Next</a>
+            <a class="page-link" asp-page="./Pendings" asp-route-pageIndex="@Model.TransactionPendings.TotalPages" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Last</a>
         }
     </div>
 </div>
