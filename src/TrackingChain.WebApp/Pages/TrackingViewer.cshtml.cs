@@ -1,13 +1,11 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using TrackingChain.Common.Dto;
-using TrackingChain.Common.ExtraInfos;
 using TrackingChain.Common.Interfaces;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TransactionTriageCore.ModelViews;
@@ -41,6 +39,9 @@ namespace TrackingChain.TriageWebApplication.Pages
         }
 
         // Properties.
+        [BindProperty]
+        public TrackingViewerBinding TrackingViewerBinding { get; set; } = default!;
+        public bool CodeNotFound { get; set; }
         public string? Result { get; set; }
         private List<TrackingDataModelView> trackingProduct { get; set; }
         public IReadOnlyCollection<TrackingDataModelView> TrackingProductModelViews { get { return trackingProduct; } }
@@ -48,28 +49,40 @@ namespace TrackingChain.TriageWebApplication.Pages
         // GET
         public void OnGet()
         {
+            ViewData["SmartContractId"] = new SelectList(dbContext.SmartContracts, "Id", "Name");
         }
 
         // POST
-        public async Task OnPostSubmitAsync(TrackingViewBinding trackingViewBinding)
+        public async Task OnPostSubmitAsync()
         {
-            ArgumentNullException.ThrowIfNull(trackingViewBinding);
+            ArgumentNullException.ThrowIfNull(TrackingViewerBinding);
+            ViewData["SmartContractId"] = new SelectList(dbContext.SmartContracts, "Id", "Name");
+
+            if (TrackingViewerBinding.TrackingId == Guid.Empty &&
+                string.IsNullOrWhiteSpace(TrackingViewerBinding.Code))
+            {
+                Result = "TrackingId or Code is mandatory";
+                return;
+            }
 
             IEnumerable<TrackingModelView> trackingModelViews;
-            if (trackingViewBinding.TrackingId == Guid.Empty)
-                trackingModelViews = await analyticUseCase.GetTrackingHistoryAsync(trackingViewBinding.Code ?? "", trackingViewBinding.SmartContractId);
+            if (TrackingViewerBinding.TrackingId == Guid.Empty)
+                trackingModelViews = await analyticUseCase.GetTrackingHistoryAsync(TrackingViewerBinding.Code ?? "", TrackingViewerBinding.SmartContractId);
             else
-                trackingModelViews = await analyticUseCase.GetTrackingHistoryAsync(trackingViewBinding.TrackingId);
+                trackingModelViews = await analyticUseCase.GetTrackingHistoryAsync(TrackingViewerBinding.TrackingId);
 
+            CodeNotFound = !trackingModelViews.Any();
             foreach (var itemTracked in trackingModelViews)
             {
                 var item = new TrackingDataModelView();
+                item.TrackingId = itemTracked.TrackingId;
                 item.Code = itemTracked.Code;
                 item.BlockNumber = string.IsNullOrWhiteSpace(itemTracked.ReceiptBlockNumber) ? 
-                    "Missing Receipt (Substrate chain will be impletented in Milestone 4)" :
+                    "Missing Receipt (Substrate in Milestone 4)" :
                     itemTracked.ReceiptBlockNumber;
                 item.DataValue = itemTracked.DataValue;
                 item.Timestamp = itemTracked.RegistryDate;
+                item.Selected = itemTracked.TrackingId == TrackingViewerBinding.TrackingId;
                 trackingProduct.Add(item);
             }
 

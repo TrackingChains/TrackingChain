@@ -2,40 +2,119 @@
 @model TrackingChain.TriageWebApplication.Pages.TrackingViewerModel
 @{
 }
+<style>
+
+    .search-group {
+        margin-bottom: 15px;
+    }
+
+        .search-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .form-control-short {
+        width: 50%;
+    }
+
+    .code-smart-contract-group {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    select.form-control {
+        width: 100%;
+    }
+
+    .two-column {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    select.two-column {
+        width: 100%;
+    }
+
+    .btn-primary {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #007bff;
+        border: none;
+        border-radius: 4px;
+        color: white;
+        cursor: pointer;
+    }
+
+    .search-results {
+        margin-top: 30px;
+        border-top: 1px solid #ccc;
+        padding-top: 20px;
+    }
+
+        .search-results h3 {
+            margin-bottom: 10px;
+        }
+
+        .search-results p {
+            margin-bottom: 15px;
+        }
+
+    .selected-item {
+        background-color: #DFF0D8;
+        border: 1px solid #3C763D;
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+</style>
 <div class="text-center">
     <h1 class="display-4">Tracking View</h1>
-    <form method="post">
-        <table>
-            <tr>
-                <td>Tracking Id:</td>
-                <td><input type="text" name="TrackingId" /></td>
-            </tr>
-            <tr>
-                <td><input type="submit" value="Submit" asp-page-handler="Submit" /></td>
-            </tr>
-        </table>
-        <hr />
-        <div>
-            @if (Model.TrackingProductModelViews.Any())
-            {
-
-                <h3>Code: @Model.TrackingProductModelViews.First().Code </h3>
-                @foreach (var item in Model.TrackingProductModelViews)
-                {
-                    <p>
-                        <span>Data Value: @item.DataValue</span>
-                        <br />
-                        <span>Timestamp: @item.Timestamp</span>
-                        <br />
-                        <span>BlockNumber: @item.BlockNumber</span>
-                    </p>
-                }
-            }
-            else
-            {
-                <h3>Tracking not found</h3>
-            }
+    <form method="post" asp-page-handler="Submit" class="search-form">
+        <div class="search-group">
+            <label for="TrackingId">Search by TrackingId:</label>
+            @Html.TextBoxFor(m => m.TrackingViewerBinding.TrackingId, new { @class = "form-control-short" })
         </div>
-        <span>@Model.Result</span>
+
+        <div class="search-group">
+            <label for="Code">Search by Code and Smart Contract:</label>
+            <div class="code-smart-contract-group two-column">
+                @Html.TextBoxFor(m => m.TrackingViewerBinding.Code, new { @class = "form-control" })
+                <select asp-for="TrackingViewerBinding.SmartContractId" class="form-control" asp-items="ViewBag.SmartContractId"></select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    <div class="search-results">
+        @if (Model.TrackingProductModelViews.Any())
+        {
+            <h3>Code: @Model.TrackingProductModelViews.First().Code</h3>
+            @foreach (var item in Model.TrackingProductModelViews)
+            {
+                <p class="@(item.Selected ? "selected-item" : "")">
+                    <span>Tracking Id: @item.TrackingId</span><br />
+                    <span>Data Value: @item.DataValue</span><br />
+                    <span>Timestamp: @item.Timestamp</span><br />
+                    <span>BlockNumber: @item.BlockNumber</span>
+                </p>
+            }
+        }
+        else if (Model.CodeNotFound)
+        {
+            <h3>Tracking not found</h3>
+        }
+    </div>
+
+    <span>@Model.Result</span>
 </div>
