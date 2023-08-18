@@ -17,6 +17,7 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Trackings
             dbContext = context;
             CodeSort = "";
             ReceivedDateSort = "";
+            TriageDateSort = "";
             CurrentFilter = "";
             CurrentSort = "";
         }
@@ -31,6 +32,7 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Trackings
         //sort and filter
         public string CodeSort { get; set; }
         public string ReceivedDateSort { get; set; }
+        public string TriageDateSort { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
 
@@ -59,6 +61,7 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Trackings
             // Order.
             CodeSort = sortOrder == "Code" ? "code_desc" : "Code";
             ReceivedDateSort = string.IsNullOrEmpty(sortOrder) ? "date_asc" : "";
+            TriageDateSort = sortOrder == "TriageDate" ? "triage_data_desc" : "TriageDate";
             query = sortOrder switch
             {
                 "code_desc" => query.OrderByDescending(s => s.Code),

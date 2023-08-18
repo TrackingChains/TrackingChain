@@ -35,7 +35,11 @@
                         </a>
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.TransactionRegistries[0].TransactionStep)
+                        <a asp-page="./Registries"
+                           asp-route-sortOrder="@Model.TriageDateSort"
+                           asp-route-currentFilter="@Model.CurrentFilter">
+                            @Html.DisplayNameFor(model => model.TransactionRegistries[0].TriageDate)
+                        </a>
                     </th>
                     <th></th>
                 </tr>

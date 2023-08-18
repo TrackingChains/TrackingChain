@@ -41,7 +41,11 @@
                         </a>
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.TransactionPendings[0].TriageDate)
+                        <a asp-page="./Pendings"
+                           asp-route-sortOrder="@Model.TriageDateSort"
+                           asp-route-currentFilter="@Model.CurrentFilter">
+                            @Html.DisplayNameFor(model => model.TransactionPendings[0].TriageDate)
+                        </a>
                     </th>
                     <th></th>
                 </tr>
