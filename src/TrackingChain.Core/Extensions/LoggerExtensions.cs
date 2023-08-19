@@ -5,7 +5,7 @@ namespace TrackingChain.TrackingChainCore.Extensions
 {
     /*
      * Always group similar log delegates by type, always use incremental event ids.
-     * Last event id is: 23
+     * Last event id is: 27
      */
     public static class LoggerExtensions
     {
@@ -39,6 +39,11 @@ namespace TrackingChain.TrackingChainCore.Extensions
                 LogLevel.Information,
                 new EventId(11, nameof(EndChildPoolDequeuerTask)),
                 "Child PoolDequeuer {TaskId} task END.");
+        private static readonly Action<ILogger, Exception> _endAlertWorker =
+            LoggerMessage.Define(
+                LogLevel.Information,
+                new EventId(27, nameof(EndAlertWorker)),
+                "Alert END.");
         private static readonly Action<ILogger, Exception> _endMigratorDbWorker =
             LoggerMessage.Define(
                 LogLevel.Information,
@@ -64,6 +69,11 @@ namespace TrackingChain.TrackingChainCore.Extensions
                 LogLevel.Information,
                 new EventId(12, nameof(EndTransactionFailedWorker)),
                 "Transaction failed recovery END.");
+        private static readonly Action<ILogger, Exception> _endTransactionDeleterWorker =
+            LoggerMessage.Define(
+                LogLevel.Information,
+                new EventId(25, nameof(EndTransactionDeleterWorker)),
+                "Transaction deleter recovery END.");
         private static readonly Action<ILogger, Exception> _endTransactionLockedWorker =
             LoggerMessage.Define(
                 LogLevel.Information,
@@ -84,6 +94,11 @@ namespace TrackingChain.TrackingChainCore.Extensions
                 LogLevel.Information,
                 new EventId(19, nameof(StartChildCheckerTask)),
                 "Start Child Checker {TaskId} task running.");
+        private static readonly Action<ILogger, Exception> _startAlertWorker =
+            LoggerMessage.Define(
+                LogLevel.Information,
+                new EventId(26, nameof(StartAlertWorker)),
+                "Alert Worker running."); 
         private static readonly Action<ILogger, Exception> _startPoolDequeuerWorker =
             LoggerMessage.Define(
                 LogLevel.Information,
@@ -104,6 +119,11 @@ namespace TrackingChain.TrackingChainCore.Extensions
                 LogLevel.Information,
                 new EventId(22, nameof(StartTransactionLockedWorker)),
                 "Transaction Locked Worker running.");
+        private static readonly Action<ILogger, Exception> _startTransactionDeleterWorker =
+            LoggerMessage.Define(
+                LogLevel.Information,
+                new EventId(24, nameof(StartTransactionDeleterWorker)),
+                "Start Transaction Deleter Worker running.");
         private static readonly Action<ILogger, Exception> _startTransactionFailedWorker =
             LoggerMessage.Define(
                 LogLevel.Information,
@@ -166,6 +186,8 @@ namespace TrackingChain.TrackingChainCore.Extensions
             _endChildCheckerTask(logger, taskId, null!); 
         public static void EndChildPoolDequeuerTask(this ILogger logger, Guid taskId) =>
             _endChildPoolDequeuerTask(logger, taskId, null!);
+        public static void EndAlertWorker(this ILogger logger) =>
+            _endAlertWorker(logger, null!);
         public static void EndMigratorDbWorker(this ILogger logger) =>
             _endMigratorDbWorker(logger, null!);
         public static void EndPoolDequeuerWorker(this ILogger logger) =>
@@ -174,6 +196,8 @@ namespace TrackingChain.TrackingChainCore.Extensions
             _endPoolEnqueuerWorker(logger, null!);
         public static void EndPendingTransactionCheckerWorker(this ILogger logger) =>
             _endPendingTransactionCheckerWorker(logger, null!);
+        public static void EndTransactionDeleterWorker(this ILogger logger) =>
+            _endTransactionDeleterWorker(logger, null!); 
         public static void EndTransactionFailedWorker(this ILogger logger) =>
             _endTransactionFailedWorker(logger, null!);
         public static void EndTransactionLockedWorker(this ILogger logger) =>
@@ -192,12 +216,16 @@ namespace TrackingChain.TrackingChainCore.Extensions
             _startChildPoolDequeuerTask(logger, taskId, null!);
         public static void StartMigratorDbWorker(this ILogger logger) =>
             _startMigratorDbWorker(logger, null!);
+        public static void StartAlertWorker(this ILogger logger) =>
+            _startAlertWorker(logger, null!);
         public static void StartPoolDequeuerWorker(this ILogger logger) =>
             _startPoolDequeuerWorker(logger, null!);
         public static void StartPoolEnqueuerWorker(this ILogger logger) =>
             _startPoolEnqueuerWorker(logger, null!);
         public static void StartPendingTransactionCheckerWorker(this ILogger logger) =>
             _startPendingTransactionCheckerWorker(logger, null!);
+        public static void StartTransactionDeleterWorker(this ILogger logger) =>
+            _startTransactionDeleterWorker(logger, null!); 
         public static void StartTransactionFailedWorker(this ILogger logger) =>
             _startTransactionFailedWorker(logger, null!);
         public static void StartTransactionLockedWorker(this ILogger logger) =>

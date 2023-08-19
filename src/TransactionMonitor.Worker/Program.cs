@@ -2,11 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TrackingChain.Common.Interfaces;
 using TrackingChain.Substrate.Generic.Client;
 using TrackingChain.TrackingChainCore.EntityFramework;
@@ -32,6 +27,8 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddTransient<IBlockchainService, SubstrateGenericClient>();
         services.AddTransient<IUnitOfWork, UnitOfWork>();
 
+        services.AddHostedService<TransactionDeleterWorker>();
+        services.AddHostedService<TransactionFailedWorker>();
         services.AddHostedService<TransactionLockedWorker>();
     })
     .UseSerilog((hostingContext, services, loggerConfiguration) => loggerConfiguration
