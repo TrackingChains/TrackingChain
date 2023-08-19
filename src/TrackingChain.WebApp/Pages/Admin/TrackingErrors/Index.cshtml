@@ -2,6 +2,16 @@
 @model TrackingChain.TriageWebApplication.Pages.Admin.TrackingErrors.IndexModel
 
 <div class="container mt-4">
+    <form asp-page="./Index" method="get">
+        <div class="form-actions no-color">
+            <p>
+                Find by Code or TrackingId:
+                <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+                <input type="submit" value="Search" class="btn btn-primary" /> |
+                <a asp-page="./Index">Back to full List</a>
+            </p>
+        </div>
+    </form>
     <div class="table-responsive mt-4">
         <table class="table custom-table">
             <thead>
@@ -10,10 +20,18 @@
                         @Html.DisplayNameFor(model => model.TransactionRegistries[0].TrackingId)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.TransactionRegistries[0].Code)
+                        <a asp-page="./Index"
+                           asp-route-sortOrder="@Model.CodeSort"
+                           asp-route-currentFilter="@Model.CurrentFilter">
+                            @Html.DisplayNameFor(model => model.TransactionRegistries[0].Code)
+                        </a>
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.TransactionRegistries[0].TriageDate)
+                        <a asp-page="./Index"
+                           asp-route-sortOrder="@Model.ReceivedDateSort"
+                           asp-route-currentFilter="@Model.CurrentFilter">
+                            @Html.DisplayNameFor(model => model.TransactionRegistries[0].ReceivedDate)
+                        </a>
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.TransactionRegistries[0].TransactionStep)
@@ -59,21 +77,23 @@
         Showing @itemShowStart of @itemShowEnd items out of @Model.TotalItems.
     </div>
     <div class="pagination">
-        @if (Model.TransactionRegistries.HasPreviousPage)
+        @if (Model.TransactionRegistries.HasPreviousPage &&
+        Model.TransactionRegistries.TotalPages > 5)
         {
-            <a class="page-link" asp-page="./Index" asp-route-pageIndex="1">First</a>
-            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.TransactionRegistries.PageIndex - 1)">Previous</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="1" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">First</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.TransactionRegistries.PageIndex - 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Previous</a>
         }
 
         @for (int i = Math.Max(1, Model.TransactionRegistries.PageIndex - 2); i <= Math.Min(Model.TransactionRegistries.TotalPages, Model.TransactionRegistries.PageIndex + 2); i++)
         {
-            <a class="page-link @(i == Model.TransactionRegistries.PageIndex ? "active" : "")" asp-page="./Index" asp-route-pageIndex="@i">@i</a>
+            <a class="page-link @(i == Model.TransactionRegistries.PageIndex ? "active" : "")" asp-page="./Index" asp-route-pageIndex="@i" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">@i</a>
         }
 
-        @if (Model.TransactionRegistries.HasNextPage)
+        @if (Model.TransactionRegistries.HasNextPage &&
+        Model.TransactionRegistries.TotalPages > 5)
         {
-            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.TransactionRegistries.PageIndex + 1)">Next</a>
-            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@Model.TransactionRegistries.TotalPages">Last</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.TransactionRegistries.PageIndex + 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Next</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@Model.TransactionRegistries.TotalPages" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Last</a>
         }
     </div>
 </div>
