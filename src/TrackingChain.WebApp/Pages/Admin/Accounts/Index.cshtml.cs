@@ -47,7 +47,7 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Accounts
 
             var query = dbContext.Accounts.AsNoTracking();
             if (!string.IsNullOrEmpty(searchString))
-                query = query.Where(s => s.Name.StartsWith(searchString));
+                query = query.Where(s => s.Name.Contains(searchString));
 
             // Order.
             NameSort = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";

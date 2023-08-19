@@ -3,19 +3,41 @@
 
 <div class="container mt-4">
     <a class="btn btn-primary" asp-page="Create">Create New</a>
-
+    <br />
+    <form asp-page="./Index" method="get">
+        <div class="form-actions no-color">
+            <p>
+                Find by Name:
+                <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+                <input type="submit" value="Search" class="btn btn-primary" /> |
+                <a asp-page="./Index">Back to full List</a>
+            </p>
+        </div>
+    </form>
     <div class="table-responsive mt-4">
         <table class="table custom-table">
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.ProfileGroups[0].Name)
+                        <a asp-page="./Index"
+                           asp-route-sortOrder="@Model.NameSort"
+                           asp-route-currentFilter="@Model.CurrentFilter">
+                            @Html.DisplayNameFor(model => model.ProfileGroups[0].Name)
+                        </a>
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.ProfileGroups[0].Category)
+                        <a asp-page="./Index"
+                           asp-route-sortOrder="@Model.CategorySort"
+                           asp-route-currentFilter="@Model.CurrentFilter">
+                            @Html.DisplayNameFor(model => model.ProfileGroups[0].Category)
+                        </a>
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.ProfileGroups[0].SmartContract)
+                        <a asp-page="./Index"
+                           asp-route-sortOrder="@Model.SmartContractNameSort"
+                           asp-route-currentFilter="@Model.CurrentFilter">
+                            @Html.DisplayNameFor(model => model.ProfileGroups[0].SmartContract)
+                        </a>
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.ProfileGroups[0].Priority)
@@ -57,21 +79,23 @@
         Showing @itemShowStart of @itemShowEnd items out of @Model.TotalItems.
     </div>
     <div class="pagination">
-        @if (Model.ProfileGroups.HasPreviousPage)
+        @if (Model.ProfileGroups.HasPreviousPage &&
+        Model.ProfileGroups.TotalPages > 5)
         {
-            <a class="page-link" asp-page="./Index" asp-route-pageIndex="1">First</a>
-            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.ProfileGroups.PageIndex - 1)">Previous</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="1" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">First</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.ProfileGroups.PageIndex - 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Previous</a>
         }
 
         @for (int i = Math.Max(1, Model.ProfileGroups.PageIndex - 2); i <= Math.Min(Model.ProfileGroups.TotalPages, Model.ProfileGroups.PageIndex + 2); i++)
         {
-            <a class="page-link @(i == Model.ProfileGroups.PageIndex ? "active" : "")" asp-page="./Index" asp-route-pageIndex="@i">@i</a>
+            <a class="page-link @(i == Model.ProfileGroups.PageIndex ? "active" : "")" asp-page="./Index" asp-route-pageIndex="@i" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">@i</a>
         }
 
-        @if (Model.ProfileGroups.HasNextPage)
+        @if (Model.ProfileGroups.HasNextPage &&
+        Model.ProfileGroups.TotalPages > 5)
         {
-            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.ProfileGroups.PageIndex + 1)">Next</a>
-            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@Model.ProfileGroups.TotalPages">Last</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.ProfileGroups.PageIndex + 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Next</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@Model.ProfileGroups.TotalPages" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Last</a>
         }
     </div>
 </div>

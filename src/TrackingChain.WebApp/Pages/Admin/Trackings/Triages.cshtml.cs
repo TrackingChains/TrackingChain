@@ -53,7 +53,7 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Trackings
                 if (Guid.TryParse(searchString, out var trackId))
                     query = query.Where(s => s.TrackingIdentify == trackId);
                 else
-                    query = query.Where(s => s.Code.StartsWith(searchString));
+                    query = query.Where(s => s.Code.Contains(searchString));
             }
 
             // Order.
