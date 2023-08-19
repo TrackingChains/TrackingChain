@@ -3,13 +3,27 @@
 
 <div class="container mt-4">
     <a class="btn btn-primary" asp-page="Create">Create New</a>
-
+    <br />
+    <form asp-page="./Index" method="get">
+        <div class="form-actions no-color">
+            <p>
+                Find by Name:
+                <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+                <input type="submit" value="Search" class="btn btn-primary" /> |
+                <a asp-page="./Index">Back to full List</a>
+            </p>
+        </div>
+    </form>
     <div class="table-responsive mt-4">
         <table class="table custom-table">
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.Accounts[0].Name)
+                        <a asp-page="./Index"
+                           asp-route-sortOrder="@Model.NameSort"
+                           asp-route-currentFilter="@Model.CurrentFilter">
+                            @Html.DisplayNameFor(model => model.Accounts[0].Name)
+                        </a>
                     </th>
                     <th></th>
                 </tr>
@@ -39,21 +53,23 @@
         Showing @itemShowStart of @itemShowEnd items out of @Model.TotalItems.
     </div>
     <div class="pagination">
-        @if (Model.Accounts.HasPreviousPage)
+        @if (Model.Accounts.HasPreviousPage &&
+        Model.Accounts.TotalPages > 5)
         {
-            <a class="page-link" asp-page="./Index" asp-route-pageIndex="1">First</a>
-            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.Accounts.PageIndex - 1)">Previous</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="1" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">First</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.Accounts.PageIndex - 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Previous</a>
         }
 
         @for (int i = Math.Max(1, Model.Accounts.PageIndex - 2); i <= Math.Min(Model.Accounts.TotalPages, Model.Accounts.PageIndex + 2); i++)
         {
-            <a class="page-link @(i == Model.Accounts.PageIndex ? "active" : "")" asp-page="./Index" asp-route-pageIndex="@i">@i</a>
+            <a class="page-link @(i == Model.Accounts.PageIndex ? "active" : "")" asp-page="./Index" asp-route-pageIndex="@i" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">@i</a>
         }
 
-        @if (Model.Accounts.HasNextPage)
+        @if (Model.Accounts.HasNextPage &&
+        Model.Accounts.TotalPages > 5)
         {
-            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.Accounts.PageIndex + 1)">Next</a>
-            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@Model.Accounts.TotalPages">Last</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.Accounts.PageIndex + 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Next</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@Model.Accounts.TotalPages" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Last</a>
         }
     </div>
 </div>
