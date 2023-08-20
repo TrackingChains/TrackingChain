@@ -2,18 +2,23 @@
 @model TrackingChain.TriageWebApplication.Pages.Admin.Trackings.PendingsModel
 
 <div class="container mt-4">
-    <div class="table-responsive mt-4">
-        <form asp-page="./Pendings" method="get">
-            <div class="form-actions no-color">
-                <p>
-                    Find by Code or TrackingId:
-                    <input type="text" name="SearchString" value="@Model.CurrentFilter" />
-                    <input type="submit" value="Search" class="btn btn-primary" /> |
-                    <a asp-page="./Pendings">Back to full List</a>
-                </p>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="search-form">
+                <form asp-page="./Pendings" method="get">
+                    <label for="searchInput">Search by Code or TrackingId:</label>
+                    <div class="input-group" style="flex-grow: 1; margin-right: 10px;">
+                        <input type="text" id="searchInput" name="SearchString" value="@Model.CurrentFilter" class="form-control" />
+                        <div class="input-group-append" style="margin-left: 10px;">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                    <a asp-page="./Pendings" class="btn btn-link">Clear Filters</a>
+                </form>
             </div>
-        </form>
-
+        </div>
+    </div>
+    <div class="table-responsive mt-4">
         <table class="tracking-table">
             <thead>
                 <tr>
