@@ -199,7 +199,6 @@ namespace TrackingChain.Substrate.Generic.Client
                     throw ex;
             }
 
-
             if (!await client.ConnectAsync(true, true, token))
                 return "";
 
@@ -208,15 +207,50 @@ namespace TrackingChain.Substrate.Generic.Client
                 dataValue,
                 false,
                 contractExtraInfo);
-            var hashTx = await client.ContractsCallAsync(
-                dest,
-                insertTrackDto.Value,
-                insertTrackDto.RefTime,
-                insertTrackDto.ProofSize,
-                insertTrackDto.StorageDepositLimit,
-                insertTrackDto.DataHex,
-                token);
-            return hashTx ?? "";
+
+            string txHash;
+            if (!contractExtraInfo.WatchingStatus)
+                txHash = await client.ContractsCallAsync(
+                    dest,
+                    insertTrackDto.Value,
+                    insertTrackDto.RefTime,
+                    insertTrackDto.ProofSize,
+                    insertTrackDto.StorageDepositLimit,
+                    insertTrackDto.DataHex,
+                    token) ?? "";
+            else
+            {
+                var subscriptionId = await client.ContractsCallAndWatchAsync(
+                        dest,
+                        insertTrackDto.Value,
+                        insertTrackDto.RefTime,
+                        insertTrackDto.ProofSize,
+                        insertTrackDto.StorageDepositLimit,
+                        insertTrackDto.DataHex,
+                        "InsertTracking",
+                        token) ?? "";
+                if (!string.IsNullOrWhiteSpace(subscriptionId))
+                {
+                    //Log.Information("SubscriptionId: {subscriptionId}", subscriptionId);
+                    var queueInfo = client.ExtrinsicManager.Get(subscriptionId);
+                    while (queueInfo != null && 
+                           !queueInfo.IsCompleted)
+                    {
+                        //Log.Information("QueueInfo {subscription} [{state}]", subscriptionId, queueInfo != null ? queueInfo.State.ToString() : queueInfo);
+                        Thread.Sleep(1000);
+                        queueInfo = client.ExtrinsicManager.Get(subscriptionId);
+                    }
+                    txHash = "12345";
+                }
+                else
+                {
+                    txHash = "";
+                    //Log.Error("Failed to call contract");
+                }
+            }
+            await client.DisconnectAsync();
+
+            return txHash;
         }
 
         // Helpers.
