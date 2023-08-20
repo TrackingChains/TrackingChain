@@ -91,6 +91,13 @@ nav ul {
     word-wrap: break-word;
   }
 
+.truncate-cell {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .back-link {
   margin-top: 10px;
   display: inline-block;
@@ -145,6 +152,12 @@ nav ul {
 }
 
 /*PAGINATION*/
+.total-items {
+  margin-top: 10px;
+  font-style: italic;
+  color: #777;
+}
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -208,4 +221,38 @@ nav ul {
 .data-value {
   flex: 1;
   text-align: right;
+}
+
+/* Search */
+.search-form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  align-items: flex-end;
+}
+
+  .search-form label {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+
+/* Botton Create */
+.btn-create {
+  margin-top: 10px;
+}
+
+.btn-create {
+  border: 1px solid #28a745;
+  background-color: #28a745;
+}
+
+  .btn-create:hover {
+    background-color: #218838;
+    border-color: #218838;
+  }
+
+.text-center {
+  text-align: center;
 }

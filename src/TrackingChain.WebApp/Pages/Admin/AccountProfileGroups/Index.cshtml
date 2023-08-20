@@ -2,20 +2,24 @@
 @model TrackingChain.TriageWebApplication.Pages.Admin.AccountProfileGroups.IndexModel
 
 <div class="container mt-4">
-    <a class="btn btn-primary" asp-page="Create">Create New</a>
-    <br />
-    <form asp-page="./Index" method="get">
-        <div class="form-actions no-color">
-            <p>
-                Find by Name and Profile and Contract:
-                <input type="text" name="SearchString" value="@Model.CurrentFilter" />
-                <input type="submit" value="Search" class="btn btn-primary" /> |
-                <a asp-page="./Index">Back to full List</a>
-            </p>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="search-form">
+                <form asp-page="./Index" method="get">
+                    <label for="searchInput">Search by Name, Profile, SmartContract:</label>
+                    <div class="input-group" style="flex-grow: 1; margin-right: 10px;">
+                        <input type="text" id="searchInput" name="SearchString" value="@Model.CurrentFilter" class="form-control" />
+                        <div class="input-group-append" style="margin-left: 10px;">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                    <a asp-page="./Index" class="btn btn-link">Clear Filters</a>
+                </form>
+            </div>
         </div>
-    </form>
+    </div>
     <div class="table-responsive mt-4">
-        <table class="table custom-table">
+        <table class="tracking-table">
             <thead>
                 <tr>
                     <th>
@@ -42,7 +46,7 @@
                     <th>
                         @Html.DisplayNameFor(model => model.AccountProfileGroups[0].Priority)
                     </th>
-                    <th></th>
+                    <th class="text-center"><a class="btn btn-primary" asp-page="Create">Create New</a></th>
                 </tr>
             </thead>
             <tbody>
@@ -61,7 +65,7 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Priority)
                         </td>
-                        <td>
+                        <td class="text-center">
                             <a class="btn btn-info btn-sm" asp-page="./Edit" asp-route-accountId="@item.AccountId" asp-route-profileGroupId="@item.ProfileGroupId">Edit</a>
                             <a class="btn btn-danger btn-sm" asp-page="./Delete" asp-route-accountId="@item.AccountId" asp-route-profileGroupId="@item.ProfileGroupId">Delete</a>
                         </td>
