@@ -39,9 +39,23 @@ namespace TrackingChain.TransactionMonitorWorker
                 var logger = loggerFactory.CreateLogger<TransactionLockedWorker>();
                 var transactionLockedUseCase = scope.ServiceProvider.GetRequiredService<ITransactionLockedUseCase>();
 
-                await transactionLockedUseCase.ReProcessAsync(monitorOptions.GetMaxUnlockTimeout, monitorOptions.UnlockUncompletedAfterSeconds);
-
-                await Task.Delay(1500, stoppingToken);
+                var itemDeleted = 0;
+                try
+                {
+                    await transactionLockedUseCase.ReProcessAsync(monitorOptions.GetMaxUnlockTimeout, monitorOptions.UnlockUncompletedAfterSeconds);
+                }
+#pragma warning disable CA1031 // We need fot catch all problems.
+                catch (Exception ex)
+                {
+                    itemDeleted = 0;
+                    logger.TransactionLockedWorkerError(ex);
+                }
+#pragma warning restore CA1031 // Do not catch general exception types
+                await Task.Delay(
+                    itemDeleted < monitorOptions.GetMaxUnlockTimeout ?
+                        (int)TimeSpan.FromMinutes(1).TotalMilliseconds :
+                        (int)TimeSpan.FromSeconds(1).TotalMilliseconds,
+                    stoppingToken);
             }
             logger.EndTransactionLockedWorker();
         }

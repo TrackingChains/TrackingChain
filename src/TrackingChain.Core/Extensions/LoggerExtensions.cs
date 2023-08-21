@@ -5,7 +5,7 @@ namespace TrackingChain.TrackingChainCore.Extensions
 {
     /*
      * Always group similar log delegates by type, always use incremental event ids.
-     * Last event id is: 27
+     * Last event id is: 28
      */
     public static class LoggerExtensions
     {
@@ -176,7 +176,22 @@ namespace TrackingChain.TrackingChainCore.Extensions
                 LogLevel.Information,
                 new EventId(21, nameof(TrasactionGenerationInError)),
                 "Transaction Generation Error for TrackingGuid:{TrackingGuid}\tEndpoint:{Endpoint}");
-
+        private static readonly Action<ILogger, Exception> _transactionDeleterWorkerError =
+            LoggerMessage.Define(
+                LogLevel.Information,
+                new EventId(29, nameof(TransactionDeleterWorkerError)),
+                "Transaction Deleter Worker Error");
+        private static readonly Action<ILogger, Exception> _transactionFailedWorkerError =
+            LoggerMessage.Define(
+                LogLevel.Information,
+                new EventId(30, nameof(TransactionFailedWorkerError)),
+                "Transaction Failed Worker Error");
+        private static readonly Action<ILogger, Exception> _transactionLockedWorkerError =
+            LoggerMessage.Define(
+                LogLevel.Information,
+                new EventId(28, nameof(TransactionLockedWorkerError)),
+                "Transaction Locked Worker Error");
+        
         // Methods.
         public static void ChildCheckerTaskInError(this ILogger logger, Guid taskId, Exception exception) =>
             _childCheckerTaskInError(logger, taskId, exception);
@@ -236,10 +251,16 @@ namespace TrackingChain.TrackingChainCore.Extensions
             _trasactionGenerationInError(logger, trackingGuid, endpoint, exception);
         public static void TransactionWatcher(this ILogger logger, Guid trackingGuid, bool? successful) =>
             _transactionWatcher(logger, trackingGuid, successful, null!);
+        public static void TransactionDeleterWorkerError(this ILogger logger, Exception exception) =>
+            _transactionDeleterWorkerError(logger, exception);
         public static void TrackingEntry(this ILogger logger, string code, string dataValue, string category, string smartContracAddress, Guid profileGroup) =>
             _trackingEntry(logger, code, dataValue, category, smartContracAddress, profileGroup, null!);
+        public static void TransactionFailedWorkerError(this ILogger logger, Exception exception) =>
+            _transactionFailedWorkerError(logger, exception);
         public static void TransactionInPool(this ILogger logger, Guid trackingGuid, string smartContracAddress, Guid profileGroup) =>
             _transactionInPool(logger, trackingGuid, smartContracAddress, profileGroup, null!);
+        public static void TransactionLockedWorkerError(this ILogger logger, Exception exception) =>
+            _transactionLockedWorkerError(logger, exception);
         public static void TransactionOnChain(this ILogger logger, Guid trackingGuid, string txHash, string smartContracAddress) =>
             _transactionOnChain(logger, trackingGuid, txHash, smartContracAddress, null!);
     }

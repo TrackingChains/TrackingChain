@@ -4,7 +4,7 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
 {
     public interface ITransactionLockedUseCase
     {
-        Task ReProcessAsync(
+        Task<int> ReProcessAsync(
             int max, 
             int unlockTimeoutSeconds);
     }

@@ -28,8 +28,8 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
         }
 
         // Methods.
-        public async Task ReProcessAsync(
-            int max, 
+        public async Task<int> ReProcessAsync(
+            int max,
             int unlockTimeoutSeconds)
         {
             var pendings = await transactionMonitorService.GetPendingLockedInTimeoutAsync(max, unlockTimeoutSeconds);
@@ -39,14 +39,16 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
                 pools = await transactionMonitorService.GetPoolLockedInTimeoutAsync(max - pendings.Count(), unlockTimeoutSeconds);
 
             foreach (var pending in pendings)
-                pending.Unlock(0);
+                pending.UnlockFromError(0);
             applicationDbContext.UpdateRange(pendings);
 
             foreach (var pool in pools)
-                pool.Unlock(0);
+                pool.UnlockFromError(0);
             applicationDbContext.UpdateRange(pools);
 
             await applicationDbContext.SaveChangesAsync();
+
+            return pools.Count() + pendings.Count();
         }
     }
 }

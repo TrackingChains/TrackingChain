@@ -22,24 +22,25 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
         }
 
         // Methods.
-        public async Task<bool> RunAsync(int max)
+        public async Task<int> RunAsync(int max)
         {
-            var triages = applicationDbContext.TransactionTriages
+            var triages = await applicationDbContext.TransactionTriages
                 .Where(tt => tt.Completed)
                 .ToListAsync();
             applicationDbContext.RemoveRange(triages);
 
-            var pools = applicationDbContext.TransactionPools
+            var pools = await applicationDbContext.TransactionPools
                 .Where(tt => tt.Completed)
                 .ToListAsync();
             applicationDbContext.RemoveRange(pools);
 
-            var pendings = applicationDbContext.TransactionPendings
+            var pendings = await applicationDbContext.TransactionPendings
                 .Where(tt => tt.Completed)
                 .ToListAsync();
             applicationDbContext.RemoveRange(pendings);
 
-            return await applicationDbContext.SaveChangesAsync() > 0;
+            await applicationDbContext.SaveChangesAsync();
+            return triages.Count;
         }
     }
 }

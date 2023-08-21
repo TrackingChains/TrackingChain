@@ -60,6 +60,12 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                     applicationDbContext.Entry(pool).State = EntityState.Unchanged;
                     continue;
                 }
+                if (pool.ErrorTimes >= errorAfterReTry)
+                {
+                    await SetTransactionGenerationCompletedInErrorAsync(pool);
+                    await applicationDbContext.SaveChangesAsync();
+                    return pool.TrackingId;
+                }
 
                 var blockChainService = blockchainServices.First(x => x.ProviderType == pool.ChainType);
 
@@ -85,7 +91,7 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                     logger.TrasactionGenerationInError(pool.TrackingId, writerEndpointAddress, ex);
                     if (pool.ErrorTimes >= errorAfterReTry)
                     {
-                        await TransactionCompletedInErrorAsync(pool);
+                        await SetTransactionGenerationCompletedInErrorAsync(pool);
                         await applicationDbContext.SaveChangesAsync();
                         return pool.TrackingId;
                     }
@@ -110,13 +116,14 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
         }
 
         // Helpers.
-        private async Task TransactionCompletedInErrorAsync(TransactionPool pool)
+        private async Task<Guid> SetTransactionGenerationCompletedInErrorAsync(TransactionPool pool)
         {
             pool.SetStatusError();
 
             await transactionGeneratorService.SetToRegistryErrorAsync(pool.TrackingId);
 
             logger.TransactionGenerationCompletedInError(pool.TrackingId);
+            return pool.TrackingId;
         }
     }
 }
