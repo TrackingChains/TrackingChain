@@ -3,9 +3,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.Extensions;
@@ -40,9 +37,26 @@ namespace TrackingChain.TransactionMonitorWorker
                 using var scope = serviceProvider.CreateScope();
                 var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
                 var logger = loggerFactory.CreateLogger<TransactionLockedWorker>();
-                var transactionLockedUseCase = scope.ServiceProvider.GetRequiredService<ITransactionLockedUseCase>();
+                var alertUseCase = scope.ServiceProvider.GetRequiredService<IAlertUseCase>();
 
-                await transactionLockedUseCase.ReProcessAsync(monitorOptions.GetMaxFailedTransaction, monitorOptions.FailedReTryTimes);
+                var itemDeleted = 0;
+                try
+                {
+                    await alertUseCase.RunAsync(monitorOptions.GetMaxAlert);
+                }
+#pragma warning disable CA1031 // We need fot catch all problems.
+                catch (Exception ex)
+                {
+                    itemDeleted = 0;
+                    logger.AlertWorkerError(ex);
+                }
+#pragma warning restore CA1031 // Do not catch general exception types
+                await Task.Delay(
+                    itemDeleted < monitorOptions.GetMaxCompletedTransaction ?
+                        (int)TimeSpan.FromMinutes(60).TotalMilliseconds :
+                        (int)TimeSpan.FromMinutes(1).TotalMilliseconds,
+                    stoppingToken);
+                
 
                 await Task.Delay(1500, stoppingToken);
             }

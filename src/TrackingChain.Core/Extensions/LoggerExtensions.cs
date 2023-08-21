@@ -5,7 +5,7 @@ namespace TrackingChain.TrackingChainCore.Extensions
 {
     /*
      * Always group similar log delegates by type, always use incremental event ids.
-     * Last event id is: 28
+     * Last event id is: 31
      */
     public static class LoggerExtensions
     {
@@ -151,48 +151,55 @@ namespace TrackingChain.TrackingChainCore.Extensions
                 "Transaction InPool for TrackingGuid:{TrackingGuid}\tSmartContracAddress:{SmartContracAddress}\tProfileGroup:{ProfileGroup}");
         //*** WARNING LOGS ***
         //*** ERROR LOGS ***
+        private static readonly Action<ILogger, Exception> _alertWorkerError =
+            LoggerMessage.Define(
+                LogLevel.Error,
+                new EventId(31, nameof(AlertWorkerError)),
+                "Alert Worker Error");
         private static readonly Action<ILogger, Guid, Exception> _childCheckerTaskInError =
             LoggerMessage.Define<Guid>(
-                LogLevel.Information,
+                LogLevel.Error,
                 new EventId(21, nameof(ChildCheckerTaskInError)),
                 "Child Checker Guid:{Guid}");
         private static readonly Action<ILogger, Guid, Exception> _childPoolDequeuerTaskInError =
             LoggerMessage.Define<Guid>(
-                LogLevel.Information,
+                LogLevel.Error,
                 new EventId(18, nameof(ChildPoolDequeuerTaskInError)),
                 "Child Pool Dequeuer Guid:{Guid}");
         private static readonly Action<ILogger, Guid, string, string, Exception> _getTrasactionReceiptInError =
             LoggerMessage.Define<Guid, string, string>(
-                LogLevel.Information,
+                LogLevel.Error,
                 new EventId(17, nameof(GetTrasactionReceiptInError)),
                 "GetTrasactionReceiptInError TrackingGuid:{TrackingGuid}\tTxHash:{TxHash}\tApiUrl:{ApiUrl}");
         private static readonly Action<ILogger, Guid, Exception> _transactionGenerationCompletedInError =
             LoggerMessage.Define<Guid>(
-                LogLevel.Information,
+                LogLevel.Error,
                 new EventId(20, nameof(TransactionGenerationCompletedInError)),
                 "Transaction Generation Completed in Error for  TrackingGuid:{TrackingGuid}");
         private static readonly Action<ILogger, Guid, string, Exception> _trasactionGenerationInError =
             LoggerMessage.Define<Guid, string>(
-                LogLevel.Information,
+                LogLevel.Error,
                 new EventId(21, nameof(TrasactionGenerationInError)),
                 "Transaction Generation Error for TrackingGuid:{TrackingGuid}\tEndpoint:{Endpoint}");
         private static readonly Action<ILogger, Exception> _transactionDeleterWorkerError =
             LoggerMessage.Define(
-                LogLevel.Information,
+                LogLevel.Error,
                 new EventId(29, nameof(TransactionDeleterWorkerError)),
                 "Transaction Deleter Worker Error");
         private static readonly Action<ILogger, Exception> _transactionFailedWorkerError =
             LoggerMessage.Define(
-                LogLevel.Information,
+                LogLevel.Error,
                 new EventId(30, nameof(TransactionFailedWorkerError)),
                 "Transaction Failed Worker Error");
         private static readonly Action<ILogger, Exception> _transactionLockedWorkerError =
             LoggerMessage.Define(
-                LogLevel.Information,
+                LogLevel.Error,
                 new EventId(28, nameof(TransactionLockedWorkerError)),
                 "Transaction Locked Worker Error");
-        
+
         // Methods.
+        public static void AlertWorkerError(this ILogger logger, Exception exception) =>
+            _alertWorkerError(logger, exception);
         public static void ChildCheckerTaskInError(this ILogger logger, Guid taskId, Exception exception) =>
             _childCheckerTaskInError(logger, taskId, exception);
         public static void ChildPoolDequeuerTaskInError(this ILogger logger, Guid taskId, Exception exception) =>
