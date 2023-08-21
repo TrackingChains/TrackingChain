@@ -5,7 +5,7 @@ namespace TrackingChain.TrackingChainCore.Extensions
 {
     /*
      * Always group similar log delegates by type, always use incremental event ids.
-     * Last event id is: 31
+     * Last event id is: 37
      */
     public static class LoggerExtensions
     {
@@ -26,9 +26,38 @@ namespace TrackingChain.TrackingChainCore.Extensions
                 LogLevel.Debug,
                 new EventId(9, nameof(RunPoolDequeuer)),
                 "Run Pool Dequeuer");
-
+        private static readonly Action<ILogger, int, Exception> _startTransactionDeleterUseCase =
+            LoggerMessage.Define<int>(
+                LogLevel.Debug,
+                new EventId(32, nameof(StartTransactionDeleterUseCase)),
+                "Start Transaction Deleter UseCase max: {Max}");
+        private static readonly Action<ILogger, int, Exception> _endTransactionDeleterUseCase =
+            LoggerMessage.Define<int>(
+                LogLevel.Debug,
+                new EventId(33, nameof(EndTransactionDeleterUseCase)),
+                "End Transaction Deleter UseCase Deleted: {Deleted}");
+        private static readonly Action<ILogger, int, int, Exception> _startManageTransactionFailedUseCase =
+            LoggerMessage.Define<int, int>(
+                LogLevel.Debug,
+                new EventId(35, nameof(StartManageTransactionFailedUseCase)),
+                "Start Manage Transaction Failed UseCase Max: {Max}\tFailedReTryTimes: {FailedReTryTimes}");
+        private static readonly Action<ILogger, int, int, Exception> _endManageTransactionFailedUseCase =
+            LoggerMessage.Define<int, int>(
+                LogLevel.Debug,
+                new EventId(34, nameof(EndManageTransactionFailedUseCase)),
+                "End Manage Transaction Failed UseCase Cancelled:{Cancelled}\tReTry:{ReTry}");
+        private static readonly Action<ILogger, int, int, Exception> _startReProcessTransactionLockedUseCase =
+        LoggerMessage.Define<int, int>(
+            LogLevel.Debug,
+            new EventId(37, nameof(StartReProcessTransactionLockedUseCase)),
+            "Start ReProcess Transaction Failed UseCase Max: {Max}\tUnlockTimeoutSeconds: {UnlockTimeoutSeconds}");
+        private static readonly Action<ILogger, int, Exception> _endReProcessTransactionLockedUseCase =
+            LoggerMessage.Define<int>(
+                LogLevel.Debug,
+                new EventId(36, nameof(EndReProcessTransactionLockedUseCase)),
+                "End Manage Transaction Failed UseCase Processed: {Processed}");
+        
         //*** INFORMATION LOGS ***
-
         private static readonly Action<ILogger, Guid, Exception> _endChildCheckerTask =
             LoggerMessage.Define<Guid>(
                 LogLevel.Information,
@@ -98,7 +127,7 @@ namespace TrackingChain.TrackingChainCore.Extensions
             LoggerMessage.Define(
                 LogLevel.Information,
                 new EventId(26, nameof(StartAlertWorker)),
-                "Alert Worker running."); 
+                "Alert Worker running.");
         private static readonly Action<ILogger, Exception> _startPoolDequeuerWorker =
             LoggerMessage.Define(
                 LogLevel.Information,
@@ -109,7 +138,7 @@ namespace TrackingChain.TrackingChainCore.Extensions
                 LogLevel.Information,
                 new EventId(18, nameof(StartPoolEnqueuerWorker)),
                 "Pool Enqueuer Worker running.");
-        private static readonly Action<ILogger, Exception> _startPendingTransactionCheckerWorker = 
+        private static readonly Action<ILogger, Exception> _startPendingTransactionCheckerWorker =
             LoggerMessage.Define(
                 LogLevel.Information,
                 new EventId(11, nameof(StartPendingTransactionCheckerWorker)),
@@ -149,7 +178,9 @@ namespace TrackingChain.TrackingChainCore.Extensions
                 LogLevel.Information,
                 new EventId(14, nameof(TransactionInPool)),
                 "Transaction InPool for TrackingGuid:{TrackingGuid}\tSmartContracAddress:{SmartContracAddress}\tProfileGroup:{ProfileGroup}");
+
         //*** WARNING LOGS ***
+
         //*** ERROR LOGS ***
         private static readonly Action<ILogger, Exception> _alertWorkerError =
             LoggerMessage.Define(
@@ -205,7 +236,7 @@ namespace TrackingChain.TrackingChainCore.Extensions
         public static void ChildPoolDequeuerTaskInError(this ILogger logger, Guid taskId, Exception exception) =>
             _childPoolDequeuerTaskInError(logger, taskId, exception);
         public static void EndChildCheckerTask(this ILogger logger, Guid taskId) =>
-            _endChildCheckerTask(logger, taskId, null!); 
+            _endChildCheckerTask(logger, taskId, null!);
         public static void EndChildPoolDequeuerTask(this ILogger logger, Guid taskId) =>
             _endChildPoolDequeuerTask(logger, taskId, null!);
         public static void EndAlertWorker(this ILogger logger) =>
@@ -218,8 +249,14 @@ namespace TrackingChain.TrackingChainCore.Extensions
             _endPoolEnqueuerWorker(logger, null!);
         public static void EndPendingTransactionCheckerWorker(this ILogger logger) =>
             _endPendingTransactionCheckerWorker(logger, null!);
+        public static void EndManageTransactionFailedUseCase(this ILogger logger, int cancelled, int reTry) =>
+            _endManageTransactionFailedUseCase(logger, cancelled, reTry, null!);
+        public static void EndReProcessTransactionLockedUseCase(this ILogger logger, int processed) =>
+            _endReProcessTransactionLockedUseCase(logger, processed, null!);
+        public static void EndTransactionDeleterUseCase(this ILogger logger, int deleted) =>
+            _endTransactionDeleterUseCase(logger, deleted, null!);
         public static void EndTransactionDeleterWorker(this ILogger logger) =>
-            _endTransactionDeleterWorker(logger, null!); 
+            _endTransactionDeleterWorker(logger, null!);
         public static void EndTransactionFailedWorker(this ILogger logger) =>
             _endTransactionFailedWorker(logger, null!);
         public static void EndTransactionLockedWorker(this ILogger logger) =>
@@ -246,8 +283,14 @@ namespace TrackingChain.TrackingChainCore.Extensions
             _startPoolEnqueuerWorker(logger, null!);
         public static void StartPendingTransactionCheckerWorker(this ILogger logger) =>
             _startPendingTransactionCheckerWorker(logger, null!);
+        public static void StartManageTransactionFailedUseCase(this ILogger logger, int max, int failedReTryTimes) =>
+            _startManageTransactionFailedUseCase(logger, max, failedReTryTimes, null!);
+        public static void StartReProcessTransactionLockedUseCase(this ILogger logger, int max, int failedReTryTimes) =>
+            _startReProcessTransactionLockedUseCase(logger, max, failedReTryTimes, null!);
+        public static void StartTransactionDeleterUseCase(this ILogger logger, int max) =>
+            _startTransactionDeleterUseCase(logger, max, null!);
         public static void StartTransactionDeleterWorker(this ILogger logger) =>
-            _startTransactionDeleterWorker(logger, null!); 
+            _startTransactionDeleterWorker(logger, null!);
         public static void StartTransactionFailedWorker(this ILogger logger) =>
             _startTransactionFailedWorker(logger, null!);
         public static void StartTransactionLockedWorker(this ILogger logger) =>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
+using TrackingChain.TrackingChainCore.Extensions;
 using TrackingChain.TransactionMonitorCore.Services;
 
 namespace TrackingChain.TransactionMonitorCore.UseCases
@@ -32,6 +33,8 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
             int max,
             int unlockTimeoutSeconds)
         {
+            logger.StartReProcessTransactionLockedUseCase(max, unlockTimeoutSeconds);
+
             var pendings = await transactionMonitorService.GetPendingLockedInTimeoutAsync(max, unlockTimeoutSeconds);
 
             IEnumerable<TransactionPool> pools = Array.Empty<TransactionPool>();
@@ -48,7 +51,9 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
 
             await applicationDbContext.SaveChangesAsync();
 
-            return pools.Count() + pendings.Count();
+            var processed = pools.Count() + pendings.Count();
+            logger.EndReProcessTransactionLockedUseCase(processed);
+            return processed;
         }
     }
 }

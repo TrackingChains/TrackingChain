@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
+using TrackingChain.TrackingChainCore.Extensions;
 
 namespace TrackingChain.TransactionMonitorCore.UseCases
 {
@@ -24,6 +25,8 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
         // Methods.
         public async Task<int> RunAsync(int max)
         {
+            logger.StartTransactionDeleterUseCase(max);
+
             var triages = await applicationDbContext.TransactionTriages
                 .Where(tt => tt.Completed)
                 .ToListAsync();
@@ -40,6 +43,8 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
             applicationDbContext.RemoveRange(pendings);
 
             await applicationDbContext.SaveChangesAsync();
+
+            logger.EndTransactionDeleterUseCase(triages.Count);
             return triages.Count;
         }
     }

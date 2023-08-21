@@ -7,6 +7,7 @@ using TrackingChain.Core.Domain.Enums;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.Domain.Enums;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
+using TrackingChain.TrackingChainCore.Extensions;
 using TrackingChain.TransactionMonitorCore.Services;
 
 namespace TrackingChain.TransactionMonitorCore.UseCases
@@ -34,29 +35,41 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
             int max,
             int failedReTryTimes)
         {
+            logger.StartManageTransactionFailedUseCase(max, failedReTryTimes);
+
             var registries = await transactionMonitorService.GetTransactionWaitingToReTryAsync(max);
             var triages = await transactionMonitorService.GetTransactionTriageAsync(registries.Select(r => r.TrackingId));
             var pools = await transactionMonitorService.GetTransactionPoolAsync(registries.Select(r => r.TrackingId));
             var pendings = await transactionMonitorService.GetTransactionPendingAsync(registries.Select(r => r.TrackingId));
 
+            var cancelled = 0;
             foreach (var registry in registries)
             {
                 if (registry.ErrorTime < failedReTryTimes)
                     continue;
 
                 ManageTransactionToCancel(triages, pools, pendings, registry);
+                cancelled++;
             }
 
+            var reTry = 0;
             foreach (var registry in registries.Where(r => r.Status != RegistryStatus.CanceledDueToError))
             {
                 ManageTransactionToRetry(pools, pendings, registry);
+                reTry++;
             }
 
             await applicationDbContext.SaveChangesAsync();
+
+            logger.EndManageTransactionFailedUseCase(cancelled, reTry);
         }
 
         // Helpers.
-        private void ManageTransactionToCancel(IEnumerable<TransactionTriage> triages, IEnumerable<TransactionPool> pools, IEnumerable<TransactionPending> pendings, TransactionRegistry registry)
+        private void ManageTransactionToCancel(
+            IEnumerable<TransactionTriage> triages, 
+            IEnumerable<TransactionPool> pools, 
+            IEnumerable<TransactionPending> pendings, 
+            TransactionRegistry registry)
         {
             registry.SetToCanceled();
             applicationDbContext.Update(registry);
