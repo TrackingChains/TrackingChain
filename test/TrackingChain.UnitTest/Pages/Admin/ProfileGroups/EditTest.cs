@@ -44,7 +44,7 @@ namespace TrackingChain.UnitTest.Pages.Admin.ProfileGroups
             await EntityCreator.CreateConfigurationDatabaseAsync(primaryProfile, secondaryProfile, dbContext);
 
             var profileGroupToEdit = await dbContext.ProfileGroups.FirstAsync();
-            var createModel = new EditModel(dbContext);
+            var editModel = new EditModel(dbContext);
             var profileGroupBinding = new ProfileGroupBinding
             {
                 Id = profileGroupToEdit.Id,
@@ -55,12 +55,12 @@ namespace TrackingChain.UnitTest.Pages.Admin.ProfileGroups
                 SmartContractId = 2,
                 Priority = 3,
             };
-            createModel.ProfileGroupBinding = profileGroupBinding;
+            editModel.ProfileGroupBinding = profileGroupBinding;
             var startingProfileGroup = await dbContext.ProfileGroups.CountAsync();
 
 
             //Act
-            var result = await createModel.OnPostAsync();
+            var result = await editModel.OnPostAsync();
 
 
             //Assert
@@ -85,7 +85,7 @@ namespace TrackingChain.UnitTest.Pages.Admin.ProfileGroups
             await EntityCreator.CreateConfigurationDatabaseAsync(primaryProfile, secondaryProfile, dbContext);
 
             var profileGroupToEdit = await dbContext.ProfileGroups.FirstAsync();
-            var createModel = new EditModel(dbContext);
+            var editModel = new EditModel(dbContext);
             var profileGroupBinding = new ProfileGroupBinding
             {
                 Id = profileGroupToEdit.Id,
@@ -96,12 +96,12 @@ namespace TrackingChain.UnitTest.Pages.Admin.ProfileGroups
                 SmartContractId = 100,
                 Priority = 2,
             };
-            createModel.ProfileGroupBinding = profileGroupBinding;
+            editModel.ProfileGroupBinding = profileGroupBinding;
             var startingProfileGroup = await dbContext.ProfileGroups.CountAsync();
 
 
             //Act
-            var result = await createModel.OnPostAsync();
+            var result = await editModel.OnPostAsync();
 
 
             //Assert

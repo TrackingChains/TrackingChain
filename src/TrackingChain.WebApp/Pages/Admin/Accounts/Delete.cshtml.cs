@@ -42,7 +42,8 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Accounts
 
         public async Task<IActionResult> OnPostAsync(Guid? id)
         {
-            if (id == null || dbContext.Accounts == null)
+            if (id == null || 
+                dbContext.Accounts == null)
                 return NotFound();
 
             var account = await dbContext.Accounts.FindAsync(id);

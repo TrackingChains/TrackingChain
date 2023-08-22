@@ -1,20 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Moq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TrackingChain.Common.Enums;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TrackingChainCore.Options;
 using TrackingChain.TriageWebApplication.ModelBinding;
+using TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts;
 using TrackingChain.UnitTest.Helpers;
 using Xunit;
-using TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts;
 
 namespace TrackingChain.UnitTest.Pages.Admin.Smartcontracts
 {
@@ -48,23 +46,23 @@ namespace TrackingChain.UnitTest.Pages.Admin.Smartcontracts
             await EntityCreator.CreateConfigurationDatabaseAsync(primaryProfile, secondaryProfile, dbContext);
 
             var smartContractToEdit = await dbContext.SmartContracts.FirstAsync();
-            var createModel = new EditModel(dbContext);
+            var editModel = new EditModel(dbContext);
             var smartContractBinding = new SmartContractBinding
             {
                 Id = smartContractToEdit.Id,
-                Address = "0x231222324987",
-                ChainNumberId = 102,
-                ChainType = ChainType.EVM,
-                Currency = "ASBEdit",
-                ExtraInfo = "{\"ByteWeight\":10}",
-                Name = "SmartNameUniqueEdit"
+                Address = "0x231222324",
+                ChainNumberId = 101,
+                ChainType = ChainType.Substrate,
+                Currency = "ASB",
+                ExtraInfo = "{\"ByteWeight\":210}",
+                Name = "SmartNameUnique"
             };
-            createModel.SmartContractBinding = smartContractBinding;
+            editModel.SmartContractBinding = smartContractBinding;
             var startingSmartContract = await dbContext.SmartContracts.CountAsync();
 
 
             //Act
-            var result = await createModel.OnPostAsync();
+            var result = await editModel.OnPostAsync();
 
 
             //Assert
@@ -76,7 +74,7 @@ namespace TrackingChain.UnitTest.Pages.Admin.Smartcontracts
             Assert.Equal(smartContractBinding.ChainNumberId, smartContract.ChainNumberId);
             Assert.Equal(smartContractBinding.ChainType, smartContract.ChainType);
             Assert.Equal(smartContractBinding.Currency, smartContract.Currency);
-            Assert.Equal("{\"ByteWeight\":10,\"GetTrackSelectorValue\":null,\"InsertTrackSelectorValue\":null,\"InsertTrackBasicWeight\":0,\"InsertTrackProofSize\":0,\"InsertTrackRefTime\":0,\"SupportedClient\":0,\"WaitingSecondsForWatcherTx\":0}", smartContract.ExtraInfo);
+            Assert.Equal("{\"ByteWeight\":210,\"GetTrackSelectorValue\":null,\"InsertTrackSelectorValue\":null,\"InsertTrackBasicWeight\":0,\"InsertTrackProofSize\":0,\"InsertTrackRefTime\":0,\"SupportedClient\":0,\"WaitingSecondsForWatcherTx\":0}", smartContract.ExtraInfo);
             Assert.Equal(smartContractBinding.Name, smartContract.Name);
         }
 
@@ -88,10 +86,11 @@ namespace TrackingChain.UnitTest.Pages.Admin.Smartcontracts
             var secondaryProfile = Guid.NewGuid();
             await EntityCreator.CreateConfigurationDatabaseAsync(primaryProfile, secondaryProfile, dbContext);
 
-            var createModel = new CreateModel(dbContext);
+            var smartContractToEdit = await dbContext.SmartContracts.FirstAsync();
+            var editModel = new EditModel(dbContext);
             var smartContractBinding = new SmartContractBinding
             {
-                Id = 101,
+                Id = smartContractToEdit.Id,
                 Address = "0x231222324",
                 ChainNumberId = 101,
                 ChainType = ChainType.Substrate,
@@ -99,18 +98,18 @@ namespace TrackingChain.UnitTest.Pages.Admin.Smartcontracts
                 ExtraInfo = "{brokenJson}",
                 Name = "SmartNameUnique"
             };
-            createModel.SmartContractBinding = smartContractBinding;
+            editModel.SmartContractBinding = smartContractBinding;
             var startingSmartContract = await dbContext.SmartContracts.CountAsync();
 
 
             //Act
-            var result = await createModel.OnPostAsync();
+            var result = await editModel.OnPostAsync();
 
 
             //Assert
             Assert.IsType<PageResult>(result);
             Assert.Equal(startingSmartContract, await dbContext.SmartContracts.CountAsync());
-            Assert.Equal("Contract ExtraInfo json not valid", createModel.ErrorMessage);
+            Assert.Equal("Contract ExtraInfo json not valid", editModel.ErrorMessage);
         }
     }
 }

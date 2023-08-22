@@ -3,9 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Moq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TrackingChainCore.Options;
@@ -46,7 +44,7 @@ namespace TrackingChain.UnitTest.Pages.Admin.AccountProfileGroups
             await EntityCreator.CreateConfigurationDatabaseAsync(primaryProfile, secondaryProfile, dbContext);
 
             var accountProfileGroupToEdit = await dbContext.AccountProfileGroup.FirstAsync();
-            var createModel = new EditModel(dbContext);
+            var editModel = new EditModel(dbContext);
             var accountProfileGroupBinding = new AccountProfileGroupBinding
             {
                 AccountId = accountProfileGroupToEdit.AccountId,
@@ -56,12 +54,12 @@ namespace TrackingChain.UnitTest.Pages.Admin.AccountProfileGroups
                 Name = "AccountProfileGroupTestUniqueEdit",
                 Priority = 3
             };
-            createModel.AccountProfileGroupBinding = accountProfileGroupBinding;
+            editModel.AccountProfileGroupBinding = accountProfileGroupBinding;
             var startingAccountProfileGroup = await dbContext.AccountProfileGroup.CountAsync();
 
 
             //Act
-            var result = await createModel.OnPostAsync();
+            var result = await editModel.OnPostAsync();
 
 
             //Assert
@@ -84,7 +82,7 @@ namespace TrackingChain.UnitTest.Pages.Admin.AccountProfileGroups
             await EntityCreator.CreateConfigurationDatabaseAsync(primaryProfile, secondaryProfile, dbContext);
 
             var accountProfileGroupToEdit = await dbContext.AccountProfileGroup.FirstAsync();
-            var createModel = new EditModel(dbContext);
+            var editModel = new EditModel(dbContext);
             var accountProfileGroupBinding = new AccountProfileGroupBinding
             {
                 AccountId = Guid.NewGuid(),
@@ -94,12 +92,12 @@ namespace TrackingChain.UnitTest.Pages.Admin.AccountProfileGroups
                 Name = "AccountProfileGroupTestUniqueEdit",
                 Priority = 3
             };
-            createModel.AccountProfileGroupBinding = accountProfileGroupBinding;
+            editModel.AccountProfileGroupBinding = accountProfileGroupBinding;
             var startingAccountProfileGroup = await dbContext.AccountProfileGroup.CountAsync();
 
 
             //Act
-            var result = await createModel.OnPostAsync();
+            var result = await editModel.OnPostAsync();
 
 
             //Assert
@@ -117,7 +115,7 @@ namespace TrackingChain.UnitTest.Pages.Admin.AccountProfileGroups
             await EntityCreator.CreateConfigurationDatabaseAsync(primaryProfile, secondaryProfile, dbContext);
 
             var accountProfileGroupBindingToEdit = await dbContext.AccountProfileGroup.FirstAsync();
-            var createModel = new EditModel(dbContext);
+            var editModel = new EditModel(dbContext);
             var accountProfileGroupBinding = new AccountProfileGroupBinding
             {
                 AccountId = accountProfileGroupBindingToEdit.AccountId,
@@ -127,12 +125,12 @@ namespace TrackingChain.UnitTest.Pages.Admin.AccountProfileGroups
                 Name = "AccountProfileGroupTestUniqueEdit",
                 Priority = 3
             };
-            createModel.AccountProfileGroupBinding = accountProfileGroupBinding;
+            editModel.AccountProfileGroupBinding = accountProfileGroupBinding;
             var startingAccountProfileGroup = await dbContext.AccountProfileGroup.CountAsync();
 
 
             //Act
-            var result = await createModel.OnPostAsync();
+            var result = await editModel.OnPostAsync();
 
 
             //Assert
