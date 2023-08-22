@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrackingChain.Common.Interfaces;
+using TrackingChain.TrackingChainCore.Domain.Enums;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TransactionTriageCore.ModelViews;
 using TrackingChain.TransactionTriageCore.UseCases;
@@ -83,6 +84,7 @@ namespace TrackingChain.TriageWebApplication.Pages
                 item.DataValue = itemTracked.DataValue;
                 item.Timestamp = itemTracked.RegistryDate;
                 item.Selected = itemTracked.TrackingId == TrackingViewerBinding.TrackingId;
+                item.TransactionStep = itemTracked.TransactionStep;
                 trackingProduct.Add(item);
             }
 

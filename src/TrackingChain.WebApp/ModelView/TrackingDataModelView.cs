@@ -1,4 +1,5 @@
 ﻿using System;
+using TrackingChain.TrackingChainCore.Domain.Enums;
 
 namespace TrackingChain.TriageWebApplication.ModelView
 {
@@ -10,5 +11,6 @@ namespace TrackingChain.TriageWebApplication.ModelView
         public DateTime Timestamp { get; set; } = default!;
         public string BlockNumber { get; set; } = default!;
         public bool Selected { get; set; } = default!;
+        public TransactionStep TransactionStep { get; set; } = default!;
     }
 }
