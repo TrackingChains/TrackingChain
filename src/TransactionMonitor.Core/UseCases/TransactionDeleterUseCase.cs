@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
@@ -29,23 +30,27 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
 
             var triages = await applicationDbContext.TransactionTriages
                 .Where(tt => tt.Completed)
+                .Take(max)
                 .ToListAsync();
             applicationDbContext.RemoveRange(triages);
 
             var pools = await applicationDbContext.TransactionPools
                 .Where(tt => tt.Completed)
+                .Take(max)
                 .ToListAsync();
             applicationDbContext.RemoveRange(pools);
 
             var pendings = await applicationDbContext.TransactionPendings
                 .Where(tt => tt.Completed)
+                .Take(max)
                 .ToListAsync();
             applicationDbContext.RemoveRange(pendings);
 
             await applicationDbContext.SaveChangesAsync();
 
-            logger.EndTransactionDeleterUseCase(triages.Count);
-            return triages.Count;
+            var countMax = new int[] { triages.Count, pools.Count, pendings.Count }.Max();
+            logger.EndTransactionDeleterUseCase(countMax);
+            return countMax;
         }
     }
 }

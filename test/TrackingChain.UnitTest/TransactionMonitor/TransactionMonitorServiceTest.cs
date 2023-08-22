@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TrackingChain.UnitTest.TransactionMonitor
 {
-    internal class TransactionMonitorServiceTest
+    public class TransactionMonitorServiceTest
     {
     }
 }
