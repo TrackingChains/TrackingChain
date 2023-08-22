@@ -69,7 +69,7 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts
                SmartContractBinding.ChainNumberId,
                SmartContractBinding.ChainType,
                SmartContractBinding.Currency,
-               SmartContractBinding.ExtraInfo,
+               contractExtraInfo,
                SmartContractBinding.Name);
             dbContext.Update(smartContract);
 

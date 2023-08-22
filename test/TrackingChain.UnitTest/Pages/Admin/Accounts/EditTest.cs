@@ -3,24 +3,26 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TrackingChainCore.Options;
 using TrackingChain.TriageWebApplication.ModelBinding;
-using TrackingChain.TriageWebApplication.Pages.Admin.ProfileGroups;
+using TrackingChain.TriageWebApplication.Pages.Admin.Accounts;
 using TrackingChain.UnitTest.Helpers;
 using Xunit;
 
-namespace TrackingChain.UnitTest.Pages.Admin.ProfileGroups
+namespace TrackingChain.UnitTest.Pages.Admin.Accounts
 {
 #pragma warning disable CA1001 // Not need in unit test
-    public class CreateTest
+    public class EditTest
 #pragma warning restore CA1001 // Not need in unit test
     {
         private readonly ApplicationDbContext dbContext;
 
-        public CreateTest()
+        public EditTest()
         {
             var databaseOptions = new DatabaseOptions()
             {
@@ -36,25 +38,23 @@ namespace TrackingChain.UnitTest.Pages.Admin.ProfileGroups
         }
 
         [Fact]
-        public async Task OnPostShoudleCreateProfileGroupAsync()
+        public async Task OnPostAsync()
         {
             //Arrange
             var primaryProfile = Guid.NewGuid();
             var secondaryProfile = Guid.NewGuid();
             await EntityCreator.CreateConfigurationDatabaseAsync(primaryProfile, secondaryProfile, dbContext);
-
-            var createModel = new CreateModel(dbContext);
-            var profileGroupBinding = new ProfileGroupBinding
+            var createModel = new EditModel(dbContext);
+            var accountBinding = new AccountBinding
             {
-                AggregationCode = "AggregationCodeTest",
-                Authority = "AuthorityTest",
-                Category = "CategoryTest",
-                Name = "NameTestUnique",
-                SmartContractId = 1,
-                Priority = 2,
+                Id = dbContext.Accounts.First().Id,
+                ChainWriterAddress = "ChainWriterAddressTestEdit",
+                ChainWatcherAddress = "ChainWatcherAddressTestEdit",
+                Name = "NameTestEdit",
+                PrivateKey = "PrivateKeyTestEdit"
             };
-            createModel.ProfileGroupBinding = profileGroupBinding;
-            var startingProfileGroup = await dbContext.ProfileGroups.CountAsync();
+            createModel.AccountBinding = accountBinding;
+            var startingAccountBinding = await dbContext.Accounts.CountAsync();
 
 
             //Act
@@ -64,36 +64,33 @@ namespace TrackingChain.UnitTest.Pages.Admin.ProfileGroups
             //Assert
             var redirectToPageResult = Assert.IsType<RedirectToPageResult>(result);
             Assert.Equal("./Index", redirectToPageResult.PageName);
-            Assert.Equal(startingProfileGroup + 1, await dbContext.ProfileGroups.CountAsync());
-            var profileGroup = await dbContext.ProfileGroups.Where(pg => pg.Name == profileGroupBinding.Name).FirstAsync();
-            Assert.Equal(profileGroupBinding.AggregationCode, profileGroup.AggregationCode);
-            Assert.Equal(profileGroupBinding.Authority, profileGroup.Authority);
-            Assert.Equal(profileGroupBinding.Category, profileGroup.Category);
-            Assert.Equal(profileGroupBinding.Name, profileGroup.Name);
-            Assert.Equal(profileGroupBinding.SmartContractId, profileGroup.SmartContractId);
-            Assert.Equal(profileGroupBinding.Priority, profileGroup.Priority);
+            Assert.Equal(startingAccountBinding, await dbContext.Accounts.CountAsync());
+            var account = await dbContext.Accounts.Where(a => a.Id == accountBinding.Id).FirstAsync();
+            Assert.Equal(accountBinding.ChainWriterAddress, account.ChainWriterAddress);
+            Assert.Equal(accountBinding.ChainWatcherAddress, account.ChainWatcherAddress);
+            Assert.Equal(accountBinding.Name, account.Name);
+            Assert.Equal(accountBinding.PrivateKey, account.PrivateKey);
         }
 
         [Fact]
-        public async Task OnPostShoudleGet404WhenSmartContracNotFoundAsync()
+        public async Task OnPostShoudleGet404WhenAccountNotFoundAsync()
         {
             //Arrange
             var primaryProfile = Guid.NewGuid();
             var secondaryProfile = Guid.NewGuid();
             await EntityCreator.CreateConfigurationDatabaseAsync(primaryProfile, secondaryProfile, dbContext);
 
-            var createModel = new CreateModel(dbContext);
-            var profileGroupBinding = new ProfileGroupBinding
+            var createModel = new EditModel(dbContext);
+            var accountBinding = new AccountBinding
             {
-                AggregationCode = "ChainWriterAddressTest",
-                Authority = "ChainWatcherAddressTest",
-                Category = "CategoryTest",
-                Name = "NameTestUnique",
-                SmartContractId = 100,
-                Priority = 2,
+                Id = Guid.NewGuid(),
+                ChainWriterAddress = "ChainWriterAddressTestEdit",
+                ChainWatcherAddress = "ChainWatcherAddressTestEdit",
+                Name = "NameTestEdit",
+                PrivateKey = "PrivateKeyTestEdit"
             };
-            createModel.ProfileGroupBinding = profileGroupBinding;
-            var startingProfileGroup = await dbContext.ProfileGroups.CountAsync();
+            createModel.AccountBinding = accountBinding;
+            var startingAccountBinding = await dbContext.Accounts.CountAsync();
 
 
             //Act
@@ -103,7 +100,8 @@ namespace TrackingChain.UnitTest.Pages.Admin.ProfileGroups
             //Assert
             var redirectToPageResult = Assert.IsType<NotFoundResult>(result);
             Assert.Equal(404, redirectToPageResult.StatusCode);
-            Assert.Equal(startingProfileGroup, await dbContext.ProfileGroups.CountAsync());
+            Assert.Equal(startingAccountBinding, await dbContext.Accounts.CountAsync());
         }
+        
     }
 }

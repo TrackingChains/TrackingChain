@@ -15,12 +15,12 @@ using Xunit;
 namespace TrackingChain.UnitTest.Pages.Admin.ProfileGroups
 {
 #pragma warning disable CA1001 // Not need in unit test
-    public class CreateTest
+    public class EditTest
 #pragma warning restore CA1001 // Not need in unit test
     {
         private readonly ApplicationDbContext dbContext;
 
-        public CreateTest()
+        public EditTest()
         {
             var databaseOptions = new DatabaseOptions()
             {
@@ -36,22 +36,24 @@ namespace TrackingChain.UnitTest.Pages.Admin.ProfileGroups
         }
 
         [Fact]
-        public async Task OnPostShoudleCreateProfileGroupAsync()
+        public async Task OnPostShoudleEditProfileGroupAsync()
         {
             //Arrange
             var primaryProfile = Guid.NewGuid();
             var secondaryProfile = Guid.NewGuid();
             await EntityCreator.CreateConfigurationDatabaseAsync(primaryProfile, secondaryProfile, dbContext);
 
-            var createModel = new CreateModel(dbContext);
+            var profileGroupToEdit = await dbContext.ProfileGroups.FirstAsync();
+            var createModel = new EditModel(dbContext);
             var profileGroupBinding = new ProfileGroupBinding
             {
-                AggregationCode = "AggregationCodeTest",
-                Authority = "AuthorityTest",
-                Category = "CategoryTest",
-                Name = "NameTestUnique",
-                SmartContractId = 1,
-                Priority = 2,
+                Id = profileGroupToEdit.Id,
+                AggregationCode = "AggregationCodeTestEdit",
+                Authority = "AuthorityTestEdit",
+                Category = "CategoryTestEdit",
+                Name = "NameTestUniqueEdit",
+                SmartContractId = 2,
+                Priority = 3,
             };
             createModel.ProfileGroupBinding = profileGroupBinding;
             var startingProfileGroup = await dbContext.ProfileGroups.CountAsync();
@@ -64,7 +66,7 @@ namespace TrackingChain.UnitTest.Pages.Admin.ProfileGroups
             //Assert
             var redirectToPageResult = Assert.IsType<RedirectToPageResult>(result);
             Assert.Equal("./Index", redirectToPageResult.PageName);
-            Assert.Equal(startingProfileGroup + 1, await dbContext.ProfileGroups.CountAsync());
+            Assert.Equal(startingProfileGroup, await dbContext.ProfileGroups.CountAsync());
             var profileGroup = await dbContext.ProfileGroups.Where(pg => pg.Name == profileGroupBinding.Name).FirstAsync();
             Assert.Equal(profileGroupBinding.AggregationCode, profileGroup.AggregationCode);
             Assert.Equal(profileGroupBinding.Authority, profileGroup.Authority);
@@ -82,9 +84,11 @@ namespace TrackingChain.UnitTest.Pages.Admin.ProfileGroups
             var secondaryProfile = Guid.NewGuid();
             await EntityCreator.CreateConfigurationDatabaseAsync(primaryProfile, secondaryProfile, dbContext);
 
-            var createModel = new CreateModel(dbContext);
+            var profileGroupToEdit = await dbContext.ProfileGroups.FirstAsync();
+            var createModel = new EditModel(dbContext);
             var profileGroupBinding = new ProfileGroupBinding
             {
+                Id = profileGroupToEdit.Id,
                 AggregationCode = "ChainWriterAddressTest",
                 Authority = "ChainWatcherAddressTest",
                 Category = "CategoryTest",
