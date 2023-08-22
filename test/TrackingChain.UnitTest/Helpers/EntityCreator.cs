@@ -181,6 +181,14 @@ namespace TrackingChain.UnitTest.Helpers
             return smartContracts;
         }
 
+        public static async Task CreateConfigurationDatabaseAsync(
+            Guid primaryProfileAccount,
+            Guid secondaryProfileAccount,
+            ApplicationDbContext dbContext)
+        {
+            await CreateFullDatabaseWithProfileAndTriageAsync(0, primaryProfileAccount, secondaryProfileAccount, dbContext);
+        }
+
         public static async Task CreateFullDatabaseWithProfileAndTriageAsync(
             int numberOfTriage,
             Guid primaryProfileAccount, 
@@ -214,17 +222,20 @@ namespace TrackingChain.UnitTest.Helpers
             await dbContext.SaveChangesAsync();
 
             //triage
-            var triages = CreateTransactionTriage(
-                numberOfTriage,
-                profileGroups: new List<Guid> { profileGroupOne.Id, profileGroupTwo.Id });
-            dbContext.TransactionTriages.AddRange(triages);
-            await dbContext.SaveChangesAsync();
-
-            if (includePools)
+            if (numberOfTriage > 0)
             {
-                var pools = CreateTransactionPool(triages);
-                dbContext.TransactionPools.AddRange(pools);
+                var triages = CreateTransactionTriage(
+                    numberOfTriage,
+                    profileGroups: new List<Guid> { profileGroupOne.Id, profileGroupTwo.Id });
+                dbContext.TransactionTriages.AddRange(triages);
                 await dbContext.SaveChangesAsync();
+
+                if (includePools)
+                {
+                    var pools = CreateTransactionPool(triages);
+                    dbContext.TransactionPools.AddRange(pools);
+                    await dbContext.SaveChangesAsync();
+                }
             }
         }
     }
