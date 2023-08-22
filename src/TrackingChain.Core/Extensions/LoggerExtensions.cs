@@ -1,16 +1,32 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
+using TrackingChain.Common.Enums;
 
 namespace TrackingChain.TrackingChainCore.Extensions
 {
     /*
      * Always group similar log delegates by type, always use incremental event ids.
-     * Last event id is: 37
+     * Last event id is: 40
      */
     public static class LoggerExtensions
     {
         // Fields.
         //*** DEBUG LOGS ***
+        private static readonly Action<ILogger, int, Exception> _endReProcessTransactionLockedUseCase =
+            LoggerMessage.Define<int>(
+                LogLevel.Debug,
+                new EventId(36, nameof(EndReProcessTransactionLockedUseCase)),
+                "End Manage Transaction Failed UseCase Processed: {Processed}");
+        private static readonly Action<ILogger, Guid, int, Exception> _manageTransactionFailedCanceledDueToErrorUseCase =
+            LoggerMessage.Define<Guid, int>(
+                LogLevel.Debug,
+                new EventId(38, nameof(ManageTransactionFailedCanceledDueToErrorUseCase)),
+                "Manage Transaction Failed Canceled Due To Error UseCase TrackingId: {TrackingId}\tErrorTimes: {ErrorTimes}");
+        private static readonly Action<ILogger, Guid, int, TransactionErrorReason, Exception> _manageTransactionFailedToReprocessableUseCase =
+            LoggerMessage.Define<Guid, int, TransactionErrorReason>(
+                LogLevel.Debug,
+                new EventId(39, nameof(ManageTransactionFailedToReprocessableUseCase)),
+                "Manage Transaction Failed To Reprocessable UseCase TrackingId: {TrackingId}\tErrorTimes: {ErrorTimes}\tTransactionErrorReason: {TransactionErrorReason}");
         private static readonly Action<ILogger, string, Exception> _runMigrateDbTransactionPool =
             LoggerMessage.Define<string>(
                 LogLevel.Debug,
@@ -51,12 +67,7 @@ namespace TrackingChain.TrackingChainCore.Extensions
             LogLevel.Debug,
             new EventId(37, nameof(StartReProcessTransactionLockedUseCase)),
             "Start ReProcess Transaction Failed UseCase Max: {Max}\tUnlockTimeoutSeconds: {UnlockTimeoutSeconds}");
-        private static readonly Action<ILogger, int, Exception> _endReProcessTransactionLockedUseCase =
-            LoggerMessage.Define<int>(
-                LogLevel.Debug,
-                new EventId(36, nameof(EndReProcessTransactionLockedUseCase)),
-                "End Manage Transaction Failed UseCase Processed: {Processed}");
-        
+
         //*** INFORMATION LOGS ***
         private static readonly Action<ILogger, Guid, Exception> _endChildCheckerTask =
             LoggerMessage.Define<Guid>(
@@ -180,6 +191,11 @@ namespace TrackingChain.TrackingChainCore.Extensions
                 "Transaction InPool for TrackingGuid:{TrackingGuid}\tSmartContracAddress:{SmartContracAddress}\tProfileGroup:{ProfileGroup}");
 
         //*** WARNING LOGS ***
+        private static readonly Action<ILogger, Guid, int, string, Exception> _manageTransactionFailedUndefinedRecoveryUseCase =
+            LoggerMessage.Define<Guid, int, string>(
+                LogLevel.Debug,
+                new EventId(40, nameof(ManageTransactionFailedUndefinedRecoveryUseCase)),
+                "Manage Transaction Failed Undefined Recovery UseCase TrackingId: {TrackingId}\tErrorTimes: {ErrorTimes}\rReason: {Reason}");
 
         //*** ERROR LOGS ***
         private static readonly Action<ILogger, Exception> _alertWorkerError =
@@ -263,6 +279,12 @@ namespace TrackingChain.TrackingChainCore.Extensions
             _endTransactionLockedWorker(logger, null!);
         public static void GetTrasactionReceiptInError(this ILogger logger, Guid trackingGuid, string txHash, string apiUrl, Exception exception) =>
             _getTrasactionReceiptInError(logger, trackingGuid, txHash, apiUrl, exception);
+        public static void ManageTransactionFailedUndefinedRecoveryUseCase(this ILogger logger, Guid trackingGuid, int errorTimes, string reason) =>
+        _manageTransactionFailedUndefinedRecoveryUseCase(logger, trackingGuid, errorTimes, reason, null!);
+        public static void ManageTransactionFailedCanceledDueToErrorUseCase(this ILogger logger, Guid trackingGuid, int errorTimes) =>
+            _manageTransactionFailedCanceledDueToErrorUseCase(logger, trackingGuid, errorTimes, null!);
+        public static void ManageTransactionFailedToReprocessableUseCase(this ILogger logger, Guid trackingGuid, int errorTimes, TransactionErrorReason transactionErrorReason) =>
+            _manageTransactionFailedToReprocessableUseCase(logger, trackingGuid, errorTimes, transactionErrorReason, null!);
         public static void RunMigrateDbTransactionPool(this ILogger logger, string dbContextName) =>
             _runMigrateDbTransactionPool(logger, dbContextName, null!);
         public static void RunPoolDequeuer(this ILogger logger) =>
