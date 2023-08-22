@@ -129,8 +129,7 @@ namespace TrackingChain.TransactionTriageCore.UseCases
             long smartContractId)
         {
             var transactionRegistries = await dbContext.TransactionRegistries
-                .Where(tr => tr.Status == RegistryStatus.SuccessfullyCompleted &&
-                             tr.SmartContractId == smartContractId &&
+                .Where(tr => tr.SmartContractId == smartContractId &&
                              tr.Code == code)
                 .OrderBy(tr => tr.ReceivedDate)
                 .ToListAsync();
