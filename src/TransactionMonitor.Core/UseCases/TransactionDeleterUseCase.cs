@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
