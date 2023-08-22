@@ -38,16 +38,12 @@ namespace TrackingChain.UnitTest.Pages.Admin.Accounts
         {
             //Arrange
             var createModel = new CreateModel(dbContext);
-            var chainWriterAddress = "ChainWriterAddressTest";
-            var chainWatcherAddress = "ChainWatcherAddressTest";
-            var name = "NameTest";
-            var privateKey = "PrivateKeyTest";
             var accountBinding = new AccountBinding
             {
-                ChainWriterAddress = chainWriterAddress,
-                ChainWatcherAddress = chainWatcherAddress,
-                Name = name,
-                PrivateKey = privateKey
+                ChainWriterAddress = "ChainWriterAddressTest",
+                ChainWatcherAddress = "ChainWatcherAddressTest",
+                Name = "NameTest",
+                PrivateKey = "PrivateKeyTest"
             };
             createModel.AccountBinding = accountBinding;
 
@@ -61,10 +57,10 @@ namespace TrackingChain.UnitTest.Pages.Admin.Accounts
             Assert.Equal("./Index", redirectToPageResult.PageName);
             Assert.Equal(1, await dbContext.Accounts.CountAsync());
             var account = await dbContext.Accounts.FirstAsync();
-            Assert.Equal(chainWriterAddress, account.ChainWriterAddress);
-            Assert.Equal(chainWatcherAddress, account.ChainWatcherAddress);
-            Assert.Equal(name, account.Name);
-            Assert.Equal(privateKey, account.PrivateKey);
+            Assert.Equal(accountBinding.ChainWriterAddress, account.ChainWriterAddress);
+            Assert.Equal(accountBinding.ChainWatcherAddress, account.ChainWatcherAddress);
+            Assert.Equal(accountBinding.Name, account.Name);
+            Assert.Equal(accountBinding.PrivateKey, account.PrivateKey);
         }
     }
 }

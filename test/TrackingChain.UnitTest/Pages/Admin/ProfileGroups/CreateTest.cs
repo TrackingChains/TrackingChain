@@ -3,11 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Moq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TrackingChainCore.Options;
 using TrackingChain.TriageWebApplication.ModelBinding;
@@ -47,20 +44,14 @@ namespace TrackingChain.UnitTest.Pages.Admin.ProfileGroups
             await EntityCreator.CreateConfigurationDatabaseAsync(primaryProfile, secondaryProfile, dbContext);
 
             var createModel = new CreateModel(dbContext);
-            var aggregationCode = "ChainWriterAddressTest";
-            var authority = "ChainWatcherAddressTest";
-            var category = "CategoryTest";
-            var name = "NameTestUnique";
-            var smartContractId = 1;
-            var priority = 2;
             var profileGroupBinding = new ProfileGroupBinding
             {
-                AggregationCode = aggregationCode,
-                Authority = authority,
-                Category = category,
-                Name = name,
-                SmartContractId = smartContractId,
-                Priority = priority,
+                AggregationCode = "ChainWriterAddressTest",
+                Authority = "ChainWatcherAddressTest",
+                Category = "CategoryTest",
+                Name = "NameTestUnique",
+                SmartContractId = 1,
+                Priority = 2,
             };
             createModel.ProfileGroupBinding = profileGroupBinding;
             var startingProfileGroup = await dbContext.ProfileGroups.CountAsync();
@@ -74,13 +65,13 @@ namespace TrackingChain.UnitTest.Pages.Admin.ProfileGroups
             var redirectToPageResult = Assert.IsType<RedirectToPageResult>(result);
             Assert.Equal("./Index", redirectToPageResult.PageName);
             Assert.Equal(startingProfileGroup + 1, await dbContext.ProfileGroups.CountAsync());
-            var profileGroup = await dbContext.ProfileGroups.Where(pg => pg.Name == name).FirstAsync();
-            Assert.Equal(aggregationCode, profileGroup.AggregationCode);
-            Assert.Equal(authority, profileGroup.Authority);
-            Assert.Equal(category, profileGroup.Category);
-            Assert.Equal(name, profileGroup.Name);
-            Assert.Equal(smartContractId, profileGroup.SmartContractId);
-            Assert.Equal(priority, profileGroup.Priority);
+            var profileGroup = await dbContext.ProfileGroups.Where(pg => pg.Name == profileGroupBinding.Name).FirstAsync();
+            Assert.Equal(profileGroupBinding.AggregationCode, profileGroup.AggregationCode);
+            Assert.Equal(profileGroupBinding.Authority, profileGroup.Authority);
+            Assert.Equal(profileGroupBinding.Category, profileGroup.Category);
+            Assert.Equal(profileGroupBinding.Name, profileGroup.Name);
+            Assert.Equal(profileGroupBinding.SmartContractId, profileGroup.SmartContractId);
+            Assert.Equal(profileGroupBinding.Priority, profileGroup.Priority);
         }
 
         [Fact]
@@ -92,20 +83,14 @@ namespace TrackingChain.UnitTest.Pages.Admin.ProfileGroups
             await EntityCreator.CreateConfigurationDatabaseAsync(primaryProfile, secondaryProfile, dbContext);
 
             var createModel = new CreateModel(dbContext);
-            var aggregationCode = "ChainWriterAddressTest";
-            var authority = "ChainWatcherAddressTest";
-            var category = "CategoryTest";
-            var name = "NameTestUnique";
-            var smartContractId = 100;
-            var priority = 2;
             var profileGroupBinding = new ProfileGroupBinding
             {
-                AggregationCode = aggregationCode,
-                Authority = authority,
-                Category = category,
-                Name = name,
-                SmartContractId = smartContractId,
-                Priority = priority,
+                AggregationCode = "ChainWriterAddressTest",
+                Authority = "ChainWatcherAddressTest",
+                Category = "CategoryTest",
+                Name = "NameTestUnique",
+                SmartContractId = 100,
+                Priority = 2,
             };
             createModel.ProfileGroupBinding = profileGroupBinding;
             var startingProfileGroup = await dbContext.ProfileGroups.CountAsync();
