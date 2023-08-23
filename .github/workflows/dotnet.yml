@@ -29,7 +29,7 @@ jobs:
     - name: Restore TransactionWatcher.Worker dependencies
       run: dotnet restore src/TransactionWatcher.Worker/TransactionWatcher.Worker.csproj
     - name: Restore Triage.WebApplication dependencies
-      run: dotnet restore src/Triage.WebApplication/Triage.WebApplication.csproj
+      run: dotnet restore src/WebApplication/WebApplication.csproj
     - name: Restore TransactionGeneratorCore.Tests dependencies
       run: dotnet restore test/TrackingChain.UnitTest/TrackingChain.UnitTest.csproj
 
@@ -42,7 +42,7 @@ jobs:
     - name: Build TransactionWatcher.Worker
       run: dotnet build src/TransactionWatcher.Worker/TransactionWatcher.Worker.csproj --no-restore
     - name: Build Triage.WebApplication
-      run: dotnet build src/Triage.WebApplication/Triage.WebApplication.csproj --no-restore
+      run: dotnet build src/WebApplication/WebApplication.csproj --no-restore
     - name: Build TrackingChain.UnitTest
       run: dotnet build test/TrackingChain.UnitTest/TrackingChain.UnitTest.csproj --no-restore
 
