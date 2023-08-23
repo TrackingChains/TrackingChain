@@ -28,8 +28,8 @@ jobs:
       run: dotnet restore src/TransactionGenerator.Worker/TransactionGenerator.Worker.csproj
     - name: Restore TransactionWatcher.Worker dependencies
       run: dotnet restore src/TransactionWatcher.Worker/TransactionWatcher.Worker.csproj
-    - name: Restore WebApplication dependencies
-      run: dotnet restore src/WebApplication/WebApplication.csproj
+    - name: Restore TrackingChain.WebApplication dependencies
+      run: dotnet restore src/TrackingChain.WebApplication/TrackingChain.WebApplication.csproj
     - name: Restore TransactionGeneratorCore.Tests dependencies
       run: dotnet restore test/TrackingChain.UnitTest/TrackingChain.UnitTest.csproj
 
