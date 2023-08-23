@@ -113,7 +113,7 @@ jobs:
           tag=$(git describe --tags --abbrev=0)
           release_name="triage-web-application-$tag-${{ matrix.kind }}"
           # Build everything
-          dotnet publish src/Triage.WebApplication/Triage.WebApplication.csproj --runtime "${{ matrix.target }}" "${{ matrix.frameworktype }}" -c Release -o "$release_name"
+          dotnet publish src/WebApplication/WebApplication.csproj --runtime "${{ matrix.target }}" "${{ matrix.frameworktype }}" -c Release -o "$release_name"
           # Pack files
           if [ "${{ matrix.target }}" == "win-x64" ]; then
             7z a -tzip "${release_name}.zip" "./${release_name}/*"
