@@ -107,13 +107,13 @@ jobs:
             tar czvf "${release_name}.tar.gz" "$release_name"
           fi
 
-      - name: Build WebApplication project
+      - name: Build TrackingChain.WebApplication project
         shell: bash
         run: |
           tag=$(git describe --tags --abbrev=0)
           release_name="web-application-$tag-${{ matrix.kind }}"
           # Build everything
-          dotnet publish src/WebApplication/WebApplication.csproj --runtime "${{ matrix.target }}" "${{ matrix.frameworktype }}" -c Release -o "$release_name"
+          dotnet publish src/TrackingChain.WebApp/TrackingChain.WebApp.csproj --runtime "${{ matrix.target }}" "${{ matrix.frameworktype }}" -c Release -o "$release_name"
           # Pack files
           if [ "${{ matrix.target }}" == "win-x64" ]; then
             7z a -tzip "${release_name}.zip" "./${release_name}/*"
