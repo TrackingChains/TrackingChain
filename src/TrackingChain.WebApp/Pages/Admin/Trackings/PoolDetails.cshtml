@@ -1,0 +1,125 @@
+﻿@page
+@model TrackingChain.TriageWebApplication.Pages.Admin.Trackings.PoolDetailsModel
+
+<h4>Transaction Pending</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <div class="trackingsection">
+
+            <dl>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPool.Code)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPool.Code)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPool.TriageDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPool.TriageDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPool.ReceivedDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPool.ReceivedDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPool.Completed)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPool.Completed)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPool.Locked)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPool.Locked)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPool.LockedDated)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPool.LockedDated)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPool.ErrorTimes)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPool.ErrorTimes)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPool.ProfileGroupId)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPool.ProfileGroupId)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPool.Priority)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPool.Priority)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPool.SmartContractExtraInfo)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPool.SmartContractExtraInfo)
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="trackingsection">
+            <dl>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPool.DataValue)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPool.DataValue)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPool.LockedBy)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPool.LockedBy)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPool.GeneratingFrom)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPool.GeneratingFrom)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPool.ChainNumberId)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPool.ChainNumberId)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPool.ChainType)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPool.ChainType)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPool.SmartContractId)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPool.SmartContractId)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPool.SmartContractAddress)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPool.SmartContractAddress)
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<div>
+    <a class="back-link" asp-page="./Pools">Back to List</a>
+</div>

@@ -60,6 +60,10 @@ namespace TrackingChain.Core.Migrations
                     b.Property<Guid>("ProfileGroupId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Priority")
                         .HasColumnType("int");
 
@@ -97,8 +101,7 @@ namespace TrackingChain.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SmartContractId")
-                        .IsUnique();
+                    b.HasIndex("SmartContractId");
 
                     b.ToTable("ProfileGroups", (string)null);
                 });
@@ -161,6 +164,9 @@ namespace TrackingChain.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ErrorTimes")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsInProgress")
                         .HasColumnType("bit");
 
@@ -196,6 +202,9 @@ namespace TrackingChain.Core.Migrations
 
                     b.Property<long>("SmartContractId")
                         .HasColumnType("bigint");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("TriageDate")
                         .HasColumnType("datetime2");
@@ -235,6 +244,12 @@ namespace TrackingChain.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ErrorTimes")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("GeneratingFrom")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("Locked")
                         .IsConcurrencyToken()
                         .HasColumnType("bit");
@@ -264,6 +279,9 @@ namespace TrackingChain.Core.Migrations
 
                     b.Property<long>("SmartContractId")
                         .HasColumnType("bigint");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("TriageDate")
                         .HasColumnType("datetime2");
@@ -295,6 +313,9 @@ namespace TrackingChain.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ErrorTime")
+                        .HasColumnType("int");
+
                     b.Property<string>("LastTransactionHash")
                         .HasColumnType("nvarchar(max)");
 
@@ -325,7 +346,7 @@ namespace TrackingChain.Core.Migrations
                     b.Property<string>("ReceiptGasUsed")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("ReceiptSuccessful")
+                    b.Property<bool>("ReceiptReceived")
                         .HasColumnType("bit");
 
                     b.Property<string>("ReceiptTo")
@@ -344,12 +365,21 @@ namespace TrackingChain.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SmartContractEndpoint")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SmartContractExtraInfo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("SmartContractId")
                         .HasColumnType("bigint");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TransactionErrorReason")
+                        .HasColumnType("int");
 
                     b.Property<int>("TransactionStep")
                         .HasColumnType("int");
@@ -439,8 +469,8 @@ namespace TrackingChain.Core.Migrations
             modelBuilder.Entity("TrackingChain.TrackingChainCore.Domain.Entities.ProfileGroup", b =>
                 {
                     b.HasOne("TrackingChain.TrackingChainCore.Domain.Entities.SmartContract", "SmartContract")
-                        .WithOne("ProfileGroup")
-                        .HasForeignKey("TrackingChain.TrackingChainCore.Domain.Entities.ProfileGroup", "SmartContractId")
+                        .WithMany("ProfileGroups")
+                        .HasForeignKey("SmartContractId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -449,7 +479,7 @@ namespace TrackingChain.Core.Migrations
 
             modelBuilder.Entity("TrackingChain.TrackingChainCore.Domain.Entities.SmartContract", b =>
                 {
-                    b.Navigation("ProfileGroup");
+                    b.Navigation("ProfileGroups");
                 });
 #pragma warning restore 612, 618
         }

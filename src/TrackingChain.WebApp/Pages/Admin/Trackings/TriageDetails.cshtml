@@ -1,0 +1,94 @@
+﻿@page
+@model TrackingChain.TriageWebApplication.Pages.Admin.Trackings.TriageDetailsModel
+
+<h4>Transaction Triage</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <div class="trackingsection">
+            <dl>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionTriage.Code)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionTriage.Code)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionTriage.ReceivedDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionTriage.ReceivedDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionTriage.IsInPool)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionTriage.IsInPool)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionTriage.ChainType)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionTriage.ChainType)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionTriage.SmartContractId)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionTriage.SmartContractId)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionTriage.SmartContractExtraInfo)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionTriage.SmartContractExtraInfo)
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="trackingsection">
+            <dl>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionTriage.DataValue)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionTriage.DataValue)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionTriage.TrackingIdentify)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionTriage.TrackingIdentify)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionTriage.Completed)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionTriage.Completed)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionTriage.ChainNumberId)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionTriage.ChainNumberId)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionTriage.SmartContractAddress)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionTriage.SmartContractAddress)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionTriage.ProfileGroupId)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionTriage.ProfileGroupId)
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<div>
+    <a class="back-link" asp-page="./Triages">Back to List</a>
+</div>

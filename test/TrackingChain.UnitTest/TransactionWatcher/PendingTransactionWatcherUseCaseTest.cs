@@ -95,6 +95,8 @@ namespace TrackingChain.UnitTest.TransactionWatcher
             var primaryProfile = Guid.NewGuid();
             var secondaryProfile = Guid.NewGuid();
             var maxConcurrentThread = 3;
+            var reTryAfterSeconds = 6;
+            var saveAsErrorAfterSeconds = 900;
 
             await EntityCreator.CreateFullDatabaseWithProfileAndTriageAsync(10, primaryProfile, secondaryProfile, dbContext, includePools: true);
             await dbContext.SaveChangesAsync();
@@ -112,12 +114,12 @@ namespace TrackingChain.UnitTest.TransactionWatcher
                 .Setup(m => m.GetTransactionToCheckAsync(maxConcurrentThread, primaryProfile))
                 .Returns(Task.FromResult(primaryPendings));
             mockTransactionWatcherService
-                .Setup(m => m.SetToRegistryAsync(It.IsAny<Guid>(), It.IsAny<TransactionDetail>()))
+                .Setup(m => m.SetToRegistryCompletedAsync(It.IsAny<Guid>(), It.IsAny<TransactionDetail>()))
                 .Returns(Task.FromResult(EntityCreator.ConvertToRegistry(primaryPendings.First())));
 
 
             //Act
-            var dequedResult = await pendingTransactionWatcherUseCase.CheckTransactionStatusAsync(maxConcurrentThread, primaryProfile);
+            var dequedResult = await pendingTransactionWatcherUseCase.CheckTransactionStatusAsync(maxConcurrentThread, primaryProfile, reTryAfterSeconds, saveAsErrorAfterSeconds);
 
 
             //Assert

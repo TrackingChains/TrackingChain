@@ -62,7 +62,11 @@ namespace TrackingChain.TransactionGeneratorWorker
                 bool dequeued = false;
                 try
                 {
-                    dequeued = await poolDequeuerUseCase.DequeueTransactionAsync(dequeuerOptions.Accounts.Count, taskId);
+                    dequeued = await poolDequeuerUseCase.DequeueTransactionAsync(
+                        dequeuerOptions.Accounts.Count, 
+                        taskId,
+                        dequeuerOptions.ReTryAfterSeconds,
+                        dequeuerOptions.ErrorAfterReTry);
                 }
 #pragma warning disable CA1031 // We need fot catch all problems.
                 catch (Exception ex)

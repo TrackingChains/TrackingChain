@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -36,10 +36,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\AggregatorPool.Worker\AggregatorPool.Worker.csproj" />
     <ProjectReference Include="..\..\src\Substrate.Generic.Client\Substrate.Generic.Client.csproj" />
+    <ProjectReference Include="..\..\src\TrackingChain.WebApp\TrackingChain.WebApp.csproj" />
     <ProjectReference Include="..\..\src\TransactionGenerator.Worker\TransactionGenerator.Worker.csproj" />
     <ProjectReference Include="..\..\src\TransactionWatcher.Worker\TransactionWatcher.Worker.csproj" />
     <ProjectReference Include="..\..\src\Triage.API\Triage.API.csproj" />
-    <ProjectReference Include="..\..\src\Triage.WebApplication\Triage.WebApplication.csproj" />
   </ItemGroup>
 
 </Project>

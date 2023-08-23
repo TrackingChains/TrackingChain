@@ -5,7 +5,7 @@ namespace TrackingChain.TrackingChainCore.Extensions
 {
     /*
      * Always group similar log delegates by type, always use incremental event ids.
-     * Last event id is: 17
+     * Last event id is: 23
      */
     public static class LoggerExtensions
     {
@@ -28,36 +28,7 @@ namespace TrackingChain.TrackingChainCore.Extensions
                 "Run Pool Dequeuer");
 
         //*** INFORMATION LOGS ***
-        private static readonly Action<ILogger, Exception> _startMigratorDbWorker =
-            LoggerMessage.Define(
-                LogLevel.Information,
-                new EventId(1, nameof(StartMigratorDbWorker)),
-                "Migration Db Worker running.");
-        private static readonly Action<ILogger, Guid, Exception> _startChildPoolDequeuerTask =
-            LoggerMessage.Define<Guid>(
-                LogLevel.Information,
-                new EventId(10, nameof(StartChildPoolDequeuerTask)),
-                "Start Child PoolDequeuer {TaskId} task running.");
-        private static readonly Action<ILogger, Guid, Exception> _startChildCheckerTask =
-            LoggerMessage.Define<Guid>(
-                LogLevel.Information,
-                new EventId(19, nameof(StartChildCheckerTask)),
-                "Start Child Checker {TaskId} task running.");
-        private static readonly Action<ILogger, Exception> _startPoolDequeuerWorker =
-            LoggerMessage.Define(
-                LogLevel.Information,
-                new EventId(7, nameof(StartPoolDequeuerWorker)),
-                "Pool Dequeuer Worker running.");
-        private static readonly Action<ILogger, Exception> _startPoolEnqueuerWorker =
-            LoggerMessage.Define(
-                LogLevel.Information,
-                new EventId(4, nameof(StartPoolEnqueuerWorker)),
-                "Pool Enqueuer Worker running.");
-        private static readonly Action<ILogger, Exception> _startPendingTransactionCheckerWorker = 
-            LoggerMessage.Define(
-                LogLevel.Information,
-                new EventId(11, nameof(StartPendingTransactionCheckerWorker)),
-                "Pending Transaction Checker Worker running.");
+
         private static readonly Action<ILogger, Guid, Exception> _endChildCheckerTask =
             LoggerMessage.Define<Guid>(
                 LogLevel.Information,
@@ -86,13 +57,63 @@ namespace TrackingChain.TrackingChainCore.Extensions
         private static readonly Action<ILogger, Exception> _endPendingTransactionCheckerWorker =
             LoggerMessage.Define(
                 LogLevel.Information,
-                new EventId(12, nameof(EndPendingTransactionCheckerWorker)),
+                new EventId(19, nameof(EndPendingTransactionCheckerWorker)),
                 "Pending transaction checker END.");
-        private static readonly Action<ILogger, Guid, bool?, Exception> _transactionCompleted =
+        private static readonly Action<ILogger, Exception> _endTransactionFailedWorker =
+            LoggerMessage.Define(
+                LogLevel.Information,
+                new EventId(12, nameof(EndTransactionFailedWorker)),
+                "Transaction failed recovery END.");
+        private static readonly Action<ILogger, Exception> _endTransactionLockedWorker =
+            LoggerMessage.Define(
+                LogLevel.Information,
+                new EventId(23, nameof(EndTransactionLockedWorker)),
+                "Transaction locked END.");
+        private static readonly Action<ILogger, Exception> _startMigratorDbWorker =
+            LoggerMessage.Define(
+                LogLevel.Information,
+                new EventId(1, nameof(StartMigratorDbWorker)),
+                "Migration Db Worker running.");
+        private static readonly Action<ILogger, Guid, Exception> _startChildPoolDequeuerTask =
+            LoggerMessage.Define<Guid>(
+                LogLevel.Information,
+                new EventId(10, nameof(StartChildPoolDequeuerTask)),
+                "Start Child PoolDequeuer {TaskId} task running.");
+        private static readonly Action<ILogger, Guid, Exception> _startChildCheckerTask =
+            LoggerMessage.Define<Guid>(
+                LogLevel.Information,
+                new EventId(19, nameof(StartChildCheckerTask)),
+                "Start Child Checker {TaskId} task running.");
+        private static readonly Action<ILogger, Exception> _startPoolDequeuerWorker =
+            LoggerMessage.Define(
+                LogLevel.Information,
+                new EventId(7, nameof(StartPoolDequeuerWorker)),
+                "Pool Dequeuer Worker running.");
+        private static readonly Action<ILogger, Exception> _startPoolEnqueuerWorker =
+            LoggerMessage.Define(
+                LogLevel.Information,
+                new EventId(18, nameof(StartPoolEnqueuerWorker)),
+                "Pool Enqueuer Worker running.");
+        private static readonly Action<ILogger, Exception> _startPendingTransactionCheckerWorker = 
+            LoggerMessage.Define(
+                LogLevel.Information,
+                new EventId(11, nameof(StartPendingTransactionCheckerWorker)),
+                "Pending Transaction Checker Worker running.");
+        private static readonly Action<ILogger, Exception> _startTransactionLockedWorker =
+            LoggerMessage.Define(
+                LogLevel.Information,
+                new EventId(22, nameof(StartTransactionLockedWorker)),
+                "Transaction Locked Worker running.");
+        private static readonly Action<ILogger, Exception> _startTransactionFailedWorker =
+            LoggerMessage.Define(
+                LogLevel.Information,
+                new EventId(11, nameof(StartTransactionFailedWorker)),
+                "Start Transaction Failed Worker running.");
+        private static readonly Action<ILogger, Guid, bool?, Exception> _transactionWatcher =
             LoggerMessage.Define<Guid, bool?>(
                 LogLevel.Information,
-                new EventId(16, nameof(TransactionCompleted)),
-                "Transaction Completed for TrackingGuid:{TrackingGuid}\tSuccessful:{Successful}");
+                new EventId(16, nameof(TransactionWatcher)),
+                "Transaction Wacther for TrackingGuid:{TrackingGuid}\tSuccessful:{Successful}");
         private static readonly Action<ILogger, string, string, string, string, Guid, Exception> _trackingEntry =
             LoggerMessage.Define<string, string, string, string, Guid>(
                 LogLevel.Information,
@@ -125,6 +146,16 @@ namespace TrackingChain.TrackingChainCore.Extensions
                 LogLevel.Information,
                 new EventId(17, nameof(GetTrasactionReceiptInError)),
                 "GetTrasactionReceiptInError TrackingGuid:{TrackingGuid}\tTxHash:{TxHash}\tApiUrl:{ApiUrl}");
+        private static readonly Action<ILogger, Guid, Exception> _transactionGenerationCompletedInError =
+            LoggerMessage.Define<Guid>(
+                LogLevel.Information,
+                new EventId(20, nameof(TransactionGenerationCompletedInError)),
+                "Transaction Generation Completed in Error for  TrackingGuid:{TrackingGuid}");
+        private static readonly Action<ILogger, Guid, string, Exception> _trasactionGenerationInError =
+            LoggerMessage.Define<Guid, string>(
+                LogLevel.Information,
+                new EventId(21, nameof(TrasactionGenerationInError)),
+                "Transaction Generation Error for TrackingGuid:{TrackingGuid}\tEndpoint:{Endpoint}");
 
         // Methods.
         public static void ChildCheckerTaskInError(this ILogger logger, Guid taskId, Exception exception) =>
@@ -143,6 +174,10 @@ namespace TrackingChain.TrackingChainCore.Extensions
             _endPoolEnqueuerWorker(logger, null!);
         public static void EndPendingTransactionCheckerWorker(this ILogger logger) =>
             _endPendingTransactionCheckerWorker(logger, null!);
+        public static void EndTransactionFailedWorker(this ILogger logger) =>
+            _endTransactionFailedWorker(logger, null!);
+        public static void EndTransactionLockedWorker(this ILogger logger) =>
+            _endTransactionLockedWorker(logger, null!);
         public static void GetTrasactionReceiptInError(this ILogger logger, Guid trackingGuid, string txHash, string apiUrl, Exception exception) =>
             _getTrasactionReceiptInError(logger, trackingGuid, txHash, apiUrl, exception);
         public static void RunMigrateDbTransactionPool(this ILogger logger, string dbContextName) =>
@@ -163,8 +198,16 @@ namespace TrackingChain.TrackingChainCore.Extensions
             _startPoolEnqueuerWorker(logger, null!);
         public static void StartPendingTransactionCheckerWorker(this ILogger logger) =>
             _startPendingTransactionCheckerWorker(logger, null!);
-        public static void TransactionCompleted(this ILogger logger, Guid trackingGuid, bool? successful) =>
-            _transactionCompleted(logger, trackingGuid, successful, null!);
+        public static void StartTransactionFailedWorker(this ILogger logger) =>
+            _startTransactionFailedWorker(logger, null!);
+        public static void StartTransactionLockedWorker(this ILogger logger) =>
+            _startTransactionLockedWorker(logger, null!);
+        public static void TransactionGenerationCompletedInError(this ILogger logger, Guid trackingGuid) =>
+            _transactionGenerationCompletedInError(logger, trackingGuid, null!);
+        public static void TrasactionGenerationInError(this ILogger logger, Guid trackingGuid, string endpoint, Exception exception) =>
+            _trasactionGenerationInError(logger, trackingGuid, endpoint, exception);
+        public static void TransactionWatcher(this ILogger logger, Guid trackingGuid, bool? successful) =>
+            _transactionWatcher(logger, trackingGuid, successful, null!);
         public static void TrackingEntry(this ILogger logger, string code, string dataValue, string category, string smartContracAddress, Guid profileGroup) =>
             _trackingEntry(logger, code, dataValue, category, smartContracAddress, profileGroup, null!);
         public static void TransactionInPool(this ILogger logger, Guid trackingGuid, string smartContracAddress, Guid profileGroup) =>

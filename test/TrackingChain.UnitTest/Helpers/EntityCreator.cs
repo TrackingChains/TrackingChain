@@ -171,7 +171,7 @@ namespace TrackingChain.UnitTest.Helpers
                     $"name{i}",
                     new ContractExtraInfo
                     {
-                        BasicWeight = 1,
+                        InsertTrackBasicWeight = 1,
                         ByteWeight = 2,
                         InsertTrackSelectorValue = "aaa",
                         SupportedClient = i % 2 == 0 ? SupportedClient.Shibuya : SupportedClient.Shibuya
@@ -179,6 +179,14 @@ namespace TrackingChain.UnitTest.Helpers
             }
 
             return smartContracts;
+        }
+
+        public static async Task CreateConfigurationDatabaseAsync(
+            Guid primaryProfileAccount,
+            Guid secondaryProfileAccount,
+            ApplicationDbContext dbContext)
+        {
+            await CreateFullDatabaseWithProfileAndTriageAsync(0, primaryProfileAccount, secondaryProfileAccount, dbContext);
         }
 
         public static async Task CreateFullDatabaseWithProfileAndTriageAsync(
@@ -200,31 +208,34 @@ namespace TrackingChain.UnitTest.Helpers
             await dbContext.SaveChangesAsync();
 
             //profile group
-            var accountOne = new Account(primaryProfileAccount, "ws://test", "https://watchertest", "TestAccount", "0x12345");
+            var accountOne = new Account("ws://test", "https://watchertest", "TestAccount", "0x12345");
             dbContext.Accounts.Add(accountOne);
-            var accountTwo = new Account(secondaryProfileAccount, "ws://test2", "https://watchertest2", "TestAccount", "0x54321");
+            var accountTwo = new Account("ws://test2", "https://watchertest2", "TestAccount", "0x54321");
             dbContext.Accounts.Add(accountTwo);
             await dbContext.SaveChangesAsync();
 
             //account profile group
-            var accountProfileGroupOne = new AccountProfileGroup(primaryProfileAccount, profileGroupOne.Id, 0);
+            var accountProfileGroupOne = new AccountProfileGroup("primaryName", primaryProfileAccount, profileGroupOne.Id, 0);
             dbContext.AccountProfileGroup.Add(accountProfileGroupOne);
-            var accountProfileGroupTwo = new AccountProfileGroup(secondaryProfileAccount, profileGroupTwo.Id, 1);
+            var accountProfileGroupTwo = new AccountProfileGroup("secondaryName", secondaryProfileAccount, profileGroupTwo.Id, 1);
             dbContext.AccountProfileGroup.Add(accountProfileGroupTwo);
             await dbContext.SaveChangesAsync();
 
             //triage
-            var triages = CreateTransactionTriage(
-                numberOfTriage,
-                profileGroups: new List<Guid> { profileGroupOne.Id, profileGroupTwo.Id });
-            dbContext.TransactionTriages.AddRange(triages);
-            await dbContext.SaveChangesAsync();
-
-            if (includePools)
+            if (numberOfTriage > 0)
             {
-                var pools = CreateTransactionPool(triages);
-                dbContext.TransactionPools.AddRange(pools);
+                var triages = CreateTransactionTriage(
+                    numberOfTriage,
+                    profileGroups: new List<Guid> { profileGroupOne.Id, profileGroupTwo.Id });
+                dbContext.TransactionTriages.AddRange(triages);
                 await dbContext.SaveChangesAsync();
+
+                if (includePools)
+                {
+                    var pools = CreateTransactionPool(triages);
+                    dbContext.TransactionPools.AddRange(pools);
+                    await dbContext.SaveChangesAsync();
+                }
             }
         }
     }

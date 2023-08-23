@@ -15,7 +15,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             int priority)
         {
             ArgumentNullException.ThrowIfNull(smartContract);
-            ArgumentNullException.ThrowIfNullOrEmpty(name);
+            ArgumentException.ThrowIfNullOrEmpty(name);
 
             this.AggregationCode = aggregationCode;
             this.Authority = authority;
@@ -50,6 +50,23 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public void SetCategory(string? category)
         {
             Category = category;
+        }
+
+        // Methods.
+        public void Update(
+            string? aggregationCode,
+            string? authority,
+            string? category,
+            string name,
+            long smartContractId,
+            int priority)
+        {
+            AggregationCode = aggregationCode;
+            Authority = authority;
+            Category = category;
+            Name = name;
+            SmartContractId = smartContractId;
+            Priority = priority;
         }
     }
 }

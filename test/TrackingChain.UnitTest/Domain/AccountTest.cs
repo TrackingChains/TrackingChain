@@ -19,7 +19,6 @@ namespace TrackingChain.UnitTest.Domain
 
             //Act
             var account = new Account(
-                guidAccount,
                 chainWsAddress,
                 chainWatcherAddress,
                 nameAccount,
@@ -44,7 +43,6 @@ namespace TrackingChain.UnitTest.Domain
             var nameAccount = "TestAccount";
             var privateKey = "0x1234567890";
             var account = new Account(
-                guidAccount, 
                 chainWriterAddress, 
                 chainWatcherAddress,
                 nameAccount,
@@ -70,7 +68,6 @@ namespace TrackingChain.UnitTest.Domain
             var nameAccount = "TestAccount";
             var privateKey = "0x1234567890";
             var account = new Account(
-                guidAccount,
                 chainWriterAddress,
                 chainWatcherAddress,
                 nameAccount,

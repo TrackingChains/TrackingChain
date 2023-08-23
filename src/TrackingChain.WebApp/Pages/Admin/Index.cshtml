@@ -1,0 +1,44 @@
+﻿@page
+@model TrackingChain.TriageWebApplication.Pages.Admin.IndexModel
+@{
+}
+<style>
+    .link-list {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+        .link-list li a {
+            display: block;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #333;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+            .link-list li a:hover {
+                background-color: #f4f4f4;
+                color: #000;
+            }
+</style>
+<br />
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <ul class="link-list">
+            <li><a href="/Admin/Accounts">Accounts</a></li>
+            <li><a href="/Admin/Trackings/Triages">Triages</a></li>
+            <li><a href="/Admin/ProfileGroups">Profile Groups</a></li>
+            <li><a href="/Admin/Trackings/Pools">Pools</a></li>
+            <li><a href="/Admin/Smartcontracts">Smartcontracts</a></li>
+            <li><a href="/Admin/Trackings/Pendings">Pendings</a></li>
+            <li><a href="/Admin/AccountProfileGroups">Link Account to Profile Groups</a></li>
+            <li><a href="/Admin/Trackings/Registries">Registries</a></li>
+        </ul>
+    </div>
+</div>

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using StreamJsonRpc;
 using Substrate.ContractRococo.NET.NetApiExt.Generated;
-using Substrate.ContractRococo.NET.NetApiExt.Generated.Model.sp_core.crypto;
 using Substrate.ContractRococo.NET.NetApiExt.Generated.Model.sp_runtime.multiaddress;
 using Substrate.ContractRococo.NET.NetApiExt.Generated.Model.sp_weights.weight_v2;
 using Substrate.ContractRococo.NET.NetApiExt.Generated.Storage;
@@ -14,9 +13,9 @@ using System;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
-using TrackingChain.Core.Helpers;
+using TrackingChain.Substrate.Generic.Client.Helpers;
 
-namespace TrackingChain.Core.Clients
+namespace TrackingChain.Substrate.Generic.Client.Clients
 {
     public class ContractRococoClient : ISubstrateClient
     {
@@ -40,7 +39,7 @@ namespace TrackingChain.Core.Clients
         // Properties.
         public Account Account { get; set; }
         public bool IsConnected => SubstrateClient.IsConnected;
-        public Substrate.NetApi.SubstrateClient SubstrateClient { get; }
+        public SubstrateClient SubstrateClient { get; }
 
         // Public methods.
         public async Task<bool> ConnectAsync(

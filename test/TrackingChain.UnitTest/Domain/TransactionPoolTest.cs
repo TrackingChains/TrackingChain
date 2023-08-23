@@ -91,7 +91,6 @@ namespace TrackingChain.UnitTest.Domain
             //Arrange
             string code = "CodeTest";
             string data = "DataTest";
-            var poolDate = new DateTime(1987, 7, 23, 03, 15, 0, 0);
             var trackingIdentify = Guid.NewGuid();
             var triageDate = new DateTime(1987, 7, 23, 02, 15, 0, 0);
             var profileGroupId = Guid.NewGuid();
@@ -130,7 +129,6 @@ namespace TrackingChain.UnitTest.Domain
             //Arrange
             string code = "CodeTest";
             string data = "DataTest";
-            var poolDate = new DateTime(1987, 7, 23, 03, 15, 0, 0);
             var trackingIdentify = Guid.NewGuid();
             var triageDate = new DateTime(1987, 7, 23, 02, 15, 0, 0);
             var profileGroupId = Guid.NewGuid();

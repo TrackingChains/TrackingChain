@@ -1,0 +1,142 @@
+﻿@page
+@model TrackingChain.TriageWebApplication.Pages.Admin.Trackings.PendingDetailsModel
+
+<h4>Transaction Pending</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <div class="trackingsection">
+            <dl>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPending.Code)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPending.Code)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPending.TriageDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPending.TriageDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPending.ReceivedDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPending.ReceivedDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPending.Completed)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPending.Completed)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPending.Locked)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPending.Locked)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPending.LockedDated)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPending.LockedDated)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPending.ErrorTimes)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPending.ErrorTimes)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPending.TxHash)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPending.TxHash)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPending.ProfileGroupId)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPending.ProfileGroupId)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPending.Priority)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPending.Priority)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPending.SmartContractExtraInfo)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPending.SmartContractExtraInfo)
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="trackingsection">
+            <dl>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPending.DataValue)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPending.DataValue)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPending.PoolDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPending.PoolDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPending.IsInProgress)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPending.IsInProgress)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPending.LockedBy)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPending.LockedBy)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPending.WatchingFrom)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPending.WatchingFrom)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPending.ChainNumberId)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPending.ChainNumberId)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPending.ChainType)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPending.ChainType)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPending.SmartContractId)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPending.SmartContractId)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionPending.SmartContractAddress)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionPending.SmartContractAddress)
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<div>
+    <a class="back-link" asp-page="./Pendings">Back to List</a>
+</div>
