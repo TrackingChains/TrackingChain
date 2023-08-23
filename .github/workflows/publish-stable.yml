@@ -107,11 +107,11 @@ jobs:
             tar czvf "${release_name}.tar.gz" "$release_name"
           fi
 
-      - name: Build Triage.WebApplication project
+      - name: Build WebApplication project
         shell: bash
         run: |
           tag=$(git describe --tags --abbrev=0)
-          release_name="triage-web-application-$tag-${{ matrix.kind }}"
+          release_name="web-application-$tag-${{ matrix.kind }}"
           # Build everything
           dotnet publish src/WebApplication/WebApplication.csproj --runtime "${{ matrix.target }}" "${{ matrix.frameworktype }}" -c Release -o "$release_name"
           # Pack files
@@ -129,6 +129,6 @@ jobs:
             aggregator-pool-worker-*    
             transaction-generator-worker-*
             transaction-watcher-worker-*
-            triage-web-application-*
+            web-application-*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
