@@ -107,7 +107,7 @@ jobs:
             tar czvf "${release_name}.tar.gz" "$release_name"
           fi
 
-      - name: Build TrackingChain.WebApplication project
+      - name: Build TrackingChain.WebApp project
         shell: bash
         run: |
           tag=$(git describe --tags --abbrev=0)
