@@ -26,10 +26,9 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.ProfileGroups
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
-            if (id == null || dbContext.ProfileGroups == null)
-            {
+            if (id == null || 
+                dbContext.ProfileGroups == null)
                 return NotFound();
-            }
 
             var profilegroup = await dbContext.ProfileGroups.FirstOrDefaultAsync(m => m.Id == id);
 
@@ -45,7 +44,8 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.ProfileGroups
 
         public async Task<IActionResult> OnPostAsync(Guid? id)
         {
-            if (id == null || dbContext.ProfileGroups == null)
+            if (id == null || 
+                dbContext.ProfileGroups == null)
                 return NotFound();
 
             var profilegroup = await dbContext.ProfileGroups.FindAsync(id);

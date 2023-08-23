@@ -15,7 +15,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             ChainType chainType,
             string currency,
             string name,
-            ContractExtraInfo substractContractExtraInfo)
+            ContractExtraInfo contractExtraInfo)
         {
             ArgumentException.ThrowIfNullOrEmpty(address);
             ArgumentException.ThrowIfNullOrEmpty(name);
@@ -24,7 +24,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             this.ChainNumberId = chainNumberId;
             this.ChainType = chainType;
             this.Currency = currency;
-            this.ExtraInfo = JsonSerializer.Serialize(substractContractExtraInfo);
+            this.ExtraInfo = JsonSerializer.Serialize(contractExtraInfo);
             this.Name = name;
         }
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -47,14 +47,14 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             int chainNumberId,
             ChainType chainType,
             string currency,
-            string extraInfo,
+            ContractExtraInfo contractExtraInfo,
             string name)
         {
             Address = address;
             ChainNumberId = chainNumberId;
             ChainType = chainType;
             Currency = currency;
-            ExtraInfo = extraInfo;
+            ExtraInfo = JsonSerializer.Serialize(contractExtraInfo);
             Name = name;
         }
     }

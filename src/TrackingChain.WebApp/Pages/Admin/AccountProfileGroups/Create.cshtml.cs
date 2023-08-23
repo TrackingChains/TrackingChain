@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
@@ -10,17 +11,17 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.AccountProfileGroups
 {
     public class CreateModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext dbContext;
 
         public CreateModel(ApplicationDbContext context)
         {
-            _context = context;
+            dbContext = context;
         }
 
         public IActionResult OnGet()
         {
-            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Name");
-            ViewData["ProfileGroupId"] = new SelectList(_context.ProfileGroups, "Id", "Name");
+            ViewData["AccountId"] = new SelectList(dbContext.Accounts, "Id", "Name");
+            ViewData["ProfileGroupId"] = new SelectList(dbContext.ProfileGroups, "Id", "Name");
             return Page();
         }
 
@@ -32,18 +33,23 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.AccountProfileGroups
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid || 
-                _context.AccountProfileGroup == null || 
+                dbContext.AccountProfileGroup == null || 
                 AccountProfileGroupBinding == null)
                 return Page();
+
+            if (! await dbContext.Accounts.AnyAsync(a => a.Id == AccountProfileGroupBinding.AccountId))
+                return NotFound();
+            if (! await dbContext.ProfileGroups.AnyAsync(a => a.Id == AccountProfileGroupBinding.ProfileGroupId))
+                return NotFound();
 
             var accountProfileGroup = new AccountProfileGroup(
                 AccountProfileGroupBinding.Name,
                 AccountProfileGroupBinding.AccountId, 
                 AccountProfileGroupBinding.ProfileGroupId, 
                 AccountProfileGroupBinding.Priority);
-            _context.AccountProfileGroup.Add(accountProfileGroup);
+            dbContext.AccountProfileGroup.Add(accountProfileGroup);
 
-            await _context.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }
