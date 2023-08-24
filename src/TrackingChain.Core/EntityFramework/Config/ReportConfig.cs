@@ -6,9 +6,9 @@ using TrackingChain.TrackingChainCore.EntityFramework;
 
 namespace TrackingChain.Core.EntityFramework.Config
 {
-    public class ReportConfig : IEntityTypeConfiguration<Report>
+    public class ReportConfig : IEntityTypeConfiguration<ReportItem>
     {
-        public void Configure(EntityTypeBuilder<Report> builder)
+        public void Configure(EntityTypeBuilder<ReportItem> builder)
         {
             ArgumentNullException.ThrowIfNull(builder);
 
