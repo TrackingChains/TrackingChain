@@ -48,6 +48,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public bool Completed { get; private set; }
         public int ErrorTimes { get; private set; }
         public bool IsInProgress { get; private set; }
+        public TransactionErrorReason? LastUnlockedError { get; private set; }
         public bool Locked { get; private set; }
         public Guid? LockedBy { get; private set; }
         public DateTime? LockedDated { get; private set; }
@@ -115,9 +116,12 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             WatchingFrom = DateTime.UtcNow.AddSeconds(secondsDelayWatchingFrom);
         }
 
-        public void UnlockFromError(int secondsDelayWatchingFrom = 6)
+        public void UnlockFromError(
+            TransactionErrorReason transactionErrorReason,
+            int secondsDelayWatchingFrom = 6)
         {
             ErrorTimes++;
+            LastUnlockedError = transactionErrorReason;
             Locked = false;
             LockedBy = null;
             Status = PendingStatus.WaitingForWorker;

@@ -59,6 +59,7 @@ namespace TrackingChain.UnitTest.Domain
             Assert.Equal(chainType, transactionPending.ChainType);
             Assert.Equal(PendingStatus.WaitingForWorker, transactionPending.Status);
             Assert.Equal(forceWatchingFrom, transactionPending.WatchingFrom);
+            Assert.Null(transactionPending.LastUnlockedError);
         }
 
         [Fact]
@@ -142,7 +143,7 @@ namespace TrackingChain.UnitTest.Domain
 
 
             //Act
-            transactionPending.UnlockFromError();
+            transactionPending.UnlockFromError(TransactionErrorReason.UnableToWatchTransactionOnChain);
 
 
             //Assert
@@ -150,6 +151,7 @@ namespace TrackingChain.UnitTest.Domain
             Assert.Null(transactionPending.LockedBy);
             Assert.InRange(transactionPending.WatchingFrom, DateTime.UtcNow.AddSeconds(4), DateTime.UtcNow.AddSeconds(8));
             Assert.Equal(PendingStatus.WaitingForWorker, transactionPending.Status);
+            Assert.Equal(TransactionErrorReason.UnableToWatchTransactionOnChain, transactionPending.LastUnlockedError);
         }
 
 
@@ -163,11 +165,12 @@ namespace TrackingChain.UnitTest.Domain
 
 
             //Act
-            transactionPending.UnlockFromError();
+            transactionPending.UnlockFromError(TransactionErrorReason.TransactionFinalizedInError);
 
 
             //Assert
             Assert.Equal(1, transactionPending.ErrorTimes);
+            Assert.Equal(TransactionErrorReason.TransactionFinalizedInError, transactionPending.LastUnlockedError);
         }
 
         [Fact]
@@ -177,18 +180,19 @@ namespace TrackingChain.UnitTest.Domain
             var transactionPending = CreateGenericEntity();
             Guid locker = Guid.NewGuid();
             transactionPending.SetLocked(locker);
-            transactionPending.UnlockFromError();
+            transactionPending.UnlockFromError(TransactionErrorReason.GetTrasactionReceiptExpection);
             transactionPending.SetLocked(locker);
-            transactionPending.UnlockFromError();
+            transactionPending.UnlockFromError(TransactionErrorReason.UnableToSendTransactionOnChain);
             transactionPending.SetLocked(locker);
 
 
             //Act
-            transactionPending.UnlockFromError();
+            transactionPending.UnlockFromError(TransactionErrorReason.TransactionFinalizedInError);
 
 
             //Assert
             Assert.True(transactionPending.WatchingFrom > DateTime.UtcNow.AddSeconds(15));
+            Assert.Equal(TransactionErrorReason.TransactionFinalizedInError, transactionPending.LastUnlockedError);
         }
 
         [Fact]

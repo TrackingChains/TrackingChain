@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using TrackingChain.Common.Dto;
 using TrackingChain.Common.Enums;
 using TrackingChain.Common.Interfaces;
+using TrackingChain.Core.Domain.Enums;
+using TrackingChain.Core.Extensions;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TrackingChainCore.Extensions;
@@ -61,51 +63,81 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                     continue;
                 }
 
-                TransactionDetail? transactionDetail;
-                if (pending.ErrorTimes >= errorAfterReTry)
-                    transactionDetail = new TransactionDetail(TransactionErrorReason.UnableToWatchTransactionOnChain);
-                else
+                // Check for error limit.
+                if (pending.ErrorTimes > errorAfterReTry)
                 {
-                    var blockChainService = blockchainServices.First(x => x.ProviderType == pending.ChainType);
-                    var (apiUrl, apiKey) = account.GetFirstRandomWatcherAddress;
+                    AddReportEntity($"Exceed Retry Limit\tErrorTimes: {pending.ErrorTimes}\tErrorAfterReTry: {errorAfterReTry}",
+                        pending,
+                        ReportType.TxWatchingInError);
+                    await TransactionExecutedErrorAsync(
+                        pending,
+                        new TransactionDetail(pending.LastUnlockedError ?? TransactionErrorReason.UnableToWatchTransactionOnChain));
 
-                    if (!string.IsNullOrWhiteSpace(apiUrl))
-                    {
-                        try
-                        {
-                            transactionDetail = await blockChainService.GetTrasactionReceiptAsync(pending.TxHash, apiUrl, apiKey);
-                        }
-#pragma warning disable CA1031 // We need fot catch all problems.
-                        catch (Exception ex)
-#pragma warning restore CA1031 // Do not catch general exception types
-                        {
-                            logger.GetTrasactionReceiptInError(pending.TrackingId, pending.TxHash, apiUrl, ex);
-                            if (pending.ErrorTimes >= errorAfterReTry)
-                                transactionDetail = new TransactionDetail(TransactionErrorReason.GetTrasactionReceiptExpection);
-                            else
-                            {
-                                pending.UnlockFromError(reTryAfterSeconds);
-                                await applicationDbContext.SaveChangesAsync();
-                                return pending.TrackingId;
-                            }
-                        }
-                        if (transactionDetail is null)
-                        {
-                            if (pending.ErrorTimes >= errorAfterReTry)
-                                transactionDetail = new TransactionDetail(TransactionErrorReason.TransactionNotFound);
-                            else
-                            {
-                                pending.UnlockFromError(reTryAfterSeconds);
-                                await applicationDbContext.SaveChangesAsync();
-                                return pending.TrackingId;
-                            }
-                        }
-                    }
-                    else
-                        transactionDetail = new TransactionDetail(true);
+                    await applicationDbContext.SaveChangesAsync();
+                    return pending.TrackingId;
                 }
 
-                await TransactionExecutedAsync(pending, transactionDetail);
+                // Execute Watcher. 
+                var blockChainService = blockchainServices.First(x => x.ProviderType == pending.ChainType);
+                var (apiUrl, apiKey) = account.GetFirstRandomWatcherAddress;
+                TransactionDetail? transactionDetail = null;
+                var isInError = false;
+                if (!string.IsNullOrWhiteSpace(apiUrl))
+                {
+                    try
+                    {
+                        transactionDetail = await blockChainService.GetTrasactionReceiptAsync(pending.TxHash, apiUrl, apiKey);
+                    }
+#pragma warning disable CA1031 // We need fot catch all problems.
+                    catch (Exception ex)
+#pragma warning restore CA1031 // Do not catch general exception types
+                    {
+                        logger.GetTrasactionReceiptInError(pending.TrackingId, pending.TxHash, apiUrl, ex);
+                        isInError = true;
+
+                        if (pending.ErrorTimes <= errorAfterReTry)
+                        {
+                            AddReportEntity(TrackinChainExceptionExtensions.GetAllExceptionMessages(ex),
+                                pending,
+                                ReportType.TxWatchingFailed);
+                            pending.UnlockFromError(TransactionErrorReason.GetTrasactionReceiptExpection, reTryAfterSeconds);
+                        }
+                    }
+
+                    //transactionDetail null equal to error.
+                    if (!isInError &&
+                        transactionDetail is null)
+                    {
+                        isInError = true;
+
+                        if (pending.ErrorTimes <= errorAfterReTry)
+                        {
+                            AddReportEntity($"TransactionDetail NULL in ErrorTimes: {pending.ErrorTimes}\tErrorAfterReTry: {errorAfterReTry}",
+                                    pending,
+                                    ReportType.TxWatchingFailed);
+                            pending.UnlockFromError(TransactionErrorReason.TransactionNotFound, reTryAfterSeconds);
+                        }
+                    }
+                }
+                else
+                    transactionDetail = new TransactionDetail(true); //empty url means no watcher avaiable
+
+                // Transaction Success.
+                if (!isInError)
+                    await TransactionExecutedSuccessAsync(pending, transactionDetail!); 
+                else if (pending.ErrorTimes > errorAfterReTry)
+                {
+                    AddReportEntity($"Exceed Retry Limit\tErrorTimes: {pending.ErrorTimes}\tErrorAfterReTry: {errorAfterReTry}",
+                        pending,
+                        ReportType.TxWatchingInError);
+                    await TransactionExecutedErrorAsync(
+                        pending,
+                        new TransactionDetail(pending.LastUnlockedError ?? TransactionErrorReason.UnableToWatchTransactionOnChain));
+
+                    await applicationDbContext.SaveChangesAsync();
+                    return pending.TrackingId;
+                }
+
                 await applicationDbContext.SaveChangesAsync();
 
                 return pending.TrackingId;
@@ -115,36 +147,66 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
         }
 
         // Helpers.
-        private async Task TransactionExecutedAsync(
-            TransactionPending pending, 
+        private void AddReportEntity(
+            string description, 
+            TransactionPending pending,
+            ReportType reportType)
+        {
+            var report = new Core.Domain.Entities.Report(
+                description,
+                0,
+                false,
+                reportType,
+                pending.TrackingId);
+            applicationDbContext.Add(report);
+        }
+
+        private async Task TransactionExecutedErrorAsync(
+            TransactionPending pending,
             TransactionDetail transactionDetail)
         {
             if (!transactionDetail.Successful.HasValue ||
                 transactionDetail.Successful.Value)
             {
-                pending.SetCompleted();
-                await transactionWatcherService.SetToRegistryCompletedAsync(
-                    pending.TrackingId,
-                    transactionDetail);
-                await transactionWatcherService.SetTransactionTriageCompletedAsync(pending.TrackingId);
-                await transactionWatcherService.SetTransactionPoolCompletedAsync(pending.TrackingId);
+                var ex = new InvalidOperationException("TransactionExecutedError must be call only with failed TransactionDetail");
+                ex.Data.Add("TrackingId", pending.TrackingId);
+                throw ex;
             }
-            else
+            if (transactionDetail.TransactionErrorReason is null)
             {
-                if (transactionDetail.TransactionErrorReason is null)
-                {
-                    var ex = new InvalidOperationException("TransactionErrorReason is mandatory");
-                    ex.Data.Add("TrackingId", pending.TrackingId);
-                    throw ex;
-                }
-                    
-                await transactionWatcherService.SetToRegistryErrorAsync(
-                    pending.TrackingId,
-                    transactionDetail.TransactionErrorReason.Value);
-
-                pending.SetStatusError();
+                var ex = new InvalidOperationException("TransactionErrorReason is mandatory");
+                ex.Data.Add("TrackingId", pending.TrackingId);
+                throw ex;
             }
-                
+
+            await transactionWatcherService.SetToRegistryErrorAsync(
+                pending.TrackingId,
+                transactionDetail.TransactionErrorReason.Value);
+
+            pending.SetStatusError();
+
+            logger.TransactionWatcher(pending.TrackingId, transactionDetail.Successful);
+        }
+
+        private async Task TransactionExecutedSuccessAsync(
+            TransactionPending pending,
+            TransactionDetail transactionDetail)
+        {
+            if (transactionDetail.Successful.HasValue &&
+                !transactionDetail.Successful.Value)
+            {
+                var ex = new InvalidOperationException("TransactionExecutedSuccess must be call only with successful TransactionDetail");
+                ex.Data.Add("TrackingId", pending.TrackingId);
+                throw ex;
+            }
+
+            pending.SetCompleted();
+            await transactionWatcherService.SetToRegistryCompletedAsync(
+                pending.TrackingId,
+                transactionDetail);
+            await transactionWatcherService.SetTransactionTriageCompletedAsync(pending.TrackingId);
+            await transactionWatcherService.SetTransactionPoolCompletedAsync(pending.TrackingId);
+
             logger.TransactionWatcher(pending.TrackingId, transactionDetail.Successful);
         }
     }

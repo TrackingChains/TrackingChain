@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using System;
 using System.Reflection;
+using TrackingChain.Core.Domain.Entities;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.Options;
 
@@ -31,6 +32,7 @@ namespace TrackingChain.TrackingChainCore.EntityFramework.Context
         public virtual DbSet<TransactionPending> TransactionPendings { get; set; } = null!;
         public virtual DbSet<TransactionTriage> TransactionTriages { get; set; } = null!;
         public virtual DbSet<TransactionPool> TransactionPools { get; set; } = null!;
+        public virtual DbSet<Report> Reports { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
