@@ -142,7 +142,6 @@ namespace TrackingChain.UnitTest.Domain
             Assert.Equal(PoolStatus.WaitingForWorker, transactionPool.Status);
         }
 
-
         [Fact]
         public void UnlockFromErrorShouldBeIncreaseErrorTime()
         {
@@ -158,6 +157,27 @@ namespace TrackingChain.UnitTest.Domain
 
             //Assert
             Assert.Equal(1, transactionPool.ErrorTimes);
+        }
+
+        [Fact]
+        public void UnlockFromErrorShouldBeDelayGeneratingFrom()
+        {
+            //Arrange
+            var transactionPool = CreateGenericEntity();
+            Guid locker = Guid.NewGuid();
+            transactionPool.SetLocked(locker);
+            transactionPool.UnlockFromError();
+            transactionPool.SetLocked(locker);
+            transactionPool.UnlockFromError();
+            transactionPool.SetLocked(locker);
+
+
+            //Act
+            transactionPool.UnlockFromError();
+
+
+            //Assert
+            Assert.True(transactionPool.GeneratingFrom > DateTime.UtcNow.AddSeconds(15));
         }
 
         [Fact]
@@ -189,21 +209,6 @@ namespace TrackingChain.UnitTest.Domain
             //Assert
             Assert.Equal(PoolStatus.Error, transactionPool.Status);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         // Helpers.
         private static TransactionPool CreateGenericEntity()

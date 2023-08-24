@@ -31,15 +31,16 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
         // Methods.
         public async Task<int> ReProcessAsync(
             int max,
-            int unlockTimeoutSeconds)
+            int unlockUncompletedGeneratorAfterSeconds,
+            int unlockUncompletedWatcherAfterSeconds)
         {
-            logger.StartReProcessTransactionLockedUseCase(max, unlockTimeoutSeconds);
+            logger.StartReProcessTransactionLockedUseCase(max, unlockUncompletedGeneratorAfterSeconds, unlockUncompletedWatcherAfterSeconds);
 
-            var pendings = await transactionMonitorService.GetPendingLockedInTimeoutAsync(max, unlockTimeoutSeconds);
+            var pendings = await transactionMonitorService.GetPendingLockedInTimeoutAsync(max, unlockUncompletedWatcherAfterSeconds);
 
             IEnumerable<TransactionPool> pools = Array.Empty<TransactionPool>();
             if (pendings.Count() < max)
-                pools = await transactionMonitorService.GetPoolLockedInTimeoutAsync(max - pendings.Count(), unlockTimeoutSeconds);
+                pools = await transactionMonitorService.GetPoolLockedInTimeoutAsync(max - pendings.Count(), unlockUncompletedGeneratorAfterSeconds);
 
             foreach (var pending in pendings)
                 pending.UnlockFromError(0);

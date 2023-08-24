@@ -62,11 +62,11 @@ namespace TrackingChain.TrackingChainCore.Extensions
                 LogLevel.Debug,
                 new EventId(34, nameof(EndManageTransactionFailedUseCase)),
                 "End Manage Transaction Failed UseCase Cancelled:{Cancelled}\tReTry:{ReTry}");
-        private static readonly Action<ILogger, int, int, Exception> _startReProcessTransactionLockedUseCase =
-        LoggerMessage.Define<int, int>(
+        private static readonly Action<ILogger, int, int, int, Exception> _startReProcessTransactionLockedUseCase =
+        LoggerMessage.Define<int, int, int>(
             LogLevel.Debug,
             new EventId(37, nameof(StartReProcessTransactionLockedUseCase)),
-            "Start ReProcess Transaction Failed UseCase Max: {Max}\tUnlockTimeoutSeconds: {UnlockTimeoutSeconds}");
+            "Start ReProcess Transaction Failed UseCase Max:{Max}\tUnlockUncompletedGeneratorAfterSeconds: {UnlockUncompletedGeneratorAfterSeconds}\tUnlockUncompletedWatcherAfterSeconds: {UnlockUncompletedWatcherAfterSeconds}");
 
         //*** INFORMATION LOGS ***
         private static readonly Action<ILogger, Guid, Exception> _endChildCheckerTask =
@@ -307,8 +307,8 @@ namespace TrackingChain.TrackingChainCore.Extensions
             _startPendingTransactionCheckerWorker(logger, null!);
         public static void StartManageTransactionFailedUseCase(this ILogger logger, int max, int failedReTryTimes) =>
             _startManageTransactionFailedUseCase(logger, max, failedReTryTimes, null!);
-        public static void StartReProcessTransactionLockedUseCase(this ILogger logger, int max, int failedReTryTimes) =>
-            _startReProcessTransactionLockedUseCase(logger, max, failedReTryTimes, null!);
+        public static void StartReProcessTransactionLockedUseCase(this ILogger logger, int max, int unlockUncompletedGeneratorAfterSeconds, int unlockUncompletedWatcherAfterSeconds) =>
+            _startReProcessTransactionLockedUseCase(logger, max, unlockUncompletedGeneratorAfterSeconds, unlockUncompletedWatcherAfterSeconds, null!);
         public static void StartTransactionDeleterUseCase(this ILogger logger, int max) =>
             _startTransactionDeleterUseCase(logger, max, null!);
         public static void StartTransactionDeleterWorker(this ILogger logger) =>

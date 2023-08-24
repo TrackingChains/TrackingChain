@@ -6,6 +6,7 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
     {
         Task<int> ReProcessAsync(
             int max, 
-            int unlockTimeoutSeconds);
+            int unlockUncompletedGeneratorAfterSeconds,
+            int unlockUncompletedWatcherAfterSeconds);
     }
 }

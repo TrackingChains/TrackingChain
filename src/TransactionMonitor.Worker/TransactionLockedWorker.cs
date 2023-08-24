@@ -42,7 +42,10 @@ namespace TrackingChain.TransactionMonitorWorker
                 var itemDeleted = 0;
                 try
                 {
-                    await transactionLockedUseCase.ReProcessAsync(monitorOptions.GetMaxUnlockTimeout, monitorOptions.UnlockUncompletedAfterSeconds);
+                    await transactionLockedUseCase.ReProcessAsync(
+                        monitorOptions.GetMaxUnlockTimeout, 
+                        monitorOptions.UnlockUncompletedGeneratorAfterSeconds, 
+                        monitorOptions.UnlockUncompletedWatcherAfterSeconds);
                 }
 #pragma warning disable CA1031 // We need fot catch all problems.
                 catch (Exception ex)

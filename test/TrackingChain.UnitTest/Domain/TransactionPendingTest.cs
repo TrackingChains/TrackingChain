@@ -171,6 +171,27 @@ namespace TrackingChain.UnitTest.Domain
         }
 
         [Fact]
+        public void UnlockFromErrorShouldBeDelayWatchingFrom()
+        {
+            //Arrange
+            var transactionPending = CreateGenericEntity();
+            Guid locker = Guid.NewGuid();
+            transactionPending.SetLocked(locker);
+            transactionPending.UnlockFromError();
+            transactionPending.SetLocked(locker);
+            transactionPending.UnlockFromError();
+            transactionPending.SetLocked(locker);
+
+
+            //Act
+            transactionPending.UnlockFromError();
+
+
+            //Assert
+            Assert.True(transactionPending.WatchingFrom > DateTime.UtcNow.AddSeconds(15));
+        }
+
+        [Fact]
         public void SetStatusDoneShouldBe()
         {
             //Arrange

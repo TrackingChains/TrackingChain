@@ -71,7 +71,7 @@ namespace TrackingChain.UnitTest.TransactionMonitor
 
 
             //Act
-            var processedResult = await transactionLockedUseCase.ReProcessAsync(max, timeOutSeconds);
+            var processedResult = await transactionLockedUseCase.ReProcessAsync(max, timeOutSeconds, timeOutSeconds);
 
 
             //Assert
@@ -116,7 +116,7 @@ namespace TrackingChain.UnitTest.TransactionMonitor
 
 
             //Act
-            var processedResult = await transactionLockedUseCase.ReProcessAsync(max, timeOutSeconds);
+            var processedResult = await transactionLockedUseCase.ReProcessAsync(max, timeOutSeconds, timeOutSeconds);
 
 
             //Assert
@@ -170,7 +170,7 @@ namespace TrackingChain.UnitTest.TransactionMonitor
 
 
             //Act
-            var processedResult = await transactionLockedUseCase.ReProcessAsync(max, timeOutSeconds);
+            var processedResult = await transactionLockedUseCase.ReProcessAsync(max, timeOutSeconds, timeOutSeconds);
 
 
             //Assert
