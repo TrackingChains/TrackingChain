@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
+using TrackingChain.TrackingChainCore.Extensions;
 using TrackingChain.TransactionMonitorCore.Services;
 
 namespace TrackingChain.TransactionMonitorCore.UseCases
@@ -28,25 +29,32 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
         }
 
         // Methods.
-        public async Task ReProcessAsync(
-            int max, 
-            int unlockTimeoutSeconds)
+        public async Task<int> ReProcessAsync(
+            int max,
+            int unlockUncompletedGeneratorAfterSeconds,
+            int unlockUncompletedWatcherAfterSeconds)
         {
-            var pendings = await transactionMonitorService.GetPendingLockedInTimeoutAsync(max, unlockTimeoutSeconds);
+            logger.StartReProcessTransactionLockedUseCase(max, unlockUncompletedGeneratorAfterSeconds, unlockUncompletedWatcherAfterSeconds);
+
+            var pendings = await transactionMonitorService.GetPendingLockedInTimeoutAsync(max, unlockUncompletedWatcherAfterSeconds);
 
             IEnumerable<TransactionPool> pools = Array.Empty<TransactionPool>();
             if (pendings.Count() < max)
-                pools = await transactionMonitorService.GetPoolLockedInTimeoutAsync(max - pendings.Count(), unlockTimeoutSeconds);
+                pools = await transactionMonitorService.GetPoolLockedInTimeoutAsync(max - pendings.Count(), unlockUncompletedGeneratorAfterSeconds);
 
             foreach (var pending in pendings)
-                pending.Unlock(0);
+                pending.UnlockFromError(0);
             applicationDbContext.UpdateRange(pendings);
 
             foreach (var pool in pools)
-                pool.Unlock(0);
+                pool.UnlockFromError(0);
             applicationDbContext.UpdateRange(pools);
 
             await applicationDbContext.SaveChangesAsync();
+
+            var processed = pools.Count() + pendings.Count();
+            logger.EndReProcessTransactionLockedUseCase(processed);
+            return processed;
         }
     }
 }

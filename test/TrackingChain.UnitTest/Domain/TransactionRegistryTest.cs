@@ -109,6 +109,76 @@ namespace TrackingChain.UnitTest.Domain
         }
 
         [Fact]
+        public void ShouldBeSetWaitingToReTryWhenInError()
+        {
+            //Arrange
+            TransactionRegistry transactionRegistry = CreateGenericEntity();
+            transactionRegistry.SetToRegistryError(TransactionErrorReason.TransactionFinalizedInError);
+
+
+            //Act
+            transactionRegistry.SetWaitingToReTry();
+
+
+            //Assert
+            Assert.Equal(RegistryStatus.WaitingToReTry, transactionRegistry.Status);
+        }
+
+        [Fact]
+        public void ShouldBeGetExceptionSetWaitingToReTryWhenNotInError()
+        {
+            //Arrange
+            TransactionRegistry transactionRegistry = CreateGenericEntity();
+            var prevStatus = transactionRegistry.Status;
+
+
+            //Act
+            var exceptionResult = Assert.Throws<InvalidOperationException>(transactionRegistry.SetWaitingToReTry);
+
+
+            //Assert
+            Assert.Equal("SetWaitingToReTry when in status not permited", exceptionResult.Message);
+            Assert.Equal(transactionRegistry.TrackingId, exceptionResult.Data["TrackingId"]);
+            Assert.Equal(transactionRegistry.Status, exceptionResult.Data["Status"]);
+            Assert.Equal(prevStatus, transactionRegistry.Status);
+        }
+
+        [Fact]
+        public void ShouldBeSetWaitingToCancelWhenInError()
+        {
+            //Arrange
+            TransactionRegistry transactionRegistry = CreateGenericEntity();
+            transactionRegistry.SetToRegistryError(TransactionErrorReason.TransactionFinalizedInError);
+
+
+            //Act
+            transactionRegistry.SetWaitingToCancel();
+
+
+            //Assert
+            Assert.Equal(RegistryStatus.WaitingToCancel, transactionRegistry.Status);
+        }
+
+        [Fact]
+        public void ShouldBeGetExceptionSetWaitingToCancelWhenNotInError()
+        {
+            //Arrange
+            TransactionRegistry transactionRegistry = CreateGenericEntity();
+            var prevStatus = transactionRegistry.Status;
+
+
+            //Act
+            var exceptionResult = Assert.Throws<InvalidOperationException>(transactionRegistry.SetWaitingToCancel);
+
+
+            //Assert
+            Assert.Equal("SetWaitingToCancel when in status not permited", exceptionResult.Message);
+            Assert.Equal(transactionRegistry.TrackingId, exceptionResult.Data["TrackingId"]);
+            Assert.Equal(transactionRegistry.Status, exceptionResult.Data["Status"]);
+            Assert.Equal(prevStatus, transactionRegistry.Status);
+        }
+
+        [Fact]
         public void SetToRegistryShouldBePopolateReceptData()
         {
             //Arrange

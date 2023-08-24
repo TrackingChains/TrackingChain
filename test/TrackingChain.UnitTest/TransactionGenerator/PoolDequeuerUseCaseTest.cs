@@ -251,7 +251,7 @@ namespace TrackingChain.UnitTest.TransactionGenerator
             //Assert
             Assert.Equal(primaryPools.First().TrackingId, dequedResult);
             var trackPool = await dbContext.TransactionPools.FirstAsync(tr => tr.TrackingId == dequedResult);
-            Assert.Equal(1, trackPool.ErrorTimes);
+            Assert.Equal(2, trackPool.ErrorTimes);
             Assert.Equal(PoolStatus.Error, trackPool.Status);
         }
     }

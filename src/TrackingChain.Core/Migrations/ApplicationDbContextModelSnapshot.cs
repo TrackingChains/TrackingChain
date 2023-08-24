@@ -25,6 +25,36 @@ namespace TrackingChain.Core.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("TrackingChain.Core.Domain.Entities.Report", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Reported")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("TransactionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Reports", (string)null);
+                });
+
             modelBuilder.Entity("TrackingChain.TrackingChainCore.Domain.Entities.Account", b =>
                 {
                     b.Property<Guid>("Id")
@@ -169,6 +199,9 @@ namespace TrackingChain.Core.Migrations
 
                     b.Property<bool>("IsInProgress")
                         .HasColumnType("bit");
+
+                    b.Property<int?>("LastUnlockedError")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Locked")
                         .IsConcurrencyToken()

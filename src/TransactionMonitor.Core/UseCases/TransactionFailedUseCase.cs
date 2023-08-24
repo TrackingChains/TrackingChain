@@ -7,6 +7,7 @@ using TrackingChain.Core.Domain.Enums;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.Domain.Enums;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
+using TrackingChain.TrackingChainCore.Extensions;
 using TrackingChain.TransactionMonitorCore.Services;
 
 namespace TrackingChain.TransactionMonitorCore.UseCases
@@ -34,29 +35,37 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
             int max,
             int failedReTryTimes)
         {
-            var registries = await transactionMonitorService.GetTransactionWaitingToReTryAsync(max);
+            logger.StartManageTransactionFailedUseCase(max, failedReTryTimes);
+
+            var registries = await transactionMonitorService.GetTransactionWaitingToReProcessAsync(max);
             var triages = await transactionMonitorService.GetTransactionTriageAsync(registries.Select(r => r.TrackingId));
             var pools = await transactionMonitorService.GetTransactionPoolAsync(registries.Select(r => r.TrackingId));
             var pendings = await transactionMonitorService.GetTransactionPendingAsync(registries.Select(r => r.TrackingId));
 
             foreach (var registry in registries)
             {
-                if (registry.ErrorTime < failedReTryTimes)
+                if (registry.ErrorTime < failedReTryTimes &&
+                    registry.Status != RegistryStatus.WaitingToCancel)
                     continue;
 
                 ManageTransactionToCancel(triages, pools, pendings, registry);
             }
 
             foreach (var registry in registries.Where(r => r.Status != RegistryStatus.CanceledDueToError))
-            {
-                ManageTransactionToRetry(pools, pendings, registry);
-            }
+                ManageTransactionToRetry(triages, pools, pendings, registry);
 
             await applicationDbContext.SaveChangesAsync();
+
+            var cancelledCount = registries.Where(r => r.Status != RegistryStatus.CanceledDueToError).Count();
+            logger.EndManageTransactionFailedUseCase(cancelledCount, registries.Count() - cancelledCount);
         }
 
         // Helpers.
-        private void ManageTransactionToCancel(IEnumerable<TransactionTriage> triages, IEnumerable<TransactionPool> pools, IEnumerable<TransactionPending> pendings, TransactionRegistry registry)
+        private void ManageTransactionToCancel(
+            IEnumerable<TransactionTriage> triages, 
+            IEnumerable<TransactionPool> pools, 
+            IEnumerable<TransactionPending> pendings, 
+            TransactionRegistry registry)
         {
             registry.SetToCanceled();
             applicationDbContext.Update(registry);
@@ -81,9 +90,12 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
                 pending.SetCompleted();
                 applicationDbContext.Update(pending);
             }
+
+            logger.ManageTransactionFailedCanceledDueToErrorUseCase(registry.TrackingId, registry.ErrorTime);
         }
 
         private void ManageTransactionToRetry(
+                IEnumerable<TransactionTriage> triages,
                 IEnumerable<TransactionPool> pools,
                 IEnumerable<TransactionPending> pendings,
                 TransactionRegistry registry)
@@ -91,9 +103,8 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
             var pool = pools.FirstOrDefault(p => p.TrackingId == registry.TrackingId);
             if (pool is null)
             {
-                registry.SetToCanceled();
-                //TODO log unable to manage this status. (missing pool item)
-                //TODO maybe check the triage status
+                logger.ManageTransactionFailedUndefinedRecoveryUseCase(registry.TrackingId, registry.ErrorTime, "Pool NULL");
+                ManageTransactionToCancel(triages, pools, pendings, registry);
                 return;
             }
 
@@ -104,10 +115,13 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
                     registry.Reprocessable(TransactionStep.Pool);
                     pool.Reprocessable();
                     applicationDbContext.Update(pool);
+                    logger.ManageTransactionFailedToReprocessableUseCase(registry.TrackingId, registry.ErrorTime, registry.TransactionErrorReason.Value);
                 }
                 else
                 {
-                    //TODO log unable to manage this status. log case and try to investigate
+                    logger.ManageTransactionFailedUndefinedRecoveryUseCase(registry.TrackingId, registry.ErrorTime, "Pool Step with TransactionErrorReason not valid");
+                    ManageTransactionToCancel(triages, pools, pendings, registry);
+                    return;
                 }
             }
             else if (registry.TransactionStep == TransactionStep.Pending)
@@ -115,10 +129,9 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
                 var pending = pendings.FirstOrDefault(p => p.TrackingId == registry.TrackingId);
                 if (pending is null)
                 {
+                    logger.ManageTransactionFailedUndefinedRecoveryUseCase(registry.TrackingId, registry.ErrorTime, "Pending NULL");
+                    ManageTransactionToCancel(triages, pools, pendings, registry);
                     return;
-                    //TODO recreate pending
-                    //pending = new TransactionPending();
-                    //LOG the problem as warning
                 }
 
                 if (registry.TransactionErrorReason == TransactionErrorReason.TransactionNotFound ||
@@ -128,20 +141,26 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
                     pool.Reprocessable();
                     applicationDbContext.Update(pool);
                     applicationDbContext.Remove(pending);
+                    logger.ManageTransactionFailedToReprocessableUseCase(registry.TrackingId, registry.ErrorTime, registry.TransactionErrorReason.Value);
                 }
                 else if (registry.TransactionErrorReason == TransactionErrorReason.GetTrasactionReceiptExpection)
                 {
                     registry.Reprocessable(TransactionStep.Pending);
                     pending.Reprocessable();
+                    logger.ManageTransactionFailedToReprocessableUseCase(registry.TrackingId, registry.ErrorTime, registry.TransactionErrorReason.Value);
                 }
                 else
                 {
-                    //TODO log unable to manage this status. log case and try to investigate
+                    logger.ManageTransactionFailedUndefinedRecoveryUseCase(registry.TrackingId, registry.ErrorTime, "Pending Step with TransactionErrorReason not valid");
+                    ManageTransactionToCancel(triages, pools, pendings, registry);
+                    return;
                 }
             }
-
-
-            //TODO all cancelled registry to Completed in each Tables TX
+            else
+            {
+                logger.ManageTransactionFailedUndefinedRecoveryUseCase(registry.TrackingId, registry.ErrorTime, $"Transaction Step Invalid {registry.TransactionStep}");
+                return;
+            }
         }
     }
 }

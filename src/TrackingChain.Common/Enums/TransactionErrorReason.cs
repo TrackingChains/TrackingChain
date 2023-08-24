@@ -5,6 +5,7 @@
         TransactionNotFound,
         GetTrasactionReceiptExpection,
         TransactionFinalizedInError,
-        UnableToSendTransactionOnChain
+        UnableToSendTransactionOnChain,
+        UnableToWatchTransactionOnChain
     }
 }

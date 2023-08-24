@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
+using TrackingChain.TrackingChainCore.Extensions;
 
 namespace TrackingChain.TransactionMonitorCore.UseCases
 {
@@ -22,24 +23,33 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
         }
 
         // Methods.
-        public async Task<bool> RunAsync(int max)
+        public async Task<int> RunAsync(int max)
         {
-            var triages = applicationDbContext.TransactionTriages
+            logger.StartTransactionDeleterUseCase(max);
+
+            var triages = await applicationDbContext.TransactionTriages
                 .Where(tt => tt.Completed)
+                .Take(max)
                 .ToListAsync();
             applicationDbContext.RemoveRange(triages);
 
-            var pools = applicationDbContext.TransactionPools
+            var pools = await applicationDbContext.TransactionPools
                 .Where(tt => tt.Completed)
+                .Take(max)
                 .ToListAsync();
             applicationDbContext.RemoveRange(pools);
 
-            var pendings = applicationDbContext.TransactionPendings
+            var pendings = await applicationDbContext.TransactionPendings
                 .Where(tt => tt.Completed)
+                .Take(max)
                 .ToListAsync();
             applicationDbContext.RemoveRange(pendings);
 
-            return await applicationDbContext.SaveChangesAsync() > 0;
+            await applicationDbContext.SaveChangesAsync();
+
+            var countMax = new int[] { triages.Count, pools.Count, pendings.Count }.Max();
+            logger.EndTransactionDeleterUseCase(countMax);
+            return countMax;
         }
     }
 }

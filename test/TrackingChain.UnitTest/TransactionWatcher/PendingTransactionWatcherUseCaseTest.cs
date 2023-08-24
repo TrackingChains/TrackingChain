@@ -235,8 +235,9 @@ namespace TrackingChain.UnitTest.TransactionWatcher
             //Assert
             Assert.Equal(primaryPending.TrackingId, dequedResult);
             var trackPending = await dbContext.TransactionPendings.FirstAsync(tr => tr.TrackingId == dequedResult);
-            Assert.Equal(1, trackPending.ErrorTimes);
+            Assert.Equal(2, trackPending.ErrorTimes);
             Assert.Equal(PendingStatus.Error, trackPending.Status);
+            Assert.Equal(TransactionErrorReason.GetTrasactionReceiptExpection, trackPending.LastUnlockedError);
         }
 
     }

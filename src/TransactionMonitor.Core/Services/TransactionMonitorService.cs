@@ -33,8 +33,8 @@ namespace TrackingChain.TransactionMonitorCore.Services
             return await applicationDbContext.TransactionPendings
                 .Where(tp => !tp.Completed &&
                              tp.Locked &&
-                             tp.WatchingFrom.AddSeconds(timeoutSeconds) < DateTime.UtcNow)
-                .OrderBy(tp => tp.WatchingFrom)
+                             tp.LockedDated!.Value.AddSeconds(timeoutSeconds) < DateTime.UtcNow)
+                .OrderBy(tp => tp.LockedDated)
                 .Take(max)
                 .ToListAsync();
         }
@@ -46,16 +46,17 @@ namespace TrackingChain.TransactionMonitorCore.Services
             return await applicationDbContext.TransactionPools
                 .Where(tp => !tp.Completed &&
                              tp.Locked &&
-                             tp.GeneratingFrom.AddSeconds(timeoutSeconds) < DateTime.UtcNow)
-                .OrderBy(tp => tp.GeneratingFrom)
+                             tp.LockedDated!.Value.AddSeconds(timeoutSeconds) < DateTime.UtcNow)
+                .OrderBy(tp => tp.LockedDated)
                 .Take(max)
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<TransactionRegistry>> GetTransactionWaitingToReTryAsync(int max)
+        public async Task<IEnumerable<TransactionRegistry>> GetTransactionWaitingToReProcessAsync(int max)
         {
             return await applicationDbContext.TransactionRegistries
-                .Where(tr => tr.Status == RegistryStatus.WaitingToReTry)
+                .Where(tr => tr.Status == RegistryStatus.WaitingToReTry ||
+                             tr.Status == RegistryStatus.WaitingToCancel)
                 .OrderBy(tp => tp.ReceivedDate)
                 .Take(max)
                 .ToListAsync();

@@ -1,11 +1,11 @@
+using Microsoft;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 using System;
-using TrackingChain.TrackingChainCore.EntityFramework.Context;
+using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.Domain.Entities;
-using System.Linq;
+using TrackingChain.TrackingChainCore.EntityFramework.Context;
 
 namespace TrackingChain.TriageWebApplication.Pages.Admin.TrackingErrors
 {
@@ -22,22 +22,18 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.TrackingErrors
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
-            if (id == null || dbContext.Accounts == null)
-            {
+            if (id == null || 
+                dbContext.Accounts == null)
                 return NotFound();
-            }
 
             var transactionRegistry = await dbContext.TransactionRegistries.FirstOrDefaultAsync(m => m.TrackingId == id);
             if (transactionRegistry == null)
-            {
                 return NotFound();
-            }
+
             TransactionRegistry = transactionRegistry;
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync(
             Guid trackingId, 
             string buttonRecoveryAction)
@@ -47,35 +43,23 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.TrackingErrors
                 return NotFound();
             TransactionRegistry = transactionRegistry;
 
-            if (buttonRecoveryAction == "ReTry")
+            if (buttonRecoveryAction == "ReTry To Process")
                 TransactionRegistry.SetWaitingToReTry();
-            else if (buttonRecoveryAction == "Cancel")
+            else if (buttonRecoveryAction == "Cancel for Error")
                 TransactionRegistry.SetToCanceled();
-
-            dbContext.Attach(TransactionRegistry).State = EntityState.Modified;
-
-            try
+            else
             {
-                await dbContext.SaveChangesAsync();
+                var ex = new InvalidOperationException();
+                ex.AddData("ButtonRecoveryAction", buttonRecoveryAction);
+                ex.AddData("TrackingId", trackingId);
+                throw ex;
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RegistryExists(TransactionRegistry.TrackingId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+
+
+            dbContext.Update(transactionRegistry);
+            await dbContext.SaveChangesAsync();
 
             return RedirectToPage("./Index");
-        }
-
-        private bool RegistryExists(Guid id)
-        {
-            return (dbContext.TransactionRegistries?.Any(e => e.TrackingId == id)).GetValueOrDefault();
         }
     }
 }

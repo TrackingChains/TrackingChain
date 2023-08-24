@@ -1,13 +1,10 @@
-﻿using Azure;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using TrackingChain.Core.Domain.Enums;
-using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.Domain.Enums;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TransactionTriageCore.ModelViews;
@@ -132,8 +129,7 @@ namespace TrackingChain.TransactionTriageCore.UseCases
             long smartContractId)
         {
             var transactionRegistries = await dbContext.TransactionRegistries
-                .Where(tr => tr.Status == RegistryStatus.SuccessfullyCompleted &&
-                             tr.SmartContractId == smartContractId &&
+                .Where(tr => tr.SmartContractId == smartContractId &&
                              tr.Code == code)
                 .OrderBy(tr => tr.ReceivedDate)
                 .ToListAsync();

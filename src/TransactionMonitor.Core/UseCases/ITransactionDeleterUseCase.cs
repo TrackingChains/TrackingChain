@@ -4,6 +4,6 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
 {
     public interface ITransactionDeleterUseCase
     {
-        Task<bool> RunAsync(int max);
+        Task<int> RunAsync(int max);
     }
 }

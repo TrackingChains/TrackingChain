@@ -9,5 +9,6 @@
         public const string TransactionPool = "TransactionPools";
         public const string TransactionTriage = "TransactionTriages";
         public const string ProfileGroup = "ProfileGroups";
+        public const string Report = "Reports";
     }
 }

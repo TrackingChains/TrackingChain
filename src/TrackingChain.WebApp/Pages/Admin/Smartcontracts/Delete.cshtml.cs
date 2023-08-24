@@ -43,7 +43,8 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts
 
         public async Task<IActionResult> OnPostAsync(long? id)
         {
-            if (id == null || dbContext.SmartContracts == null)
+            if (id == null || 
+                dbContext.SmartContracts == null)
                 return NotFound();
 
             var smartcontract = await dbContext.SmartContracts.FindAsync(id);

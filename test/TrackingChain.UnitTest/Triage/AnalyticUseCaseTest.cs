@@ -67,6 +67,7 @@ namespace TrackingChain.UnitTest.Triage
             foreach (var item in entityTransactionRegistries)
             {
                 item.SetToRegistryError(TransactionErrorReason.UnableToSendTransactionOnChain);
+                item.SetWaitingToCancel();
                 item.SetToCanceled();
             }
                 
