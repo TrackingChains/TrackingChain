@@ -1,4 +1,5 @@
 ﻿@page
+@using TrackingChain.Core.Domain.Enums;
 @model TrackingChain.TriageWebApplication.Pages.Admin.TrackingErrors.ManageModel
 @{
 }
@@ -36,8 +37,16 @@
     <form method="post">
         <input type="hidden" name="trackingId" asp-for="TransactionRegistry.TrackingId" />
         <div class="form-group">
-            <input type="submit" value="ReTry" name="buttonRecoveryAction" class="btn btn-primary" />
-            <input type="submit" value="Cancel for Error" name="buttonRecoveryAction" class="btn btn-primary" />
+            @if (Model.TransactionRegistry.Status != RegistryStatus.Error ||
+            Model.TransactionRegistry.Status == RegistryStatus.WaitingToReTry)
+            {
+                <input type="submit" value="ReTry To Process" name="buttonRecoveryAction" class="btn btn-primary" />
+                <input type="submit" value="Cancel for Error" name="buttonRecoveryAction" class="btn btn-primary" />
+            }
+            else
+            {
+                <span>Current State: @Model.TransactionRegistry.Status</span>
+            }
         </div>
     </form>
 </div>

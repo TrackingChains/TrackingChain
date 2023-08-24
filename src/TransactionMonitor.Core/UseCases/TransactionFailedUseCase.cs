@@ -37,19 +37,18 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
         {
             logger.StartManageTransactionFailedUseCase(max, failedReTryTimes);
 
-            var registries = await transactionMonitorService.GetTransactionWaitingToReTryAsync(max);
+            var registries = await transactionMonitorService.GetTransactionWaitingToReProcessAsync(max);
             var triages = await transactionMonitorService.GetTransactionTriageAsync(registries.Select(r => r.TrackingId));
             var pools = await transactionMonitorService.GetTransactionPoolAsync(registries.Select(r => r.TrackingId));
             var pendings = await transactionMonitorService.GetTransactionPendingAsync(registries.Select(r => r.TrackingId));
 
-            var cancelled = 0;
             foreach (var registry in registries)
             {
-                if (registry.ErrorTime < failedReTryTimes)
+                if (registry.ErrorTime < failedReTryTimes &&
+                    registry.Status != RegistryStatus.WaitingToCancel)
                     continue;
 
                 ManageTransactionToCancel(triages, pools, pendings, registry);
-                cancelled++;
             }
 
             foreach (var registry in registries.Where(r => r.Status != RegistryStatus.CanceledDueToError))
@@ -57,7 +56,8 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
 
             await applicationDbContext.SaveChangesAsync();
 
-            logger.EndManageTransactionFailedUseCase(cancelled, registries.Count() - cancelled);
+            var cancelledCount = registries.Where(r => r.Status != RegistryStatus.CanceledDueToError).Count();
+            logger.EndManageTransactionFailedUseCase(cancelledCount, registries.Count() - cancelledCount);
         }
 
         // Helpers.

@@ -52,10 +52,11 @@ namespace TrackingChain.TransactionMonitorCore.Services
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<TransactionRegistry>> GetTransactionWaitingToReTryAsync(int max)
+        public async Task<IEnumerable<TransactionRegistry>> GetTransactionWaitingToReProcessAsync(int max)
         {
             return await applicationDbContext.TransactionRegistries
-                .Where(tr => tr.Status == RegistryStatus.WaitingToReTry)
+                .Where(tr => tr.Status == RegistryStatus.WaitingToReTry ||
+                             tr.Status == RegistryStatus.WaitingToCancel)
                 .OrderBy(tp => tp.ReceivedDate)
                 .Take(max)
                 .ToListAsync();
