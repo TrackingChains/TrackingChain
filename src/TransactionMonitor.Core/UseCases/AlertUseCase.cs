@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrackingChain.Core.Domain.Entities;
@@ -12,19 +13,19 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
     public class AlertUseCase : IAlertUseCase
     {
         // Fields.
-        private readonly IAlertService alertService;
+        private readonly IEnumerable<IAlertService> alertServices;
         private readonly ApplicationDbContext applicationDbContext;
         private readonly ILogger<AlertUseCase> logger;
         private readonly ITransactionMonitorService transactionMonitorService;
 
         // Constructors.
         public AlertUseCase(
-            IAlertService alertService,
+            IEnumerable<IAlertService> alertServices,
             ApplicationDbContext applicationDbContext,
             ILogger<AlertUseCase> logger,
             ITransactionMonitorService transactionMonitorService)
         {
-            this.alertService = alertService;
+            this.alertServices = alertServices;
             this.applicationDbContext = applicationDbContext;
             this.logger = logger;
             this.transactionMonitorService = transactionMonitorService;
@@ -51,7 +52,8 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
                     anyReport = true;
                     await applicationDbContext.SaveChangesAsync();
                     
-                    await alertService.SendReportAsync(reportData, reportItems);
+                    foreach (var alertService in alertServices)
+                        await alertService.SendReportAsync(reportData, reportItems);
                     reportData.SetSent();
 
                     await applicationDbContext.SaveChangesAsync();
@@ -72,7 +74,8 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
                     anyReport = true;
                     await applicationDbContext.SaveChangesAsync();
 
-                    await alertService.SendReportAsync(reportData, reportItems);
+                    foreach (var alertService in alertServices)
+                        await alertService.SendReportAsync(reportData, reportItems);
                     reportData.SetSent();
 
                     await applicationDbContext.SaveChangesAsync();

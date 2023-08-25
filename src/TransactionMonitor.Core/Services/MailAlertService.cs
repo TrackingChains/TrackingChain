@@ -5,7 +5,6 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using TrackingChain.Core.Domain.Entities;
 using TrackingChain.Core.Domain.Enums;
@@ -16,23 +15,26 @@ namespace TrackingChain.TransactionMonitorCore.Services
     public class MailAlertService : IAlertService
     {
         // Fields.
+        private readonly IReportGeneratorService reportGeneratorService;
         private readonly ILogger<MailAlertService> logger;
         private readonly MailSettingsOption mailSettings;
 
         // Constructors.
         public MailAlertService(
+            IReportGeneratorService reportGeneratorService,
             ILogger<MailAlertService> logger,
             IOptions<MailSettingsOption> mailSettings)
         {
             ArgumentNullException.ThrowIfNull(mailSettings);
 
+            this.reportGeneratorService = reportGeneratorService;
             this.logger = logger;
             this.mailSettings = mailSettings.Value;
         }
 
         // Methods.
         public async Task<bool> SendReportAsync(
-            ReportData reportData, 
+            ReportData reportData,
             IEnumerable<ReportItem> reportItems)
         {
             ArgumentNullException.ThrowIfNull(reportData);
@@ -41,7 +43,7 @@ namespace TrackingChain.TransactionMonitorCore.Services
             {
                 case ReportDataType.TxCancel:
                     await GenerateTransactionCancelAsync(reportData, reportItems);
-                        break;
+                    break;
                 case ReportDataType.TxError:
                     await GenerateTransactionErrorAsync(reportData, reportItems);
                     break;
@@ -56,42 +58,36 @@ namespace TrackingChain.TransactionMonitorCore.Services
 
         // Helpers.
         private async Task GenerateTransactionCancelAsync(
-            ReportData reportData, 
+            ReportData reportData,
             IEnumerable<ReportItem> reportItems)
         {
-            string FilePath = Directory.GetCurrentDirectory() + "\\Templates\\WelcomeTemplate.html";
-            StreamReader str = new StreamReader(FilePath);
-            string MailText = str.ReadToEnd();
-            str.Close();
-            MailText = MailText.Replace("[username]", request.UserName).Replace("[email]", request.ToEmail);
+            var bodyBuilder = new BodyBuilder();
+            bodyBuilder.HtmlBody = await reportGeneratorService.GenerateTxCancelReportAsync(reportData, reportItems);
+
+            await SendEmailAsync(mailSettings.Mail, mailSettings.Mail, reportData.Description, bodyBuilder.ToMessageBody());
         }
 
         private async Task GenerateTransactionErrorAsync(
             ReportData reportData,
             IEnumerable<ReportItem> reportItems)
         {
-            var builder = new BodyBuilder();
+            var bodyBuilder = new BodyBuilder();
+            bodyBuilder.HtmlBody = await reportGeneratorService.GenerateTxFailedReportAsync(reportData, reportItems);
 
-
-            string FilePath = "\\MailTemplates\\WelcomeTemplate.html";
-            StreamReader str = new StreamReader(FilePath);
-            string MailText = await str.ReadToEndAsync();
-            str.Close();
-            MailText = MailText.Replace("[username]", request.UserName).Replace("[email]", request.ToEmail);
-
-            await SendEmailAsync("", "", "", builder.ToMessageBody());
+            await SendEmailAsync(mailSettings.Mail, mailSettings.Mail, reportData.Description, bodyBuilder.ToMessageBody());
         }
 
         private async Task SendEmailAsync(
-            string to, 
-            string sender, 
+            string to,
+            string sender,
             string subject,
-            string body)
+            MimeEntity body)
         {
             using var email = new MimeMessage();
             email.Sender = MailboxAddress.Parse(sender);
             email.To.Add(MailboxAddress.Parse(to));
             email.Subject = subject;
+            email.Body = body;
 
             using var smtp = new SmtpClient();
             await smtp.ConnectAsync(mailSettings.Host, mailSettings.Port, SecureSocketOptions.StartTls);
@@ -99,5 +95,6 @@ namespace TrackingChain.TransactionMonitorCore.Services
             await smtp.SendAsync(email);
             await smtp.DisconnectAsync(true);
         }
+
     }
 }

@@ -20,7 +20,7 @@ namespace TrackingChain.Core.Domain.Entities
             this.Priority = priority;
             this.Reported = reported;
             this.Type = type;
-            this.TransactionId = transactionId;
+            this.TrackingId = transactionId;
         }
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         protected ReportItem() { }
@@ -33,8 +33,8 @@ namespace TrackingChain.Core.Domain.Entities
         public int Priority { get; private set; }
         public bool Reported { get; private set; }
         public ReportItemType Type { get; private set; }
-        public Guid TransactionId { get; private set; }
-        public virtual ReportData ReportData { get; private set; }
+        public Guid TrackingId { get; private set; }
+        public virtual ReportData? ReportData { get; private set; }
         public Guid? ReportDataId { get; private set; }
 
         // Methods.

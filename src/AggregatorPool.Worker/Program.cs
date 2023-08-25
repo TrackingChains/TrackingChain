@@ -12,8 +12,7 @@ IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
     {
         //config
-        var databaseConfigSection = hostContext.Configuration.GetSection("Database");
-        services.Configure<DatabaseOptions>(databaseConfigSection);
+        services.Configure<DatabaseOptions>(hostContext.Configuration.GetSection("Database"));
 
         //database
         services.AddDbContext<ApplicationDbContext>();
