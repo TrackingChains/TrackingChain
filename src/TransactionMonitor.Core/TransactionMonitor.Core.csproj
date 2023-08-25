@@ -28,4 +28,12 @@
     <None Include="../../LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MailKit" Version="4.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="MailTemplates\" />
+  </ItemGroup>
+
 </Project>

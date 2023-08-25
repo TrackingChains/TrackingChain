@@ -8,16 +8,16 @@ using TrackingChain.TrackingChainCore.EntityFramework;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TrackingChainCore.Options;
 using TrackingChain.TransactionMonitorWorker;
+using TrackingChain.TransactionMonitorWorker.Options;
 using TrackingChain.TransactionRecoveryWorker.Options;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
     {
         //config
-        var databaseSection = hostContext.Configuration.GetSection("Database");
-        services.Configure<DatabaseOptions>(databaseSection);
-        var recoveryOptions = hostContext.Configuration.GetSection("Monitor");
-        services.Configure<MonitorOptions>(recoveryOptions);
+        services.Configure<DatabaseOptions>(hostContext.Configuration.GetSection("Database"));
+        services.Configure<MonitorOptions>(hostContext.Configuration.GetSection("Monitor"));
+        services.Configure<MailSettingsOption>(hostContext.Configuration.GetSection("MailSettings"));
 
         //database
         services.AddDbContext<ApplicationDbContext>();

@@ -31,7 +31,6 @@ namespace TrackingChain.TransactionMonitorCore.Services
         }
 
         // Methods.
-
         public async Task<IEnumerable<ReportItem>> GenerateTransactionCancelledReportItemAsync()
         {
             return await applicationDbContext.ReportItems
