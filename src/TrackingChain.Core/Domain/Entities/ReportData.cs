@@ -6,9 +6,11 @@ namespace TrackingChain.Core.Domain.Entities
     public class ReportData
     {
         // Constructors.
+        public ReportData(ReportDataType type) : 
+            this($"[{DateTime.UtcNow.ToShortDateString()}] Report {type}" , type) { }
         public ReportData(
-        string description,
-        ReportDataType type)
+            string description,
+            ReportDataType type)
         {
             ArgumentException.ThrowIfNullOrEmpty(description);
 

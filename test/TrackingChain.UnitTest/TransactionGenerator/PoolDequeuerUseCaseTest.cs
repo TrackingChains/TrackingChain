@@ -174,7 +174,6 @@ namespace TrackingChain.UnitTest.TransactionGenerator
                 blockchainServices.Select(mm => mm.Object),
                 Mock.Of<ILogger<PoolDequeuerUseCase>>(),
                 mockTransactionGeneratorService.Object);
-            blockchainServices = new[] { new Mock<IBlockchainService>(), new Mock<IBlockchainService>(), };
 
 
             //Act

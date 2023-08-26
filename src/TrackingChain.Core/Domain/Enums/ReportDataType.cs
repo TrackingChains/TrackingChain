@@ -5,6 +5,6 @@
         Statistic = 0,
         TxCancel= 1,
         TxLock = 2,
-        TxError = 3,
+        TxError = 3
     }
 }

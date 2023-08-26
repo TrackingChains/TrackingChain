@@ -43,7 +43,7 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
 
                 if (reportItems.Any())
                 {
-                    var reportData = new ReportData($"Report TxCancel {DateTime.UtcNow.ToShortDateString()}", ReportDataType.TxCancel);
+                    var reportData = new ReportData(ReportDataType.TxCancel);
                     applicationDbContext.Add(reportData);
 
                     foreach (var item in reportItems)
@@ -54,6 +54,7 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
                     
                     foreach (var alertService in alertServices)
                         await alertService.SendReportAsync(reportData, reportItems);
+
                     reportData.SetSent();
 
                     await applicationDbContext.SaveChangesAsync();
@@ -65,7 +66,7 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
                 var reportItems = await transactionMonitorService.GenerateTransactionErrorReportItemAsync();
                 if (reportItems.Any())
                 {
-                    var reportData = new ReportData($"Report TxError {DateTime.UtcNow.ToShortDateString()}", ReportDataType.TxError);
+                    var reportData = new ReportData(ReportDataType.TxError);
                     applicationDbContext.Add(reportData);
 
                     foreach (var item in reportItems)
@@ -76,13 +77,12 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
 
                     foreach (var alertService in alertServices)
                         await alertService.SendReportAsync(reportData, reportItems);
+
                     reportData.SetSent();
 
                     await applicationDbContext.SaveChangesAsync();
                 }
             }
-
-            await applicationDbContext.SaveChangesAsync();
 
             return anyReport;
         }
