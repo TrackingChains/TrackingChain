@@ -26,7 +26,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_democracy.vote_
     }
     
     /// <summary>
-    /// >> 140 - Variant[pallet_democracy.vote_threshold.VoteThreshold]
+    /// >> 143 - Variant[pallet_democracy.vote_threshold.VoteThreshold]
     /// </summary>
     public sealed class EnumVoteThreshold : BaseEnum<VoteThreshold>
     {

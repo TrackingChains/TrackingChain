@@ -528,6 +528,54 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
             byteArray.AddRange(allow_burn.Encode());
             return new Method(36, "Assets", 27, "refund", byteArray.ToArray());
         }
+        
+        /// <summary>
+        /// >> set_min_balance
+        /// Contains one variant per dispatchable that can be called by an extrinsic.
+        /// </summary>
+        public static Method SetMinBalance(Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128> id, Substrate.NetApi.Model.Types.Primitive.U128 min_balance)
+        {
+            System.Collections.Generic.List<byte> byteArray = new List<byte>();
+            byteArray.AddRange(id.Encode());
+            byteArray.AddRange(min_balance.Encode());
+            return new Method(36, "Assets", 28, "set_min_balance", byteArray.ToArray());
+        }
+        
+        /// <summary>
+        /// >> touch_other
+        /// Contains one variant per dispatchable that can be called by an extrinsic.
+        /// </summary>
+        public static Method TouchOther(Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128> id, Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_runtime.multiaddress.EnumMultiAddress who)
+        {
+            System.Collections.Generic.List<byte> byteArray = new List<byte>();
+            byteArray.AddRange(id.Encode());
+            byteArray.AddRange(who.Encode());
+            return new Method(36, "Assets", 29, "touch_other", byteArray.ToArray());
+        }
+        
+        /// <summary>
+        /// >> refund_other
+        /// Contains one variant per dispatchable that can be called by an extrinsic.
+        /// </summary>
+        public static Method RefundOther(Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128> id, Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_runtime.multiaddress.EnumMultiAddress who)
+        {
+            System.Collections.Generic.List<byte> byteArray = new List<byte>();
+            byteArray.AddRange(id.Encode());
+            byteArray.AddRange(who.Encode());
+            return new Method(36, "Assets", 30, "refund_other", byteArray.ToArray());
+        }
+        
+        /// <summary>
+        /// >> block
+        /// Contains one variant per dispatchable that can be called by an extrinsic.
+        /// </summary>
+        public static Method Block(Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128> id, Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_runtime.multiaddress.EnumMultiAddress who)
+        {
+            System.Collections.Generic.List<byte> byteArray = new List<byte>();
+            byteArray.AddRange(id.Encode());
+            byteArray.AddRange(who.Encode());
+            return new Method(36, "Assets", 31, "block", byteArray.ToArray());
+        }
     }
     
     public sealed class AssetsConstants
@@ -667,12 +715,12 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         MinBalanceZero,
         
         /// <summary>
-        /// >> NoProvider
+        /// >> UnavailableConsumer
         /// Unable to increment the consumer reference counters on the account. Either no provider
-        /// reference exists to allow a non-zero balance of a non-self-sufficient asset, or the
-        /// maximum number of consumers has been reached.
+        /// reference exists to allow a non-zero balance of a non-self-sufficient asset, or one
+        /// fewer then the maximum number of consumers has been reached.
         /// </summary>
-        NoProvider,
+        UnavailableConsumer,
         
         /// <summary>
         /// >> BadMetadata
@@ -734,5 +782,11 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         /// The asset should be frozen before the given operation.
         /// </summary>
         NotFrozen,
+        
+        /// <summary>
+        /// >> CallbackFailed
+        /// Callback action resulted in error
+        /// </summary>
+        CallbackFailed,
     }
 }

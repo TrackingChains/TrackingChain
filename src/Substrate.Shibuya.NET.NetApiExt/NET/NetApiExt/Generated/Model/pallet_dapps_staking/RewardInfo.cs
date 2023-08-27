@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_dapps_staking
     
     
     /// <summary>
-    /// >> 395 - Composite[pallet_dapps_staking.RewardInfo]
+    /// >> 391 - Composite[pallet_dapps_staking.RewardInfo]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class RewardInfo : BaseType

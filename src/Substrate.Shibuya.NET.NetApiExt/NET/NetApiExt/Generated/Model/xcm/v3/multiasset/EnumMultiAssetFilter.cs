@@ -24,7 +24,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v3.multiasset
     }
     
     /// <summary>
-    /// >> 99 - Variant[xcm.v3.multiasset.MultiAssetFilter]
+    /// >> 100 - Variant[xcm.v3.multiasset.MultiAssetFilter]
     /// </summary>
     public sealed class EnumMultiAssetFilter : BaseEnumExt<MultiAssetFilter, Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v3.multiasset.MultiAssets, Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v3.multiasset.EnumWildMultiAsset>
     {

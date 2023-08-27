@@ -24,7 +24,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_base_fee.pallet
     }
     
     /// <summary>
-    /// >> 298 - Variant[pallet_base_fee.pallet.Call]
+    /// >> 295 - Variant[pallet_base_fee.pallet.Call]
     /// Contains one variant per dispatchable that can be called by an extrinsic.
     /// </summary>
     public sealed class EnumCall : BaseEnumExt<Call, Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.U256, Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_arithmetic.per_things.Permill>

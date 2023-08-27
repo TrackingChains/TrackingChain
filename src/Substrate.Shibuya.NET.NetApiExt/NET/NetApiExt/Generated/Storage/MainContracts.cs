@@ -31,7 +31,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         {
             this._client = client;
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("Contracts", "PristineCode"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(new Substrate.NetApi.Model.Meta.Storage.Hasher[] {
-                            Substrate.NetApi.Model.Meta.Storage.Hasher.Identity}, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256), typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT21)));
+                            Substrate.NetApi.Model.Meta.Storage.Hasher.Identity}, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256), typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT22)));
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("Contracts", "CodeStorage"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(new Substrate.NetApi.Model.Meta.Storage.Hasher[] {
                             Substrate.NetApi.Model.Meta.Storage.Hasher.Identity}, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256), typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.wasm.PrefabWasmModule)));
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("Contracts", "OwnerInfoOf"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(new Substrate.NetApi.Model.Meta.Storage.Hasher[] {
@@ -39,7 +39,10 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("Contracts", "Nonce"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.NetApi.Model.Types.Primitive.U64)));
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("Contracts", "ContractInfoOf"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(new Substrate.NetApi.Model.Meta.Storage.Hasher[] {
                             Substrate.NetApi.Model.Meta.Storage.Hasher.Twox64Concat}, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32), typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.storage.ContractInfo)));
-            _client.StorageKeyDict.Add(new System.Tuple<string, string>("Contracts", "DeletionQueue"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT22)));
+            _client.StorageKeyDict.Add(new System.Tuple<string, string>("Contracts", "DeletionQueue"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(new Substrate.NetApi.Model.Meta.Storage.Hasher[] {
+                            Substrate.NetApi.Model.Meta.Storage.Hasher.Twox64Concat}, typeof(Substrate.NetApi.Model.Types.Primitive.U32), typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT6)));
+            _client.StorageKeyDict.Add(new System.Tuple<string, string>("Contracts", "DeletionQueueCounter"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.storage.DeletionQueueManager)));
+            _client.StorageKeyDict.Add(new System.Tuple<string, string>("Contracts", "MigrationInProgress"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT23)));
         }
         
         /// <summary>
@@ -66,10 +69,10 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         /// >> PristineCode
         ///  A mapping from an original code hash to the original code, untouched by instrumentation.
         /// </summary>
-        public async Task<Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT21> PristineCode(Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256 key, CancellationToken token)
+        public async Task<Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT22> PristineCode(Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256 key, CancellationToken token)
         {
             string parameters = ContractsStorage.PristineCodeParams(key);
-            var result = await _client.GetStorageAsync<Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT21>(parameters, token);
+            var result = await _client.GetStorageAsync<Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT22>(parameters, token);
             return result;
         }
         
@@ -246,11 +249,13 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         ///  Evicted contracts that await child trie deletion.
         /// 
         ///  Child trie deletion is a heavy operation depending on the amount of storage items
-        ///  stored in said trie. Therefore this operation is performed lazily in `on_initialize`.
+        ///  stored in said trie. Therefore this operation is performed lazily in `on_idle`.
         /// </summary>
-        public static string DeletionQueueParams()
+        public static string DeletionQueueParams(Substrate.NetApi.Model.Types.Primitive.U32 key)
         {
-            return RequestGenerator.GetStorage("Contracts", "DeletionQueue", Substrate.NetApi.Model.Meta.Storage.Type.Plain);
+            return RequestGenerator.GetStorage("Contracts", "DeletionQueue", Substrate.NetApi.Model.Meta.Storage.Type.Map, new Substrate.NetApi.Model.Meta.Storage.Hasher[] {
+                        Substrate.NetApi.Model.Meta.Storage.Hasher.Twox64Concat}, new Substrate.NetApi.Model.Types.IType[] {
+                        key});
         }
         
         /// <summary>
@@ -267,12 +272,70 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         ///  Evicted contracts that await child trie deletion.
         /// 
         ///  Child trie deletion is a heavy operation depending on the amount of storage items
-        ///  stored in said trie. Therefore this operation is performed lazily in `on_initialize`.
+        ///  stored in said trie. Therefore this operation is performed lazily in `on_idle`.
         /// </summary>
-        public async Task<Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT22> DeletionQueue(CancellationToken token)
+        public async Task<Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT6> DeletionQueue(Substrate.NetApi.Model.Types.Primitive.U32 key, CancellationToken token)
         {
-            string parameters = ContractsStorage.DeletionQueueParams();
-            var result = await _client.GetStorageAsync<Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT22>(parameters, token);
+            string parameters = ContractsStorage.DeletionQueueParams(key);
+            var result = await _client.GetStorageAsync<Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT6>(parameters, token);
+            return result;
+        }
+        
+        /// <summary>
+        /// >> DeletionQueueCounterParams
+        ///  A pair of monotonic counters used to track the latest contract marked for deletion
+        ///  and the latest deleted contract in queue.
+        /// </summary>
+        public static string DeletionQueueCounterParams()
+        {
+            return RequestGenerator.GetStorage("Contracts", "DeletionQueueCounter", Substrate.NetApi.Model.Meta.Storage.Type.Plain);
+        }
+        
+        /// <summary>
+        /// >> DeletionQueueCounterDefault
+        /// Default value as hex string
+        /// </summary>
+        public static string DeletionQueueCounterDefault()
+        {
+            return "0x0000000000000000";
+        }
+        
+        /// <summary>
+        /// >> DeletionQueueCounter
+        ///  A pair of monotonic counters used to track the latest contract marked for deletion
+        ///  and the latest deleted contract in queue.
+        /// </summary>
+        public async Task<Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.storage.DeletionQueueManager> DeletionQueueCounter(CancellationToken token)
+        {
+            string parameters = ContractsStorage.DeletionQueueCounterParams();
+            var result = await _client.GetStorageAsync<Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.storage.DeletionQueueManager>(parameters, token);
+            return result;
+        }
+        
+        /// <summary>
+        /// >> MigrationInProgressParams
+        /// </summary>
+        public static string MigrationInProgressParams()
+        {
+            return RequestGenerator.GetStorage("Contracts", "MigrationInProgress", Substrate.NetApi.Model.Meta.Storage.Type.Plain);
+        }
+        
+        /// <summary>
+        /// >> MigrationInProgressDefault
+        /// Default value as hex string
+        /// </summary>
+        public static string MigrationInProgressDefault()
+        {
+            return "0x00";
+        }
+        
+        /// <summary>
+        /// >> MigrationInProgress
+        /// </summary>
+        public async Task<Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT23> MigrationInProgress(CancellationToken token)
+        {
+            string parameters = ContractsStorage.MigrationInProgressParams();
+            var result = await _client.GetStorageAsync<Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT23>(parameters, token);
             return result;
         }
     }
@@ -284,7 +347,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         /// >> call_old_weight
         /// Contains one variant per dispatchable that can be called by an extrinsic.
         /// </summary>
-        public static Method CallOldWeight(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_runtime.multiaddress.EnumMultiAddress dest, Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128> value, Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.OldWeight> gas_limit, Substrate.NetApi.Model.Types.Base.BaseOpt<Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128>> storage_deposit_limit, Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Primitive.U8> data)
+        public static Method CallOldWeight(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_runtime.multiaddress.EnumMultiAddress dest, Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128> value, Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U64> gas_limit, Substrate.NetApi.Model.Types.Base.BaseOpt<Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128>> storage_deposit_limit, Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Primitive.U8> data)
         {
             System.Collections.Generic.List<byte> byteArray = new List<byte>();
             byteArray.AddRange(dest.Encode());
@@ -299,7 +362,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         /// >> instantiate_with_code_old_weight
         /// Contains one variant per dispatchable that can be called by an extrinsic.
         /// </summary>
-        public static Method InstantiateWithCodeOldWeight(Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128> value, Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.OldWeight> gas_limit, Substrate.NetApi.Model.Types.Base.BaseOpt<Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128>> storage_deposit_limit, Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Primitive.U8> code, Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Primitive.U8> data, Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Primitive.U8> salt)
+        public static Method InstantiateWithCodeOldWeight(Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128> value, Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U64> gas_limit, Substrate.NetApi.Model.Types.Base.BaseOpt<Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128>> storage_deposit_limit, Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Primitive.U8> code, Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Primitive.U8> data, Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Primitive.U8> salt)
         {
             System.Collections.Generic.List<byte> byteArray = new List<byte>();
             byteArray.AddRange(value.Encode());
@@ -315,7 +378,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         /// >> instantiate_old_weight
         /// Contains one variant per dispatchable that can be called by an extrinsic.
         /// </summary>
-        public static Method InstantiateOldWeight(Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128> value, Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.OldWeight> gas_limit, Substrate.NetApi.Model.Types.Base.BaseOpt<Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128>> storage_deposit_limit, Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256 code_hash, Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Primitive.U8> data, Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Primitive.U8> salt)
+        public static Method InstantiateOldWeight(Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128> value, Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U64> gas_limit, Substrate.NetApi.Model.Types.Base.BaseOpt<Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128>> storage_deposit_limit, Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256 code_hash, Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Primitive.U8> data, Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Primitive.U8> salt)
         {
             System.Collections.Generic.List<byte> byteArray = new List<byte>();
             byteArray.AddRange(value.Encode());
@@ -409,6 +472,17 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
             byteArray.AddRange(salt.Encode());
             return new Method(70, "Contracts", 8, "instantiate", byteArray.ToArray());
         }
+        
+        /// <summary>
+        /// >> migrate
+        /// Contains one variant per dispatchable that can be called by an extrinsic.
+        /// </summary>
+        public static Method Migrate(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight weight_limit)
+        {
+            System.Collections.Generic.List<byte> byteArray = new List<byte>();
+            byteArray.AddRange(weight_limit.Encode());
+            return new Method(70, "Contracts", 9, "migrate", byteArray.ToArray());
+        }
     }
     
     public sealed class ContractsConstants
@@ -421,48 +495,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         public Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.schedule.Schedule Schedule()
         {
             var result = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.schedule.Schedule();
-            result.Create(@"0x0400000000010000000400008000000010000000001000000001000020000000004000000400000000000000010800005B1A000051170000E50C0000281B00000E090000570D00008E1500002C000000F94C0000C75A00008008000094030000F7090000F90A0000C8090000F01A0000D71B0000F21700008167E400C0080000B4080000CC080000CD0A0000230800001B08000027080000690B0000F10D0000450B0000760B00006C0B0000D70B0000900B0000E30B0000940B00008B0B00000D0B0000AB0A0000940A000066230000F4200000712400009B200000330B00000C0B00000A0B00004A0B0000470B0000450B0000460B0000420B00006E640D0078D2E5B50671390E5DDA06C139EEAF100078FE9908003C8A570D007896240D00780AA74800782A360D0078060E0D00787E040D007842E10D007806374300F0A2360600009EB70B0078D50100008503850300BAA573BA25B316315600F01EFCAE00C8A64B551E3529A10D008A0F0B008C6D0C0052143A1F9104A9B9006DB3084A62184229B8C270301F8104D9B308C62710078104792D084A1F1907A1042540088E5D3A1FA10499C60896B10022352A8684A7916561AA44AB76E580029453222936DD01001A7AE3E255E4FA478901880D18001D1800BA892000A0E53D007AF32B00A0E53100BA0E1900A0B113004AA51D00A8AD130082730109F10502743F024903E6DA08003C5A030E0019033223070048");
-            return result;
-        }
-        
-        /// <summary>
-        /// >> DeletionQueueDepth
-        ///  The maximum number of contracts that can be pending for deletion.
-        /// 
-        ///  When a contract is deleted by calling `seal_terminate` it becomes inaccessible
-        ///  immediately, but the deletion of the storage items it has accumulated is performed
-        ///  later. The contract is put into the deletion queue. This defines how many
-        ///  contracts can be queued up at the same time. If that limit is reached `seal_terminate`
-        ///  will fail. The action must be retried in a later block in that case.
-        /// 
-        ///  The reasons for limiting the queue depth are:
-        /// 
-        ///  1. The queue is in storage in order to be persistent between blocks. We want to limit
-        ///  	the amount of storage that can be consumed.
-        ///  2. The queue is stored in a vector and needs to be decoded as a whole when reading
-        /// 		it at the end of each block. Longer queues take more weight to decode and hence
-        /// 		limit the amount of items that can be deleted per block.
-        /// </summary>
-        public Substrate.NetApi.Model.Types.Primitive.U32 DeletionQueueDepth()
-        {
-            var result = new Substrate.NetApi.Model.Types.Primitive.U32();
-            result.Create("0x80000000");
-            return result;
-        }
-        
-        /// <summary>
-        /// >> DeletionWeightLimit
-        ///  The maximum amount of weight that can be consumed per block for lazy trie removal.
-        /// 
-        ///  The amount of weight that is dedicated per block to work on the deletion queue. Larger
-        ///  values allow more trie keys to be deleted in each block but reduce the amount of
-        ///  weight that is left for transactions. See [`Self::DeletionQueueDepth`] for more
-        ///  information about the deletion queue.
-        /// </summary>
-        public Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight DeletionWeightLimit()
-        {
-            var result = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight();
-            result.Create("0x0700743BA40B02002000");
+            result.Create(@"0x040000000001000000040000800000001000000000100000000100002000000000400000000000080400000000000000DA0500005C0D0000CD0B00008D070000C918000053060000E10900007C13000000000000683A00004C4A000098040000FB0300004A080000C9030000F71A0000851C000020090000E44AC9001F0400001203000008030000A0020000D70300002F030000E4020000BF050000C2050000D8050000E60500002E05000058060000D605000039060000C5050000C80500006A05000000060000F5040000ED1C00000B1800009F1E00000E18000098040000E40400007B050000A105000066060000A7050000ED05000068050000A20B140018D234C1066D2A0AF7F3067D2ADEDE190018AA5A0A000CD6F008000C82BA1300188E2E210018F2555B00180E781300187E891300185634130018F6B61300180640550038CE2A080000A262100018510900622DCD00B4C902003A6B7AFE95797685720028D241D6002872EA551E3127210A00DE460E001C890B00CE93441F9504C5060000040A7FC5464930BECD431F8504D50904CAAE1B078504F4049E942607A5044D0A042239481FA504FD050416F7672661274EA4716F012BB60362563128066D4844895061090016464DEE5551EA90333929292D1200E114004647230020AD3D00A2E42C00206D300076BA190020490E007246190020490E00C694FE083501D6103F02A81E7B7A0BC101F148042EE509000CBA0A1000A0B27E08000C");
             return result;
         }
         
@@ -478,6 +511,17 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         {
             var result = new Substrate.NetApi.Model.Types.Primitive.U128();
             result.Create("0x00CA9A3B000000000000000000000000");
+            return result;
+        }
+        
+        /// <summary>
+        /// >> DefaultDepositLimit
+        ///  Fallback value to limit the storage deposit if it's not being set by the caller.
+        /// </summary>
+        public Substrate.NetApi.Model.Types.Primitive.U128 DefaultDepositLimit()
+        {
+            var result = new Substrate.NetApi.Model.Types.Primitive.U128();
+            result.Create("0x0000A0C1C723A0170000000000000000");
             return result;
         }
         
@@ -673,16 +717,6 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         NoChainExtension,
         
         /// <summary>
-        /// >> DeletionQueueFull
-        /// Removal of a contract failed because the deletion queue is full.
-        /// 
-        /// This can happen when calling `seal_terminate`.
-        /// The queue is filled by deleting contracts and emptied by a fixed amount each block.
-        /// Trying again during another block is the only way to resolve this issue.
-        /// </summary>
-        DeletionQueueFull,
-        
-        /// <summary>
         /// >> DuplicateContract
         /// A contract with the same AccountId already exists.
         /// </summary>
@@ -699,6 +733,9 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         /// <summary>
         /// >> ReentranceDenied
         /// A call tried to invoke a contract that is flagged as non-reentrant.
+        /// The only other cause is that a call from a contract into the runtime tried to call back
+        /// into `pallet-contracts`. This would make the whole pallet reentrant with regard to
+        /// contract code execution which is not supported.
         /// </summary>
         ReentranceDenied,
         
@@ -734,7 +771,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         /// The contract's code was found to be invalid during validation or instrumentation.
         /// 
         /// The most likely cause of this is that an API was used which is not supported by the
-        /// node. This hapens if an older node is used with a new version of ink!. Try updating
+        /// node. This happens if an older node is used with a new version of ink!. Try updating
         /// your node to the newest available version.
         /// 
         /// A more detailed error can be found on the node console if debug messages are enabled
@@ -747,5 +784,17 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         /// An indetermistic code was used in a context where this is not permitted.
         /// </summary>
         Indeterministic,
+        
+        /// <summary>
+        /// >> MigrationInProgress
+        /// A pending migration needs to complete before the extrinsic can be called.
+        /// </summary>
+        MigrationInProgress,
+        
+        /// <summary>
+        /// >> NoMigrationPerformed
+        /// Migrate dispatch call was attempted but no migration was performed.
+        /// </summary>
+        NoMigrationPerformed,
     }
 }

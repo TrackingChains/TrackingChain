@@ -38,7 +38,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v2.junction
     }
     
     /// <summary>
-    /// >> 110 - Variant[xcm.v2.junction.Junction]
+    /// >> 111 - Variant[xcm.v2.junction.Junction]
     /// </summary>
     public sealed class EnumJunction : BaseEnumExt<Junction, Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U32>, BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v2.EnumNetworkId, Substrate.Shibuya.NET.NetApiExt.Generated.Types.Base.Arr32U8>, BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v2.EnumNetworkId, Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U64>>, BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v2.EnumNetworkId, Substrate.Shibuya.NET.NetApiExt.Generated.Types.Base.Arr20U8>, Substrate.NetApi.Model.Types.Primitive.U8, Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128>, Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.weak_bounded_vec.WeakBoundedVecT1, BaseVoid, BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v2.EnumBodyId, Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v2.EnumBodyPart>>
     {

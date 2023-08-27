@@ -28,7 +28,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_dapps_staking
     }
     
     /// <summary>
-    /// >> 405 - Variant[pallet_dapps_staking.Version]
+    /// >> 401 - Variant[pallet_dapps_staking.Version]
     /// </summary>
     public sealed class EnumVersion : BaseEnum<Version>
     {

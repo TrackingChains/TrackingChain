@@ -30,7 +30,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_xc_asset_config
     }
     
     /// <summary>
-    /// >> 120 - Variant[pallet_xc_asset_config.pallet.Event]
+    /// >> 121 - Variant[pallet_xc_asset_config.pallet.Event]
     /// 
     ///			The [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted
     ///			by this pallet.

@@ -26,7 +26,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_parachain.pri
     }
     
     /// <summary>
-    /// >> 436 - Variant[polkadot_parachain.primitives.XcmpMessageFormat]
+    /// >> 433 - Variant[polkadot_parachain.primitives.XcmpMessageFormat]
     /// </summary>
     public sealed class EnumXcmpMessageFormat : BaseEnum<XcmpMessageFormat>
     {

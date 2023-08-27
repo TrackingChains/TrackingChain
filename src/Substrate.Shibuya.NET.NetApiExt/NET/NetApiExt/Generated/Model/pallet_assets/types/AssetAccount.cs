@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_assets.types
     
     
     /// <summary>
-    /// >> 412 - Composite[pallet_assets.types.AssetAccount]
+    /// >> 408 - Composite[pallet_assets.types.AssetAccount]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class AssetAccount : BaseType
@@ -30,9 +30,9 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_assets.types
         private Substrate.NetApi.Model.Types.Primitive.U128 _balance;
         
         /// <summary>
-        /// >> is_frozen
+        /// >> status
         /// </summary>
-        private Substrate.NetApi.Model.Types.Primitive.Bool _isFrozen;
+        private Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_assets.types.EnumAccountStatus _status;
         
         /// <summary>
         /// >> reason
@@ -56,15 +56,15 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_assets.types
             }
         }
         
-        public Substrate.NetApi.Model.Types.Primitive.Bool IsFrozen
+        public Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_assets.types.EnumAccountStatus Status
         {
             get
             {
-                return this._isFrozen;
+                return this._status;
             }
             set
             {
-                this._isFrozen = value;
+                this._status = value;
             }
         }
         
@@ -101,7 +101,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_assets.types
         {
             var result = new List<byte>();
             result.AddRange(Balance.Encode());
-            result.AddRange(IsFrozen.Encode());
+            result.AddRange(Status.Encode());
             result.AddRange(Reason.Encode());
             result.AddRange(Extra.Encode());
             return result.ToArray();
@@ -112,8 +112,8 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_assets.types
             var start = p;
             Balance = new Substrate.NetApi.Model.Types.Primitive.U128();
             Balance.Decode(byteArray, ref p);
-            IsFrozen = new Substrate.NetApi.Model.Types.Primitive.Bool();
-            IsFrozen.Decode(byteArray, ref p);
+            Status = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_assets.types.EnumAccountStatus();
+            Status.Decode(byteArray, ref p);
             Reason = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_assets.types.EnumExistenceReason();
             Reason.Decode(byteArray, ref p);
             Extra = new Substrate.NetApi.Model.Types.Base.BaseTuple();

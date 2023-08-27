@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_dapps_staking
     
     
     /// <summary>
-    /// >> 397 - Composite[pallet_dapps_staking.DAppInfo]
+    /// >> 393 - Composite[pallet_dapps_staking.DAppInfo]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class DAppInfo : BaseType

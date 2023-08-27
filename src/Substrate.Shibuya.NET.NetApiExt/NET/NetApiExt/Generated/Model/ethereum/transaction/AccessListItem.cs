@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.ethereum.transaction
     
     
     /// <summary>
-    /// >> 296 - Composite[ethereum.transaction.AccessListItem]
+    /// >> 293 - Composite[ethereum.transaction.AccessListItem]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class AccessListItem : BaseType

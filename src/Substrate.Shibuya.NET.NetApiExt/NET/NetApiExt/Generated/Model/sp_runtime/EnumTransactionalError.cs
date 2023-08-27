@@ -24,7 +24,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_runtime
     }
     
     /// <summary>
-    /// >> 28 - Variant[sp_runtime.TransactionalError]
+    /// >> 29 - Variant[sp_runtime.TransactionalError]
     /// </summary>
     public sealed class EnumTransactionalError : BaseEnum<TransactionalError>
     {

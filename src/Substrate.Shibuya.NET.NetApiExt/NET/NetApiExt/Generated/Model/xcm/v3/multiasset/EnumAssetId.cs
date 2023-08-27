@@ -24,7 +24,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v3.multiasset
     }
     
     /// <summary>
-    /// >> 81 - Variant[xcm.v3.multiasset.AssetId]
+    /// >> 82 - Variant[xcm.v3.multiasset.AssetId]
     /// </summary>
     public sealed class EnumAssetId : BaseEnumExt<AssetId, Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v3.multilocation.MultiLocation, Substrate.Shibuya.NET.NetApiExt.Generated.Types.Base.Arr32U8>
     {

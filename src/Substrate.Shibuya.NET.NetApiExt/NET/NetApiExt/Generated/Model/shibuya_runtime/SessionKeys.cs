@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.shibuya_runtime
     
     
     /// <summary>
-    /// >> 251 - Composite[shibuya_runtime.SessionKeys]
+    /// >> 248 - Composite[shibuya_runtime.SessionKeys]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class SessionKeys : BaseType

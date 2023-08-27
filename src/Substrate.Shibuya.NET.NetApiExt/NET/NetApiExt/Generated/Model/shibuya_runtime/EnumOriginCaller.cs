@@ -26,17 +26,19 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.shibuya_runtime
         
         Ethereum = 61,
         
+        EthereumChecked = 64,
+        
         Council = 81,
         
         TechnicalCommittee = 82,
         
-        Void = 6,
+        Void = 7,
     }
     
     /// <summary>
-    /// >> 323 - Variant[shibuya_runtime.OriginCaller]
+    /// >> 313 - Variant[shibuya_runtime.OriginCaller]
     /// </summary>
-    public sealed class EnumOriginCaller : BaseEnumExt<OriginCaller, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, Substrate.NetApi.Model.Types.Base.BaseVoid, BaseVoid, BaseVoid, BaseVoid, Substrate.Shibuya.NET.NetApiExt.Generated.Model.frame_support.dispatch.EnumRawOrigin, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_xcm.pallet.EnumOrigin, Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_xcm.pallet.EnumOrigin, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_ethereum.EnumRawOrigin, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_collective.EnumRawOrigin, Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_collective.EnumRawOrigin>
+    public sealed class EnumOriginCaller : BaseEnumExt<OriginCaller, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, Substrate.NetApi.Model.Types.Base.BaseVoid, BaseVoid, BaseVoid, Substrate.Shibuya.NET.NetApiExt.Generated.Model.frame_support.dispatch.EnumRawOrigin, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_xcm.pallet.EnumOrigin, Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_xcm.pallet.EnumOrigin, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_ethereum.EnumRawOrigin, BaseVoid, BaseVoid, Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_ethereum_checked.EnumRawOrigin, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_collective.EnumRawOrigin, Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_collective.EnumRawOrigin>
     {
     }
 }

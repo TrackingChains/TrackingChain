@@ -22,7 +22,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_ethereum
     }
     
     /// <summary>
-    /// >> 327 - Variant[pallet_ethereum.RawOrigin]
+    /// >> 317 - Variant[pallet_ethereum.RawOrigin]
     /// </summary>
     public sealed class EnumRawOrigin : BaseEnumExt<RawOrigin, Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H160>
     {

@@ -24,7 +24,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_xcm.pallet
     }
     
     /// <summary>
-    /// >> 325 - Variant[pallet_xcm.pallet.Origin]
+    /// >> 315 - Variant[pallet_xcm.pallet.Origin]
     /// </summary>
     public sealed class EnumOrigin : BaseEnumExt<Origin, Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v3.multilocation.MultiLocation, Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v3.multilocation.MultiLocation>
     {

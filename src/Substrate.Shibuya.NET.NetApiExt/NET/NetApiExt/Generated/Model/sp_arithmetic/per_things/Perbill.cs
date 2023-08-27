@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_arithmetic.per_thin
     
     
     /// <summary>
-    /// >> 56 - Composite[sp_arithmetic.per_things.Perbill]
+    /// >> 57 - Composite[sp_arithmetic.per_things.Perbill]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class Perbill : BaseType
