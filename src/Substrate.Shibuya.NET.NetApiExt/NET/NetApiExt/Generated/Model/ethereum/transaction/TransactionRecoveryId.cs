@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.ethereum.transaction
     
     
     /// <summary>
-    /// >> 293 - Composite[ethereum.transaction.TransactionRecoveryId]
+    /// >> 290 - Composite[ethereum.transaction.TransactionRecoveryId]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class TransactionRecoveryId : BaseType

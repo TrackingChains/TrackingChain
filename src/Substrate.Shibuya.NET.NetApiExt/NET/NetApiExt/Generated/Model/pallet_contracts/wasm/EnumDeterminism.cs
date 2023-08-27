@@ -18,13 +18,13 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.wasm
     public enum Determinism
     {
         
-        Deterministic = 0,
+        Enforced = 0,
         
-        AllowIndeterminism = 1,
+        Relaxed = 1,
     }
     
     /// <summary>
-    /// >> 303 - Variant[pallet_contracts.wasm.Determinism]
+    /// >> 302 - Variant[pallet_contracts.wasm.Determinism]
     /// </summary>
     public sealed class EnumDeterminism : BaseEnum<Determinism>
     {

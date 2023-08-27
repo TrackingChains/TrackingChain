@@ -30,7 +30,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_runtime.multiaddres
     }
     
     /// <summary>
-    /// >> 179 - Variant[sp_runtime.multiaddress.MultiAddress]
+    /// >> 176 - Variant[sp_runtime.multiaddress.MultiAddress]
     /// </summary>
     public sealed class EnumMultiAddress : BaseEnumExt<MultiAddress, Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32, Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Base.BaseTuple>, Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Primitive.U8>, Substrate.Shibuya.NET.NetApiExt.Generated.Types.Base.Arr32U8, Substrate.Shibuya.NET.NetApiExt.Generated.Types.Base.Arr20U8>
     {

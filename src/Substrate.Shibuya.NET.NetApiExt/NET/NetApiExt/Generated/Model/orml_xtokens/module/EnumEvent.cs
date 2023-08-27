@@ -22,7 +22,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.orml_xtokens.module
     }
     
     /// <summary>
-    /// >> 121 - Variant[orml_xtokens.module.Event]
+    /// >> 122 - Variant[orml_xtokens.module.Event]
     /// 
     ///			The [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted
     ///			by this pallet.

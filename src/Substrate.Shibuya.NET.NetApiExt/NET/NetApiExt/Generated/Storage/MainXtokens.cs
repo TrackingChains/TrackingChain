@@ -145,7 +145,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         public Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight BaseXcmWeight()
         {
             var result = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight();
-            result.Create("0x02286BEE0110");
+            result.Create("0x02286BEE02000400");
             return result;
         }
     }

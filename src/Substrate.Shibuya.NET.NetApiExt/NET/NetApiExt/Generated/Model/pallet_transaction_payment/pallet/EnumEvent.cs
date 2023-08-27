@@ -22,7 +22,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_transaction_pay
     }
     
     /// <summary>
-    /// >> 43 - Variant[pallet_transaction_payment.pallet.Event]
+    /// >> 44 - Variant[pallet_transaction_payment.pallet.Event]
     /// 
     ///			The [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted
     ///			by this pallet.

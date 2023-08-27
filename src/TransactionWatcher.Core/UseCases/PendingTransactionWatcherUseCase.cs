@@ -68,7 +68,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                 {
                     AddReportEntity($"Exceed Retry Limit\tErrorTimes: {pending.ErrorTimes}\tErrorAfterReTry: {errorAfterReTry}",
                         pending,
-                        ReportType.TxWatchingInError);
+                        ReportItemType.TxWatchingInError);
                     await TransactionExecutedErrorAsync(
                         pending,
                         new TransactionDetail(pending.LastUnlockedError ?? TransactionErrorReason.UnableToWatchTransactionOnChain));
@@ -99,7 +99,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                         {
                             AddReportEntity(TrackinChainExceptionExtensions.GetAllExceptionMessages(ex),
                                 pending,
-                                ReportType.TxWatchingFailed);
+                                ReportItemType.TxWatchingFailed);
                             pending.UnlockFromError(TransactionErrorReason.GetTrasactionReceiptExpection, reTryAfterSeconds);
                         }
                     }
@@ -114,7 +114,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                         {
                             AddReportEntity($"TransactionDetail NULL in ErrorTimes: {pending.ErrorTimes}\tErrorAfterReTry: {errorAfterReTry}",
                                     pending,
-                                    ReportType.TxWatchingFailed);
+                                    ReportItemType.TxWatchingFailed);
                             pending.UnlockFromError(TransactionErrorReason.TransactionNotFound, reTryAfterSeconds);
                         }
                     }
@@ -129,7 +129,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                 {
                     AddReportEntity($"Exceed Retry Limit\tErrorTimes: {pending.ErrorTimes}\tErrorAfterReTry: {errorAfterReTry}",
                         pending,
-                        ReportType.TxWatchingInError);
+                        ReportItemType.TxWatchingInError);
                     await TransactionExecutedErrorAsync(
                         pending,
                         new TransactionDetail(pending.LastUnlockedError ?? TransactionErrorReason.UnableToWatchTransactionOnChain));
@@ -150,15 +150,15 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
         private void AddReportEntity(
             string description, 
             TransactionPending pending,
-            ReportType reportType)
+            ReportItemType reportType)
         {
-            var report = new Core.Domain.Entities.Report(
+            var reportItem = new Core.Domain.Entities.ReportItem(
                 description,
                 0,
                 false,
                 reportType,
                 pending.TrackingId);
-            applicationDbContext.Add(report);
+            applicationDbContext.Add(reportItem);
         }
 
         private async Task TransactionExecutedErrorAsync(

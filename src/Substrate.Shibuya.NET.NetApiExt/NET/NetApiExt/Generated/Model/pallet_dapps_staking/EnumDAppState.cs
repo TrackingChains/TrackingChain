@@ -24,7 +24,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_dapps_staking
     }
     
     /// <summary>
-    /// >> 398 - Variant[pallet_dapps_staking.DAppState]
+    /// >> 394 - Variant[pallet_dapps_staking.DAppState]
     /// </summary>
     public sealed class EnumDAppState : BaseEnumExt<DAppState, BaseVoid, Substrate.NetApi.Model.Types.Primitive.U32>
     {

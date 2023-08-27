@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_parachain.pri
     
     
     /// <summary>
-    /// >> 231 - Composite[polkadot_parachain.primitives.HeadData]
+    /// >> 228 - Composite[polkadot_parachain.primitives.HeadData]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class HeadData : BaseType

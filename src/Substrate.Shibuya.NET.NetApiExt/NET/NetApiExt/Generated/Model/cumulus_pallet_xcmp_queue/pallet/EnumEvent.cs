@@ -34,7 +34,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_xcmp_qu
     }
     
     /// <summary>
-    /// >> 61 - Variant[cumulus_pallet_xcmp_queue.pallet.Event]
+    /// >> 62 - Variant[cumulus_pallet_xcmp_queue.pallet.Event]
     /// 
     ///			The [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted
     ///			by this pallet.

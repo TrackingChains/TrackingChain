@@ -102,13 +102,13 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
 
                     if (pool.ErrorTimes <= errorAfterReTry)
                     {
-                        var report = new Core.Domain.Entities.Report(
+                        var reportItem = new Core.Domain.Entities.ReportItem(
                         TrackinChainExceptionExtensions.GetAllExceptionMessages(ex),
                         0,
                         false,
-                        ReportType.TxGenerationFailed,
+                        ReportItemType.TxGenerationFailed,
                         pool.TrackingId);
-                        applicationDbContext.Add(report);
+                        applicationDbContext.Add(reportItem);
                     }
                     else
                         await SetTransactionGenerationCompletedInErrorAsync(errorAfterReTry, pool);
@@ -135,13 +135,13 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
         // Helpers.
         private async Task SetTransactionGenerationCompletedInErrorAsync(int errorAfterReTry, TransactionPool pool)
         {
-            var report = new Core.Domain.Entities.Report(
+            var reportItem = new Core.Domain.Entities.ReportItem(
                                     $"Exceed Retry Limit\tErrorTimes: {pool.ErrorTimes}\tErrorAfterReTry: {errorAfterReTry}",
                                     0,
                                     false,
-                                    ReportType.TxGenerationInError,
+                                    ReportItemType.TxGenerationInError,
                                     pool.TrackingId);
-            applicationDbContext.Add(report);
+            applicationDbContext.Add(reportItem);
 
             pool.SetStatusError();
 

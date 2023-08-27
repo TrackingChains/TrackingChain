@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_version
     
     
     /// <summary>
-    /// >> 170 - Composite[sp_version.RuntimeVersion]
+    /// >> 167 - Composite[sp_version.RuntimeVersion]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class RuntimeVersion : BaseType

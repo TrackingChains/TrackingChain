@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_paracha
     
     
     /// <summary>
-    /// >> 365 - Composite[cumulus_pallet_parachain_system.relay_state_snapshot.MessagingStateSnapshot]
+    /// >> 356 - Composite[cumulus_pallet_parachain_system.relay_state_snapshot.MessagingStateSnapshot]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class MessagingStateSnapshot : BaseType
@@ -32,17 +32,17 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_paracha
         /// <summary>
         /// >> relay_dispatch_queue_size
         /// </summary>
-        private Substrate.NetApi.Model.Types.Base.BaseTuple<Substrate.NetApi.Model.Types.Primitive.U32, Substrate.NetApi.Model.Types.Primitive.U32> _relayDispatchQueueSize;
+        private Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_parachain_system.relay_state_snapshot.RelayDispachQueueSize _relayDispatchQueueSize;
         
         /// <summary>
         /// >> ingress_channels
         /// </summary>
-        private Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Base.BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_parachain.primitives.Id, Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v2.AbridgedHrmpChannel>> _ingressChannels;
+        private Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Base.BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_parachain.primitives.Id, Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v4.AbridgedHrmpChannel>> _ingressChannels;
         
         /// <summary>
         /// >> egress_channels
         /// </summary>
-        private Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Base.BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_parachain.primitives.Id, Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v2.AbridgedHrmpChannel>> _egressChannels;
+        private Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Base.BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_parachain.primitives.Id, Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v4.AbridgedHrmpChannel>> _egressChannels;
         
         public Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256 DmqMqcHead
         {
@@ -56,7 +56,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_paracha
             }
         }
         
-        public Substrate.NetApi.Model.Types.Base.BaseTuple<Substrate.NetApi.Model.Types.Primitive.U32, Substrate.NetApi.Model.Types.Primitive.U32> RelayDispatchQueueSize
+        public Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_parachain_system.relay_state_snapshot.RelayDispachQueueSize RelayDispatchQueueSize
         {
             get
             {
@@ -68,7 +68,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_paracha
             }
         }
         
-        public Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Base.BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_parachain.primitives.Id, Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v2.AbridgedHrmpChannel>> IngressChannels
+        public Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Base.BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_parachain.primitives.Id, Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v4.AbridgedHrmpChannel>> IngressChannels
         {
             get
             {
@@ -80,7 +80,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_paracha
             }
         }
         
-        public Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Base.BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_parachain.primitives.Id, Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v2.AbridgedHrmpChannel>> EgressChannels
+        public Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Base.BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_parachain.primitives.Id, Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v4.AbridgedHrmpChannel>> EgressChannels
         {
             get
             {
@@ -112,11 +112,11 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_paracha
             var start = p;
             DmqMqcHead = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256();
             DmqMqcHead.Decode(byteArray, ref p);
-            RelayDispatchQueueSize = new Substrate.NetApi.Model.Types.Base.BaseTuple<Substrate.NetApi.Model.Types.Primitive.U32, Substrate.NetApi.Model.Types.Primitive.U32>();
+            RelayDispatchQueueSize = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_parachain_system.relay_state_snapshot.RelayDispachQueueSize();
             RelayDispatchQueueSize.Decode(byteArray, ref p);
-            IngressChannels = new Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Base.BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_parachain.primitives.Id, Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v2.AbridgedHrmpChannel>>();
+            IngressChannels = new Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Base.BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_parachain.primitives.Id, Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v4.AbridgedHrmpChannel>>();
             IngressChannels.Decode(byteArray, ref p);
-            EgressChannels = new Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Base.BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_parachain.primitives.Id, Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v2.AbridgedHrmpChannel>>();
+            EgressChannels = new Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Base.BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_parachain.primitives.Id, Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v4.AbridgedHrmpChannel>>();
             EgressChannels.Decode(byteArray, ref p);
             var bytesLength = p - start;
             TypeSize = bytesLength;

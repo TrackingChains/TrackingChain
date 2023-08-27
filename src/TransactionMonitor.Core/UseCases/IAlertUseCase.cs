@@ -1,9 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace TrackingChain.TransactionMonitorCore.UseCases
 {
     public interface IAlertUseCase
     {
-        Task<bool> RunAsync(int max);
+        Task<bool> RunAsync(
+            TimeSpan intervalBetweenTransactionCancelledReport,
+            TimeSpan intervalBetweenTransactionErrorReport);
     }
 }

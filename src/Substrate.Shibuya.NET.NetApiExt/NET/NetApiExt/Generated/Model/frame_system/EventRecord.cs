@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.frame_system
     
     
     /// <summary>
-    /// >> 18 - Composite[frame_system.EventRecord]
+    /// >> 19 - Composite[frame_system.EventRecord]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class EventRecord : BaseType

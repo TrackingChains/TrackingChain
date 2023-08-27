@@ -28,7 +28,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.evm_core.error
     }
     
     /// <summary>
-    /// >> 133 - Variant[evm_core.error.ExitFatal]
+    /// >> 134 - Variant[evm_core.error.ExitFatal]
     /// </summary>
     public sealed class EnumExitFatal : BaseEnumExt<ExitFatal, BaseVoid, BaseVoid, Substrate.Shibuya.NET.NetApiExt.Generated.Model.evm_core.error.EnumExitError, Substrate.Shibuya.NET.NetApiExt.Generated.Types.Base.CowT1>
     {

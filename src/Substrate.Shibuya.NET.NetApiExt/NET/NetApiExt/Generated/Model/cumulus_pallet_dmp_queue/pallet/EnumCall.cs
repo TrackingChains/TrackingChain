@@ -22,7 +22,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_dmp_que
     }
     
     /// <summary>
-    /// >> 278 - Variant[cumulus_pallet_dmp_queue.pallet.Call]
+    /// >> 275 - Variant[cumulus_pallet_dmp_queue.pallet.Call]
     /// Contains one variant per dispatchable that can be called by an extrinsic.
     /// </summary>
     public sealed class EnumCall : BaseEnumExt<Call, BaseTuple<Substrate.NetApi.Model.Types.Primitive.U64, Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight>>

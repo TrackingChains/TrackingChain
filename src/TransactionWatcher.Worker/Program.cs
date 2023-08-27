@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using TrackingChain.Common.Interfaces;
-using TrackingChain.Core;
 using TrackingChain.Substrate.Generic.Client;
 using TrackingChain.TrackingChainCore.EntityFramework;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
@@ -18,10 +17,8 @@ IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
     {
         //config
-        var databaseSection = hostContext.Configuration.GetSection("Database");
-        services.Configure<DatabaseOptions>(databaseSection);
-        var checkerOptions = hostContext.Configuration.GetSection("Checker");
-        services.Configure<CheckerOptions>(checkerOptions);
+        services.Configure<DatabaseOptions>(hostContext.Configuration.GetSection("Database"));
+        services.Configure<CheckerOptions>(hostContext.Configuration.GetSection("Checker"));
 
         //database
         services.AddDbContext<ApplicationDbContext>();

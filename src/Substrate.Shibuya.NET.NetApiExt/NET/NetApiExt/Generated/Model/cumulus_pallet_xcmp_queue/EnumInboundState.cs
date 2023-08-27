@@ -24,7 +24,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_xcmp_qu
     }
     
     /// <summary>
-    /// >> 433 - Variant[cumulus_pallet_xcmp_queue.InboundState]
+    /// >> 430 - Variant[cumulus_pallet_xcmp_queue.InboundState]
     /// </summary>
     public sealed class EnumInboundState : BaseEnum<InboundState>
     {

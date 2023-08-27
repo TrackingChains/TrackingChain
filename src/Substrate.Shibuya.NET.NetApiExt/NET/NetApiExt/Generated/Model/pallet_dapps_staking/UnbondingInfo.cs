@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_dapps_staking
     
     
     /// <summary>
-    /// >> 392 - Composite[pallet_dapps_staking.UnbondingInfo]
+    /// >> 388 - Composite[pallet_dapps_staking.UnbondingInfo]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class UnbondingInfo : BaseType

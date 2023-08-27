@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.ethereum.log
     
     
     /// <summary>
-    /// >> 123 - Composite[ethereum.log.Log]
+    /// >> 124 - Composite[ethereum.log.Log]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class Log : BaseType

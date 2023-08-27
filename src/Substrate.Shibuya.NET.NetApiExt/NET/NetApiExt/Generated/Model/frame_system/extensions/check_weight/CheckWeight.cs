@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.frame_system.extension
     
     
     /// <summary>
-    /// >> 549 - Composite[frame_system.extensions.check_weight.CheckWeight]
+    /// >> 547 - Composite[frame_system.extensions.check_weight.CheckWeight]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class CheckWeight : BaseType

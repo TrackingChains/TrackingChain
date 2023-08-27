@@ -47,10 +47,12 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.evm_core.error
         CreateEmpty = 12,
         
         Other = 13,
+        
+        MaxNonce = 14,
     }
     
     /// <summary>
-    /// >> 128 - Variant[evm_core.error.ExitError]
+    /// >> 129 - Variant[evm_core.error.ExitError]
     /// </summary>
     public sealed class EnumExitError : BaseEnumExt<ExitError, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid, Substrate.Shibuya.NET.NetApiExt.Generated.Types.Base.CowT1, BaseVoid, Substrate.Shibuya.NET.NetApiExt.Generated.Model.evm_core.opcode.Opcode>
     {

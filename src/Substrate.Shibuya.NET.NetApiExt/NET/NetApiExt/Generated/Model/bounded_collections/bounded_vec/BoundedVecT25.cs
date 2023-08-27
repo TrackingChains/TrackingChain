@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bo
     
     
     /// <summary>
-    /// >> 519 - Composite[bounded_collections.bounded_vec.BoundedVecT25]
+    /// >> 510 - Composite[bounded_collections.bounded_vec.BoundedVecT25]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class BoundedVecT25 : BaseType
@@ -27,9 +27,9 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bo
         /// <summary>
         /// >> value
         /// </summary>
-        private Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256> _value;
+        private Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Base.BaseTuple<Substrate.NetApi.Model.Types.Primitive.U32, Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_democracy.vote.EnumAccountVote>> _value;
         
-        public Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256> Value
+        public Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Base.BaseTuple<Substrate.NetApi.Model.Types.Primitive.U32, Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_democracy.vote.EnumAccountVote>> Value
         {
             get
             {
@@ -56,7 +56,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bo
         public override void Decode(byte[] byteArray, ref int p)
         {
             var start = p;
-            Value = new Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256>();
+            Value = new Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Base.BaseTuple<Substrate.NetApi.Model.Types.Primitive.U32, Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_democracy.vote.EnumAccountVote>>();
             Value.Decode(byteArray, ref p);
             var bytesLength = p - start;
             TypeSize = bytesLength;

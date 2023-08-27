@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_xcmp_qu
     
     
     /// <summary>
-    /// >> 442 - Composite[cumulus_pallet_xcmp_queue.QueueConfigData]
+    /// >> 439 - Composite[cumulus_pallet_xcmp_queue.QueueConfigData]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class QueueConfigData : BaseType

@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_block_reward
     
     
     /// <summary>
-    /// >> 54 - Composite[pallet_block_reward.RewardDistributionConfig]
+    /// >> 55 - Composite[pallet_block_reward.RewardDistributionConfig]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class RewardDistributionConfig : BaseType

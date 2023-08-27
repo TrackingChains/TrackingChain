@@ -30,7 +30,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_vesting.pallet
     }
     
     /// <summary>
-    /// >> 390 - Variant[pallet_vesting.pallet.Error]
+    /// >> 386 - Variant[pallet_vesting.pallet.Error]
     /// Error for the vesting pallet.
     /// </summary>
     public sealed class EnumError : BaseEnum<Error>

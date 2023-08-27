@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_dmp_que
     
     
     /// <summary>
-    /// >> 465 - Composite[cumulus_pallet_dmp_queue.PageIndexData]
+    /// >> 463 - Composite[cumulus_pallet_dmp_queue.PageIndexData]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class PageIndexData : BaseType

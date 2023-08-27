@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types
     
     
     /// <summary>
-    /// >> 11 - Composite[primitive_types.H256]
+    /// >> 12 - Composite[primitive_types.H256]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class H256 : BaseType

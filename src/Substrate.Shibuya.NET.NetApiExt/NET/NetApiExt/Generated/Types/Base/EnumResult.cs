@@ -24,9 +24,9 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Types.Base
     }
     
     /// <summary>
-    /// >> 149 - Variant[Result]
+    /// >> 31 - Variant[Result]
     /// </summary>
-    public sealed class EnumResult : BaseEnumExt<Result, Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Primitive.U8>, Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_xvm.EnumXvmError>
+    public sealed class EnumResult : BaseEnumExt<Result, Substrate.NetApi.Model.Types.Base.BaseTuple, Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_runtime.EnumDispatchError>
     {
     }
 }

@@ -32,13 +32,13 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
             this._client = client;
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("ParachainSystem", "PendingValidationCode"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Primitive.U8>)));
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("ParachainSystem", "NewValidationCode"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Primitive.U8>)));
-            _client.StorageKeyDict.Add(new System.Tuple<string, string>("ParachainSystem", "ValidationData"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v2.PersistedValidationData)));
+            _client.StorageKeyDict.Add(new System.Tuple<string, string>("ParachainSystem", "ValidationData"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v4.PersistedValidationData)));
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("ParachainSystem", "DidSetValidationCode"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.NetApi.Model.Types.Primitive.Bool)));
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("ParachainSystem", "LastRelayChainBlockNumber"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.NetApi.Model.Types.Primitive.U32)));
-            _client.StorageKeyDict.Add(new System.Tuple<string, string>("ParachainSystem", "UpgradeRestrictionSignal"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.NetApi.Model.Types.Base.BaseOpt<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v2.EnumUpgradeRestriction>)));
+            _client.StorageKeyDict.Add(new System.Tuple<string, string>("ParachainSystem", "UpgradeRestrictionSignal"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.NetApi.Model.Types.Base.BaseOpt<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v4.EnumUpgradeRestriction>)));
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("ParachainSystem", "RelayStateProof"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_trie.storage_proof.StorageProof)));
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("ParachainSystem", "RelevantMessagingState"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_parachain_system.relay_state_snapshot.MessagingStateSnapshot)));
-            _client.StorageKeyDict.Add(new System.Tuple<string, string>("ParachainSystem", "HostConfiguration"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v2.AbridgedHostConfiguration)));
+            _client.StorageKeyDict.Add(new System.Tuple<string, string>("ParachainSystem", "HostConfiguration"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v4.AbridgedHostConfiguration)));
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("ParachainSystem", "LastDmqMqcHead"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_primitives_parachain_inherent.MessageQueueChain)));
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("ParachainSystem", "LastHrmpMqcHeads"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Types.Base.BTreeMapT2)));
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("ParachainSystem", "ProcessedDownwardMessages"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.NetApi.Model.Types.Primitive.U32)));
@@ -49,7 +49,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("ParachainSystem", "AnnouncedHrmpMessagesPerCandidate"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.NetApi.Model.Types.Primitive.U32)));
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("ParachainSystem", "ReservedXcmpWeightOverride"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight)));
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("ParachainSystem", "ReservedDmpWeightOverride"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight)));
-            _client.StorageKeyDict.Add(new System.Tuple<string, string>("ParachainSystem", "AuthorizedUpgrade"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256)));
+            _client.StorageKeyDict.Add(new System.Tuple<string, string>("ParachainSystem", "AuthorizedUpgrade"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_parachain_system.CodeUpgradeAuthorization)));
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("ParachainSystem", "CustomValidationHeadData"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Primitive.U8>)));
         }
         
@@ -155,10 +155,10 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         ///  This value is expected to be set only once per block and it's never stored
         ///  in the trie.
         /// </summary>
-        public async Task<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v2.PersistedValidationData> ValidationData(CancellationToken token)
+        public async Task<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v4.PersistedValidationData> ValidationData(CancellationToken token)
         {
             string parameters = ParachainSystemStorage.ValidationDataParams();
-            var result = await _client.GetStorageAsync<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v2.PersistedValidationData>(parameters, token);
+            var result = await _client.GetStorageAsync<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v4.PersistedValidationData>(parameters, token);
             return result;
         }
         
@@ -254,10 +254,10 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         ///  relay-chain. This value is ephemeral which means it doesn't hit the storage. This value is
         ///  set after the inherent.
         /// </summary>
-        public async Task<Substrate.NetApi.Model.Types.Base.BaseOpt<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v2.EnumUpgradeRestriction>> UpgradeRestrictionSignal(CancellationToken token)
+        public async Task<Substrate.NetApi.Model.Types.Base.BaseOpt<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v4.EnumUpgradeRestriction>> UpgradeRestrictionSignal(CancellationToken token)
         {
             string parameters = ParachainSystemStorage.UpgradeRestrictionSignalParams();
-            var result = await _client.GetStorageAsync<Substrate.NetApi.Model.Types.Base.BaseOpt<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v2.EnumUpgradeRestriction>>(parameters, token);
+            var result = await _client.GetStorageAsync<Substrate.NetApi.Model.Types.Base.BaseOpt<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v4.EnumUpgradeRestriction>>(parameters, token);
             return result;
         }
         
@@ -373,10 +373,10 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         /// 
         ///  This data is also absent from the genesis.
         /// </summary>
-        public async Task<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v2.AbridgedHostConfiguration> HostConfiguration(CancellationToken token)
+        public async Task<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v4.AbridgedHostConfiguration> HostConfiguration(CancellationToken token)
         {
             string parameters = ParachainSystemStorage.HostConfigurationParams();
-            var result = await _client.GetStorageAsync<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v2.AbridgedHostConfiguration>(parameters, token);
+            var result = await _client.GetStorageAsync<Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_primitives.v4.AbridgedHostConfiguration>(parameters, token);
             return result;
         }
         
@@ -726,10 +726,10 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         /// >> AuthorizedUpgrade
         ///  The next authorized upgrade, if there is one.
         /// </summary>
-        public async Task<Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256> AuthorizedUpgrade(CancellationToken token)
+        public async Task<Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_parachain_system.CodeUpgradeAuthorization> AuthorizedUpgrade(CancellationToken token)
         {
             string parameters = ParachainSystemStorage.AuthorizedUpgradeParams();
-            var result = await _client.GetStorageAsync<Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256>(parameters, token);
+            var result = await _client.GetStorageAsync<Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_parachain_system.CodeUpgradeAuthorization>(parameters, token);
             return result;
         }
         
@@ -796,10 +796,11 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         /// >> authorize_upgrade
         /// Contains one variant per dispatchable that can be called by an extrinsic.
         /// </summary>
-        public static Method AuthorizeUpgrade(Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256 code_hash)
+        public static Method AuthorizeUpgrade(Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256 code_hash, Substrate.NetApi.Model.Types.Primitive.Bool check_version)
         {
             System.Collections.Generic.List<byte> byteArray = new List<byte>();
             byteArray.AddRange(code_hash.Encode());
+            byteArray.AddRange(check_version.Encode());
             return new Method(20, "ParachainSystem", 2, "authorize_upgrade", byteArray.ToArray());
         }
         
@@ -824,32 +825,32 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         
         /// <summary>
         /// >> OverlappingUpgrades
-        /// Attempt to upgrade validation function while existing upgrade pending
+        /// Attempt to upgrade validation function while existing upgrade pending.
         /// </summary>
         OverlappingUpgrades,
         
         /// <summary>
         /// >> ProhibitedByPolkadot
-        /// Polkadot currently prohibits this parachain from upgrading its validation function
+        /// Polkadot currently prohibits this parachain from upgrading its validation function.
         /// </summary>
         ProhibitedByPolkadot,
         
         /// <summary>
         /// >> TooBig
         /// The supplied validation function has compiled into a blob larger than Polkadot is
-        /// willing to run
+        /// willing to run.
         /// </summary>
         TooBig,
         
         /// <summary>
         /// >> ValidationDataNotAvailable
-        /// The inherent which supplies the validation data did not run this block
+        /// The inherent which supplies the validation data did not run this block.
         /// </summary>
         ValidationDataNotAvailable,
         
         /// <summary>
         /// >> HostConfigurationNotAvailable
-        /// The inherent which supplies the host configuration did not run this block
+        /// The inherent which supplies the host configuration did not run this block.
         /// </summary>
         HostConfigurationNotAvailable,
         

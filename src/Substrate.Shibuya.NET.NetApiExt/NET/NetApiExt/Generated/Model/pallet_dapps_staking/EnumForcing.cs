@@ -24,7 +24,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_dapps_staking
     }
     
     /// <summary>
-    /// >> 396 - Variant[pallet_dapps_staking.Forcing]
+    /// >> 392 - Variant[pallet_dapps_staking.Forcing]
     /// </summary>
     public sealed class EnumForcing : BaseEnum<Forcing>
     {

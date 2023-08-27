@@ -34,7 +34,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_collective.pall
     }
     
     /// <summary>
-    /// >> 145 - Variant[pallet_collective.pallet.Event]
+    /// >> 148 - Variant[pallet_collective.pallet.Event]
     /// 
     ///			The [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted
     ///			by this pallet.

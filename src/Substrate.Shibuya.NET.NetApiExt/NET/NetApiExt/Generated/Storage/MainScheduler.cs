@@ -235,6 +235,10 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         /// <summary>
         /// >> MaxScheduledPerBlock
         ///  The maximum number of scheduled calls in the queue for a single block.
+        /// 
+        ///  NOTE:
+        ///  + Dependent pallets' benchmarks might require a higher limit for the setting. Set a
+        ///  higher limit under `runtime-benchmarks` feature.
         /// </summary>
         public Substrate.NetApi.Model.Types.Primitive.U32 MaxScheduledPerBlock()
         {
