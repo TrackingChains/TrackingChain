@@ -32,7 +32,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_preimage.pallet
     }
     
     /// <summary>
-    /// >> 532 - Variant[pallet_preimage.pallet.Error]
+    /// >> 531 - Variant[pallet_preimage.pallet.Error]
     /// 
     ///			Custom [dispatch errors](https://docs.substrate.io/main-docs/build/events-errors/)
     ///			of this pallet.

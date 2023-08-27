@@ -32,7 +32,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_collator_select
     }
     
     /// <summary>
-    /// >> 58 - Variant[pallet_collator_selection.pallet.Event]
+    /// >> 59 - Variant[pallet_collator_selection.pallet.Event]
     /// 
     ///			The [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted
     ///			by this pallet.

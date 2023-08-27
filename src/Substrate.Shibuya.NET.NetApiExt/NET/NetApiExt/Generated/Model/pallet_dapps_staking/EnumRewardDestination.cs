@@ -24,7 +24,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_dapps_staking
     }
     
     /// <summary>
-    /// >> 52 - Variant[pallet_dapps_staking.RewardDestination]
+    /// >> 53 - Variant[pallet_dapps_staking.RewardDestination]
     /// </summary>
     public sealed class EnumRewardDestination : BaseEnum<RewardDestination>
     {

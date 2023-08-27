@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_dapps_staking
     
     
     /// <summary>
-    /// >> 391 - Composite[pallet_dapps_staking.AccountLedger]
+    /// >> 387 - Composite[pallet_dapps_staking.AccountLedger]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class AccountLedger : BaseType

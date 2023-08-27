@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.we
     
     
     /// <summary>
-    /// >> 492 - Composite[bounded_collections.weak_bounded_vec.WeakBoundedVecT3]
+    /// >> 491 - Composite[bounded_collections.weak_bounded_vec.WeakBoundedVecT3]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class WeakBoundedVecT3 : BaseType

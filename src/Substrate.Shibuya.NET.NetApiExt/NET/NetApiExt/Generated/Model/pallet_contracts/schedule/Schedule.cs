@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.sched
     
     
     /// <summary>
-    /// >> 498 - Composite[pallet_contracts.schedule.Schedule]
+    /// >> 497 - Composite[pallet_contracts.schedule.Schedule]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class Schedule : BaseType

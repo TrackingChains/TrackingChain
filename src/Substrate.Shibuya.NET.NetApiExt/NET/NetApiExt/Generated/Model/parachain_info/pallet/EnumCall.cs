@@ -20,7 +20,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.parachain_info.pallet
     }
     
     /// <summary>
-    /// >> 241 - Variant[parachain_info.pallet.Call]
+    /// >> 238 - Variant[parachain_info.pallet.Call]
     /// Contains one variant per dispatchable that can be called by an extrinsic.
     /// </summary>
     public sealed class EnumCall : BaseEnum<Call>

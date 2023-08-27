@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights
     
     
     /// <summary>
-    /// >> 169 - Composite[sp_weights.RuntimeDbWeight]
+    /// >> 166 - Composite[sp_weights.RuntimeDbWeight]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class RuntimeDbWeight : BaseType

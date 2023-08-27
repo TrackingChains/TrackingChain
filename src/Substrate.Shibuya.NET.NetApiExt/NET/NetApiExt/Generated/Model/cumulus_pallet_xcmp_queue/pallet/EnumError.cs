@@ -30,7 +30,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_xcmp_qu
     }
     
     /// <summary>
-    /// >> 444 - Variant[cumulus_pallet_xcmp_queue.pallet.Error]
+    /// >> 441 - Variant[cumulus_pallet_xcmp_queue.pallet.Error]
     /// 
     ///			Custom [dispatch errors](https://docs.substrate.io/main-docs/build/events-errors/)
     ///			of this pallet.

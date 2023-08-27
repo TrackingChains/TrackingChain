@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.sched
     
     
     /// <summary>
-    /// >> 501 - Composite[pallet_contracts.schedule.HostFnWeights]
+    /// >> 500 - Composite[pallet_contracts.schedule.HostFnWeights]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class HostFnWeights : BaseType
@@ -48,6 +48,11 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.sched
         /// >> caller_is_origin
         /// </summary>
         private Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight _callerIsOrigin;
+        
+        /// <summary>
+        /// >> caller_is_root
+        /// </summary>
+        private Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight _callerIsRoot;
         
         /// <summary>
         /// >> address
@@ -305,6 +310,16 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.sched
         private Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight _ecdsaToEthAddress;
         
         /// <summary>
+        /// >> sr25519_verify
+        /// </summary>
+        private Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight _sr25519Verify;
+        
+        /// <summary>
+        /// >> sr25519_verify_per_byte
+        /// </summary>
+        private Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight _sr25519VerifyPerByte;
+        
+        /// <summary>
         /// >> reentrance_count
         /// </summary>
         private Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight _reentranceCount;
@@ -376,6 +391,18 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.sched
             set
             {
                 this._callerIsOrigin = value;
+            }
+        }
+        
+        public Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight CallerIsRoot
+        {
+            get
+            {
+                return this._callerIsRoot;
+            }
+            set
+            {
+                this._callerIsRoot = value;
             }
         }
         
@@ -991,6 +1018,30 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.sched
             }
         }
         
+        public Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight Sr25519Verify
+        {
+            get
+            {
+                return this._sr25519Verify;
+            }
+            set
+            {
+                this._sr25519Verify = value;
+            }
+        }
+        
+        public Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight Sr25519VerifyPerByte
+        {
+            get
+            {
+                return this._sr25519VerifyPerByte;
+            }
+            set
+            {
+                this._sr25519VerifyPerByte = value;
+            }
+        }
+        
         public Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight ReentranceCount
         {
             get
@@ -1040,6 +1091,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.sched
             result.AddRange(CodeHash.Encode());
             result.AddRange(OwnCodeHash.Encode());
             result.AddRange(CallerIsOrigin.Encode());
+            result.AddRange(CallerIsRoot.Encode());
             result.AddRange(Address.Encode());
             result.AddRange(GasLeft.Encode());
             result.AddRange(Balance.Encode());
@@ -1091,6 +1143,8 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.sched
             result.AddRange(HashBlake2128PerByte.Encode());
             result.AddRange(EcdsaRecover.Encode());
             result.AddRange(EcdsaToEthAddress.Encode());
+            result.AddRange(Sr25519Verify.Encode());
+            result.AddRange(Sr25519VerifyPerByte.Encode());
             result.AddRange(ReentranceCount.Encode());
             result.AddRange(AccountReentranceCount.Encode());
             result.AddRange(InstantiationNonce.Encode());
@@ -1110,6 +1164,8 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.sched
             OwnCodeHash.Decode(byteArray, ref p);
             CallerIsOrigin = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight();
             CallerIsOrigin.Decode(byteArray, ref p);
+            CallerIsRoot = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight();
+            CallerIsRoot.Decode(byteArray, ref p);
             Address = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight();
             Address.Decode(byteArray, ref p);
             GasLeft = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight();
@@ -1212,6 +1268,10 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.sched
             EcdsaRecover.Decode(byteArray, ref p);
             EcdsaToEthAddress = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight();
             EcdsaToEthAddress.Decode(byteArray, ref p);
+            Sr25519Verify = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight();
+            Sr25519Verify.Decode(byteArray, ref p);
+            Sr25519VerifyPerByte = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight();
+            Sr25519VerifyPerByte.Decode(byteArray, ref p);
             ReentranceCount = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight();
             ReentranceCount.Decode(byteArray, ref p);
             AccountReentranceCount = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2.Weight();

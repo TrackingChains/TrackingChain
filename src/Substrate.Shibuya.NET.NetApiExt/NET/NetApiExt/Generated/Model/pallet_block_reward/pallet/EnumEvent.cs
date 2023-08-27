@@ -22,7 +22,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_block_reward.pa
     }
     
     /// <summary>
-    /// >> 53 - Variant[pallet_block_reward.pallet.Event]
+    /// >> 54 - Variant[pallet_block_reward.pallet.Event]
     /// 
     ///			The [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted
     ///			by this pallet.

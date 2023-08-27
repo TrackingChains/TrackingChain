@@ -32,6 +32,8 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
             this._client = client;
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("EVM", "AccountCodes"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(new Substrate.NetApi.Model.Meta.Storage.Hasher[] {
                             Substrate.NetApi.Model.Meta.Storage.Hasher.BlakeTwo128Concat}, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H160), typeof(Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Primitive.U8>)));
+            _client.StorageKeyDict.Add(new System.Tuple<string, string>("EVM", "AccountCodesMetadata"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(new Substrate.NetApi.Model.Meta.Storage.Hasher[] {
+                            Substrate.NetApi.Model.Meta.Storage.Hasher.BlakeTwo128Concat}, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H160), typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_evm.CodeMetadata)));
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("EVM", "AccountStorages"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(new Substrate.NetApi.Model.Meta.Storage.Hasher[] {
                             Substrate.NetApi.Model.Meta.Storage.Hasher.BlakeTwo128Concat,
                             Substrate.NetApi.Model.Meta.Storage.Hasher.BlakeTwo128Concat}, typeof(Substrate.NetApi.Model.Types.Base.BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H160, Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256>), typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256)));
@@ -63,6 +65,35 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         {
             string parameters = EVMStorage.AccountCodesParams(key);
             var result = await _client.GetStorageAsync<Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Primitive.U8>>(parameters, token);
+            return result;
+        }
+        
+        /// <summary>
+        /// >> AccountCodesMetadataParams
+        /// </summary>
+        public static string AccountCodesMetadataParams(Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H160 key)
+        {
+            return RequestGenerator.GetStorage("EVM", "AccountCodesMetadata", Substrate.NetApi.Model.Meta.Storage.Type.Map, new Substrate.NetApi.Model.Meta.Storage.Hasher[] {
+                        Substrate.NetApi.Model.Meta.Storage.Hasher.BlakeTwo128Concat}, new Substrate.NetApi.Model.Types.IType[] {
+                        key});
+        }
+        
+        /// <summary>
+        /// >> AccountCodesMetadataDefault
+        /// Default value as hex string
+        /// </summary>
+        public static string AccountCodesMetadataDefault()
+        {
+            return "0x00";
+        }
+        
+        /// <summary>
+        /// >> AccountCodesMetadata
+        /// </summary>
+        public async Task<Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_evm.CodeMetadata> AccountCodesMetadata(Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H160 key, CancellationToken token)
+        {
+            string parameters = EVMStorage.AccountCodesMetadataParams(key);
+            var result = await _client.GetStorageAsync<Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_evm.CodeMetadata>(parameters, token);
             return result;
         }
         

@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.wasm
     
     
     /// <summary>
-    /// >> 493 - Composite[pallet_contracts.wasm.OwnerInfo]
+    /// >> 492 - Composite[pallet_contracts.wasm.OwnerInfo]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class OwnerInfo : BaseType

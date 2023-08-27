@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.frame_support.dispatch
     
     
     /// <summary>
-    /// >> 7 - Composite[frame_support.dispatch.PerDispatchClassT1]
+    /// >> 8 - Composite[frame_support.dispatch.PerDispatchClassT1]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class PerDispatchClassT1 : BaseType

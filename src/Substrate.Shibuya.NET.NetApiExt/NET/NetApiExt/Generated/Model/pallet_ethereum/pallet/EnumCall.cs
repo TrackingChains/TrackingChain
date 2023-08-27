@@ -22,7 +22,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_ethereum.pallet
     }
     
     /// <summary>
-    /// >> 288 - Variant[pallet_ethereum.pallet.Call]
+    /// >> 285 - Variant[pallet_ethereum.pallet.Call]
     /// Contains one variant per dispatchable that can be called by an extrinsic.
     /// </summary>
     public sealed class EnumCall : BaseEnumExt<Call, Substrate.Shibuya.NET.NetApiExt.Generated.Model.ethereum.transaction.EnumTransactionV2>

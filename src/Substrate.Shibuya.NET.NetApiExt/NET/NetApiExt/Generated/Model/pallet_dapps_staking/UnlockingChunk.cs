@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_dapps_staking
     
     
     /// <summary>
-    /// >> 394 - Composite[pallet_dapps_staking.UnlockingChunk]
+    /// >> 390 - Composite[pallet_dapps_staking.UnlockingChunk]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class UnlockingChunk : BaseType
