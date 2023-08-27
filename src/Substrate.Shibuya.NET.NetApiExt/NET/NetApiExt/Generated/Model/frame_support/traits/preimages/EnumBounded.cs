@@ -26,9 +26,9 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.frame_support.traits.p
     }
     
     /// <summary>
-    /// >> 305 - Variant[frame_support.traits.preimages.Bounded]
+    /// >> 304 - Variant[frame_support.traits.preimages.Bounded]
     /// </summary>
-    public sealed class EnumBounded : BaseEnumExt<Bounded, Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256, Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT5, BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256, Substrate.NetApi.Model.Types.Primitive.U32>>
+    public sealed class EnumBounded : BaseEnumExt<Bounded, Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256, Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT6, BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256, Substrate.NetApi.Model.Types.Primitive.U32>>
     {
     }
 }

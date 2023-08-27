@@ -1,13 +1,13 @@
 {
   "projects": {
-    "net_api": "Substrate.ContractRococo.NET.NetApiExt",
-    "rest_service": "Substrate.ContractRococo.NET.RestService",
-    "rest_client": "Substrate.ContractRococo.NET.RestClient"
+    "net_api": "Substrate.Shibuya.NET.NetApiExt",
+    "rest_service": "Substrate.Shibuya.NET.RestService",
+    "rest_client": "Substrate.Shibuya.NET.RestClient"
   },
    "metadata": {
-      "websocket": "wss://rococo-contracts-rpc.polkadot.io"
+      "websocket": "wss://shibuya.blastapi.io/c8707e18-84fe-4b15-9665-a2897c0687df"
    },
   "rest_client_settings": {
-    "service_assembly": "Substrate.ContractRococo.NET.RestService.dll"
+    "service_assembly": "Substrate.Shibuya.NET.RestService.dll"
   }
 }

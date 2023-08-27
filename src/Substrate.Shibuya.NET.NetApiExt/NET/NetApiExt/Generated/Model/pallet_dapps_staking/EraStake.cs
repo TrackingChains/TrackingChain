@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_dapps_staking
     
     
     /// <summary>
-    /// >> 404 - Composite[pallet_dapps_staking.EraStake]
+    /// >> 400 - Composite[pallet_dapps_staking.EraStake]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class EraStake : BaseType

@@ -26,7 +26,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v3
     }
     
     /// <summary>
-    /// >> 93 - Variant[xcm.v3.MaybeErrorCode]
+    /// >> 94 - Variant[xcm.v3.MaybeErrorCode]
     /// </summary>
     public sealed class EnumMaybeErrorCode : BaseEnumExt<MaybeErrorCode, BaseVoid, Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT3, Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT3>
     {

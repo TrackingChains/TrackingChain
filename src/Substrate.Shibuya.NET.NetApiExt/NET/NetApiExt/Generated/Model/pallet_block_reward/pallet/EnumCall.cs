@@ -22,7 +22,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_block_reward.pa
     }
     
     /// <summary>
-    /// >> 247 - Variant[pallet_block_reward.pallet.Call]
+    /// >> 244 - Variant[pallet_block_reward.pallet.Call]
     /// Contains one variant per dispatchable that can be called by an extrinsic.
     /// </summary>
     public sealed class EnumCall : BaseEnumExt<Call, Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_block_reward.RewardDistributionConfig>

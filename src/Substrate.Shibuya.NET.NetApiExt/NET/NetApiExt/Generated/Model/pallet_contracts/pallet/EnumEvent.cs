@@ -36,13 +36,13 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.palle
     }
     
     /// <summary>
-    /// >> 138 - Variant[pallet_contracts.pallet.Event]
+    /// >> 139 - Variant[pallet_contracts.pallet.Event]
     /// 
     ///			The [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted
     ///			by this pallet.
     ///			
     /// </summary>
-    public sealed class EnumEvent : BaseEnumExt<Event, BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32, Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32>, BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32, Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32>, Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256, BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32, Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Primitive.U8>>, Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256, BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32, Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256, Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256>, BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32, Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32>, BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32, Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256>>
+    public sealed class EnumEvent : BaseEnumExt<Event, BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32, Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32>, BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32, Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32>, Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256, BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32, Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Primitive.U8>>, Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256, BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32, Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256, Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256>, BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.EnumOrigin, Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32>, BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32, Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256>>
     {
     }
 }

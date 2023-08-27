@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_democracy.types
     
     
     /// <summary>
-    /// >> 514 - Composite[pallet_democracy.types.Delegations]
+    /// >> 513 - Composite[pallet_democracy.types.Delegations]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class Delegations : BaseType

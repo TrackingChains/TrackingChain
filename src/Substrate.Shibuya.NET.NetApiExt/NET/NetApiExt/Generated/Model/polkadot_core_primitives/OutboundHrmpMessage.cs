@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.polkadot_core_primitiv
     
     
     /// <summary>
-    /// >> 375 - Composite[polkadot_core_primitives.OutboundHrmpMessage]
+    /// >> 367 - Composite[polkadot_core_primitives.OutboundHrmpMessage]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class OutboundHrmpMessage : BaseType

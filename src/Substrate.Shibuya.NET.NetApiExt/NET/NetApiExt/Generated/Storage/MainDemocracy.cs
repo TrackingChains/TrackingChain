@@ -31,7 +31,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         {
             this._client = client;
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("Democracy", "PublicPropCount"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.NetApi.Model.Types.Primitive.U32)));
-            _client.StorageKeyDict.Add(new System.Tuple<string, string>("Democracy", "PublicProps"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT23)));
+            _client.StorageKeyDict.Add(new System.Tuple<string, string>("Democracy", "PublicProps"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT24)));
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("Democracy", "DepositOf"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(new Substrate.NetApi.Model.Meta.Storage.Hasher[] {
                             Substrate.NetApi.Model.Meta.Storage.Hasher.Twox64Concat}, typeof(Substrate.NetApi.Model.Types.Primitive.U32), typeof(Substrate.NetApi.Model.Types.Base.BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT10, Substrate.NetApi.Model.Types.Primitive.U128>)));
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("Democracy", "ReferendumCount"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.NetApi.Model.Types.Primitive.U32)));
@@ -101,10 +101,10 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         /// >> PublicProps
         ///  The public proposals. Unsorted. The second item is the proposal.
         /// </summary>
-        public async Task<Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT23> PublicProps(CancellationToken token)
+        public async Task<Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT24> PublicProps(CancellationToken token)
         {
             string parameters = DemocracyStorage.PublicPropsParams();
-            var result = await _client.GetStorageAsync<Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT23>(parameters, token);
+            var result = await _client.GetStorageAsync<Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT24>(parameters, token);
             return result;
         }
         

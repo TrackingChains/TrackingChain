@@ -44,7 +44,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_dapps_staking.p
     }
     
     /// <summary>
-    /// >> 47 - Variant[pallet_dapps_staking.pallet.pallet.Event]
+    /// >> 48 - Variant[pallet_dapps_staking.pallet.pallet.Event]
     /// 
     ///			The [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted
     ///			by this pallet.

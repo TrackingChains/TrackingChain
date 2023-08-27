@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.stora
     
     
     /// <summary>
-    /// >> 494 - Composite[pallet_contracts.storage.ContractInfo]
+    /// >> 493 - Composite[pallet_contracts.storage.ContractInfo]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class ContractInfo : BaseType
@@ -27,7 +27,12 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.stora
         /// <summary>
         /// >> trie_id
         /// </summary>
-        private Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT5 _trieId;
+        private Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT6 _trieId;
+        
+        /// <summary>
+        /// >> deposit_account
+        /// </summary>
+        private Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.storage.DepositAccount _depositAccount;
         
         /// <summary>
         /// >> code_hash
@@ -59,7 +64,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.stora
         /// </summary>
         private Substrate.NetApi.Model.Types.Primitive.U128 _storageBaseDeposit;
         
-        public Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT5 TrieId
+        public Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT6 TrieId
         {
             get
             {
@@ -68,6 +73,18 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.stora
             set
             {
                 this._trieId = value;
+            }
+        }
+        
+        public Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.storage.DepositAccount DepositAccount
+        {
+            get
+            {
+                return this._depositAccount;
+            }
+            set
+            {
+                this._depositAccount = value;
             }
         }
         
@@ -152,6 +169,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.stora
         {
             var result = new List<byte>();
             result.AddRange(TrieId.Encode());
+            result.AddRange(DepositAccount.Encode());
             result.AddRange(CodeHash.Encode());
             result.AddRange(StorageBytes.Encode());
             result.AddRange(StorageItems.Encode());
@@ -164,8 +182,10 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.stora
         public override void Decode(byte[] byteArray, ref int p)
         {
             var start = p;
-            TrieId = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT5();
+            TrieId = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT6();
             TrieId.Decode(byteArray, ref p);
+            DepositAccount = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.storage.DepositAccount();
+            DepositAccount.Decode(byteArray, ref p);
             CodeHash = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H256();
             CodeHash.Decode(byteArray, ref p);
             StorageBytes = new Substrate.NetApi.Model.Types.Primitive.U32();

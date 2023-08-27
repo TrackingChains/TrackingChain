@@ -22,7 +22,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_block_reward.pa
     }
     
     /// <summary>
-    /// >> 408 - Variant[pallet_block_reward.pallet.Error]
+    /// >> 404 - Variant[pallet_block_reward.pallet.Error]
     /// 
     ///			Custom [dispatch errors](https://docs.substrate.io/main-docs/build/events-errors/)
     ///			of this pallet.

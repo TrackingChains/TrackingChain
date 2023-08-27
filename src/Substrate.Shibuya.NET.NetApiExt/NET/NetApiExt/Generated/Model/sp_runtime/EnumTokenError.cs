@@ -18,9 +18,9 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_runtime
     public enum TokenError
     {
         
-        NoFunds = 0,
+        FundsUnavailable = 0,
         
-        WouldDie = 1,
+        OnlyProvider = 1,
         
         BelowMinimum = 2,
         
@@ -31,10 +31,16 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_runtime
         Frozen = 5,
         
         Unsupported = 6,
+        
+        CannotCreateHold = 7,
+        
+        NotExpendable = 8,
+        
+        Blocked = 9,
     }
     
     /// <summary>
-    /// >> 26 - Variant[sp_runtime.TokenError]
+    /// >> 27 - Variant[sp_runtime.TokenError]
     /// </summary>
     public sealed class EnumTokenError : BaseEnum<TokenError>
     {

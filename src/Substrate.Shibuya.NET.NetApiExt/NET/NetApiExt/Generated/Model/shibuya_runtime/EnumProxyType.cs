@@ -38,7 +38,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.shibuya_runtime
     }
     
     /// <summary>
-    /// >> 40 - Variant[shibuya_runtime.ProxyType]
+    /// >> 41 - Variant[shibuya_runtime.ProxyType]
     /// </summary>
     public sealed class EnumProxyType : BaseEnum<ProxyType>
     {

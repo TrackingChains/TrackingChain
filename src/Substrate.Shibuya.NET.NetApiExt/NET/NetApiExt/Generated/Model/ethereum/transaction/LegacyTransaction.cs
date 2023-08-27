@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.ethereum.transaction
     
     
     /// <summary>
-    /// >> 290 - Composite[ethereum.transaction.LegacyTransaction]
+    /// >> 287 - Composite[ethereum.transaction.LegacyTransaction]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class LegacyTransaction : BaseType

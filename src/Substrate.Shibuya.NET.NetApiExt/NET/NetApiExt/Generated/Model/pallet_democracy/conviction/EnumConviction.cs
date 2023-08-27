@@ -34,7 +34,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_democracy.convi
     }
     
     /// <summary>
-    /// >> 307 - Variant[pallet_democracy.conviction.Conviction]
+    /// >> 306 - Variant[pallet_democracy.conviction.Conviction]
     /// </summary>
     public sealed class EnumConviction : BaseEnum<Conviction>
     {

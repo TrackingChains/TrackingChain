@@ -26,7 +26,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_democracy.types
     }
     
     /// <summary>
-    /// >> 143 - Variant[pallet_democracy.types.MetadataOwner]
+    /// >> 146 - Variant[pallet_democracy.types.MetadataOwner]
     /// </summary>
     public sealed class EnumMetadataOwner : BaseEnumExt<MetadataOwner, BaseVoid, Substrate.NetApi.Model.Types.Primitive.U32, Substrate.NetApi.Model.Types.Primitive.U32>
     {

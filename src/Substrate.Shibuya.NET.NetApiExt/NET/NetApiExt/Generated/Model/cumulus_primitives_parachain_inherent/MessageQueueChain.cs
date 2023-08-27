@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_primitives_par
     
     
     /// <summary>
-    /// >> 370 - Composite[cumulus_primitives_parachain_inherent.MessageQueueChain]
+    /// >> 362 - Composite[cumulus_primitives_parachain_inherent.MessageQueueChain]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class MessageQueueChain : BaseType

@@ -24,7 +24,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_transaction_pay
     }
     
     /// <summary>
-    /// >> 378 - Variant[pallet_transaction_payment.Releases]
+    /// >> 371 - Variant[pallet_transaction_payment.Releases]
     /// </summary>
     public sealed class EnumReleases : BaseEnum<Releases>
     {

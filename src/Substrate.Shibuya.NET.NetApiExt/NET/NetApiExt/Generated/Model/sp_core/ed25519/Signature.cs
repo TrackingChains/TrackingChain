@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.ed25519
     
     
     /// <summary>
-    /// >> 537 - Composite[sp_core.ed25519.Signature]
+    /// >> 535 - Composite[sp_core.ed25519.Signature]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class Signature : BaseType

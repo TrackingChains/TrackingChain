@@ -54,29 +54,31 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.palle
         
         NoChainExtension = 17,
         
-        DeletionQueueFull = 18,
+        DuplicateContract = 18,
         
-        DuplicateContract = 19,
+        TerminatedInConstructor = 19,
         
-        TerminatedInConstructor = 20,
+        ReentranceDenied = 20,
         
-        ReentranceDenied = 21,
+        StorageDepositNotEnoughFunds = 21,
         
-        StorageDepositNotEnoughFunds = 22,
+        StorageDepositLimitExhausted = 22,
         
-        StorageDepositLimitExhausted = 23,
+        CodeInUse = 23,
         
-        CodeInUse = 24,
+        ContractReverted = 24,
         
-        ContractReverted = 25,
+        CodeRejected = 25,
         
-        CodeRejected = 26,
+        Indeterministic = 26,
         
-        Indeterministic = 27,
+        MigrationInProgress = 27,
+        
+        NoMigrationPerformed = 28,
     }
     
     /// <summary>
-    /// >> 502 - Variant[pallet_contracts.pallet.Error]
+    /// >> 501 - Variant[pallet_contracts.pallet.Error]
     /// 
     ///			Custom [dispatch errors](https://docs.substrate.io/main-docs/build/events-errors/)
     ///			of this pallet.

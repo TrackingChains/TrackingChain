@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.sched
     
     
     /// <summary>
-    /// >> 500 - Composite[pallet_contracts.schedule.InstructionWeights]
+    /// >> 499 - Composite[pallet_contracts.schedule.InstructionWeights]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class InstructionWeights : BaseType
@@ -88,11 +88,6 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.sched
         /// >> call_indirect
         /// </summary>
         private Substrate.NetApi.Model.Types.Primitive.U32 _callIndirect;
-        
-        /// <summary>
-        /// >> call_indirect_per_param
-        /// </summary>
-        private Substrate.NetApi.Model.Types.Primitive.U32 _callIndirectPerParam;
         
         /// <summary>
         /// >> call_per_local
@@ -447,18 +442,6 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.sched
             set
             {
                 this._callIndirect = value;
-            }
-        }
-        
-        public Substrate.NetApi.Model.Types.Primitive.U32 CallIndirectPerParam
-        {
-            get
-            {
-                return this._callIndirectPerParam;
-            }
-            set
-            {
-                this._callIndirectPerParam = value;
             }
         }
         
@@ -963,7 +946,6 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.sched
             result.AddRange(BrTablePerEntry.Encode());
             result.AddRange(Call.Encode());
             result.AddRange(CallIndirect.Encode());
-            result.AddRange(CallIndirectPerParam.Encode());
             result.AddRange(CallPerLocal.Encode());
             result.AddRange(LocalGet.Encode());
             result.AddRange(LocalSet.Encode());
@@ -1036,8 +1018,6 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.sched
             Call.Decode(byteArray, ref p);
             CallIndirect = new Substrate.NetApi.Model.Types.Primitive.U32();
             CallIndirect.Decode(byteArray, ref p);
-            CallIndirectPerParam = new Substrate.NetApi.Model.Types.Primitive.U32();
-            CallIndirectPerParam.Decode(byteArray, ref p);
             CallPerLocal = new Substrate.NetApi.Model.Types.Primitive.U32();
             CallPerLocal.Decode(byteArray, ref p);
             LocalGet = new Substrate.NetApi.Model.Types.Primitive.U32();

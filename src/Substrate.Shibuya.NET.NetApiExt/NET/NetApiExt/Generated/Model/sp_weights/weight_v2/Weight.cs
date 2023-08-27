@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_weights.weight_v2
     
     
     /// <summary>
-    /// >> 8 - Composite[sp_weights.weight_v2.Weight]
+    /// >> 9 - Composite[sp_weights.weight_v2.Weight]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class Weight : BaseType

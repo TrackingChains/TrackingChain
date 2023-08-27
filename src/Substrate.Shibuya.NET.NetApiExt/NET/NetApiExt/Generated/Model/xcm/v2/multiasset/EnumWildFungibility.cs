@@ -24,7 +24,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v2.multiasset
     }
     
     /// <summary>
-    /// >> 266 - Variant[xcm.v2.multiasset.WildFungibility]
+    /// >> 263 - Variant[xcm.v2.multiasset.WildFungibility]
     /// </summary>
     public sealed class EnumWildFungibility : BaseEnum<WildFungibility>
     {

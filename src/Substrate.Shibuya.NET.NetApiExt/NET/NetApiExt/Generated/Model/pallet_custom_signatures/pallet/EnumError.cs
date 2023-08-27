@@ -26,7 +26,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_custom_signatur
     }
     
     /// <summary>
-    /// >> 347 - Variant[pallet_custom_signatures.pallet.Error]
+    /// >> 338 - Variant[pallet_custom_signatures.pallet.Error]
     /// 
     ///			Custom [dispatch errors](https://docs.substrate.io/main-docs/build/events-errors/)
     ///			of this pallet.

@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bo
     
     
     /// <summary>
-    /// >> 333 - Composite[bounded_collections.bounded_vec.BoundedVecT7]
+    /// >> 324 - Composite[bounded_collections.bounded_vec.BoundedVecT7]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class BoundedVecT7 : BaseType

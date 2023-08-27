@@ -28,7 +28,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.evm_core.error
     }
     
     /// <summary>
-    /// >> 126 - Variant[evm_core.error.ExitReason]
+    /// >> 127 - Variant[evm_core.error.ExitReason]
     /// </summary>
     public sealed class EnumExitReason : BaseEnumExt<ExitReason, Substrate.Shibuya.NET.NetApiExt.Generated.Model.evm_core.error.EnumExitSucceed, Substrate.Shibuya.NET.NetApiExt.Generated.Model.evm_core.error.EnumExitError, Substrate.Shibuya.NET.NetApiExt.Generated.Model.evm_core.error.EnumExitRevert, Substrate.Shibuya.NET.NetApiExt.Generated.Model.evm_core.error.EnumExitFatal>
     {

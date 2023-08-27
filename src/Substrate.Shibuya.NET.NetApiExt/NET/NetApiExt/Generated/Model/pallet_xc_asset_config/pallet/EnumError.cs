@@ -26,7 +26,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_xc_asset_config
     }
     
     /// <summary>
-    /// >> 469 - Variant[pallet_xc_asset_config.pallet.Error]
+    /// >> 467 - Variant[pallet_xc_asset_config.pallet.Error]
     /// 
     ///			Custom [dispatch errors](https://docs.substrate.io/main-docs/build/events-errors/)
     ///			of this pallet.

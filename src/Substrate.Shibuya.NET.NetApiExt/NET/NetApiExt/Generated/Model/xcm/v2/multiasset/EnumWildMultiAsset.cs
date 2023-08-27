@@ -24,7 +24,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v2.multiasset
     }
     
     /// <summary>
-    /// >> 265 - Variant[xcm.v2.multiasset.WildMultiAsset]
+    /// >> 262 - Variant[xcm.v2.multiasset.WildMultiAsset]
     /// </summary>
     public sealed class EnumWildMultiAsset : BaseEnumExt<WildMultiAsset, BaseVoid, BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v2.multiasset.EnumAssetId, Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v2.multiasset.EnumWildFungibility>>
     {

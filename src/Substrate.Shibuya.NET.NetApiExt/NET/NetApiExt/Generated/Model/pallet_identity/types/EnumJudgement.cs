@@ -34,7 +34,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_identity.types
     }
     
     /// <summary>
-    /// >> 219 - Variant[pallet_identity.types.Judgement]
+    /// >> 216 - Variant[pallet_identity.types.Judgement]
     /// </summary>
     public sealed class EnumJudgement : BaseEnumExt<Judgement, BaseVoid, Substrate.NetApi.Model.Types.Primitive.U128, BaseVoid, BaseVoid, BaseVoid, BaseVoid, BaseVoid>
     {
