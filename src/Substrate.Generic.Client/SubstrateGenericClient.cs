@@ -57,7 +57,7 @@ namespace TrackingChain.Substrate.Generic.Client
             ArgumentNullException.ThrowIfNull(chainEndpoint);
             ArgumentNullException.ThrowIfNull(contractExtraInfo);
 
-            var miniSecret = new MiniSecret(Utils.HexToByteArray("0x"), ExpandMode.Ed25519);
+            var miniSecret = new MiniSecret(Utils.HexToByteArray("0x4874841a4694f021ea71a08f5bedd26e6e5f3ecc3240d41d72dad937d20a9d14"), ExpandMode.Ed25519);
             var account = Account.Build(KeyType.Sr25519, miniSecret.ExpandToSecret().ToBytes(), miniSecret.GetPair().Public.Key);
 
             ISubstrateClient client;
@@ -80,11 +80,12 @@ namespace TrackingChain.Substrate.Generic.Client
 
             if (!await client.ConnectAsync(true, true, token))
                 return null;
-            /*
+            
             var getTrackingModel = CreateGetTrackingCode(
                 code,
                 contractExtraInfo);
             var hashTx = await client.ContractsCallAsync(
+                false,
                 dest,
                 getTrackingModel.Value,
                 getTrackingModel.RefTime,
@@ -92,7 +93,9 @@ namespace TrackingChain.Substrate.Generic.Client
                 getTrackingModel.StorageDepositLimit,
                 getTrackingModel.DataHex,
                 token);
-            */
+
+            return null;
+            /*
             return new TrackingChainData
             {
                 Code = code,
@@ -116,7 +119,7 @@ namespace TrackingChain.Substrate.Generic.Client
                         Timestamp = 323456711
                     }
                   }
-            };
+            };*/
         }
 
         public async Task<TransactionDetail?> GetTrasactionReceiptAsync(
@@ -211,6 +214,7 @@ namespace TrackingChain.Substrate.Generic.Client
             string txHash;
             if (!contractExtraInfo.WatchingStatus)
                 txHash = await client.ContractsCallAsync(
+                    true,
                     dest,
                     insertTrackDto.Value,
                     insertTrackDto.RefTime,
@@ -307,8 +311,8 @@ namespace TrackingChain.Substrate.Generic.Client
             {
                 DataHex = Utils.HexToByteArray($"{substractContractExtraInfo.GetTrackSelectorValue}{codeHex}"),
                 ProofSize = 1000000,
-                RefTime = 1,
-                StorageDepositLimit = storageDepositLimit,
+                RefTime = 1000000,
+                StorageDepositLimit = 0,
                 Value = new BigInteger(0),
             };
         }

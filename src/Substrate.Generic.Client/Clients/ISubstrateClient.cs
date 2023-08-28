@@ -15,6 +15,7 @@ namespace TrackingChain.Substrate.Generic.Client.Clients
 
         Task<bool> ConnectAsync(bool useMetadata, bool standardSubstrate, CancellationToken token);
         Task<string?> ContractsCallAsync(
+            bool callSigned,
             IType dest, 
             BigInteger value, 
             ulong refTime, 

@@ -39,6 +39,7 @@ namespace TrackingChain.Substrate.Generic.Client.Clients
         internal async Task<string?> GenericExtrinsicAsync(
             Account account,
             Method extrinsicMethod,
+            bool signed,
             CancellationToken token)
         {
             if (account == null)
@@ -49,7 +50,7 @@ namespace TrackingChain.Substrate.Generic.Client.Clients
 
             try
             {
-                return (await SubstrateClient.Author.SubmitExtrinsicAsync(extrinsicMethod, account, ChargeType, 64, token))?.Value ?? "";
+                return (await SubstrateClient.Author.SubmitExtrinsicAsync(extrinsicMethod, account, ChargeType, 64, signed, token))?.Value ?? "";
             }
             catch (RemoteInvocationException ex)
             {

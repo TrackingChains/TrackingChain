@@ -44,6 +44,7 @@ namespace TrackingChain.Substrate.Generic.Client.Clients
         }
 
         public async Task<string?> ContractsCallAsync(
+            bool callSigned,
             IType dest,
             BigInteger value,
             ulong refTime,
@@ -56,7 +57,7 @@ namespace TrackingChain.Substrate.Generic.Client.Clients
                 Account == null)
                 return null;
 
-            return await ExecuteContractsCallAsync(dest, value, refTime, proofSize, storageDepositLimit, data, null, token);
+            return await ExecuteContractsCallAsync(callSigned, dest, value, refTime, proofSize, storageDepositLimit, data, null, token);
         }
 
         public async Task<string?> ContractsCallAndWatchAsync(
@@ -75,7 +76,7 @@ namespace TrackingChain.Substrate.Generic.Client.Clients
                 Account == null)
                 return null;
 
-            return await ExecuteContractsCallAsync(dest, value, refTime, proofSize, storageDepositLimit, data, extrinsicType, token);
+            return await ExecuteContractsCallAsync(true, dest, value, refTime, proofSize, storageDepositLimit, data, extrinsicType, token);
         }
 
         public async Task<bool> DisconnectAsync()
@@ -89,6 +90,7 @@ namespace TrackingChain.Substrate.Generic.Client.Clients
 
         // Helpers.
         public async Task<string?> ExecuteContractsCallAsync(
+            bool callSigned,
             IType dest,
             BigInteger value,
             ulong refTime,
@@ -132,7 +134,7 @@ namespace TrackingChain.Substrate.Generic.Client.Clients
             var extrinsic = ContractsCalls.Call(destParam, valueParam, gasLimitParam, storageDepositLimitParam, dataParam);
 
             if (extrinsicType is null)
-                return await GenericExtrinsicAsync(Account, extrinsic, token);
+                return await GenericExtrinsicAsync(Account, extrinsic, callSigned, token);
             else
                 return await GenericExtrinsicAndSubscriptionAsync(Account, extrinsic, extrinsicType, token);
         }
