@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v2.multiasset
     
     
     /// <summary>
-    /// >> 104 - Composite[xcm.v2.multiasset.MultiAssets]
+    /// >> 105 - Composite[xcm.v2.multiasset.MultiAssets]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class MultiAssets : BaseType

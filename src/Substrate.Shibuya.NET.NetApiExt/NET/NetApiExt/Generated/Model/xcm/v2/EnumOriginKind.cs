@@ -28,7 +28,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v2
     }
     
     /// <summary>
-    /// >> 96 - Variant[xcm.v2.OriginKind]
+    /// >> 97 - Variant[xcm.v2.OriginKind]
     /// </summary>
     public sealed class EnumOriginKind : BaseEnum<OriginKind>
     {

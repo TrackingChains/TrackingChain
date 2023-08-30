@@ -30,7 +30,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_scheduler.palle
     }
     
     /// <summary>
-    /// >> 353 - Variant[pallet_scheduler.pallet.Error]
+    /// >> 344 - Variant[pallet_scheduler.pallet.Error]
     /// 
     ///			Custom [dispatch errors](https://docs.substrate.io/main-docs/build/events-errors/)
     ///			of this pallet.

@@ -1,0 +1,62 @@
+﻿@page
+@using TrackingChain.Core.Domain.Enums;
+@model TrackingChain.TriageWebApplication.Pages.Admin.TrackingErrors.ManageModel
+@{
+}
+
+<h4>Manage Error</h4>
+<hr />
+<div class="row">
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TransactionRegistry.TrackingId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TransactionRegistry.TrackingId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TransactionRegistry.Code)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TransactionRegistry.Code)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TransactionRegistry.TriageDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TransactionRegistry.TriageDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TransactionRegistry.TransactionErrorReason)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TransactionRegistry.TransactionErrorReason)
+        </dd>
+    </dl>
+    <h5>Action</h5>
+    <form method="post">
+        <input type="hidden" name="trackingId" asp-for="TransactionRegistry.TrackingId" />
+        <div class="form-group">
+            @if (Model.TransactionRegistry.Status != RegistryStatus.Error ||
+            Model.TransactionRegistry.Status == RegistryStatus.WaitingToReTry)
+            {
+                <input type="submit" value="ReTry To Process" name="buttonRecoveryAction" class="btn btn-primary" />
+                <input type="submit" value="Cancel for Error" name="buttonRecoveryAction" class="btn btn-primary" />
+            }
+            else
+            {
+                <span>Current State: @Model.TransactionRegistry.Status</span>
+            }
+        </div>
+    </form>
+</div>
+
+<div>
+    <a asp-page="./Index" class="backedit-link">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

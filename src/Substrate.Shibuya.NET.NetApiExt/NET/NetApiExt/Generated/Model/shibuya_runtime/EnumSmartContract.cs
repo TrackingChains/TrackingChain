@@ -24,7 +24,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.shibuya_runtime
     }
     
     /// <summary>
-    /// >> 48 - Variant[shibuya_runtime.SmartContract]
+    /// >> 49 - Variant[shibuya_runtime.SmartContract]
     /// </summary>
     public sealed class EnumSmartContract : BaseEnumExt<SmartContract, Substrate.Shibuya.NET.NetApiExt.Generated.Model.primitive_types.H160, Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32>
     {

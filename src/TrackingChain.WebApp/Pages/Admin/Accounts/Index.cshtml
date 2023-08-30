@@ -1,0 +1,104 @@
+﻿@page
+@model TrackingChain.TriageWebApplication.Pages.Admin.Accounts.IndexModel
+
+<script>
+    $(document).ready(function () {
+        $('.truncate-cell').each(function () {
+            var maxLength = 20; // Imposta la lunghezza massima del testo prima della troncatura
+            var text = $(this).text();
+            if (text.length > maxLength) {
+                $(this).attr('title', text); // Aggiungi l'attributo "title" per visualizzare il testo completo quando ci si posiziona sopra con il mouse
+                $(this).text(text.substring(0, maxLength) + '...'); // Tronca e aggiungi i puntini di sospensione
+            }
+        });
+    });
+</script>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="search-form">
+                <form asp-page="./Index" method="get">
+                    <label for="searchInput">Search by Name:</label>
+                    <div class="input-group" style="flex-grow: 1; margin-right: 10px;">
+                        <input type="text" id="searchInput" name="SearchString" value="@Model.CurrentFilter" class="form-control" />
+                        <div class="input-group-append" style="margin-left: 10px;">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                    <a asp-page="./Index" class="btn btn-link">Clear Filters</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive mt-4">
+        <table class="tracking-table">
+            <thead>
+                <tr>
+                    <th>
+                        <a asp-page="./Index"
+                           asp-route-sortOrder="@Model.NameSort"
+                           asp-route-currentFilter="@Model.CurrentFilter">
+                            @Html.DisplayNameFor(model => model.Accounts[0].Name)
+                        </a>
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Accounts[0].ChainWriterAddress)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Accounts[0].ChainWatcherAddress)
+                    </th>
+                    <th class="text-center"><a class="btn btn-primary" asp-page="Create">Create New</a></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Accounts)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td class="truncate-cell">
+                            @Html.DisplayFor(modelItem => item.ChainWriterAddress)
+                        </td>
+                        <td class="truncate-cell">
+                            @Html.DisplayFor(modelItem => item.ChainWatcherAddress)
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-info btn-sm" asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
+                            <a class="btn btn-info btn-sm" asp-page="./Details" asp-route-id="@item.Id">Details</a>
+                            <a class="btn btn-danger btn-sm" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="total-items">
+        @{
+            var itemShowEnd = Model.PageSize * (Model.Accounts.PageIndex - 1) + Model.Accounts.Count;
+            var itemShowStart = itemShowEnd - Model.Accounts.Count + 1;
+        }
+        Showing @itemShowStart of @itemShowEnd items out of @Model.TotalItems.
+    </div>
+    <div class="pagination">
+        @if (Model.Accounts.HasPreviousPage &&
+        Model.Accounts.TotalPages > 5)
+        {
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="1" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">First</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.Accounts.PageIndex - 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Previous</a>
+        }
+
+        @for (int i = Math.Max(1, Model.Accounts.PageIndex - 2); i <= Math.Min(Model.Accounts.TotalPages, Model.Accounts.PageIndex + 2); i++)
+        {
+            <a class="page-link @(i == Model.Accounts.PageIndex ? "active" : "")" asp-page="./Index" asp-route-pageIndex="@i" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">@i</a>
+        }
+
+        @if (Model.Accounts.HasNextPage &&
+        Model.Accounts.TotalPages > 5)
+        {
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.Accounts.PageIndex + 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Next</a>
+            <a class="page-link" asp-page="./Index" asp-route-pageIndex="@Model.Accounts.TotalPages" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Last</a>
+        }
+    </div>
+</div>

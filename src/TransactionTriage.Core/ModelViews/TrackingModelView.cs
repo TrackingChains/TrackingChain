@@ -14,6 +14,7 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
             Guid trackingIdentify,
             long smartContractId,
             string smartContractAddress,
+            string? smartContractEndpoint,
             string smartContractExtraInfo,
             Guid profileGroupId,
             int chainNumberId,
@@ -28,7 +29,7 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
             string? receiptEffectiveGasPrice,
             string? receiptFrom,
             string? receiptGasUsed,
-            bool? receiptSuccessful,
+            bool receiptReceived,
             string? receiptTransactionHash,
             string? receiptTo,
             TransactionStep transactionStep)
@@ -42,6 +43,7 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
             ReceivedDate = DateTime.UtcNow;
             SmartContractId = smartContractId;
             SmartContractAddress = smartContractAddress;
+            SmartContractEndpoint = smartContractEndpoint;
             ProfileGroupId = profileGroupId;
             RegistryDate = registryDate;
             PendingDate = pendingDate;
@@ -52,7 +54,7 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
             ReceiptEffectiveGasPrice = receiptEffectiveGasPrice;
             ReceiptFrom = receiptFrom;
             ReceiptGasUsed = receiptGasUsed;
-            ReceiptSuccessful = receiptSuccessful;
+            ReceiptReceived = receiptReceived;
             ReceiptTransactionHash = receiptTransactionHash;
             ReceiptTo = receiptTo;
             TrackingId = trackingIdentify;
@@ -73,13 +75,14 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
         public string? ReceiptEffectiveGasPrice { get; private set; }
         public string? ReceiptFrom { get; private set; }
         public string? ReceiptGasUsed { get; private set; }
-        public bool? ReceiptSuccessful { get; private set; }
+        public bool? ReceiptReceived { get; private set; }
         public string? ReceiptTo { get; private set; }
         public string? ReceiptTransactionHash { get; private set; }
         public DateTime RegistryDate { get; private set; }
         public string SmartContractExtraInfo { get; private set; }
         public long SmartContractId { get; protected set; }
         public string SmartContractAddress { get; protected set; }
+        public string? SmartContractEndpoint { get; protected set; }
         public Guid TrackingId { get; private set; }
         public TransactionStep TransactionStep { get; private set; }
         public DateTime TriageDate { get; private set; }
@@ -99,6 +102,7 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
                 transactionRegistry.TrackingId,
                 transactionRegistry.SmartContractId,
                 transactionRegistry.SmartContractAddress,
+                transactionRegistry.GetFirstRandomEndpointAddress,
                 transactionRegistry.SmartContractExtraInfo,
                 transactionRegistry.ProfileGroupId,
                 transactionRegistry.ChainNumberId,
@@ -113,7 +117,7 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
                 transactionRegistry.ReceiptEffectiveGasPrice,
                 transactionRegistry.ReceiptFrom,
                 transactionRegistry.ReceiptGasUsed,
-                transactionRegistry.ReceiptSuccessful,
+                transactionRegistry.ReceiptReceived,
                 transactionRegistry.ReceiptTransactionHash,
                 transactionRegistry.ReceiptTo,
                 transactionRegistry.TransactionStep);
@@ -130,6 +134,7 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
                 transactionTriage.TrackingIdentify,
                 transactionTriage.SmartContractId,
                 transactionTriage.SmartContractAddress,
+                null,
                 transactionTriage.SmartContractExtraInfo,
                 transactionTriage.ProfileGroupId,
                 transactionTriage.ChainNumberId,
@@ -144,7 +149,7 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
                 null,
                 null,
                 null,
-                null,
+                false,
                 null,
                 null,
                 TransactionStep.Triage);
@@ -161,6 +166,7 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
                 transactionPool.TrackingId,
                 transactionPool.SmartContractId,
                 transactionPool.SmartContractAddress,
+                null,
                 transactionPool.SmartContractExtraInfo,
                 transactionPool.ProfileGroupId,
                 transactionPool.ChainNumberId,
@@ -175,7 +181,7 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
                 null,
                 null,
                 null,
-                null,
+                false,
                 null,
                 null,
                 TransactionStep.Pool);
@@ -192,6 +198,7 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
                 transactionPending.TrackingId,
                 transactionPending.SmartContractId,
                 transactionPending.SmartContractAddress,
+                null,
                 transactionPending.SmartContractExtraInfo,
                 transactionPending.ProfileGroupId,
                 transactionPending.ChainNumberId,
@@ -206,7 +213,7 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
                 null,
                 null,
                 null,
-                null,
+                false,
                 null,
                 null,
                 TransactionStep.Pending);

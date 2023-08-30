@@ -56,18 +56,23 @@ namespace TransactionWatcherWorker
                 var logger = loggerFactory.CreateLogger<PendingTransactionCheckerWorker>();
                 var poolDequeuerUseCase = scope.ServiceProvider.GetRequiredService<IPendingTransactionWatcherUseCase>();
 
-                bool dequeued = false;
+                Guid dequeued;
                 try
                 {
-                    dequeued = await poolDequeuerUseCase.CheckTransactionStatusAsync(checkerOptions.Accounts.Count, taskId);
+                    dequeued = await poolDequeuerUseCase.CheckTransactionStatusAsync(
+                        checkerOptions.Accounts.Count, 
+                        taskId, 
+                        checkerOptions.ReTryAfterSeconds, 
+                        checkerOptions.ErrorAfterReTry);
                 }
 #pragma warning disable CA1031 // We need fot catch all problems.
                 catch (Exception ex)
                 {
+                    dequeued = Guid.Empty;
                     logger.ChildCheckerTaskInError(taskId, ex);
                 }
 #pragma warning restore CA1031 // Do not catch general exception types
-                await Task.Delay(dequeued ? 100 : 1000, stoppingToken);
+                await Task.Delay(dequeued == Guid.Empty ? 1000 : 500, stoppingToken);
             }
             logger.EndChildCheckerTask(taskId);
         }

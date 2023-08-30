@@ -6,11 +6,12 @@ namespace TrackingChain.Common.ExtraInfos
     public class ContractExtraInfo
     {
         // Properties.
-        public ulong BasicWeight { get; set; } = default!;
         public ulong ByteWeight { get; set; } = default!;
+        public string GetTrackSelectorValue { get; set; } = default!;
         public string InsertTrackSelectorValue { get; set; } = default!;
-        public ulong ProofSize { get; set; } = default!;
-        public ulong RefTime { get; set; } = default!; 
+        public ulong InsertTrackBasicWeight { get; set; } = default!;
+        public ulong InsertTrackProofSize { get; set; } = default!;
+        public ulong InsertTrackRefTime { get; set; } = default!;
         public SupportedClient SupportedClient { get; set; } = default!;
         public int WaitingSecondsForWatcherTx { get; set; } = default!;
 

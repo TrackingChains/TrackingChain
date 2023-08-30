@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TrackingChain.Common.Dto;
+using TrackingChain.Core.Domain.Enums;
 using TrackingChain.TrackingChainCore.Domain.Enums;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TrackingChainCore.Options;
@@ -189,7 +190,7 @@ namespace TrackingChain.UnitTest.TransactionWatcher
         }
 
         [Fact]
-        public async Task SetToPendinglShouldSetRegistryInComplitedAsync()
+        public async Task SetToRegistryShouldPopolateDataReceiptAsync()
         {
             //Arrange
             var transactionTriages = EntityCreator.CreateTransactionTriage(5);
@@ -201,7 +202,7 @@ namespace TrackingChain.UnitTest.TransactionWatcher
             var transactionDetail = new TransactionDetail("1", "12", "", "987", "12", "", "0x9876543", "648", true, "", "0x123456789");
 
             //Act
-            var txRegistry = await transactionWatcherService.SetToRegistryAsync(twoTriage.TrackingIdentify, transactionDetail);
+            var txRegistry = await transactionWatcherService.SetToRegistryCompletedAsync(twoTriage.TrackingIdentify, transactionDetail);
             await dbContext.SaveChangesAsync();
 
 
@@ -213,8 +214,9 @@ namespace TrackingChain.UnitTest.TransactionWatcher
             Assert.Equal(transactionDetail.EffectiveGasPrice, txRegistry.ReceiptEffectiveGasPrice);
             Assert.Equal(transactionDetail.From, txRegistry.ReceiptFrom);
             Assert.Equal(transactionDetail.GasUsed, txRegistry.ReceiptGasUsed);
-            Assert.Equal(transactionDetail.Successful, txRegistry.ReceiptSuccessful);
             Assert.Equal(transactionDetail.To, txRegistry.ReceiptTo);
+            Assert.Equal(RegistryStatus.SuccessfullyCompleted, txRegistry.Status);
         }
+        
     }
 }

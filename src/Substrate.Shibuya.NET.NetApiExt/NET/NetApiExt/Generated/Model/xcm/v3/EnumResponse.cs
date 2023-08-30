@@ -32,7 +32,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v3
     }
     
     /// <summary>
-    /// >> 86 - Variant[xcm.v3.Response]
+    /// >> 87 - Variant[xcm.v3.Response]
     /// </summary>
     public sealed class EnumResponse : BaseEnumExt<Response, BaseVoid, Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v3.multiasset.MultiAssets, Substrate.NetApi.Model.Types.Base.BaseOpt<Substrate.NetApi.Model.Types.Base.BaseTuple<Substrate.NetApi.Model.Types.Primitive.U32, Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v3.traits.EnumError>>, Substrate.NetApi.Model.Types.Primitive.U32, Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT1, Substrate.Shibuya.NET.NetApiExt.Generated.Model.xcm.v3.EnumMaybeErrorCode>
     {

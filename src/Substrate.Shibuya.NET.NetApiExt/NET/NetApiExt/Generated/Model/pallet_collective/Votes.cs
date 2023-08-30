@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_collective
     
     
     /// <summary>
-    /// >> 520 - Composite[pallet_collective.Votes]
+    /// >> 519 - Composite[pallet_collective.Votes]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class Votes : BaseType

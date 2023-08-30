@@ -54,7 +54,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_democracy.palle
     }
     
     /// <summary>
-    /// >> 139 - Variant[pallet_democracy.pallet.Event]
+    /// >> 142 - Variant[pallet_democracy.pallet.Event]
     /// 
     ///			The [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted
     ///			by this pallet.

@@ -5,6 +5,7 @@ using Moq;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using TrackingChain.Common.Enums;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TrackingChainCore.Options;
 using TrackingChain.TransactionTriageCore.UseCases;
@@ -45,7 +46,7 @@ namespace TrackingChain.UnitTest.Triage
             //Arrange
             var entityTransactionRegistries = EntityCreator.CreateTransactionRegistry(10);
             foreach (var item in entityTransactionRegistries)
-                item.SetToRegistry("1", "2", "3", "4", "5", "6", true, "7", "8");
+                item.SetToRegistryCompleted("1", "2", "3", "4", "5", "6", true, "7", "8");
             dbContext.TransactionRegistries.AddRange(entityTransactionRegistries);
             dbContext.SaveChanges();
 
@@ -64,7 +65,12 @@ namespace TrackingChain.UnitTest.Triage
             //Arrange
             var entityTransactionRegistries = EntityCreator.CreateTransactionRegistry(10);
             foreach (var item in entityTransactionRegistries)
-                item.SetToRegistry("1", "2", "3", "4", "5", "6", false, "7", "8");
+            {
+                item.SetToRegistryError(TransactionErrorReason.UnableToSendTransactionOnChain);
+                item.SetWaitingToCancel();
+                item.SetToCanceled();
+            }
+                
             dbContext.TransactionRegistries.AddRange(entityTransactionRegistries);
             dbContext.SaveChanges();
 
@@ -119,7 +125,7 @@ namespace TrackingChain.UnitTest.Triage
             //Arrange
             var entityTransactionRegistries = EntityCreator.CreateTransactionRegistry(10);
             foreach (var item in entityTransactionRegistries)
-                item.SetToPending("0x2345678");
+                item.SetToPending("0x2345678", "http://test");
             dbContext.TransactionRegistries.AddRange(entityTransactionRegistries);
             dbContext.SaveChanges();
 

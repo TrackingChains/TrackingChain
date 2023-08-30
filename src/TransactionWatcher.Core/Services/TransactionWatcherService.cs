@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrackingChain.Common.Dto;
+using TrackingChain.Common.Enums;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 
@@ -57,6 +58,7 @@ namespace TrackingChain.TransactionWatcherCore.Services
             }
 
             transactionPool.SetCompleted();
+            applicationDbContext.Update(transactionPool);
 
             return transactionPool;
         }
@@ -75,11 +77,12 @@ namespace TrackingChain.TransactionWatcherCore.Services
             }
 
             transactionTriage.SetCompleted();
+            applicationDbContext.Update(transactionTriage);
 
             return transactionTriage;
         }
 
-        public async Task<TransactionRegistry> SetToRegistryAsync(
+        public async Task<TransactionRegistry> SetToRegistryCompletedAsync(
             Guid trackingId,
             TransactionDetail transactionDetail)
         {
@@ -90,12 +93,12 @@ namespace TrackingChain.TransactionWatcherCore.Services
 
             if (transactionRegistry is null)
             {
-                var ex = new InvalidOperationException("Account not found");
+                var ex = new InvalidOperationException("Registry not found");
                 ex.Data.Add("TrackingId", transactionRegistry);
                 throw ex;
             }
 
-            transactionRegistry.SetToRegistry(
+            transactionRegistry.SetToRegistryCompleted(
                 transactionDetail.BlockHash,
                 transactionDetail.BlockNumber,
                 transactionDetail.CumulativeGasUsed,
@@ -111,5 +114,25 @@ namespace TrackingChain.TransactionWatcherCore.Services
             return transactionRegistry;
         }
 
+        public async Task<TransactionRegistry> SetToRegistryErrorAsync(
+            Guid trackingId,
+            TransactionErrorReason transactionErrorReason)
+        {
+            var transactionRegistry = await applicationDbContext.TransactionRegistries
+                .FirstOrDefaultAsync(tr => tr.TrackingId == trackingId);
+
+            if (transactionRegistry is null)
+            {
+                var ex = new InvalidOperationException("Registry not found");
+                ex.Data.Add("TrackingId", transactionRegistry);
+                throw ex;
+            }
+
+            transactionRegistry.SetToRegistryError(transactionErrorReason);
+
+            applicationDbContext.Update(transactionRegistry);
+
+            return transactionRegistry;
+        }
     }
 }

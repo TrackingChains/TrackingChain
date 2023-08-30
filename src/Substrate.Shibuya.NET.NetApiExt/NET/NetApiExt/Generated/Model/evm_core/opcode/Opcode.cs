@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.evm_core.opcode
     
     
     /// <summary>
-    /// >> 129 - Composite[evm_core.opcode.Opcode]
+    /// >> 130 - Composite[evm_core.opcode.Opcode]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class Opcode : BaseType

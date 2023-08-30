@@ -1,0 +1,105 @@
+﻿@page
+@model TrackingChain.TriageWebApplication.Pages.Admin.Trackings.TriagesModel
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="search-form">
+                <form asp-page="./Triages" method="get">
+                    <label for="searchInput">Search by Code or TrackingId:</label>
+                    <div class="input-group" style="flex-grow: 1; margin-right: 10px;">
+                        <input type="text" id="searchInput" name="SearchString" value="@Model.CurrentFilter" class="form-control" />
+                        <div class="input-group-append" style="margin-left: 10px;">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                    <a asp-page="./Triages" class="btn btn-link">Clear Filters</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive mt-4">
+        <table class="tracking-table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TransactionTriages[0].TrackingIdentify)
+                    </th>
+                    <th>
+                        <a asp-page="./Triages"
+                           asp-route-sortOrder="@Model.CodeSort"
+                           asp-route-currentFilter="@Model.CurrentFilter">
+                            @Html.DisplayNameFor(model => model.TransactionTriages[0].Code)
+                        </a>
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TransactionTriages[0].IsInPool)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TransactionTriages[0].Completed)
+                    </th>
+                    <th>
+                        <a asp-page="./Triages"
+                           asp-route-sortOrder="@Model.ReceivedDateSort"
+                           asp-route-currentFilter="@Model.CurrentFilter">
+                            @Html.DisplayNameFor(model => model.TransactionTriages[0].ReceivedDate)
+                        </a>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.TransactionTriages)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TrackingIdentify)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Code)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsInPool)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Completed)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ReceivedDate)
+                        </td>
+                        <td>
+                            <a class="btn btn-info btn-sm" asp-page="./TriageDetails" asp-route-id="@item.Id">Details</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="total-items">
+        @{
+            var itemShowEnd = Model.PageSize * (Model.TransactionTriages.PageIndex - 1) + Model.TransactionTriages.Count;
+            var itemShowStart = itemShowEnd - Model.TransactionTriages.Count + 1;
+        }
+        Showing @itemShowStart of @itemShowEnd items out of @Model.TotalItems.
+    </div>
+    <div class="pagination">
+        @if (Model.TransactionTriages.HasPreviousPage &&
+        Model.TransactionTriages.TotalPages > 5)
+        {
+            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="1" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">First</a>
+            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="@(Model.TransactionTriages.PageIndex - 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Previous</a>
+        }
+
+        @for (int i = Math.Max(1, Model.TransactionTriages.PageIndex - 2); i <= Math.Min(Model.TransactionTriages.TotalPages, Model.TransactionTriages.PageIndex + 2); i++)
+        {
+            <a class="page-link @(i == Model.TransactionTriages.PageIndex ? "active" : "")" asp-page="./Triages" asp-route-pageIndex="@i" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">@i</a>
+        }
+
+        @if (Model.TransactionTriages.HasNextPage &&
+        Model.TransactionTriages.TotalPages > 5)
+        {
+            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="@(Model.TransactionTriages.PageIndex + 1)" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Next</a>
+            <a class="page-link" asp-page="./Triages" asp-route-pageIndex="@Model.TransactionTriages.TotalPages" asp-route-currentFilter="@Model.CurrentFilter" asp-route-sortOrder="@Model.CurrentSort">Last</a>
+        }
+    </div>
+</div>

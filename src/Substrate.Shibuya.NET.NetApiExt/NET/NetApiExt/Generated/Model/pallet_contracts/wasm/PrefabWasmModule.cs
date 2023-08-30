@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.wasm
     
     
     /// <summary>
-    /// >> 491 - Composite[pallet_contracts.wasm.PrefabWasmModule]
+    /// >> 490 - Composite[pallet_contracts.wasm.PrefabWasmModule]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class PrefabWasmModule : BaseType

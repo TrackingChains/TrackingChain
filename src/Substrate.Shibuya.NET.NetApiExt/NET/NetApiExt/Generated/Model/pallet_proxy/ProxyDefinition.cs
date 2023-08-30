@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_proxy
     
     
     /// <summary>
-    /// >> 356 - Composite[pallet_proxy.ProxyDefinition]
+    /// >> 347 - Composite[pallet_proxy.ProxyDefinition]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class ProxyDefinition : BaseType

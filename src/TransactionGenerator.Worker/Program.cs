@@ -1,8 +1,9 @@
+using EVM.Generic.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using TrackingChain.Common.Interfaces;
-using TrackingChain.Core;
+using TrackingChain.Substrate.Generic.Client;
 using TrackingChain.TrackingChainCore.EntityFramework;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TrackingChainCore.Options;
@@ -15,10 +16,8 @@ IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
     {
         //config
-        var databaseSection = hostContext.Configuration.GetSection("Database");
-        services.Configure<DatabaseOptions>(databaseSection);
-        var dequeuerSection = hostContext.Configuration.GetSection("Dequeuer");
-        services.Configure<DequeuerOptions>(dequeuerSection);
+        services.Configure<DatabaseOptions>(hostContext.Configuration.GetSection("Database"));
+        services.Configure<DequeuerOptions>(hostContext.Configuration.GetSection("Dequeuer"));
 
         //database
         services.AddDbContext<ApplicationDbContext>();
@@ -26,7 +25,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         //services
         services.AddTransient<IAccountService, AccountService>();
         services.AddTransient<IBlockchainService, NethereumService>();
-        services.AddTransient<IBlockchainService, SubstrateClient>();
+        services.AddTransient<IBlockchainService, SubstrateGenericClient>();
         services.AddTransient<ITransactionGeneratorService, TransactionGeneratorService>();
         services.AddTransient<IPoolDequeuerUseCase, PoolDequeuerUseCase>();
         services.AddTransient<IUnitOfWork, UnitOfWork>();

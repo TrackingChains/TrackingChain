@@ -187,6 +187,11 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated
         public EVMChainIdStorage EVMChainIdStorage;
         
         /// <summary>
+        /// EthereumCheckedStorage storage calls.
+        /// </summary>
+        public EthereumCheckedStorage EthereumCheckedStorage;
+        
+        /// <summary>
         /// ContractsStorage storage calls.
         /// </summary>
         public ContractsStorage ContractsStorage;
@@ -226,11 +231,6 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated
         /// </summary>
         public SudoStorage SudoStorage;
         
-        /// <summary>
-        /// StateTrieMigrationStorage storage calls.
-        /// </summary>
-        public StateTrieMigrationStorage StateTrieMigrationStorage;
-        
         public SubstrateClientExt(System.Uri uri, Substrate.NetApi.Model.Extrinsics.ChargeType chargeType) : 
                 base(uri, chargeType)
         {
@@ -267,6 +267,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated
             this.EthereumStorage = new EthereumStorage(this);
             this.BaseFeeStorage = new BaseFeeStorage(this);
             this.EVMChainIdStorage = new EVMChainIdStorage(this);
+            this.EthereumCheckedStorage = new EthereumCheckedStorage(this);
             this.ContractsStorage = new ContractsStorage(this);
             this.DemocracyStorage = new DemocracyStorage(this);
             this.CouncilStorage = new CouncilStorage(this);
@@ -275,7 +276,6 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated
             this.PreimageStorage = new PreimageStorage(this);
             this.XvmStorage = new XvmStorage(this);
             this.SudoStorage = new SudoStorage(this);
-            this.StateTrieMigrationStorage = new StateTrieMigrationStorage(this);
         }
     }
 }

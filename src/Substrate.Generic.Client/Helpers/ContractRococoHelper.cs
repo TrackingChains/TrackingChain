@@ -1,6 +1,6 @@
 ﻿using Substrate.ContractRococo.NET.NetApiExt.Generated.Model.sp_core.crypto;
 
-namespace TrackingChain.Core.Helpers
+namespace TrackingChain.Substrate.Generic.Client.Helpers
 {
     public static class ContractRococoHelper
     {

@@ -36,7 +36,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_paracha
     }
     
     /// <summary>
-    /// >> 376 - Variant[cumulus_pallet_parachain_system.pallet.Error]
+    /// >> 369 - Variant[cumulus_pallet_parachain_system.pallet.Error]
     /// 
     ///			Custom [dispatch errors](https://docs.substrate.io/main-docs/build/events-errors/)
     ///			of this pallet.

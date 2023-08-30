@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.shibuya_runtime
     
     
     /// <summary>
-    /// >> 552 - Composite[shibuya_runtime.Runtime]
+    /// >> 141 - Composite[shibuya_runtime.Runtime]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class Runtime : BaseType

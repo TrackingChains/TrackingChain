@@ -1,0 +1,199 @@
+﻿@page
+@model TrackingChain.TriageWebApplication.Pages.Admin.Trackings.RegistryDetailsModel
+
+<h4>Transaction Registry</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <div class="trackingsection">
+            <dl>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionRegistry.Code)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionRegistry.Code)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionRegistry.TriageDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionRegistry.TriageDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionRegistry.PendingDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionRegistry.PendingDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionRegistry.LastTransactionHash)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionRegistry.LastTransactionHash)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionRegistry.TransactionStep)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionRegistry.TransactionStep)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionRegistry.RegistryDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionRegistry.RegistryDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionRegistry.SmartContractEndpoint)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionRegistry.SmartContractEndpoint)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionRegistry.ProfileGroupId)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionRegistry.ProfileGroupId)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionRegistry.SmartContractExtraInfo)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionRegistry.SmartContractExtraInfo)
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="trackingsection">
+            <dl>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionRegistry.DataValue)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionRegistry.DataValue)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionRegistry.PoolDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionRegistry.PoolDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionRegistry.ReceivedDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionRegistry.ReceivedDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionRegistry.ChainNumberId)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionRegistry.ChainNumberId)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionRegistry.ChainType)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionRegistry.ChainType)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionRegistry.SmartContractId)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionRegistry.SmartContractId)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionRegistry.SmartContractAddress)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionRegistry.SmartContractAddress)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TransactionRegistry.Status)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TransactionRegistry.Status)
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+@if (Model.TransactionRegistry.ReceiptReceived)
+{
+    <div class="row">
+        <h4>Receipt Received</h4>
+        <hr />
+        <div class="col-md-6">
+            <div class="trackingsection">
+                <dl>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptBlockHash)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.TransactionRegistry.ReceiptBlockHash)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptBlockNumber)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.TransactionRegistry.ReceiptBlockNumber)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptCumulativeGasUsed)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.TransactionRegistry.ReceiptCumulativeGasUsed)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptEffectiveGasPrice)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.TransactionRegistry.ReceiptEffectiveGasPrice)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="trackingsection">
+                <dl>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptFrom)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.TransactionRegistry.ReceiptFrom)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptGasUsed)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.TransactionRegistry.ReceiptGasUsed)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptReceived)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.TransactionRegistry.ReceiptReceived)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptTransactionHash)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.TransactionRegistry.ReceiptTransactionHash)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.TransactionRegistry.ReceiptTo)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.TransactionRegistry.ReceiptTo)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    <a class="back-link" asp-page="./Registries">Back to List</a>
+</div>

@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Types.Base
     
     
     /// <summary>
-    /// >> 187 - Array
+    /// >> 184 - Array
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Array)]
     public sealed class Arr2U8 : BaseType

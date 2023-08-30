@@ -26,7 +26,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_assets.types
     }
     
     /// <summary>
-    /// >> 410 - Variant[pallet_assets.types.AssetStatus]
+    /// >> 406 - Variant[pallet_assets.types.AssetStatus]
     /// </summary>
     public sealed class EnumAssetStatus : BaseEnum<AssetStatus>
     {

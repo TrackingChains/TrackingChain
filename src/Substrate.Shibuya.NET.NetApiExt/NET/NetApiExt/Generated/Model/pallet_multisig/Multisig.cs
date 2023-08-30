@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_multisig
     
     
     /// <summary>
-    /// >> 344 - Composite[pallet_multisig.Multisig]
+    /// >> 335 - Composite[pallet_multisig.Multisig]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class Multisig : BaseType

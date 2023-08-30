@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TrackingChain.Common.Dto;
+using TrackingChain.Common.Enums;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 
@@ -65,21 +67,70 @@ namespace TrackingChain.TransactionGeneratorCore.Services
                 .ToListAsync();
         }
 
-        public async Task<TransactionRegistry> SetToPendingAsync(Guid trackingId, string lastTransactionHash)
+        public async Task<TransactionRegistry> SetToPendingAsync(
+            Guid trackingId, 
+            string lastTransactionHash, 
+            string smartContractEndpoint)
         {
             ArgumentNullException.ThrowIfNull(trackingId);
 
             var transactionRegistry = await applicationDbContext.TransactionRegistries
-                .FirstOrDefaultAsync(tr => tr.TrackingId == trackingId);
+                .FirstOrDefaultAsync(tr => tr.TrackingId == trackingId) ?? throw new InvalidOperationException();
 
-            if (transactionRegistry is null)
-                throw new InvalidOperationException(); //TODO next MileStone
-
-            transactionRegistry.SetToPending(lastTransactionHash);
+            transactionRegistry.SetToPending(lastTransactionHash, smartContractEndpoint);
 
             applicationDbContext.Update(transactionRegistry);
 
             return transactionRegistry;
+        }
+
+        public async Task<TransactionRegistry> SetToRegistryErrorAsync(Guid trackingId)
+        {
+            var transactionRegistry = await applicationDbContext.TransactionRegistries
+                .FirstOrDefaultAsync(tr => tr.TrackingId == trackingId);
+
+            if (transactionRegistry is null)
+            {
+                var ex = new InvalidOperationException("Account not found");
+                ex.Data.Add("TrackingId", transactionRegistry);
+                throw ex;
+            }
+
+            var transactionDetail = new TransactionDetail(TransactionErrorReason.UnableToSendTransactionOnChain);
+
+            transactionRegistry.SetToRegistryCompleted(
+                transactionDetail.BlockHash,
+                transactionDetail.BlockNumber,
+                transactionDetail.CumulativeGasUsed,
+                transactionDetail.EffectiveGasPrice,
+                transactionDetail.From,
+                transactionDetail.GasUsed,
+                transactionDetail.Successful,
+                transactionDetail.TransactionHash,
+                transactionDetail.To);
+
+            applicationDbContext.Update(transactionRegistry);
+
+            return transactionRegistry;
+        }
+
+        public async Task<TransactionTriage> SetTransactionTriageErrorCompletedAsync(Guid trackingId)
+        {
+            var transactionTriage = await applicationDbContext.TransactionTriages
+                .Where(tp => tp.TrackingIdentify == trackingId)
+                .FirstOrDefaultAsync();
+
+            if (transactionTriage is null)
+            {
+                var ex = new InvalidOperationException("transactionTriage not found");
+                ex.Data.Add("TrackingId", trackingId);
+                throw ex;
+            }
+
+            transactionTriage.SetCompleted();
+            applicationDbContext.Update(transactionTriage);
+
+            return transactionTriage;
         }
     }
 }

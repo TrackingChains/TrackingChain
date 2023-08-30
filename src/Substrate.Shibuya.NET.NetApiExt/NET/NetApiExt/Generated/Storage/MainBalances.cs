@@ -33,11 +33,15 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("Balances", "TotalIssuance"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.NetApi.Model.Types.Primitive.U128)));
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("Balances", "InactiveIssuance"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(null, null, typeof(Substrate.NetApi.Model.Types.Primitive.U128)));
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("Balances", "Account"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(new Substrate.NetApi.Model.Meta.Storage.Hasher[] {
-                            Substrate.NetApi.Model.Meta.Storage.Hasher.BlakeTwo128Concat}, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32), typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_balances.AccountData)));
+                            Substrate.NetApi.Model.Meta.Storage.Hasher.BlakeTwo128Concat}, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32), typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_balances.types.AccountData)));
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("Balances", "Locks"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(new Substrate.NetApi.Model.Meta.Storage.Hasher[] {
                             Substrate.NetApi.Model.Meta.Storage.Hasher.BlakeTwo128Concat}, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32), typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.weak_bounded_vec.WeakBoundedVecT2)));
             _client.StorageKeyDict.Add(new System.Tuple<string, string>("Balances", "Reserves"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(new Substrate.NetApi.Model.Meta.Storage.Hasher[] {
                             Substrate.NetApi.Model.Meta.Storage.Hasher.BlakeTwo128Concat}, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32), typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT15)));
+            _client.StorageKeyDict.Add(new System.Tuple<string, string>("Balances", "Holds"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(new Substrate.NetApi.Model.Meta.Storage.Hasher[] {
+                            Substrate.NetApi.Model.Meta.Storage.Hasher.BlakeTwo128Concat}, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32), typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT16)));
+            _client.StorageKeyDict.Add(new System.Tuple<string, string>("Balances", "Freezes"), new System.Tuple<Substrate.NetApi.Model.Meta.Storage.Hasher[], System.Type, System.Type>(new Substrate.NetApi.Model.Meta.Storage.Hasher[] {
+                            Substrate.NetApi.Model.Meta.Storage.Hasher.BlakeTwo128Concat}, typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32), typeof(Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT16)));
         }
         
         /// <summary>
@@ -139,7 +143,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         public static string AccountDefault()
         {
             return "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000" +
-                "0000000000000000000000000000000000000000000000000";
+                "0000000000000000000000000000000000000000000000080";
         }
         
         /// <summary>
@@ -169,10 +173,10 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         ///  `Balances` pallet, which uses a `StorageMap` to store balances data only.
         ///  NOTE: This is only used in the case that this pallet is used to store balances.
         /// </summary>
-        public async Task<Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_balances.AccountData> Account(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32 key, CancellationToken token)
+        public async Task<Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_balances.types.AccountData> Account(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32 key, CancellationToken token)
         {
             string parameters = BalancesStorage.AccountParams(key);
-            var result = await _client.GetStorageAsync<Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_balances.AccountData>(parameters, token);
+            var result = await _client.GetStorageAsync<Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_balances.types.AccountData>(parameters, token);
             return result;
         }
         
@@ -239,34 +243,96 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
             var result = await _client.GetStorageAsync<Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT15>(parameters, token);
             return result;
         }
+        
+        /// <summary>
+        /// >> HoldsParams
+        ///  Holds on account balances.
+        /// </summary>
+        public static string HoldsParams(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32 key)
+        {
+            return RequestGenerator.GetStorage("Balances", "Holds", Substrate.NetApi.Model.Meta.Storage.Type.Map, new Substrate.NetApi.Model.Meta.Storage.Hasher[] {
+                        Substrate.NetApi.Model.Meta.Storage.Hasher.BlakeTwo128Concat}, new Substrate.NetApi.Model.Types.IType[] {
+                        key});
+        }
+        
+        /// <summary>
+        /// >> HoldsDefault
+        /// Default value as hex string
+        /// </summary>
+        public static string HoldsDefault()
+        {
+            return "0x00";
+        }
+        
+        /// <summary>
+        /// >> Holds
+        ///  Holds on account balances.
+        /// </summary>
+        public async Task<Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT16> Holds(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32 key, CancellationToken token)
+        {
+            string parameters = BalancesStorage.HoldsParams(key);
+            var result = await _client.GetStorageAsync<Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT16>(parameters, token);
+            return result;
+        }
+        
+        /// <summary>
+        /// >> FreezesParams
+        ///  Freeze locks on account balances.
+        /// </summary>
+        public static string FreezesParams(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32 key)
+        {
+            return RequestGenerator.GetStorage("Balances", "Freezes", Substrate.NetApi.Model.Meta.Storage.Type.Map, new Substrate.NetApi.Model.Meta.Storage.Hasher[] {
+                        Substrate.NetApi.Model.Meta.Storage.Hasher.BlakeTwo128Concat}, new Substrate.NetApi.Model.Types.IType[] {
+                        key});
+        }
+        
+        /// <summary>
+        /// >> FreezesDefault
+        /// Default value as hex string
+        /// </summary>
+        public static string FreezesDefault()
+        {
+            return "0x00";
+        }
+        
+        /// <summary>
+        /// >> Freezes
+        ///  Freeze locks on account balances.
+        /// </summary>
+        public async Task<Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT16> Freezes(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32 key, CancellationToken token)
+        {
+            string parameters = BalancesStorage.FreezesParams(key);
+            var result = await _client.GetStorageAsync<Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT16>(parameters, token);
+            return result;
+        }
     }
     
     public sealed class BalancesCalls
     {
         
         /// <summary>
-        /// >> transfer
+        /// >> transfer_allow_death
         /// Contains one variant per dispatchable that can be called by an extrinsic.
         /// </summary>
-        public static Method Transfer(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_runtime.multiaddress.EnumMultiAddress dest, Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128> value)
+        public static Method TransferAllowDeath(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_runtime.multiaddress.EnumMultiAddress dest, Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128> value)
         {
             System.Collections.Generic.List<byte> byteArray = new List<byte>();
             byteArray.AddRange(dest.Encode());
             byteArray.AddRange(value.Encode());
-            return new Method(31, "Balances", 0, "transfer", byteArray.ToArray());
+            return new Method(31, "Balances", 0, "transfer_allow_death", byteArray.ToArray());
         }
         
         /// <summary>
-        /// >> set_balance
+        /// >> set_balance_deprecated
         /// Contains one variant per dispatchable that can be called by an extrinsic.
         /// </summary>
-        public static Method SetBalance(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_runtime.multiaddress.EnumMultiAddress who, Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128> new_free, Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128> new_reserved)
+        public static Method SetBalanceDeprecated(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_runtime.multiaddress.EnumMultiAddress who, Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128> new_free, Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128> old_reserved)
         {
             System.Collections.Generic.List<byte> byteArray = new List<byte>();
             byteArray.AddRange(who.Encode());
             byteArray.AddRange(new_free.Encode());
-            byteArray.AddRange(new_reserved.Encode());
-            return new Method(31, "Balances", 1, "set_balance", byteArray.ToArray());
+            byteArray.AddRange(old_reserved.Encode());
+            return new Method(31, "Balances", 1, "set_balance_deprecated", byteArray.ToArray());
         }
         
         /// <summary>
@@ -317,6 +383,41 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
             byteArray.AddRange(amount.Encode());
             return new Method(31, "Balances", 5, "force_unreserve", byteArray.ToArray());
         }
+        
+        /// <summary>
+        /// >> upgrade_accounts
+        /// Contains one variant per dispatchable that can be called by an extrinsic.
+        /// </summary>
+        public static Method UpgradeAccounts(Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32> who)
+        {
+            System.Collections.Generic.List<byte> byteArray = new List<byte>();
+            byteArray.AddRange(who.Encode());
+            return new Method(31, "Balances", 6, "upgrade_accounts", byteArray.ToArray());
+        }
+        
+        /// <summary>
+        /// >> transfer
+        /// Contains one variant per dispatchable that can be called by an extrinsic.
+        /// </summary>
+        public static Method Transfer(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_runtime.multiaddress.EnumMultiAddress dest, Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128> value)
+        {
+            System.Collections.Generic.List<byte> byteArray = new List<byte>();
+            byteArray.AddRange(dest.Encode());
+            byteArray.AddRange(value.Encode());
+            return new Method(31, "Balances", 7, "transfer", byteArray.ToArray());
+        }
+        
+        /// <summary>
+        /// >> force_set_balance
+        /// Contains one variant per dispatchable that can be called by an extrinsic.
+        /// </summary>
+        public static Method ForceSetBalance(Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_runtime.multiaddress.EnumMultiAddress who, Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U128> new_free)
+        {
+            System.Collections.Generic.List<byte> byteArray = new List<byte>();
+            byteArray.AddRange(who.Encode());
+            byteArray.AddRange(new_free.Encode());
+            return new Method(31, "Balances", 8, "force_set_balance", byteArray.ToArray());
+        }
     }
     
     public sealed class BalancesConstants
@@ -324,7 +425,14 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         
         /// <summary>
         /// >> ExistentialDeposit
-        ///  The minimum amount required to keep an account open.
+        ///  The minimum amount required to keep an account open. MUST BE GREATER THAN ZERO!
+        /// 
+        ///  If you *really* need it to be zero, you can enable the feature `insecure_zero_ed` for
+        ///  this pallet. However, you do so at your own risk: this will open up a major DoS vector.
+        ///  In case you have multiple sources of provider references, you may also get unexpected
+        ///  behaviour if you set this to zero.
+        /// 
+        ///  Bottom line: Do yourself a favour and make it at least one!
         /// </summary>
         public Substrate.NetApi.Model.Types.Primitive.U128 ExistentialDeposit()
         {
@@ -355,6 +463,28 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
             result.Create("0x32000000");
             return result;
         }
+        
+        /// <summary>
+        /// >> MaxHolds
+        ///  The maximum number of holds that can exist on an account at any time.
+        /// </summary>
+        public Substrate.NetApi.Model.Types.Primitive.U32 MaxHolds()
+        {
+            var result = new Substrate.NetApi.Model.Types.Primitive.U32();
+            result.Create("0x00000000");
+            return result;
+        }
+        
+        /// <summary>
+        /// >> MaxFreezes
+        ///  The maximum number of individual freeze locks that can exist on an account at any time.
+        /// </summary>
+        public Substrate.NetApi.Model.Types.Primitive.U32 MaxFreezes()
+        {
+            var result = new Substrate.NetApi.Model.Types.Primitive.U32();
+            result.Create("0x00000000");
+            return result;
+        }
     }
     
     public enum BalancesErrors
@@ -362,13 +492,13 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         
         /// <summary>
         /// >> VestingBalance
-        /// Vesting balance too high to send value
+        /// Vesting balance too high to send value.
         /// </summary>
         VestingBalance,
         
         /// <summary>
         /// >> LiquidityRestrictions
-        /// Account liquidity restrictions prevent withdrawal
+        /// Account liquidity restrictions prevent withdrawal.
         /// </summary>
         LiquidityRestrictions,
         
@@ -380,32 +510,44 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         
         /// <summary>
         /// >> ExistentialDeposit
-        /// Value too low to create account due to existential deposit
+        /// Value too low to create account due to existential deposit.
         /// </summary>
         ExistentialDeposit,
         
         /// <summary>
-        /// >> KeepAlive
-        /// Transfer/payment would kill account
+        /// >> Expendability
+        /// Transfer/payment would kill account.
         /// </summary>
-        KeepAlive,
+        Expendability,
         
         /// <summary>
         /// >> ExistingVestingSchedule
-        /// A vesting schedule already exists for this account
+        /// A vesting schedule already exists for this account.
         /// </summary>
         ExistingVestingSchedule,
         
         /// <summary>
         /// >> DeadAccount
-        /// Beneficiary account must pre-exist
+        /// Beneficiary account must pre-exist.
         /// </summary>
         DeadAccount,
         
         /// <summary>
         /// >> TooManyReserves
-        /// Number of named reserves exceed MaxReserves
+        /// Number of named reserves exceed `MaxReserves`.
         /// </summary>
         TooManyReserves,
+        
+        /// <summary>
+        /// >> TooManyHolds
+        /// Number of holds exceed `MaxHolds`.
+        /// </summary>
+        TooManyHolds,
+        
+        /// <summary>
+        /// >> TooManyFreezes
+        /// Number of freezes exceed `MaxFreezes`.
+        /// </summary>
+        TooManyFreezes,
     }
 }

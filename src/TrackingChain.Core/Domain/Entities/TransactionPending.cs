@@ -1,6 +1,7 @@
 ﻿using System;
 using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
+using TrackingChain.Core.Domain.Enums;
 
 namespace TrackingChain.TrackingChainCore.Domain.Entities
 {
@@ -28,6 +29,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             TriageDate = triageDate;
             TxHash = txHash;
             PoolDate = poolDate;
+            Status = PendingStatus.WaitingForWorker;
 
             var extraInfo = ContractExtraInfo.FromJson(smartContractExtraInfo);
             if (forceWatchingFrom.HasValue)
@@ -44,10 +46,13 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         // Properties.
         public Guid TrackingId { get; private set; }
         public bool Completed { get; private set; }
+        public int ErrorTimes { get; private set; }
         public bool IsInProgress { get; private set; }
+        public TransactionErrorReason? LastUnlockedError { get; private set; }
         public bool Locked { get; private set; }
         public Guid? LockedBy { get; private set; }
         public DateTime? LockedDated { get; private set; }
+        public PendingStatus Status { get; private set; }
         public DateTime TriageDate { get; private set; }
         public string TxHash { get; private set; }
         public byte Priority { get; private set; }
@@ -55,6 +60,13 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public DateTime WatchingFrom { get; private set; }
 
         // Methods.
+        public void Reprocessable()
+        {
+            ErrorTimes = 0;
+            Status = PendingStatus.WaitingForWorker;
+            Unlock();
+        }
+
         public void SetCompleted()
         {
             if (Completed)
@@ -65,6 +77,12 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             }
 
             Completed = true;
+            Status = PendingStatus.Done;
+        }
+
+        public void SetStatusError()
+        {
+            Status = PendingStatus.Error;
         }
 
         public void SetLocked(Guid accountId)
@@ -82,13 +100,32 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             Locked = true;
             LockedBy = accountId;
             LockedDated = DateTime.UtcNow;
+            Status = PendingStatus.InProgress;
+        }
+
+        public void SetStatusDone()
+        {
+            Status = PendingStatus.Done;
         }
 
         public void Unlock(int secondsDelayWatchingFrom = 6)
         {
             Locked = false;
             LockedBy = null;
+            Status = PendingStatus.WaitingForWorker;
             WatchingFrom = DateTime.UtcNow.AddSeconds(secondsDelayWatchingFrom);
+        }
+
+        public void UnlockFromError(
+            TransactionErrorReason transactionErrorReason,
+            int secondsDelayWatchingFrom = 6)
+        {
+            ErrorTimes++;
+            LastUnlockedError = transactionErrorReason;
+            Locked = false;
+            LockedBy = null;
+            Status = PendingStatus.WaitingForWorker;
+            WatchingFrom = DateTime.UtcNow.AddSeconds(secondsDelayWatchingFrom * ErrorTimes);
         }
     }
 }

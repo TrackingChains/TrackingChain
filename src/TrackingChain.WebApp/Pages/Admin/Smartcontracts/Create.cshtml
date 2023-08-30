@@ -1,0 +1,63 @@
+﻿@page
+@using TrackingChain.Common.Enums;
+@model TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts.CreateModel
+@{
+    var chainTypeEnumValues = Enum.GetValues(typeof(ChainType)).Cast<ChainType>().Select(e => new SelectListItem
+            {
+                Value = e.ToString(),
+                Text = e.ToString()
+            }).ToList();
+    var chainTypeSelectList = new SelectList(chainTypeEnumValues, "Value", "Text");
+}
+
+<h4>SmartContract</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SmartContractBinding.Address" class="control-label"></label>
+                <input asp-for="SmartContractBinding.Address" class="form-control" />
+                <span asp-validation-for="SmartContractBinding.Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SmartContractBinding.ChainNumberId" class="control-label"></label>
+                <input asp-for="SmartContractBinding.ChainNumberId" class="form-control" />
+                <span asp-validation-for="SmartContractBinding.ChainNumberId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SmartContractBinding.ChainType" class="control-label"></label>
+                <select asp-for="SmartContractBinding.ChainType" class="form-control" asp-items="chainTypeSelectList"></select>
+                <span asp-validation-for="SmartContractBinding.ChainType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SmartContractBinding.Currency" class="control-label"></label>
+                <input asp-for="SmartContractBinding.Currency" class="form-control" />
+                <span asp-validation-for="SmartContractBinding.Currency" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SmartContractBinding.ExtraInfo" class="control-label"></label>
+                <input asp-for="SmartContractBinding.ExtraInfo" class="form-control" />
+                <span asp-validation-for="SmartContractBinding.ExtraInfo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SmartContractBinding.Name" class="control-label"></label>
+                <input asp-for="SmartContractBinding.Name" class="form-control" />
+                <span asp-validation-for="SmartContractBinding.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+        @Model.ErrorMessage
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

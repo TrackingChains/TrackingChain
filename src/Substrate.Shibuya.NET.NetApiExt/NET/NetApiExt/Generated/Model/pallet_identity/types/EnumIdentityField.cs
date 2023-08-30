@@ -36,7 +36,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_identity.types
     }
     
     /// <summary>
-    /// >> 218 - Variant[pallet_identity.types.IdentityField]
+    /// >> 215 - Variant[pallet_identity.types.IdentityField]
     /// </summary>
     public sealed class EnumIdentityField : BaseEnum<IdentityField>
     {

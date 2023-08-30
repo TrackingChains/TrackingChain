@@ -98,7 +98,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Storage
         /// </summary>
         public static string LedgerDefault()
         {
-            return "0x000001";
+            return "0x000000";
         }
         
         /// <summary>

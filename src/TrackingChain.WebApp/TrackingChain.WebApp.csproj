@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>TrackingChain.TriageWebApplication</RootNamespace>
+
+    <Authors>Federico Cicciarella</Authors>
+    <Description>Tracking entry API</Description>
+
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Nullable>enable</Nullable>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Configurations>Debug;Release</Configurations>
+    <UserSecretsId>26fdef2b-14e5-4e45-b38e-b1e415870ce0</UserSecretsId>
+
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/TrackingChains</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/TrackingChains/TrackingChain</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.9" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
+    <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EVM.Generic.Client\EVM.Generic.Client.csproj" />
+    <ProjectReference Include="..\Substrate.Generic.Client\Substrate.Generic.Client.csproj" />
+    <ProjectReference Include="..\TransactionTriage.Core\TransactionTriage.Core.csproj" />
+    <None Include="../../README.md" Pack="true" PackagePath="\" />
+    <None Include="../../LICENSE" Pack="true" PackagePath="" />
+    <None Include="compilerconfig.json" />
+    <None Include="Pages\Admin\Accounts\Create.cshtml" />
+    <None Include="Pages\Admin\Accounts\Delete.cshtml" />
+    <None Include="Pages\Admin\Accounts\Details.cshtml" />
+    <None Include="Pages\Admin\Accounts\Edit.cshtml" />
+    <None Include="Pages\Admin\Accounts\Index.cshtml" />
+    <None Include="Pages\Admin\ProfileGroups\Create.cshtml" />
+    <None Include="Pages\Admin\ProfileGroups\Delete.cshtml" />
+    <None Include="Pages\Admin\ProfileGroups\Details.cshtml" />
+    <None Include="Pages\Admin\ProfileGroups\Edit.cshtml" />
+    <None Include="Pages\Admin\ProfileGroups\Index.cshtml" />
+    <None Include="Pages\Admin\Smartcontracts\Create.cshtml" />
+    <None Include="Pages\Admin\Smartcontracts\Delete.cshtml" />
+    <None Include="Pages\Admin\Smartcontracts\Details.cshtml" />
+    <None Include="Pages\Admin\Smartcontracts\Edit.cshtml" />
+    <None Include="Pages\Admin\Smartcontracts\Index.cshtml" />
+  </ItemGroup>
+
+</Project>

@@ -1,5 +1,6 @@
 ﻿using System;
 using TrackingChain.Common.Enums;
+using TrackingChain.Core.Domain.Enums;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using Xunit;
 
@@ -56,40 +57,16 @@ namespace TrackingChain.UnitTest.Domain
             Assert.Equal(smartContractExtraInfo, transactionPending.SmartContractExtraInfo);
             Assert.Equal(chainNumberId, transactionPending.ChainNumberId);
             Assert.Equal(chainType, transactionPending.ChainType);
+            Assert.Equal(PendingStatus.WaitingForWorker, transactionPending.Status);
             Assert.Equal(forceWatchingFrom, transactionPending.WatchingFrom);
+            Assert.Null(transactionPending.LastUnlockedError);
         }
 
         [Fact]
         public void SetCompletedShouldBeSetTrue()
         {
             //Arrange
-            string txHash = "0x1234567890";
-            string code = "CodeTest";
-            string data = "DataTest";
-            var poolDate = new DateTime(1987, 7, 23, 03, 15, 0, 0);
-            var trackingIdentify = Guid.NewGuid();
-            var triageDate = new DateTime(1987, 7, 23, 02, 15, 0, 0);
-            var profileGroupId = Guid.NewGuid();
-            var smartContractId = 10;
-            var smartContractAddress = "0x1234";
-            var smartContractExtraInfo = "{}";
-            var chainNumberId = 1001;
-            var chainType = ChainType.Substrate;
-            var forceWatchingFrom = new DateTime(1987, 7, 23, 12, 15, 0, 0);
-            var transactionPending = new TransactionPending(
-                txHash,
-                code,
-                data,
-                poolDate,
-                trackingIdentify,
-                triageDate,
-                profileGroupId,
-                smartContractId,
-                smartContractAddress,
-                smartContractExtraInfo,
-                chainNumberId,
-                chainType,
-                forceWatchingFrom);
+            var transactionPending = CreateGenericEntity();
 
 
             //Act
@@ -104,33 +81,7 @@ namespace TrackingChain.UnitTest.Domain
         public void SetLockedShouldBeSetData()
         {
             //Arrange
-            string txHash = "0x1234567890";
-            string code = "CodeTest";
-            string data = "DataTest";
-            var poolDate = new DateTime(1987, 7, 23, 03, 15, 0, 0);
-            var trackingIdentify = Guid.NewGuid();
-            var triageDate = new DateTime(1987, 7, 23, 02, 15, 0, 0);
-            var profileGroupId = Guid.NewGuid();
-            var smartContractId = 10;
-            var smartContractAddress = "0x1234";
-            var smartContractExtraInfo = "{}";
-            var chainNumberId = 1001;
-            var chainType = ChainType.Substrate;
-            var forceWatchingFrom = new DateTime(1987, 7, 23, 12, 15, 0, 0);
-            var transactionPending = new TransactionPending(
-                txHash,
-                code,
-                data,
-                poolDate,
-                trackingIdentify,
-                triageDate,
-                profileGroupId,
-                smartContractId,
-                smartContractAddress,
-                smartContractExtraInfo,
-                chainNumberId,
-                chainType,
-                forceWatchingFrom);
+            var transactionPending = CreateGenericEntity();
             Guid locker = Guid.NewGuid();
 
 
@@ -142,39 +93,14 @@ namespace TrackingChain.UnitTest.Domain
             Assert.True(transactionPending.Locked);
             Assert.Equal(locker, transactionPending.LockedBy);
             Assert.InRange(transactionPending.LockedDated!.Value, DateTime.UtcNow.AddSeconds(-3), DateTime.UtcNow);
+            Assert.Equal(PendingStatus.InProgress, transactionPending.Status);
         }
 
         [Fact]
         public void UnlockShouldBeCleanData()
         {
             //Arrange
-            string txHash = "0x1234567890";
-            string code = "CodeTest";
-            string data = "DataTest";
-            var poolDate = new DateTime(1987, 7, 23, 03, 15, 0, 0);
-            var trackingIdentify = Guid.NewGuid();
-            var triageDate = new DateTime(1987, 7, 23, 02, 15, 0, 0);
-            var profileGroupId = Guid.NewGuid();
-            var smartContractId = 10;
-            var smartContractAddress = "0x1234";
-            var smartContractExtraInfo = "{}";
-            var chainNumberId = 1001;
-            var chainType = ChainType.Substrate;
-            var forceWatchingFrom = new DateTime(1987, 7, 23, 12, 15, 0, 0);
-            var transactionPending = new TransactionPending(
-                txHash,
-                code,
-                data,
-                poolDate,
-                trackingIdentify,
-                triageDate,
-                profileGroupId,
-                smartContractId,
-                smartContractAddress,
-                smartContractExtraInfo,
-                chainNumberId,
-                chainType,
-                forceWatchingFrom);
+            var transactionPending = CreateGenericEntity();
             Guid locker = Guid.NewGuid();
             transactionPending.SetLocked(locker);
 
@@ -187,6 +113,149 @@ namespace TrackingChain.UnitTest.Domain
             Assert.False(transactionPending.Locked);
             Assert.Null(transactionPending.LockedBy);
             Assert.InRange(transactionPending.WatchingFrom, DateTime.UtcNow.AddSeconds(4), DateTime.UtcNow.AddSeconds(8));
+            Assert.Equal(PendingStatus.WaitingForWorker, transactionPending.Status);
+        }
+
+        [Fact]
+        public void UnlockShouldBeNotIncreaseErrorTime()
+        {
+            //Arrange
+            var transactionPending = CreateGenericEntity();
+            Guid locker = Guid.NewGuid();
+            transactionPending.SetLocked(locker);
+
+
+            //Act
+            transactionPending.Unlock();
+
+
+            //Assert
+            Assert.Equal(0, transactionPending.ErrorTimes);
+        }
+
+        [Fact]
+        public void UnlockFromErrorShouldBeClearData()
+        {
+            //Arrange
+            var transactionPending = CreateGenericEntity();
+            Guid locker = Guid.NewGuid();
+            transactionPending.SetLocked(locker);
+
+
+            //Act
+            transactionPending.UnlockFromError(TransactionErrorReason.UnableToWatchTransactionOnChain);
+
+
+            //Assert
+            Assert.False(transactionPending.Locked);
+            Assert.Null(transactionPending.LockedBy);
+            Assert.InRange(transactionPending.WatchingFrom, DateTime.UtcNow.AddSeconds(4), DateTime.UtcNow.AddSeconds(8));
+            Assert.Equal(PendingStatus.WaitingForWorker, transactionPending.Status);
+            Assert.Equal(TransactionErrorReason.UnableToWatchTransactionOnChain, transactionPending.LastUnlockedError);
+        }
+
+
+        [Fact]
+        public void UnlockFromErrorShouldBeIncreaseErrorTime()
+        {
+            //Arrange
+            var transactionPending = CreateGenericEntity();
+            Guid locker = Guid.NewGuid();
+            transactionPending.SetLocked(locker);
+
+
+            //Act
+            transactionPending.UnlockFromError(TransactionErrorReason.TransactionFinalizedInError);
+
+
+            //Assert
+            Assert.Equal(1, transactionPending.ErrorTimes);
+            Assert.Equal(TransactionErrorReason.TransactionFinalizedInError, transactionPending.LastUnlockedError);
+        }
+
+        [Fact]
+        public void UnlockFromErrorShouldBeDelayWatchingFrom()
+        {
+            //Arrange
+            var transactionPending = CreateGenericEntity();
+            Guid locker = Guid.NewGuid();
+            transactionPending.SetLocked(locker);
+            transactionPending.UnlockFromError(TransactionErrorReason.GetTrasactionReceiptExpection);
+            transactionPending.SetLocked(locker);
+            transactionPending.UnlockFromError(TransactionErrorReason.UnableToSendTransactionOnChain);
+            transactionPending.SetLocked(locker);
+
+
+            //Act
+            transactionPending.UnlockFromError(TransactionErrorReason.TransactionFinalizedInError);
+
+
+            //Assert
+            Assert.True(transactionPending.WatchingFrom > DateTime.UtcNow.AddSeconds(15));
+            Assert.Equal(TransactionErrorReason.TransactionFinalizedInError, transactionPending.LastUnlockedError);
+        }
+
+        [Fact]
+        public void SetStatusDoneShouldBe()
+        {
+            //Arrange
+            var transactionPending = CreateGenericEntity();
+
+
+            //Act
+            transactionPending.SetStatusDone();
+
+
+            //Assert
+            Assert.Equal(PendingStatus.Done, transactionPending.Status);
+        }
+
+        [Fact]
+        public void SetStatusErrorDoneShouldBe()
+        {
+            //Arrange
+            var transactionPending = CreateGenericEntity();
+
+
+            //Act
+            transactionPending.SetStatusError();
+
+
+            //Assert
+            Assert.Equal(PendingStatus.Error, transactionPending.Status);
+        }
+
+        // Helpers.
+        private static TransactionPending CreateGenericEntity()
+        {
+            string txHash = "0x1234567890";
+            string code = "CodeTest";
+            string data = "DataTest";
+            var poolDate = new DateTime(1987, 7, 23, 03, 15, 0, 0);
+            var trackingIdentify = Guid.NewGuid();
+            var triageDate = new DateTime(1987, 7, 23, 02, 15, 0, 0);
+            var profileGroupId = Guid.NewGuid();
+            var smartContractId = 10;
+            var smartContractAddress = "0x1234";
+            var smartContractExtraInfo = "{}";
+            var chainNumberId = 1001;
+            var chainType = ChainType.Substrate;
+            var forceWatchingFrom = new DateTime(1987, 7, 23, 12, 15, 0, 0);
+            var transactionPending = new TransactionPending(
+                txHash,
+                code,
+                data,
+                poolDate,
+                trackingIdentify,
+                triageDate,
+                profileGroupId,
+                smartContractId,
+                smartContractAddress,
+                smartContractExtraInfo,
+                chainNumberId,
+                chainType,
+                forceWatchingFrom);
+            return transactionPending;
         }
     }
 }

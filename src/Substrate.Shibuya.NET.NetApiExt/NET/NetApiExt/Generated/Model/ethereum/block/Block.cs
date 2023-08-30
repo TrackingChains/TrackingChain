@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.ethereum.block
     
     
     /// <summary>
-    /// >> 482 - Composite[ethereum.block.Block]
+    /// >> 481 - Composite[ethereum.block.Block]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class Block : BaseType

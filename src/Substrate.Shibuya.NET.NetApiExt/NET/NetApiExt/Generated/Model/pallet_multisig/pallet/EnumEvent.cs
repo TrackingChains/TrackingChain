@@ -28,7 +28,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_multisig.pallet
     }
     
     /// <summary>
-    /// >> 33 - Variant[pallet_multisig.pallet.Event]
+    /// >> 34 - Variant[pallet_multisig.pallet.Event]
     /// 
     ///			The [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted
     ///			by this pallet.

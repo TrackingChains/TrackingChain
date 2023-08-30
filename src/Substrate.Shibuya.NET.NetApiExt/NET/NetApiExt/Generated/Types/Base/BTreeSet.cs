@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Types.Base
     
     
     /// <summary>
-    /// >> 233 - Composite[BTreeSet]
+    /// >> 230 - Composite[BTreeSet]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class BTreeSet : BaseType

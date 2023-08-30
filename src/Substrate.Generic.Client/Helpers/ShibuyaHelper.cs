@@ -1,6 +1,6 @@
 ﻿using Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto;
 
-namespace Substrate.Generic.Client.Helpers
+namespace TrackingChain.Substrate.Generic.Client.Helpers
 {
     public static class ShibuyaHelper
     {

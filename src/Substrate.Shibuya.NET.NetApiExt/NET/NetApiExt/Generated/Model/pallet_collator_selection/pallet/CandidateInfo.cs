@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_collator_select
     
     
     /// <summary>
-    /// >> 420 - Composite[pallet_collator_selection.pallet.CandidateInfo]
+    /// >> 417 - Composite[pallet_collator_selection.pallet.CandidateInfo]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class CandidateInfo : BaseType

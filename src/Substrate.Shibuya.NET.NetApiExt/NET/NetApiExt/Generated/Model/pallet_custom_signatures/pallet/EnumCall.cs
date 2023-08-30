@@ -22,7 +22,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_custom_signatur
     }
     
     /// <summary>
-    /// >> 223 - Variant[pallet_custom_signatures.pallet.Call]
+    /// >> 220 - Variant[pallet_custom_signatures.pallet.Call]
     /// Contains one variant per dispatchable that can be called by an extrinsic.
     /// </summary>
     public sealed class EnumCall : BaseEnumExt<Call, BaseTuple<Substrate.Shibuya.NET.NetApiExt.Generated.Model.shibuya_runtime.EnumRuntimeCall, Substrate.Shibuya.NET.NetApiExt.Generated.Model.sp_core.crypto.AccountId32, Substrate.NetApi.Model.Types.Base.BaseVec<Substrate.NetApi.Model.Types.Primitive.U8>, Substrate.NetApi.Model.Types.Base.BaseCom<Substrate.NetApi.Model.Types.Primitive.U32>>>

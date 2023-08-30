@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
@@ -14,16 +15,16 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             ChainType chainType,
             string currency,
             string name,
-            ContractExtraInfo substractContractExtraInfo)
+            ContractExtraInfo contractExtraInfo)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(address);
-            ArgumentNullException.ThrowIfNullOrEmpty(name);
+            ArgumentException.ThrowIfNullOrEmpty(address);
+            ArgumentException.ThrowIfNullOrEmpty(name);
 
             this.Address = address;
             this.ChainNumberId = chainNumberId;
             this.ChainType = chainType;
             this.Currency = currency;
-            this.ExtraInfo = JsonSerializer.Serialize(substractContractExtraInfo);
+            this.ExtraInfo = JsonSerializer.Serialize(contractExtraInfo);
             this.Name = name;
         }
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -38,6 +39,23 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public string Currency { get; private set; }
         public string ExtraInfo { get; private set; }
         public string Name { get; private set; }
-        public virtual ProfileGroup? ProfileGroup { get; private set; } = default!;
+        public virtual ICollection<ProfileGroup> ProfileGroups { get; private set; } = default!;
+
+        // Methods.
+        public void Update(
+            string address,
+            int chainNumberId,
+            ChainType chainType,
+            string currency,
+            ContractExtraInfo contractExtraInfo,
+            string name)
+        {
+            Address = address;
+            ChainNumberId = chainNumberId;
+            ChainType = chainType;
+            Currency = currency;
+            ExtraInfo = JsonSerializer.Serialize(contractExtraInfo);
+            Name = name;
+        }
     }
 }

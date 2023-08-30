@@ -1,1 +1,1 @@
-contracts-rococo_runtime
+shibuya_runtime

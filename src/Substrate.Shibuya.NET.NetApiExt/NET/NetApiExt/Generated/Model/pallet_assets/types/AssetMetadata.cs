@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_assets.types
     
     
     /// <summary>
-    /// >> 416 - Composite[pallet_assets.types.AssetMetadata]
+    /// >> 413 - Composite[pallet_assets.types.AssetMetadata]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class AssetMetadata : BaseType
@@ -32,12 +32,12 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_assets.types
         /// <summary>
         /// >> name
         /// </summary>
-        private Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT17 _name;
+        private Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT18 _name;
         
         /// <summary>
         /// >> symbol
         /// </summary>
-        private Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT17 _symbol;
+        private Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT18 _symbol;
         
         /// <summary>
         /// >> decimals
@@ -61,7 +61,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_assets.types
             }
         }
         
-        public Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT17 Name
+        public Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT18 Name
         {
             get
             {
@@ -73,7 +73,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_assets.types
             }
         }
         
-        public Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT17 Symbol
+        public Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT18 Symbol
         {
             get
             {
@@ -130,9 +130,9 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_assets.types
             var start = p;
             Deposit = new Substrate.NetApi.Model.Types.Primitive.U128();
             Deposit.Decode(byteArray, ref p);
-            Name = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT17();
+            Name = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT18();
             Name.Decode(byteArray, ref p);
-            Symbol = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT17();
+            Symbol = new Substrate.Shibuya.NET.NetApiExt.Generated.Model.bounded_collections.bounded_vec.BoundedVecT18();
             Symbol.Decode(byteArray, ref p);
             Decimals = new Substrate.NetApi.Model.Types.Primitive.U8();
             Decimals.Decode(byteArray, ref p);

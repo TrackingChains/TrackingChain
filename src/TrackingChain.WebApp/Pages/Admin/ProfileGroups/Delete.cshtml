@@ -1,0 +1,32 @@
+﻿@page
+@model TrackingChain.TriageWebApplication.Pages.Admin.ProfileGroups.DeleteModel
+
+@if (!Model.AlreadyUsedProfileGroup)
+{
+    <h3>Are you sure you want to delete this?</h3>
+    <div>
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ProfileGroupBinding.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ProfileGroupBinding.Name)
+            </dd>
+        </dl>
+
+        <form method="post">
+            <input type="hidden" asp-for="ProfileGroupBinding.Id" />
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
+            <a asp-page="./Index">Back to List</a>
+        </form>
+    </div>
+}
+else
+{
+    <br />
+    <br />
+    <h3>You cannot remove Profile Group that have already linked to Account</h3>
+    <br />
+    <a asp-page="./Index">Back to List</a>
+    <br />
+}

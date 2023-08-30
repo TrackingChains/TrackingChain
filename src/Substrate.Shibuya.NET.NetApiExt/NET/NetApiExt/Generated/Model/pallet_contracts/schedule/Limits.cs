@@ -18,7 +18,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.sched
     
     
     /// <summary>
-    /// >> 499 - Composite[pallet_contracts.schedule.Limits]
+    /// >> 498 - Composite[pallet_contracts.schedule.Limits]
     /// </summary>
     [SubstrateNodeType(TypeDefEnum.Composite)]
     public sealed class Limits : BaseType
@@ -68,6 +68,11 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.sched
         /// >> payload_len
         /// </summary>
         private Substrate.NetApi.Model.Types.Primitive.U32 _payloadLen;
+        
+        /// <summary>
+        /// >> runtime_memory
+        /// </summary>
+        private Substrate.NetApi.Model.Types.Primitive.U32 _runtimeMemory;
         
         public Substrate.NetApi.Model.Types.Primitive.U32 EventTopics
         {
@@ -177,6 +182,18 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.sched
             }
         }
         
+        public Substrate.NetApi.Model.Types.Primitive.U32 RuntimeMemory
+        {
+            get
+            {
+                return this._runtimeMemory;
+            }
+            set
+            {
+                this._runtimeMemory = value;
+            }
+        }
+        
         public override string TypeName()
         {
             return "Limits";
@@ -194,6 +211,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.sched
             result.AddRange(BrTableSize.Encode());
             result.AddRange(SubjectLen.Encode());
             result.AddRange(PayloadLen.Encode());
+            result.AddRange(RuntimeMemory.Encode());
             return result.ToArray();
         }
         
@@ -218,6 +236,8 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.pallet_contracts.sched
             SubjectLen.Decode(byteArray, ref p);
             PayloadLen = new Substrate.NetApi.Model.Types.Primitive.U32();
             PayloadLen.Decode(byteArray, ref p);
+            RuntimeMemory = new Substrate.NetApi.Model.Types.Primitive.U32();
+            RuntimeMemory.Decode(byteArray, ref p);
             var bytesLength = p - start;
             TypeSize = bytesLength;
             Bytes = new byte[bytesLength];

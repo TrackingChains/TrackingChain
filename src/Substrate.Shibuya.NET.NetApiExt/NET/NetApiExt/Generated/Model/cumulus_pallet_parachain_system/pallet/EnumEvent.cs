@@ -34,7 +34,7 @@ namespace Substrate.Shibuya.NET.NetApiExt.Generated.Model.cumulus_pallet_paracha
     }
     
     /// <summary>
-    /// >> 42 - Variant[cumulus_pallet_parachain_system.pallet.Event]
+    /// >> 43 - Variant[cumulus_pallet_parachain_system.pallet.Event]
     /// 
     ///			The [event](https://docs.substrate.io/main-docs/build/events-errors/) emitted
     ///			by this pallet.
