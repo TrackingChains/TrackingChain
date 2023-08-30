@@ -43,4 +43,13 @@
     <ProjectReference Include="..\..\src\Triage.API\Triage.API.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="ReportTemplates\TxCancelModelView.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ReportTemplates\TxFailedModelView.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -41,9 +41,5 @@
     <ProjectReference Include="..\Substrate.Generic.Client\Substrate.Generic.Client.csproj" />
     <ProjectReference Include="..\TransactionMonitor.Core\TransactionMonitor.Core.csproj" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <Folder Include="Workers\" />
-  </ItemGroup>
 
 </Project>
