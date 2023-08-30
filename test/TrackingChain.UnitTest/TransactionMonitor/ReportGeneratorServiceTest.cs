@@ -1,19 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Moq;
-using Org.BouncyCastle.Asn1.X509;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TrackingChain.Core.Domain.Entities;
 using TrackingChain.Core.Domain.Enums;
-using TrackingChain.TrackingChainCore.EntityFramework.Context;
-using TrackingChain.TrackingChainCore.Options;
 using TrackingChain.TransactionMonitorCore.Services;
-using TrackingChain.TransactionMonitorCore.UseCases;
 using Xunit;
 
 namespace TrackingChain.UnitTest.TransactionMonitor
