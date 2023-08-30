@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using TrackingChain.TrackingChainCore.EntityFramework.Context;
 
 namespace TrackingChain.TriageWebApplication.Pages.Admin.Trackings
 {
+    [Authorize]
     public class TriageDetailsModel : PageModel
     {
         private readonly ApplicationDbContext dbContext;

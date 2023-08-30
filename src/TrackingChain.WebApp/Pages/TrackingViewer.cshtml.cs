@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -7,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrackingChain.Common.Interfaces;
-using TrackingChain.TrackingChainCore.Domain.Enums;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TransactionTriageCore.ModelViews;
 using TrackingChain.TransactionTriageCore.UseCases;
@@ -16,7 +16,7 @@ using TrackingChain.TriageWebApplication.ModelView;
 
 namespace TrackingChain.TriageWebApplication.Pages
 {
-    //[Authorize]
+    [Authorize]
     public class TrackingViewerModel : PageModel
     {
         // Fields.

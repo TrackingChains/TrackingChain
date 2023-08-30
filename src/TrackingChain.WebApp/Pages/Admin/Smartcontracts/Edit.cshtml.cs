@@ -1,17 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
-using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TriageWebApplication.ModelBinding;
 
 namespace TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts
 {
+    [Authorize]
     public class EditModel : PageModel
     {
         private readonly ApplicationDbContext dbContext;

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,7 +15,7 @@ using TrackingChain.TriageWebApplication.ModelBinding;
 
 namespace TrackingChain.TriageWebApplication.Pages
 {
-    //[Authorize]
+    [Authorize]
     public class TrackingModel : PageModel
     {
         // Fields.

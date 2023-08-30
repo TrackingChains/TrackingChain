@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using TrackingChain.TransactionTriageCore.UseCases;
 
 namespace TrackingChain.TriageWebApplication.Pages
 {
+    [Authorize]
     public class MonitorModel : PageModel
     {
         // Fields.

@@ -5,9 +5,11 @@ using System;
 using System.Threading.Tasks;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TrackingChain.TriageWebApplication.Pages.Admin.Trackings
 {
+    [Authorize]
     public class RegistriesModel : PageModel
     {
         private readonly ApplicationDbContext dbContext;

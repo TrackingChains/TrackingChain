@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using TrackingChain.TriageWebApplication.ModelBinding;
 
 namespace TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts
 {
+    [Authorize]
     public class CreateModel : PageModel
     {
         private readonly ApplicationDbContext dbContext;

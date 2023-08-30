@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,6 +10,7 @@ using TrackingChain.TrackingChainCore.EntityFramework.Context;
 
 namespace TrackingChain.TriageWebApplication.Pages.Admin.TrackingErrors
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly ApplicationDbContext dbContext;
