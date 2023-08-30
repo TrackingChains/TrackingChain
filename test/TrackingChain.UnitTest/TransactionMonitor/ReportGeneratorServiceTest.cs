@@ -19,7 +19,7 @@ namespace TrackingChain.UnitTest.TransactionMonitor
         }
 
         [Fact]
-        public async Task GenerateTxFailedReportAsync()
+        public async Task GenerateTxFailedReportShouldHaveAllItemsAsync()
         {
             //Arrange
             var reportItems = new List<ReportItem>() {
@@ -40,7 +40,7 @@ namespace TrackingChain.UnitTest.TransactionMonitor
         }
 
         [Fact]
-        public async Task GenerateTxCancelReportAsync()
+        public async Task GenerateTxCancelReportShouldHaveAllItemsAsync()
         {
             //Arrange
             var reportItems = new List<ReportItem>() {
