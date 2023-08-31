@@ -15,8 +15,9 @@ IHost host = Host.CreateDefaultBuilder(args)
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             services.AddWindowsService(options =>
             {
-                options.ServiceName = "TrackingChain AggregatorPoolWorker";
+                options.ServiceName = "TrackingChain AggregatorPool Worker";
             });
+
         //config
         services.Configure<DatabaseOptions>(hostContext.Configuration.GetSection("Database"));
 
