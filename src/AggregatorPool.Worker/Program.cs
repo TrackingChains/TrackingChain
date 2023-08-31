@@ -1,6 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using TrackingChain.AggregatorPoolCore.Services;
 using TrackingChain.AggregatorPoolCore.UseCases;
@@ -35,5 +37,7 @@ IHost host = Host.CreateDefaultBuilder(args)
     .ReadFrom.Configuration(hostingContext.Configuration)
     .Enrich.FromLogContext())
     .Build();
+
+
 
 host.Run();
