@@ -23,9 +23,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nethereum.ABI" Version="4.15.2" />
-    <PackageReference Include="Nethereum.Contracts" Version="4.15.2" />
-    <PackageReference Include="Nethereum.Web3" Version="4.15.2" />
+    <PackageReference Include="Nethereum.ABI" Version="4.16.0" />
+    <PackageReference Include="Nethereum.Contracts" Version="4.16.0" />
+    <PackageReference Include="Nethereum.Web3" Version="4.16.0" />
   </ItemGroup>
 
   <ItemGroup>
