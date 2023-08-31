@@ -20,6 +20,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/TrackingChains/TrackingChain</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <ServerGarbageCollection>true</ServerGarbageCollection>
   </PropertyGroup>
 
   <ItemGroup>
