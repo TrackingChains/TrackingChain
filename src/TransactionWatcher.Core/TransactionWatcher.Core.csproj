@@ -23,7 +23,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nethereum.Web3" Version="4.15.2" />
+    <PackageReference Include="Nethereum.Web3" Version="4.16.0" />
   </ItemGroup>
 
   <ItemGroup>

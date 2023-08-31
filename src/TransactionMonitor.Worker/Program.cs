@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using System;
+using System.Runtime.InteropServices;
 using TrackingChain.Common.Interfaces;
 using TrackingChain.Substrate.Generic.Client;
 using TrackingChain.TrackingChainCore.EntityFramework;
@@ -18,6 +19,12 @@ using TrackingChain.TransactionRecoveryWorker.Options;
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
     {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            services.AddWindowsService(options =>
+            {
+                options.ServiceName = "TrackingChain TransactionMonitor Worker";
+            });
+
         //config
         services.Configure<DatabaseOptions>(hostContext.Configuration.GetSection("Database"));
         services.Configure<MonitorOptions>(hostContext.Configuration.GetSection("Monitor"));

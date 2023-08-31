@@ -43,39 +43,55 @@ namespace TrackingChain.TransactionTriageCore.UseCases
                 .ToListAsync();
 
             // Timings.
-            var averageTriage = await dbContext.TransactionRegistries
+            var averageTriage = 0.0;
+            var averagePool = 0.0;
+            var averagePending = 0.0;
+            var averageCompleted = 0.0;
+            var minCompletedTime = 0.0;
+            var maxCompletedTime = 0.0;
+            if (await dbContext.TransactionRegistries
                .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
                             tr.Status == RegistryStatus.SuccessfullyCompleted)
-               .Select(tr => EF.Functions.DateDiffMillisecond(tr.TriageDate, tr.PoolDate))
-               .AverageAsync();
-            var averagePool = await dbContext.TransactionRegistries
-               .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
-                            tr.Status == RegistryStatus.SuccessfullyCompleted)
-               .Select(tr => EF.Functions.DateDiffMillisecond(tr.PoolDate, tr.PendingDate))
-               .AverageAsync();
-            var averagePending = await dbContext.TransactionRegistries
-               .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
-                            tr.Status == RegistryStatus.SuccessfullyCompleted)
-               .Select(tr => EF.Functions.DateDiffMillisecond(tr.PendingDate, tr.RegistryDate))
-               .AverageAsync();
-            var averageCompleted = await dbContext.TransactionRegistries
-               .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
-                            tr.Status == RegistryStatus.SuccessfullyCompleted)
-               .Select(tr => EF.Functions.DateDiffMillisecond(tr.TriageDate, tr.RegistryDate))
-               .AverageAsync();
-            var minCompletedTime = await dbContext.TransactionRegistries
-               .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
-                            tr.Status == RegistryStatus.SuccessfullyCompleted &&
-                            tr.TriageDate.AddMonths(1) > DateTime.UtcNow)
-               .Select(tr => EF.Functions.DateDiffMillisecond(tr.TriageDate, tr.RegistryDate))
-               .MinAsync();
-            var maxCompletedTime = await dbContext.TransactionRegistries
-               .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
-                            tr.Status == RegistryStatus.SuccessfullyCompleted &&
-                            tr.TriageDate.AddMonths(1) > DateTime.UtcNow)
-               .Select(tr => EF.Functions.DateDiffMillisecond(tr.TriageDate, tr.RegistryDate))
-               .MaxAsync();
+               .AnyAsync())
+            {
+                averageTriage = await dbContext.TransactionRegistries
+                   .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
+                                tr.Status == RegistryStatus.SuccessfullyCompleted)
+                   .Select(tr => EF.Functions.DateDiffMillisecond(tr.TriageDate, tr.PoolDate))
+                   .AverageAsync();
 
+                averagePool = await dbContext.TransactionRegistries
+                   .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
+                                tr.Status == RegistryStatus.SuccessfullyCompleted)
+                   .Select(tr => EF.Functions.DateDiffMillisecond(tr.PoolDate, tr.PendingDate))
+                   .AverageAsync();
+
+                averagePending = await dbContext.TransactionRegistries
+                   .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
+                                tr.Status == RegistryStatus.SuccessfullyCompleted)
+                   .Select(tr => EF.Functions.DateDiffMillisecond(tr.PendingDate, tr.RegistryDate))
+                   .AverageAsync();
+
+                averageCompleted = await dbContext.TransactionRegistries
+                   .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
+                                tr.Status == RegistryStatus.SuccessfullyCompleted)
+                   .Select(tr => EF.Functions.DateDiffMillisecond(tr.TriageDate, tr.RegistryDate))
+                   .AverageAsync();
+
+                minCompletedTime = await dbContext.TransactionRegistries
+                   .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
+                                tr.Status == RegistryStatus.SuccessfullyCompleted &&
+                                tr.TriageDate.AddMonths(1) > DateTime.UtcNow)
+                   .Select(tr => EF.Functions.DateDiffMillisecond(tr.TriageDate, tr.RegistryDate))
+                   .MinAsync();
+
+                maxCompletedTime = await dbContext.TransactionRegistries
+                   .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
+                                tr.Status == RegistryStatus.SuccessfullyCompleted &&
+                                tr.TriageDate.AddMonths(1) > DateTime.UtcNow)
+                   .Select(tr => EF.Functions.DateDiffMillisecond(tr.TriageDate, tr.RegistryDate))
+                   .MaxAsync();
+            }
 
             return new TrackingStatusStatisticModelView
             {
