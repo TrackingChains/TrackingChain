@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using System.Runtime.InteropServices;
 using TrackingChain.AggregatorPoolCore.Services;
 using TrackingChain.AggregatorPoolCore.UseCases;
 using TrackingChain.AggregatorPoolWorker;
@@ -11,6 +12,11 @@ using TrackingChain.TrackingChainCore.Options;
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
     {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            services.AddWindowsService(options =>
+            {
+                options.ServiceName = "TrackingChain AggregatorPoolWorker";
+            });
         //config
         services.Configure<DatabaseOptions>(hostContext.Configuration.GetSection("Database"));
 
