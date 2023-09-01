@@ -4,11 +4,11 @@
 <script>
     $(document).ready(function () {
         $('.truncate-cell').each(function () {
-            var maxLength = 20; // Imposta la lunghezza massima del testo prima della troncatura
+            var maxLength = 20; 
             var text = $(this).text();
             if (text.length > maxLength) {
-                $(this).attr('title', text); // Aggiungi l'attributo "title" per visualizzare il testo completo quando ci si posiziona sopra con il mouse
-                $(this).text(text.substring(0, maxLength) + '...'); // Tronca e aggiungi i puntini di sospensione
+                $(this).attr('title', text); 
+                $(this).text(text.substring(0, maxLength) + '...'); 
             }
         });
     });
@@ -36,6 +36,9 @@
             <thead>
                 <tr>
                     <th>
+                        @Html.DisplayNameFor(model => model.Accounts[0].Id)
+                    </th>
+                    <th>
                         <a asp-page="./Index"
                            asp-route-sortOrder="@Model.NameSort"
                            asp-route-currentFilter="@Model.CurrentFilter">
@@ -55,6 +58,9 @@
                 @foreach (var item in Model.Accounts)
                 {
                     <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
