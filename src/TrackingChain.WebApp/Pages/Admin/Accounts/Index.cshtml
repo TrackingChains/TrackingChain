@@ -36,9 +36,6 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.Accounts[0].Id)
-                    </th>
-                    <th>
                         <a asp-page="./Index"
                            asp-route-sortOrder="@Model.NameSort"
                            asp-route-currentFilter="@Model.CurrentFilter">
@@ -58,9 +55,6 @@
                 @foreach (var item in Model.Accounts)
                 {
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Id)
-                        </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
