@@ -10,6 +10,8 @@
 <a href="https://github.com/TrackingChains/TrackingChain/blob/main/LICENSE"><img src="https://img.shields.io/github/license/TrackingChains/TrackingChain?color=2b9348" alt="License Badge"/></a>
 </div>
 <br>
+
+  ![badge_black](https://github.com/TrackingChains/TrackingChain/assets/58514549/5d04542c-9adc-4e0d-9180-3b5985dcfd87)
   
 ## Project Overview :page_facing_up:
 
