@@ -4,11 +4,11 @@
 <script>
     $(document).ready(function () {
         $('.truncate-cell').each(function () {
-            var maxLength = 20; // Imposta la lunghezza massima del testo prima della troncatura
+            var maxLength = 20; 
             var text = $(this).text();
             if (text.length > maxLength) {
-                $(this).attr('title', text); // Aggiungi l'attributo "title" per visualizzare il testo completo quando ci si posiziona sopra con il mouse
-                $(this).text(text.substring(0, maxLength) + '...'); // Tronca e aggiungi i puntini di sospensione
+                $(this).attr('title', text); 
+                $(this).text(text.substring(0, maxLength) + '...'); 
             }
         });
     });
