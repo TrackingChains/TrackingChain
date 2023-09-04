@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   trackingdb:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    image: fedec87p/trackingdb:devm2
     environment:
       MSSQL_SA_PASSWORD: YourStrong@Passw0rd
       ACCEPT_EULA: Y
@@ -11,52 +11,36 @@ services:
     networks:
       - mynetwork
   triage:
-    image: triageapi
-    build:
-      context: .
-      dockerfile: src/Triage.API/Dockerfile
+    image: fedec87p/triageapi:latest
     ports:
-      - "5000:5000"
-      - "5001:5001"
+      - "5000:80"
+      - "5001:443"
     depends_on:
       - trackingdb
     networks:
       - mynetwork
   webapp:
-    image: trackingchainwebapp
-    build:
-      context: .
-      dockerfile: src/TrackingChain.WebApp/Dockerfile
+    image: fedec87p/trackingchainwebapp:latest
     ports:
-      - "5002:80"
-      - "5003:443"
+      - "12345:12345"
     depends_on:
       - triage
     networks:
       - mynetwork
   aggregator-pool:
-    image: aggregatorpoolworker
-    build:
-      context: .
-      dockerfile: src/AggregatorPool.Worker/Dockerfile
+    image: fedec87p/aggregatorpool:latest
     depends_on:
       - triage
     networks:
       - mynetwork
   transaction-generator:
-    image: transactiongeneratorworker
-    build:
-      context: .
-      dockerfile: src/TransactionGenerator.Worker/Dockerfile
+    image: fedec87p/transactiongenerator:latest
     depends_on:
       - triage
     networks:
       - mynetwork
   transaction-watcher:
-    image: transactionwatcherworker
-    build:
-      context: .
-      dockerfile: src/TransactionWatcher.Worker/Dockerfile
+    image: fedec87p/transactionwatcher:latest
     depends_on:
       - triage
     networks:
