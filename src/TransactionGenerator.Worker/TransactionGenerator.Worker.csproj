@@ -16,10 +16,10 @@
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/TrackingChains</PackageProjectUrl>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/TrackingChains/TrackingChain</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
     <ServerGarbageCollection>true</ServerGarbageCollection>
   </PropertyGroup>
 
@@ -37,7 +37,5 @@
   <ItemGroup>
     <ProjectReference Include="..\EVM.Generic.Client\EVM.Generic.Client.csproj" />
     <ProjectReference Include="..\TransactionGenerator.Core\TransactionGenerator.Core.csproj" />
-    <None Include="../../README.md" Pack="true" PackagePath="\" />
-    <None Include="../../LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
 </Project>

@@ -16,8 +16,6 @@
     
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/TrackingChains</PackageProjectUrl>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RepositoryUrl>https://github.com/TrackingChains/TrackingChain</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
@@ -32,8 +30,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <None Include="../../README.md" Pack="true" PackagePath="\" />
-    <None Include="../../LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
 
   <ItemGroup>

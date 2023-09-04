@@ -34,10 +34,16 @@ namespace TransactionWatcherWorker
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             logger.StartPendingTransactionCheckerWorker();
+            if (checkerOptions.Accounts == null ||
+                checkerOptions.Accounts.Any())
+            {
+                logger.EndPendingTransactionCheckerWorker();
+                return;
+            }
 
             // Task creations.
             var tasks = new List<Task>();
-            foreach (var account in  checkerOptions.Accounts.Distinct())
+            foreach (var account in checkerOptions.Accounts.Distinct())
                 tasks.Add(RunSingleAccountAsync(account, stoppingToken));
 
             await Task.WhenAll(tasks);

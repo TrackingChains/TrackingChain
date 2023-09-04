@@ -16,8 +16,6 @@
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/TrackingChains</PackageProjectUrl>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/TrackingChains/TrackingChain</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
@@ -30,8 +28,6 @@
     <ProjectReference Include="..\Substrate.ContractRococo.NET.NetApiExt\Substrate.ContractRococo.NET.NetApiExt.csproj" />
     <ProjectReference Include="..\Substrate.Shibuya.NET.NetApiExt\Substrate.Shibuya.NET.NetApiExt.csproj" />
     <ProjectReference Include="..\TrackingChain.Common\TrackingChain.Common.csproj" />
-    <None Include="../../README.md" Pack="true" PackagePath="\" />
-    <None Include="../../LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
 
 </Project>
