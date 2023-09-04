@@ -1,54 +1,49 @@
-version: '3.4'
+version: '3.9'
 
 services:
-  sql-server-db:
-    container_name: sql-server-db
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    ports:
-      - 1433:1433
-    expose:
-      - 1433
+  trackingdb:
+    image: fedec87p/trackingdb:devm2
     environment:
-      SA_PASSWORD: "T5snGs!d98Sm&"
-      ACCEPT_EULA: "Y"
-  triageapi:
-    image: ${DOCKER_REGISTRY-}triageapi
+      MSSQL_SA_PASSWORD: YourStrong@Passw0rd
+      ACCEPT_EULA: Y
     ports:
-      - 5001:80
-      - 5002:443
-    build:
-      context: .
-      dockerfile: src/TriageAPI/Dockerfile
-    depends_on:
-      - "sql-server-db"
-  aggregatorpoolworker:
-    image: ${DOCKER_REGISTRY-}aggregatorpoolworker
-    build:
-      context: .
-      dockerfile: src/AggregatorPoolWorker/Dockerfile
-    depends_on:
-      - "triageapi"
-  transactiongeneratorworker:
-    image: ${DOCKER_REGISTRY-}transactiongeneratorworker
-    build:
-      context: .
-      dockerfile: src/TransactionGeneratorWorker/Dockerfile
-    depends_on:
-      - "triageapi"
-  transactionwatcherworker:
-    image: ${DOCKER_REGISTRY-}transactionwatcherworker
-    build:
-      context: .
-      dockerfile: src/TransactionWatcherWorker/Dockerfile
-    depends_on:
-      - "triageapi"
-  triagewebapplication:
-    image: ${DOCKER_REGISTRY-}triagewebapplication
+      - "5532:1433"
+    networks:
+      - mynetwork
+  triage:
+    image: fedec87p/triageapi:latest
     ports:
-      - 5101:80
-      - 5102:443
-    build:
-      context: .
-      dockerfile: src/TriageWebApplication/Dockerfile
+      - "5000:80"
+      - "5001:443"
     depends_on:
-      - "triageapi"
+      - trackingdb
+    networks:
+      - mynetwork
+  webapp:
+    image: fedec87p/trackingchainwebapp:latest
+    ports:
+      - "12345:12345"
+    depends_on:
+      - triage
+    networks:
+      - mynetwork
+  aggregator-pool:
+    image: fedec87p/aggregatorpool:latest
+    depends_on:
+      - triage
+    networks:
+      - mynetwork
+  transaction-generator:
+    image: fedec87p/transactiongenerator:latest
+    depends_on:
+      - triage
+    networks:
+      - mynetwork
+  transaction-watcher:
+    image: fedec87p/transactionwatcher:latest
+    depends_on:
+      - triage
+    networks:
+      - mynetwork
+networks:
+  mynetwork:

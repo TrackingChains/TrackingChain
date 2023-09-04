@@ -79,6 +79,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EVM", "EVM", "{B1367B57-D91
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EVM.Generic.Client", "src\EVM.Generic.Client\EVM.Generic.Client.csproj", "{42628463-F7B5-4814-90C5-55F6C9B69DAC}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{5CCCED77-D220-4C90-BF1B-5FB68BE0F99F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +155,10 @@ Global
 		{42628463-F7B5-4814-90C5-55F6C9B69DAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42628463-F7B5-4814-90C5-55F6C9B69DAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42628463-F7B5-4814-90C5-55F6C9B69DAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CCCED77-D220-4C90-BF1B-5FB68BE0F99F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CCCED77-D220-4C90-BF1B-5FB68BE0F99F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CCCED77-D220-4C90-BF1B-5FB68BE0F99F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CCCED77-D220-4C90-BF1B-5FB68BE0F99F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
