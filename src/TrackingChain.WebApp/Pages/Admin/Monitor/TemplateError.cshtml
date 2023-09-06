@@ -1,0 +1,83 @@
+﻿@page
+@model TrackingChain.TriageWebApplication.Pages.Admin.Monitor.TemplateErrorModel.TemplateModel
+@{
+}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+        margin: 0;
+        padding: 0;
+    }
+
+    h2 {
+        color: #333;
+    }
+
+    .container {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: bold;
+        color: #555;
+    }
+
+    textarea, input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+    }
+
+    button {
+        display: inline-block;
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    .validation-summary-errors {
+        color: #f00;
+    }
+</style>
+
+<h2>Creazione Template HTML</h2>
+
+<div class="container">
+    <form method="post">
+        <div class="form-group">
+            <label for="ContenutoHtml">Contenuto HTML:</label>
+            <textarea id="ContenutoHtml" name="ContenutoHtml" class="form-control" rows="5">@Model.ContenutoHtml</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="IndirizziEmail">Indirizzi Email (separati da virgola):</label>
+            <input type="text" id="IndirizziEmail" name="IndirizziEmail" class="form-control" value="@Model.IndirizziEmail">
+        </div>
+
+        <div class="form-group">
+            <label for="TitoloEmail">Titolo della Mail:</label>
+            <input type="text" id="TitoloEmail" name="TitoloEmail" class="form-control" value="@Model.TitoloEmail">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Salva Template</button>
+    </form>
+</div>

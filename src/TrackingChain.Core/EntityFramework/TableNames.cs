@@ -10,5 +10,6 @@
         public const string TransactionTriage = "TransactionTriages";
         public const string ProfileGroup = "ProfileGroups";
         public const string Report = "Reports";
+        public const string ReportSetting = "ReportSettings";
     }
 }

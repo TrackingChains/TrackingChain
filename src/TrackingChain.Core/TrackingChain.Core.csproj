@@ -14,7 +14,6 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Configurations>Debug;Release</Configurations>
     
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/TrackingChains</PackageProjectUrl>
     <RepositoryUrl>https://github.com/TrackingChains/TrackingChain</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
