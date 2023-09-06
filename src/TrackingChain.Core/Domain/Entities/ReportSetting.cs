@@ -7,9 +7,9 @@ namespace TrackingChain.Core.Domain.Entities
         public const string TransactionErrorMail = "TransactionErrorMail";
         public const string TransactionErrorTemplate = "TransactionErrorTemplate";
         public const string TransactionErrorTitle = "TransactionErrorTitle";
-        public const string TransactionFailedMail = "TransactionFailedMail";
-        public const string TransactionFailedTemplate = "TransactionFailedTemplate";
-        public const string TransactionFailedTitle = "TransactionFailedTitle";
+        public const string TransactionCancelledMail = "TransactionCancelledMail";
+        public const string TransactionCancelledTemplate = "TransactionCancelledTemplate";
+        public const string TransactionCancelledTitle = "TransactionCancelledTitle";
 
         // Constructors.
         public ReportSetting(
@@ -25,6 +25,6 @@ namespace TrackingChain.Core.Domain.Entities
 
         // Properties.
         public string Key { get; private set; } = default!;
-        public string? Value { get; private set; }
+        public string? Value { get; set; }
     }
 }

@@ -2,8 +2,7 @@
 {
     public static class ReportDefaultValue
     {
-        public const string TransactionErrorTemplate = @"
-<!DOCTYPE html>
+        public const string TransactionErrorTemplate = @"<!DOCTYPE html>
 <html lang=""en"">
 <head>
     <meta charset=""UTF-8"">
@@ -30,7 +29,7 @@
 
         public const string TransactionErrorTitle = @"Transaction Error Report";
 
-        public const string TransactionFailedTemplate = @"<!DOCTYPE html>
+        public const string TransactionCancelledTemplate = @"<!DOCTYPE html>
 <html lang=""en"">
 <head>
     <meta charset=""UTF-8"">
@@ -56,7 +55,7 @@
 </html>
 ";
 
-        public const string TransactionFailedTitle = @"Transaction Failed Report";
+        public const string TransactionCancelledTitle = @"Transaction Cancelled Report";
 
     }
 }

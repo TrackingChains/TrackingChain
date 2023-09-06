@@ -1,0 +1,39 @@
+﻿@page
+@model TrackingChain.TriageWebApplication.Pages.Admin.Monitor.IndexModel
+@{
+}
+<style>
+    .link-list {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+        .link-list li a {
+            display: block;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #333;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+            .link-list li a:hover {
+                background-color: #f4f4f4;
+                color: #000;
+            }
+</style>
+<a href="/Admin">Back to Main</a>
+<br />
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <ul class="link-list">
+            <li><a href="/Admin/Monitor/TemplateError">Template Error</a></li>
+            <li><a href="/Admin/Monitor/TemplateFailed">Template Failed</a></li>
+        </ul>
+    </div>
+</div>

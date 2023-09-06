@@ -7,32 +7,32 @@ using TrackingChain.TrackingChainCore.EntityFramework.Context;
 
 namespace TrackingChain.TriageWebApplication.Pages.Admin.Monitor
 {
-    public class TemplateErrorModel : PageModel
+    public class TemplateFailedModel : PageModel
     {
         private readonly ApplicationDbContext applicationDbContext;
 
         public class TemplateModel
         {
             public string Template { get; set; } = default!;
-            public string? AddressMails { get; set; } = default!;
-            public string? Title { get; set; } = default!;
+            public string AddressMails { get; set; } = default!;
+            public string Title { get; set; } = default!;
         }
 
-        public TemplateErrorModel(ApplicationDbContext applicationDbContext)
+        public TemplateFailedModel(ApplicationDbContext applicationDbContext)
         {
             this.applicationDbContext = applicationDbContext;
             TemplateData = new TemplateModel { Template = "", AddressMails = "", Title = "" };
         }
 
         [BindProperty]
-        public TemplateModel TemplateData { get; set; }
+        public TemplateModel TemplateData { get; set; } = default!;
         public string? ErrorMessage { get; set; }
 
         public async Task OnGetAsync()
         {
-            TemplateData.Template = (await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionErrorTemplate)).Value ?? "";
-            TemplateData.Title = (await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionErrorTitle)).Value ?? "";
-            TemplateData.AddressMails = (await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionErrorMail)).Value ?? "";
+            TemplateData.Template = (await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionCancelledTemplate)).Value ?? "";
+            TemplateData.Title = (await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionCancelledTitle)).Value ?? "";
+            TemplateData.AddressMails = (await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionCancelledMail)).Value ?? "";
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -40,11 +40,11 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Monitor
             if (ModelState.IsValid)
             {
                 // Salva il modello nel database
-                var template = await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionErrorTemplate);
+                var template = await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionCancelledTemplate);
                 template.Value = TemplateData.Template;
-                var title = await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionErrorTitle);
+                var title = await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionCancelledTitle);
                 title.Value = TemplateData.Title;
-                var mails = await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionErrorMail);
+                var mails = await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionCancelledMail);
                 mails.Value = TemplateData.AddressMails;
 
                 applicationDbContext.ReportSettings.Update(template);

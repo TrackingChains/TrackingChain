@@ -66,13 +66,21 @@ namespace TrackingChain.TriageAPI.HostedService
             if (itemToSeed is null)
                 applicationDbContext.Add(new ReportSetting(ReportSetting.TransactionErrorTitle, ReportDefaultValue.TransactionErrorTitle));
 
-            itemToSeed = await applicationDbContext.ReportSettings.FirstOrDefaultAsync(rs => rs.Key == ReportSetting.TransactionFailedTemplate);
+            itemToSeed = await applicationDbContext.ReportSettings.FirstOrDefaultAsync(rs => rs.Key == ReportSetting.TransactionErrorMail);
             if (itemToSeed is null)
-                applicationDbContext.Add(new ReportSetting(ReportSetting.TransactionFailedTemplate, ReportDefaultValue.TransactionFailedTemplate));
+                applicationDbContext.Add(new ReportSetting(ReportSetting.TransactionErrorMail, ""));
 
-            itemToSeed = await applicationDbContext.ReportSettings.FirstOrDefaultAsync(rs => rs.Key == ReportSetting.TransactionFailedTitle);
+            itemToSeed = await applicationDbContext.ReportSettings.FirstOrDefaultAsync(rs => rs.Key == ReportSetting.TransactionCancelledTemplate);
             if (itemToSeed is null)
-                applicationDbContext.Add(new ReportSetting(ReportSetting.TransactionFailedTitle, ReportDefaultValue.TransactionFailedTitle));
+                applicationDbContext.Add(new ReportSetting(ReportSetting.TransactionCancelledTemplate, ReportDefaultValue.TransactionCancelledTemplate));
+
+            itemToSeed = await applicationDbContext.ReportSettings.FirstOrDefaultAsync(rs => rs.Key == ReportSetting.TransactionCancelledTitle);
+            if (itemToSeed is null)
+                applicationDbContext.Add(new ReportSetting(ReportSetting.TransactionCancelledTitle, ReportDefaultValue.TransactionCancelledTitle));
+
+            itemToSeed = await applicationDbContext.ReportSettings.FirstOrDefaultAsync(rs => rs.Key == ReportSetting.TransactionCancelledMail);
+            if (itemToSeed is null)
+                applicationDbContext.Add(new ReportSetting(ReportSetting.TransactionCancelledMail, ""));
 
             await applicationDbContext.SaveChangesAsync();
         }
