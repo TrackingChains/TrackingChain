@@ -62,10 +62,6 @@ namespace TrackingChain.TriageAPI.HostedService
             if (itemToSeed is null)
                 applicationDbContext.Add(new ReportSetting(ReportSetting.TransactionErrorTemplate, ReportDefaultValue.TransactionErrorTemplate));
 
-            itemToSeed = await applicationDbContext.ReportSettings.FirstOrDefaultAsync(rs => rs.Key == ReportSetting.TransactionErrorTitle);
-            if (itemToSeed is null)
-                applicationDbContext.Add(new ReportSetting(ReportSetting.TransactionErrorTitle, ReportDefaultValue.TransactionErrorTitle));
-
             itemToSeed = await applicationDbContext.ReportSettings.FirstOrDefaultAsync(rs => rs.Key == ReportSetting.TransactionErrorMail);
             if (itemToSeed is null)
                 applicationDbContext.Add(new ReportSetting(ReportSetting.TransactionErrorMail, ""));
@@ -73,10 +69,6 @@ namespace TrackingChain.TriageAPI.HostedService
             itemToSeed = await applicationDbContext.ReportSettings.FirstOrDefaultAsync(rs => rs.Key == ReportSetting.TransactionCancelledTemplate);
             if (itemToSeed is null)
                 applicationDbContext.Add(new ReportSetting(ReportSetting.TransactionCancelledTemplate, ReportDefaultValue.TransactionCancelledTemplate));
-
-            itemToSeed = await applicationDbContext.ReportSettings.FirstOrDefaultAsync(rs => rs.Key == ReportSetting.TransactionCancelledTitle);
-            if (itemToSeed is null)
-                applicationDbContext.Add(new ReportSetting(ReportSetting.TransactionCancelledTitle, ReportDefaultValue.TransactionCancelledTitle));
 
             itemToSeed = await applicationDbContext.ReportSettings.FirstOrDefaultAsync(rs => rs.Key == ReportSetting.TransactionCancelledMail);
             if (itemToSeed is null)

@@ -15,13 +15,12 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Monitor
         {
             public string Template { get; set; } = default!;
             public string? AddressMails { get; set; } = default!;
-            public string? Title { get; set; } = default!;
         }
 
         public TemplateErrorModel(ApplicationDbContext applicationDbContext)
         {
             this.applicationDbContext = applicationDbContext;
-            TemplateData = new TemplateModel { Template = "", AddressMails = "", Title = "" };
+            TemplateData = new TemplateModel { Template = "", AddressMails = ""};
         }
 
         [BindProperty]
@@ -31,7 +30,6 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Monitor
         public async Task OnGetAsync()
         {
             TemplateData.Template = (await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionErrorTemplate)).Value ?? "";
-            TemplateData.Title = (await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionErrorTitle)).Value ?? "";
             TemplateData.AddressMails = (await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionErrorMail)).Value ?? "";
         }
 
@@ -42,13 +40,10 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Monitor
                 // Salva il modello nel database
                 var template = await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionErrorTemplate);
                 template.Value = TemplateData.Template;
-                var title = await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionErrorTitle);
-                title.Value = TemplateData.Title;
                 var mails = await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionErrorMail);
                 mails.Value = TemplateData.AddressMails;
 
                 applicationDbContext.ReportSettings.Update(template);
-                applicationDbContext.ReportSettings.Update(title);
                 applicationDbContext.ReportSettings.Update(mails);
                 applicationDbContext.SaveChanges();
 

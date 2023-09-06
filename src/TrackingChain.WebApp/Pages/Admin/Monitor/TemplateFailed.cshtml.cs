@@ -31,7 +31,6 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Monitor
         public async Task OnGetAsync()
         {
             TemplateData.Template = (await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionCancelledTemplate)).Value ?? "";
-            TemplateData.Title = (await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionCancelledTitle)).Value ?? "";
             TemplateData.AddressMails = (await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionCancelledMail)).Value ?? "";
         }
 
@@ -42,13 +41,10 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Monitor
                 // Salva il modello nel database
                 var template = await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionCancelledTemplate);
                 template.Value = TemplateData.Template;
-                var title = await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionCancelledTitle);
-                title.Value = TemplateData.Title;
                 var mails = await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionCancelledMail);
                 mails.Value = TemplateData.AddressMails;
 
                 applicationDbContext.ReportSettings.Update(template);
-                applicationDbContext.ReportSettings.Update(title);
                 applicationDbContext.ReportSettings.Update(mails);
                 applicationDbContext.SaveChanges();
 

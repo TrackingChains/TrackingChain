@@ -14,8 +14,8 @@ namespace TrackingChain.TransactionMonitorCore.Services
     public class TransactionMonitorService : ITransactionMonitorService
     {
         // Const.
-        private readonly List<ReportItemType> TransactionErrorTypes = new List<ReportItemType> { ReportItemType.TxGenerationFailed, ReportItemType.TxWatchingFailed, ReportItemType.TxGenerationInError, ReportItemType.TxWatchingInError };
-        private readonly List<ReportItemType> TransactionCancelledTypes = new List<ReportItemType> { ReportItemType.TxCancelled };
+        private readonly List<ReportItemType> TransactionErrorTypes = new() { ReportItemType.TxGenerationFailed, ReportItemType.TxWatchingFailed, ReportItemType.TxGenerationInError, ReportItemType.TxWatchingInError };
+        private readonly List<ReportItemType> TransactionCancelledTypes = new() { ReportItemType.TxCancelled };
 
         // Fields.
         private readonly ApplicationDbContext applicationDbContext;

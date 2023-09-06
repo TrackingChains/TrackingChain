@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -6,19 +8,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TrackingChain.Core.Domain.Entities;
+using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TransactionMonitorCore.ModelView;
 
 namespace TrackingChain.TransactionMonitorCore.Services
 {
     public class ReportGeneratorService : IReportGeneratorService
     {
+        // Fields.
+        private readonly ApplicationDbContext applicationDbContext;
+        private readonly ILogger<ReportGeneratorService> logger;
+
+        // Constructors.
+        public ReportGeneratorService(
+            ApplicationDbContext applicationDbContext,
+            ILogger<ReportGeneratorService> logger)
+        {
+            this.applicationDbContext = applicationDbContext;
+            this.logger = logger;
+        }
+
+        // Methods.
         public async Task<string> GenerateTxCancelReportAsync(
             ReportData reportData,
             IEnumerable<ReportItem> reportItems)
         {
-            var str = new StreamReader("ReportTemplates\\TxCancelModelView.html");
-            string bodyTemplate = await str.ReadToEndAsync();
-            str.Close();
+            var bodyTemplate = (await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionCancelledTemplate)).Value ?? "";
 
             return GenerateHtmlContent(bodyTemplate, reportItems.Select(ri => new TxCancelModelView(ri)));
         }
@@ -27,9 +42,7 @@ namespace TrackingChain.TransactionMonitorCore.Services
             ReportData reportData,
             IEnumerable<ReportItem> reportItems)
         {
-            var str = new StreamReader("ReportTemplates\\TxFailedModelView.html");
-            string bodyTemplate = await str.ReadToEndAsync();
-            str.Close();
+            var bodyTemplate = (await applicationDbContext.ReportSettings.FirstAsync(rs => rs.Key == ReportSetting.TransactionErrorTemplate)).Value ?? "";
 
             return GenerateHtmlContent(bodyTemplate, reportItems.Select(ri => new TxCancelModelView(ri)));
         }

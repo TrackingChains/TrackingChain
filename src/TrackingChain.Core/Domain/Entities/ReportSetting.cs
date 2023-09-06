@@ -6,10 +6,8 @@ namespace TrackingChain.Core.Domain.Entities
     {
         public const string TransactionErrorMail = "TransactionErrorMail";
         public const string TransactionErrorTemplate = "TransactionErrorTemplate";
-        public const string TransactionErrorTitle = "TransactionErrorTitle";
         public const string TransactionCancelledMail = "TransactionCancelledMail";
         public const string TransactionCancelledTemplate = "TransactionCancelledTemplate";
-        public const string TransactionCancelledTitle = "TransactionCancelledTitle";
 
         // Constructors.
         public ReportSetting(

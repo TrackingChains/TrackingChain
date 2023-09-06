@@ -27,8 +27,6 @@
 </body>
 </html>";
 
-        public const string TransactionErrorTitle = @"Transaction Error Report";
-
         public const string TransactionCancelledTemplate = @"<!DOCTYPE html>
 <html lang=""en"">
 <head>
@@ -54,8 +52,6 @@
 </body>
 </html>
 ";
-
-        public const string TransactionCancelledTitle = @"Transaction Cancelled Report";
 
     }
 }
