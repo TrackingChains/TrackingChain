@@ -123,16 +123,18 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                     transactionDetail = new TransactionDetail(true); //empty url means no watcher avaiable
 
                 // Transaction Success.
-                if (!isInError)
-                    await TransactionExecutedSuccessAsync(pending, transactionDetail!); 
-                else if (pending.ErrorTimes > errorAfterReTry)
+                if (!isInError &&
+                    transactionDetail!.TransactionErrorReason != TransactionErrorReason.TransactionFinalizedInError)
+                    await TransactionExecutedSuccessAsync(pending, transactionDetail); 
+                else if (transactionDetail?.TransactionErrorReason == TransactionErrorReason.TransactionFinalizedInError ||
+                         pending.ErrorTimes > errorAfterReTry)
                 {
                     AddReportEntity($"Exceed Retry Limit\tErrorTimes: {pending.ErrorTimes}\tErrorAfterReTry: {errorAfterReTry}",
                         pending,
                         ReportItemType.TxWatchingInError);
                     await TransactionExecutedErrorAsync(
                         pending,
-                        new TransactionDetail(pending.LastUnlockedError ?? TransactionErrorReason.UnableToWatchTransactionOnChain));
+                        transactionDetail ?? new TransactionDetail(pending.LastUnlockedError ?? TransactionErrorReason.UnableToWatchTransactionOnChain));
 
                     await applicationDbContext.SaveChangesAsync();
                     return pending.TrackingId;

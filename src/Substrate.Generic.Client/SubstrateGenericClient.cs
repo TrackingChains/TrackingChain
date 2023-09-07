@@ -146,18 +146,23 @@ namespace TrackingChain.Substrate.Generic.Client
                 !watcherResponseDto.data.finalized ||
                 watcherResponseDto.data.pending)
                 return null;
-            return new TransactionDetail(
-                watcherResponseDto.data.block_hash,
-                watcherResponseDto.data.block_num.ToString(CultureInfo.InvariantCulture),
-                "",
-                watcherResponseDto.data.fee_used,
-                "",
-                watcherResponseDto.data.error is null ? "" : JsonSerializer.Serialize(watcherResponseDto.data.error),
-                watcherResponseDto.data.account_id,
-                "",
-                watcherResponseDto.data.success,
-                watcherResponseDto.data.extrinsic_hash,
-                "");
+
+
+            if (!watcherResponseDto.data.success)
+                return new TransactionDetail(TransactionErrorReason.TransactionFinalizedInError);
+            else
+                return new TransactionDetail(
+                    watcherResponseDto.data.block_hash,
+                    watcherResponseDto.data.block_num.ToString(CultureInfo.InvariantCulture),
+                    "",
+                    watcherResponseDto.data.fee_used,
+                    "",
+                    watcherResponseDto.data.error is null ? "" : JsonSerializer.Serialize(watcherResponseDto.data.error),
+                    watcherResponseDto.data.account_id,
+                    "",
+                    watcherResponseDto.data.success,
+                    watcherResponseDto.data.extrinsic_hash,
+                    "");
         }
 
         public async Task<string> InsertTrackingAsync(
