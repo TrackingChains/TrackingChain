@@ -61,6 +61,7 @@ namespace TrackingChain.TransactionMonitorCore.Services
         {
             return await applicationDbContext.TransactionPendings
                 .Where(tp => !tp.Completed &&
+                             (tp.Status == PendingStatus.InProgress || tp.Status == PendingStatus.WaitingForWorker) &&
                              tp.Locked &&
                              tp.LockedDated!.Value.AddSeconds(timeoutSeconds) < DateTime.UtcNow)
                 .OrderBy(tp => tp.LockedDated)
@@ -74,6 +75,7 @@ namespace TrackingChain.TransactionMonitorCore.Services
         {
             return await applicationDbContext.TransactionPools
                 .Where(tp => !tp.Completed &&
+                             (tp.Status == PoolStatus.InProgress || tp.Status == PoolStatus.WaitingForWorker) &&
                              tp.Locked &&
                              tp.LockedDated!.Value.AddSeconds(timeoutSeconds) < DateTime.UtcNow)
                 .OrderBy(tp => tp.LockedDated)

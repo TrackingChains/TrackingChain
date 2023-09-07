@@ -42,7 +42,7 @@ namespace TrackingChain.TransactionMonitorWorker
                 var itemDeleted = 0;
                 try
                 {
-                    itemDeleted = await transactionDeleterUseCase.RunAsync(monitorOptions.GetMaxCompletedTransaction);
+                    //itemDeleted = await transactionDeleterUseCase.RunAsync(monitorOptions.GetMaxCompletedTransaction);
                 }
 #pragma warning disable CA1031 // We need fot catch all problems.
                 catch (Exception ex)

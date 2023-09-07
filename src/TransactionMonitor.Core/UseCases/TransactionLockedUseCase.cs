@@ -48,7 +48,7 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
             applicationDbContext.UpdateRange(pendings);
 
             foreach (var pool in pools)
-                pool.UnlockFromError(0);
+                pool.UnlockFromError(TransactionErrorReason.LockedTimeOut, 0);
             applicationDbContext.UpdateRange(pools);
 
             await applicationDbContext.SaveChangesAsync();

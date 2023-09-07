@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
 using TrackingChain.Common.Interfaces;
 using TrackingChain.Core.Domain.Enums;
@@ -98,7 +99,7 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                 {
                     logger.TrasactionGenerationInError(pool.TrackingId, writerEndpointAddress, ex);
 
-                    pool.UnlockFromError(reTryAfterSeconds);
+                    pool.UnlockFromError(TransactionErrorReason.InsertTransactionExpection, reTryAfterSeconds);
 
                     if (pool.ErrorTimes <= errorAfterReTry)
                     {

@@ -35,7 +35,7 @@ namespace TransactionWatcherWorker
         {
             logger.StartPendingTransactionCheckerWorker();
             if (checkerOptions.Accounts == null ||
-                checkerOptions.Accounts.Any())
+                !checkerOptions.Accounts.Any())
             {
                 logger.EndPendingTransactionCheckerWorker();
                 return;

@@ -35,7 +35,7 @@ namespace TrackingChain.TransactionGeneratorWorker
         {
             logger.StartPoolDequeuerWorker();
             if (dequeuerOptions.Accounts == null ||
-                dequeuerOptions.Accounts.Any())
+                !dequeuerOptions.Accounts.Any())
             {
                 logger.EndPoolDequeuerWorker();
                 return;
