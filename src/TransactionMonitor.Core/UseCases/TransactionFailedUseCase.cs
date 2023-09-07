@@ -56,7 +56,7 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
 
             await applicationDbContext.SaveChangesAsync();
 
-            var cancelledCount = registries.Where(r => r.Status != RegistryStatus.CanceledDueToError).Count();
+            var cancelledCount = registries.Where(r => r.Status == RegistryStatus.CanceledDueToError).Count();
             logger.EndManageTransactionFailedUseCase(cancelledCount, registries.Count() - cancelledCount);
         }
 
@@ -110,7 +110,8 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
 
             if (registry.TransactionStep == TransactionStep.Pool)
             {
-                if (registry.TransactionErrorReason == TransactionErrorReason.UnableToSendTransactionOnChain)
+                if (registry.TransactionErrorReason == TransactionErrorReason.UnableToSendTransactionOnChain ||
+                    registry.TransactionErrorReason == TransactionErrorReason.InsertTransactionExpection)
                 {
                     registry.Reprocessable(TransactionStep.Pool);
                     pool.Reprocessable();
