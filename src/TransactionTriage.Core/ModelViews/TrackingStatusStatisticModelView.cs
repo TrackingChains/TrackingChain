@@ -8,12 +8,15 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
         public int Triage { get; set; }
         public int Pool { get; set; }
         public int Pending { get; set; }
+        public int ErrorToManage { get; set; }
         public int Error { get; set; }
         public int Successful { get; set; }
         
         public int TriagePercentage => CalculatePercentage(Triage);
         public int PoolPercentage => CalculatePercentage(Pool);
         public int PendingPercentage => CalculatePercentage(Pending);
+        public int ErrorToManagePercentage => CalculatePercentage(ErrorToManage);
+        
         public int ErrorPercentage => CalculatePercentage(Error);
 
         public int ErrorPercentageOnSuccessful => CalculatePercentageOnSuccessful(Error);
@@ -31,7 +34,7 @@ namespace TrackingChain.TransactionTriageCore.ModelViews
 
         private int CalculatePercentage(int value)
         {
-            int total = Triage + Pool + Pending + Error;
+            int total = Triage + Pool + Pending;
             if (total == 0)
                 return 0;
 
