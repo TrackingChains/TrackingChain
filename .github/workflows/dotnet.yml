@@ -30,6 +30,8 @@ jobs:
       run: dotnet restore src/TransactionWatcher.Worker/TransactionWatcher.Worker.csproj
     - name: Restore TrackingChain.WebApp dependencies
       run: dotnet restore src/TrackingChain.WebApp/TrackingChain.WebApp.csproj
+    - name: Restore TransactionMonitor.Worker dependencies
+      run: dotnet restore src/TransactionMonitor.Worker/TransactionMonitor.Worker.csproj
     - name: Restore TransactionGeneratorCore.Tests dependencies
       run: dotnet restore test/TrackingChain.UnitTest/TrackingChain.UnitTest.csproj
 
@@ -43,6 +45,8 @@ jobs:
       run: dotnet build src/TransactionWatcher.Worker/TransactionWatcher.Worker.csproj --no-restore
     - name: Build TrackingChain.WebApp
       run: dotnet build src/TrackingChain.WebApp/TrackingChain.WebApp.csproj --no-restore
+    - name: Build TransactionMonitor.Worker
+      run: dotnet build src/TransactionMonitor.Worker/TransactionMonitor.Worker.csproj --no-restore
     - name: Build TrackingChain.UnitTest
       run: dotnet build test/TrackingChain.UnitTest/TrackingChain.UnitTest.csproj --no-restore
 
