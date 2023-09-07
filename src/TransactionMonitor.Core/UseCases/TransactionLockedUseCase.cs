@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TrackingChain.Common.Enums;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TrackingChainCore.Extensions;
@@ -43,7 +44,7 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
                 pools = await transactionMonitorService.GetPoolLockedInTimeoutAsync(max - pendings.Count(), unlockUncompletedGeneratorAfterSeconds);
 
             foreach (var pending in pendings)
-                pending.UnlockFromError(0);
+                pending.UnlockFromError(TransactionErrorReason.LockedTimeOut, 0);
             applicationDbContext.UpdateRange(pendings);
 
             foreach (var pool in pools)

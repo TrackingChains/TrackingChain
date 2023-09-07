@@ -6,6 +6,7 @@
         GetTrasactionReceiptExpection,
         TransactionFinalizedInError,
         UnableToSendTransactionOnChain,
-        UnableToWatchTransactionOnChain
+        UnableToWatchTransactionOnChain,
+        LockedTimeOut
     }
 }
