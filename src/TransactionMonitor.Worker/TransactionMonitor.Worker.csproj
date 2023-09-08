@@ -45,5 +45,11 @@
     <ProjectReference Include="..\Substrate.Generic.Client\Substrate.Generic.Client.csproj" />
     <ProjectReference Include="..\TransactionMonitor.Core\TransactionMonitor.Core.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="ReportGenerated\foo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
 </Project>

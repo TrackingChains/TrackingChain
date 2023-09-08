@@ -42,9 +42,9 @@ namespace TrackingChain.TransactionMonitorWorker
                 var itemDeleted = 0;
                 try
                 {
-                    /*await alertUseCase.RunAsync(
+                    await alertUseCase.RunAsync(
                         TimeSpan.FromMinutes(monitorOptions.IntervalMinutesBetweenTransactionCancelledReport),
-                        TimeSpan.FromMinutes(monitorOptions.IntervalMinutesBetweenTransactionErrorReport));*/
+                        TimeSpan.FromMinutes(monitorOptions.IntervalMinutesBetweenTransactionErrorReport));
                 }
 #pragma warning disable CA1031 // We need fot catch all problems.
                 catch (Exception ex)

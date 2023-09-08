@@ -121,7 +121,7 @@ namespace TrackingChain.TransactionMonitorCore.Services
         {
             var maxDate = await applicationDbContext.ReportData
                 .Where(tp => tp.Type == reportDataType)
-                .MaxAsync(tr => tr.Created);
+                .MaxAsync(tr => (DateTime?)tr.Created) ?? DateTime.MinValue;
 
             return DateTime.UtcNow > maxDate.Add(intervalBetweenLastReport);
         }

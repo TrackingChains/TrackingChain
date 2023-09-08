@@ -50,6 +50,7 @@ IHost host = Host.CreateDefaultBuilder(args)
 
         services.AddTransient<IUnitOfWork, UnitOfWork>();
 
+        services.AddHostedService<AlertWorker>(); 
         services.AddHostedService<TransactionDeleterWorker>();
         services.AddHostedService<TransactionFailedWorker>();
         services.AddHostedService<TransactionLockedWorker>();
