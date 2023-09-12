@@ -44,7 +44,6 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public void Reprocessable()
         {
             ErrorTimes = 0;
-            Status = PoolStatus.WaitingForWorker;
             Unlock();
         }
 
