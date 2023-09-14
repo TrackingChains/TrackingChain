@@ -25,6 +25,22 @@ namespace TrackingChain.Common.Dto
             To = "";
         }
 
+        public TransactionDetail(string txHash)
+        {
+            BlockHash = "";
+            BlockNumber = "";
+            ContractAddress = "";
+            CumulativeGasUsed = "";
+            EffectiveGasPrice = "";
+            Error = "";
+            From = "";
+            GasUsed = "";
+            Undefined = true;
+            Successful = null;
+            TransactionHash = txHash;
+            To = "";
+        }
+
         public TransactionDetail(TransactionErrorReason transactionErrorReason)
         {
             TransactionErrorReason = transactionErrorReason;

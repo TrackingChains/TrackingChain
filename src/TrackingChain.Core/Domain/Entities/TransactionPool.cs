@@ -71,11 +71,6 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             Status = PoolStatus.InProgress;
         }
 
-        public void SetStatusDone()
-        {
-            Status = PoolStatus.Done;
-        }
-
         public void SetStatusError()
         {
             Status = PoolStatus.Error;

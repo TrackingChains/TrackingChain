@@ -72,7 +72,7 @@ namespace TrackingChain.UnitTest.Pages.Admin.Smartcontracts
             Assert.Equal(smartContractBinding.ChainNumberId, smartContract.ChainNumberId);
             Assert.Equal(smartContractBinding.ChainType, smartContract.ChainType);
             Assert.Equal(smartContractBinding.Currency, smartContract.Currency);
-            Assert.Equal("{\"ByteWeight\":110,\"GetTrackSelectorValue\":null,\"InsertTrackSelectorValue\":null,\"InsertTrackBasicWeight\":0,\"InsertTrackProofSize\":0,\"InsertTrackRefTime\":0,\"SupportedClient\":0,\"WaitingSecondsForWatcherTx\":0}", smartContract.ExtraInfo);
+            Assert.Equal("{\"ByteWeight\":110,\"GetTrackSelectorValue\":null,\"InsertTrackSelectorValue\":null,\"InsertTrackBasicWeight\":0,\"InsertTrackProofSize\":0,\"InsertTrackRefTime\":0,\"SupportedClient\":0,\"WaitingSecondsForWatcherTx\":0,\"WaitingForResult\":false}", smartContract.ExtraInfo);
             Assert.Equal(smartContractBinding.Name, smartContract.Name);
         }
 

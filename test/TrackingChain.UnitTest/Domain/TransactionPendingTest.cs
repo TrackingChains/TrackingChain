@@ -196,21 +196,6 @@ namespace TrackingChain.UnitTest.Domain
         }
 
         [Fact]
-        public void SetStatusDoneShouldBe()
-        {
-            //Arrange
-            var transactionPending = CreateGenericEntity();
-
-
-            //Act
-            transactionPending.SetStatusDone();
-
-
-            //Assert
-            Assert.Equal(PendingStatus.Done, transactionPending.Status);
-        }
-
-        [Fact]
         public void SetStatusErrorDoneShouldBe()
         {
             //Arrange

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using TrackingChain.Common.Dto;
 using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
 using TrackingChain.Common.Interfaces;
@@ -78,20 +79,25 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
 
                 var blockChainService = blockchainServices.First(x => x.ProviderType == pool.ChainType);
 
-                string txHash = "";
+                TransactionDetail? transactionDetail = null;
+                ContractExtraInfo contractExtraInfo;
                 string writerEndpointAddress = "";
                 try
                 {
                     writerEndpointAddress = account.GetFirstRandomWriterAddress;
-                    txHash = await blockChainService.InsertTrackingAsync(
+                    contractExtraInfo = ContractExtraInfo.FromJson(pool.SmartContractExtraInfo);
+                    transactionDetail = await blockChainService.InsertTrackingAsync(
                     pool.Code,
                     pool.DataValue,
                     account.PrivateKey,
                     pool.ChainNumberId,
                     writerEndpointAddress,
                     pool.SmartContractAddress,
-                    ContractExtraInfo.FromJson(pool.SmartContractExtraInfo),
+                    contractExtraInfo,
                     CancellationToken.None);
+
+                    if (transactionDetail is null)
+                        throw new InvalidOperationException("TransactionDetail is NULL");
                 }
 #pragma warning disable CA1031 // We need fot catch all problems.
                 catch (Exception ex)
@@ -121,8 +127,10 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                 }
 
                 // Tx Generated.
-                var txPending = transactionGeneratorService.AddTransactionPendingFromPool(pool, txHash);
-                await transactionGeneratorService.SetToPendingAsync(txPending.TrackingId, txHash, account.ChainWriterAddress);
+                var txPending = transactionGeneratorService.AddTransactionPendingFromPool(pool, transactionDetail.TransactionHash);
+                await transactionGeneratorService.SetToPendingAsync(txPending.TrackingId, transactionDetail.TransactionHash, account.ChainWriterAddress);
+                if (contractExtraInfo.WaitingForResult)
+                    await TransactionExecutedSuccessAsync(pool, txPending, transactionDetail);
 
                 await applicationDbContext.SaveChangesAsync();
 
@@ -146,9 +154,43 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
 
             pool.SetStatusError();
 
-            await transactionGeneratorService.SetToRegistryErrorAsync(pool.TrackingId);
+            await transactionGeneratorService.SetToRegistryErrorAsync(
+                pool.TrackingId, 
+                new TransactionDetail(TransactionErrorReason.UnableToSendTransactionOnChain));
 
             logger.TransactionGenerationCompletedInError(pool.TrackingId);
+        }
+
+        private async Task TransactionExecutedSuccessAsync(
+            TransactionPool pool,
+            TransactionPending pending,
+            TransactionDetail transactionDetail)
+        {
+            if (transactionDetail.Successful.HasValue &&
+                !transactionDetail.Successful.Value)
+            {
+                if (transactionDetail.TransactionErrorReason is null)
+                {
+                    var ex = new InvalidOperationException("TransactionErrorReason is mandatory");
+                    ex.Data.Add("TrackingId", pending.TrackingId);
+                    throw ex;
+                }
+
+                await transactionGeneratorService.SetToRegistryErrorAsync(
+                    pending.TrackingId,
+                    transactionDetail);
+
+                pending.SetStatusError();
+            }
+            else
+            {
+                await transactionGeneratorService.SetToRegistryCompletedAsync(
+                    pending.TrackingId,
+                    transactionDetail);
+                await transactionGeneratorService.SetTransactionTriageCompletedAsync(pending.TrackingId);
+                pool.SetCompleted();
+                pending.SetCompleted();
+            }
         }
     }
 }

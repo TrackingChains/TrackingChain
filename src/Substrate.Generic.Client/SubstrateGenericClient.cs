@@ -168,7 +168,7 @@ namespace TrackingChain.Substrate.Generic.Client
                     "");
         }
 
-        public async Task<string> InsertTrackingAsync(
+        public async Task<TransactionDetail?> InsertTrackingAsync(
             string code,
             string dataValue,
             string privateKey,
@@ -208,7 +208,7 @@ namespace TrackingChain.Substrate.Generic.Client
             }
 
             if (!await client.ConnectAsync(true, true, token))
-                return "";
+                return null;
 
             var insertTrackDto = CreateInsertTrackParams(
                 code,
@@ -216,9 +216,10 @@ namespace TrackingChain.Substrate.Generic.Client
                 false,
                 contractExtraInfo);
 
-            string txHash;
-            if (!contractExtraInfo.WatchingStatus)
-                txHash = await client.ContractsCallAsync(
+            TransactionDetail? transactionDetail = null;
+            if (!contractExtraInfo.WaitingForResult)
+            {
+                var txHash = await client.ContractsCallAsync(
                     true,
                     dest,
                     insertTrackDto.Value,
@@ -227,6 +228,8 @@ namespace TrackingChain.Substrate.Generic.Client
                     insertTrackDto.StorageDepositLimit,
                     insertTrackDto.DataHex,
                     token) ?? "";
+                transactionDetail = new TransactionDetail(txHash);
+            }
             else
             {
                 var subscriptionId = await client.ContractsCallAndWatchAsync(
@@ -245,21 +248,28 @@ namespace TrackingChain.Substrate.Generic.Client
                     while (queueInfo != null && 
                            !queueInfo.IsCompleted)
                     {
-                        //Log.Information("QueueInfo {subscription} [{state}]", subscriptionId, queueInfo != null ? queueInfo.State.ToString() : queueInfo);
+#pragma warning disable CA1848
+                        logger.LogDebug("Insert OnChain Info {Subscription} [{State}]", subscriptionId, queueInfo.State);
+#pragma warning restore CA1848
+
                         Thread.Sleep(1000);
                         queueInfo = client.ExtrinsicManager.Get(subscriptionId);
                     }
-                    txHash = "12345";
+#pragma warning disable CA1848
+                    logger.LogInformation("Insert OnChain {Subscription} Finalized", subscriptionId);
+#pragma warning restore CA1848
+                    transactionDetail = new TransactionDetail(subscriptionId);
                 }
                 else
                 {
-                    txHash = "";
-                    //Log.Error("Failed to call contract");
+#pragma warning disable CA1848
+                    logger.LogError("Insert OnChain Error");
+#pragma warning restore CA1848
                 }
             }
             await client.DisconnectAsync();
 
-            return txHash;
+            return transactionDetail;
         }
 
         // Helpers.

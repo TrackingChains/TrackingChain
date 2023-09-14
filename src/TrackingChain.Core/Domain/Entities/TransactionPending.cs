@@ -103,11 +103,6 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             Status = PendingStatus.InProgress;
         }
 
-        public void SetStatusDone()
-        {
-            Status = PendingStatus.Done;
-        }
-
         public void Unlock(int secondsDelayWatchingFrom = 6)
         {
             Locked = false;
