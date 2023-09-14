@@ -105,7 +105,7 @@ namespace TrackingChain.TransactionWatcherCore.Services
                 transactionDetail.EffectiveGasPrice,
                 transactionDetail.From,
                 transactionDetail.GasUsed,
-                transactionDetail.Successful,
+                transactionDetail.Status,
                 transactionDetail.TransactionHash,
                 transactionDetail.To);
 

@@ -107,7 +107,7 @@ namespace TrackingChain.TransactionGeneratorCore.Services
                 transactionDetail.EffectiveGasPrice,
                 transactionDetail.From,
                 transactionDetail.GasUsed,
-                transactionDetail.Successful,
+                transactionDetail.Status,
                 transactionDetail.TransactionHash,
                 transactionDetail.To);
 
@@ -139,7 +139,7 @@ namespace TrackingChain.TransactionGeneratorCore.Services
                 transactionDetail.EffectiveGasPrice,
                 transactionDetail.From,
                 transactionDetail.GasUsed,
-                transactionDetail.Successful,
+                transactionDetail.Status,
                 transactionDetail.TransactionHash,
                 transactionDetail.To);
 

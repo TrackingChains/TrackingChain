@@ -125,7 +125,9 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                 // Transaction Success.
                 if (!isInError &&
                     transactionDetail!.TransactionErrorReason != TransactionErrorReason.TransactionFinalizedInError)
-                    await TransactionExecutedSuccessAsync(pending, transactionDetail); 
+                {
+                    await TransactionExecutedSuccessAsync(pending, transactionDetail);
+                }
                 else if (transactionDetail?.TransactionErrorReason == TransactionErrorReason.TransactionFinalizedInError ||
                          pending.ErrorTimes > errorAfterReTry)
                 {
@@ -167,8 +169,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
             TransactionPending pending,
             TransactionDetail transactionDetail)
         {
-            if (!transactionDetail.Successful.HasValue ||
-                transactionDetail.Successful.Value)
+            if (transactionDetail.Status != TransactionDetailStatus.Failed)
             {
                 var ex = new InvalidOperationException("TransactionExecutedError must be call only with failed TransactionDetail");
                 ex.Data.Add("TrackingId", pending.TrackingId);
@@ -187,15 +188,14 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
 
             pending.SetStatusError();
 
-            logger.TransactionWatcher(pending.TrackingId, transactionDetail.Successful);
+            logger.TransactionWatcher(pending.TrackingId, transactionDetail.Status);
         }
 
         private async Task TransactionExecutedSuccessAsync(
             TransactionPending pending,
             TransactionDetail transactionDetail)
         {
-            if (transactionDetail.Successful.HasValue &&
-                !transactionDetail.Successful.Value)
+            if (transactionDetail.Status == TransactionDetailStatus.Failed)
             {
                 var ex = new InvalidOperationException("TransactionExecutedSuccess must be call only with successful TransactionDetail");
                 ex.Data.Add("TrackingId", pending.TrackingId);
@@ -209,7 +209,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
             await transactionWatcherService.SetTransactionTriageCompletedAsync(pending.TrackingId);
             await transactionWatcherService.SetTransactionPoolCompletedAsync(pending.TrackingId);
 
-            logger.TransactionWatcher(pending.TrackingId, transactionDetail.Successful);
+            logger.TransactionWatcher(pending.TrackingId, transactionDetail.Status);
         }
     }
 }

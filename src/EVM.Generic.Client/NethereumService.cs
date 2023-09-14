@@ -45,8 +45,10 @@ namespace EVM.Generic.Client
 
             var contractHandler = web3.Eth.GetContractHandler(contractAddress);
 
-            var getProductTrackingFunction = new GetCodeTrackingFunction();
-            getProductTrackingFunction.Code = Encoding.ASCII.GetBytes(code);
+            var getProductTrackingFunction = new GetCodeTrackingFunction
+            {
+                Code = Encoding.ASCII.GetBytes(code)
+            };
             var getTrackingResult = await contractHandler.QueryDeserializingToObjectAsync<GetCodeTrackingFunction, GetCodeTrackingOutputDTO>(getProductTrackingFunction);
 
             return new TrackingChainData
@@ -146,25 +148,38 @@ namespace EVM.Generic.Client
             return web3.Eth.GetContractHandler(contractAddress);
         }
 
-        public TransactionDetail? ToTransactionDetail(string txHash) => new TransactionDetail(txHash);
+        public TransactionDetail? ToTransactionDetail(string txHash) => new(txHash);
 
         public TransactionDetail? ToTransactionDetail(TransactionReceipt ethReceipt)
         {
             if (ethReceipt is null)
                 return null;
 
-            return new TransactionDetail(
-                ethReceipt.BlockHash,
-                ethReceipt.BlockNumber.HexValue,
-                ethReceipt.ContractAddress,
-                ethReceipt.CumulativeGasUsed.HexValue,
-                ethReceipt.EffectiveGasPrice.HexValue,
-                "",
-                ethReceipt.From,
-                ethReceipt.GasUsed.HexValue,
-                ethReceipt.Status.Value == 1,
-                ethReceipt.TransactionHash,
-                ethReceipt.To);
+            return ethReceipt.Status.Value == 1 ?
+                new TransactionDetail(
+                    ethReceipt.BlockHash,
+                    ethReceipt.BlockNumber.HexValue,
+                    ethReceipt.ContractAddress,
+                    ethReceipt.CumulativeGasUsed.HexValue,
+                    ethReceipt.EffectiveGasPrice.HexValue,
+                    "",
+                    ethReceipt.From,
+                    ethReceipt.GasUsed.HexValue,
+                    ethReceipt.Status.Value == 1,
+                    ethReceipt.TransactionHash,
+                    ethReceipt.To) :
+                new TransactionDetail(
+                    TransactionErrorReason.TransactionFinalizedInError,
+                    ethReceipt.BlockHash,
+                    ethReceipt.BlockNumber.HexValue,
+                    ethReceipt.ContractAddress,
+                    ethReceipt.CumulativeGasUsed.HexValue,
+                    ethReceipt.EffectiveGasPrice.HexValue,
+                    "",
+                    ethReceipt.From,
+                    ethReceipt.GasUsed.HexValue,
+                    ethReceipt.TransactionHash,
+                    ethReceipt.To);
         }
     }
 }

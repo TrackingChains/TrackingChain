@@ -80,6 +80,11 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             Status = PendingStatus.Done;
         }
 
+        public void SetExcluded()
+        {
+            Status = PendingStatus.Excluded;
+        }
+
         public void SetStatusError()
         {
             Status = PendingStatus.Error;

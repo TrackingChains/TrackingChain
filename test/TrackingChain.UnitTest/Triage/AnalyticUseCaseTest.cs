@@ -46,7 +46,7 @@ namespace TrackingChain.UnitTest.Triage
             //Arrange
             var entityTransactionRegistries = EntityCreator.CreateTransactionRegistry(10);
             foreach (var item in entityTransactionRegistries)
-                item.SetToRegistryCompleted("1", "2", "3", "4", "5", "6", true, "7", "8");
+                item.SetToRegistryCompleted("1", "2", "3", "4", "5", "6", TransactionDetailStatus.Success, "7", "8");
             dbContext.TransactionRegistries.AddRange(entityTransactionRegistries);
             dbContext.SaveChanges();
 
