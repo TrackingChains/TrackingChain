@@ -1,0 +1,58 @@
+﻿@page
+@model TrackingChain.TriageWebApplication.Pages.Admin.Monitor.TemplateErrorModel
+@{
+}
+<style>
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: bold;
+        color: #555;
+    }
+
+    textarea, input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+    }
+
+    button {
+        display: inline-block;
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    .validation-summary-errors {
+        color: #f00;
+    }
+</style>
+
+<h2>Transaction Error Template</h2>
+
+<div class="container">
+    <form method="post">
+        <div class="form-group">
+            <label for="Template">Template HTML:</label>
+            <textarea id="Template" name="Template" class="form-control" rows="5">@Model.TemplateData.Template</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="AddressMails">Email Address (; for multi address):</label>
+            <input type="text" id="AddressMails" name="AddressMails" class="form-control" value="@Model.TemplateData.AddressMails">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+    @Model.ErrorMessage
+</div>

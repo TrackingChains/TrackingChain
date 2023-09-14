@@ -34,6 +34,7 @@ namespace TrackingChain.TrackingChainCore.EntityFramework.Context
         public virtual DbSet<TransactionPool> TransactionPools { get; set; } = null!;
         public virtual DbSet<ReportData> ReportData { get; set; } = null!;
         public virtual DbSet<ReportItem> ReportItems { get; set; } = null!;
+        public virtual DbSet<ReportSetting> ReportSettings { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -61,8 +61,10 @@ namespace TrackingChain.TransactionMonitorCore.Services
             ReportData reportData,
             IEnumerable<ReportItem> reportItems)
         {
-            var bodyBuilder = new BodyBuilder();
-            bodyBuilder.HtmlBody = await reportGeneratorService.GenerateTxCancelReportAsync(reportData, reportItems);
+            var bodyBuilder = new BodyBuilder
+            {
+                HtmlBody = await reportGeneratorService.GenerateTxCancelReportAsync(reportData, reportItems)
+            };
 
             await SendEmailAsync(mailSettings.Mail, mailSettings.Mail, reportData.Description, bodyBuilder.ToMessageBody());
         }
@@ -71,8 +73,10 @@ namespace TrackingChain.TransactionMonitorCore.Services
             ReportData reportData,
             IEnumerable<ReportItem> reportItems)
         {
-            var bodyBuilder = new BodyBuilder();
-            bodyBuilder.HtmlBody = await reportGeneratorService.GenerateTxFailedReportAsync(reportData, reportItems);
+            var bodyBuilder = new BodyBuilder
+            {
+                HtmlBody = await reportGeneratorService.GenerateTxFailedReportAsync(reportData, reportItems)
+            };
 
             await SendEmailAsync(mailSettings.Mail, mailSettings.Mail, reportData.Description, bodyBuilder.ToMessageBody());
         }

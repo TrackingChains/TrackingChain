@@ -2,10 +2,12 @@
 {
     public enum TransactionErrorReason
     {
-        TransactionNotFound,
-        GetTrasactionReceiptExpection,
-        TransactionFinalizedInError,
-        UnableToSendTransactionOnChain,
-        UnableToWatchTransactionOnChain
+        GetTrasactionReceiptExpection = 0,
+        InsertTransactionExpection = 1,
+        LockedTimeOut = 2,
+        UnableToSendTransactionOnChain = 3,
+        UnableToWatchTransactionOnChain = 4,
+        TransactionNotFound = 5,
+        TransactionFinalizedInError = 6
     }
 }

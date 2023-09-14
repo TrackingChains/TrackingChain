@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -48,15 +50,37 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
                     registry.Status != RegistryStatus.WaitingToCancel)
                     continue;
 
-                ManageTransactionToCancel(triages, pools, pendings, registry);
+                try
+                {
+                    ManageTransactionToCancel(triages, pools, pendings, registry);
+                }
+#pragma warning disable CA1031 // We need fot catch all problems.
+                catch (Exception ex)
+#pragma warning restore CA1031 // Do not catch general exception types
+                {
+                    logger.ManageTransactionToCancelInError(registry.TrackingId, ex);
+                    applicationDbContext.Entry(registry).State = EntityState.Unchanged;
+                }
             }
 
             foreach (var registry in registries.Where(r => r.Status != RegistryStatus.CanceledDueToError))
-                ManageTransactionToRetry(triages, pools, pendings, registry);
-
+            {
+                try
+                {
+                    ManageTransactionToRetry(triages, pools, pendings, registry);
+                }
+#pragma warning disable CA1031 // We need fot catch all problems.
+                catch (Exception ex)
+#pragma warning restore CA1031 // Do not catch general exception types
+                {
+                    logger.ManageTransactionToRetryInError(registry.TrackingId, ex);
+                    applicationDbContext.Entry(registry).State = EntityState.Unchanged;
+                }
+            }
+                
             await applicationDbContext.SaveChangesAsync();
 
-            var cancelledCount = registries.Where(r => r.Status != RegistryStatus.CanceledDueToError).Count();
+            var cancelledCount = registries.Where(r => r.Status == RegistryStatus.CanceledDueToError).Count();
             logger.EndManageTransactionFailedUseCase(cancelledCount, registries.Count() - cancelledCount);
         }
 
@@ -104,15 +128,18 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
             if (pool is null)
             {
                 logger.ManageTransactionFailedUndefinedRecoveryUseCase(registry.TrackingId, registry.ErrorTime, "Pool NULL");
-                ManageTransactionToCancel(triages, pools, pendings, registry);
+                registry.SetWaitingToCancel();
                 return;
             }
 
             if (registry.TransactionStep == TransactionStep.Pool)
             {
-                if (registry.TransactionErrorReason == TransactionErrorReason.UnableToSendTransactionOnChain)
+                if (registry.TransactionErrorReason == TransactionErrorReason.UnableToSendTransactionOnChain ||
+                    registry.TransactionErrorReason == TransactionErrorReason.InsertTransactionExpection)
                 {
                     registry.Reprocessable(TransactionStep.Pool);
+                    applicationDbContext.Update(registry);
+
                     pool.Reprocessable();
                     applicationDbContext.Update(pool);
                     logger.ManageTransactionFailedToReprocessableUseCase(registry.TrackingId, registry.ErrorTime, registry.TransactionErrorReason.Value);
@@ -138,15 +165,21 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
                     registry.TransactionErrorReason == TransactionErrorReason.TransactionFinalizedInError)
                 {
                     registry.Reprocessable(TransactionStep.Pool);
+                    applicationDbContext.Update(registry);
+
                     pool.Reprocessable();
                     applicationDbContext.Update(pool);
                     applicationDbContext.Remove(pending);
                     logger.ManageTransactionFailedToReprocessableUseCase(registry.TrackingId, registry.ErrorTime, registry.TransactionErrorReason.Value);
                 }
-                else if (registry.TransactionErrorReason == TransactionErrorReason.GetTrasactionReceiptExpection)
+                else if (registry.TransactionErrorReason == TransactionErrorReason.GetTrasactionReceiptExpection ||
+                         registry.TransactionErrorReason == TransactionErrorReason.UnableToWatchTransactionOnChain)
                 {
                     registry.Reprocessable(TransactionStep.Pending);
+                    applicationDbContext.Update(registry);
+
                     pending.Reprocessable();
+                    applicationDbContext.Update(pending);
                     logger.ManageTransactionFailedToReprocessableUseCase(registry.TrackingId, registry.ErrorTime, registry.TransactionErrorReason.Value);
                 }
                 else

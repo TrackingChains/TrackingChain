@@ -143,7 +143,8 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
 
         public void SetWaitingToCancel()
         {
-            if (Status != RegistryStatus.Error)
+            if (Status != RegistryStatus.Error &&
+                Status != RegistryStatus.WaitingToReTry)
             {
                 var ex = new InvalidOperationException("SetWaitingToCancel when in status not permited");
                 ex.Data.Add("TrackingId", TrackingId);

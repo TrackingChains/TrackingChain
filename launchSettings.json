@@ -12,7 +12,8 @@
         "transactiongeneratorworker": "StartDebugging",
         "transactionwatcherworker": "StartDebugging",
         "sql-server-db": "StartWithoutDebugging",
-        "triagewebapplication": "StartDebugging"
+        "triagewebapplication": "StartDebugging",
+        "trackingchain.webapp": "StartDebugging"
       }
     }
   }
