@@ -66,6 +66,8 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                 // Check for error limit.
                 if (pending.ErrorTimes > maxErrorTime)
                 {
+                    pending.Unlock();
+
                     AddReportEntity($"Exceed Retry Limit\tErrorTimes: {pending.ErrorTimes}\tMaxErrorTime: {maxErrorTime}",
                         pending,
                         ReportItemType.TxWatchingInError);

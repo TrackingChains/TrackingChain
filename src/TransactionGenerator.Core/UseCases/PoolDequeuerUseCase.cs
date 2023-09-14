@@ -66,6 +66,8 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                 }
                 if (pool.ErrorTimes > maxErrorTime)
                 {
+                    pool.Unlock();
+
                     await SetTransactionGenerationCompletedInErrorAsync(maxErrorTime, pool);
 
                     await applicationDbContext.SaveChangesAsync();
