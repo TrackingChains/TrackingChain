@@ -45,7 +45,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
             int max,
             Guid accountId,
             int reTryAfterSeconds,
-            int errorAfterReTry)
+            int maxErrorTime)
         {
             var account = await accountService.GetAccountAsync(accountId);
             var pendings = await transactionWatcherService.GetTransactionToCheckAsync(max, accountId);
@@ -64,9 +64,9 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                 }
 
                 // Check for error limit.
-                if (pending.ErrorTimes > errorAfterReTry)
+                if (pending.ErrorTimes > maxErrorTime)
                 {
-                    AddReportEntity($"Exceed Retry Limit\tErrorTimes: {pending.ErrorTimes}\tErrorAfterReTry: {errorAfterReTry}",
+                    AddReportEntity($"Exceed Retry Limit\tErrorTimes: {pending.ErrorTimes}\tMaxErrorTime: {maxErrorTime}",
                         pending,
                         ReportItemType.TxWatchingInError);
                     await TransactionExecutedErrorAsync(
@@ -74,6 +74,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                         new TransactionDetail(pending.LastUnlockedError ?? TransactionErrorReason.UnableToWatchTransactionOnChain));
 
                     await applicationDbContext.SaveChangesAsync();
+
                     return pending.TrackingId;
                 }
 
@@ -81,7 +82,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
                 var blockChainService = blockchainServices.First(x => x.ProviderType == pending.ChainType);
                 var (apiUrl, apiKey) = account.GetFirstRandomWatcherAddress;
                 TransactionDetail? transactionDetail = null;
-                var isInError = false;
+                string? errorException = null;
                 if (!string.IsNullOrWhiteSpace(apiUrl))
                 {
                     try
@@ -93,53 +94,42 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
 #pragma warning restore CA1031 // Do not catch general exception types
                     {
                         logger.GetTrasactionReceiptInError(pending.TrackingId, pending.TxHash, apiUrl, ex);
-                        isInError = true;
-
-                        if (pending.ErrorTimes <= errorAfterReTry)
-                        {
-                            AddReportEntity(TrackinChainExceptionExtensions.GetAllExceptionMessages(ex),
-                                pending,
-                                ReportItemType.TxWatchingFailed);
-                            pending.UnlockFromError(TransactionErrorReason.GetTrasactionReceiptExpection, reTryAfterSeconds);
-                        }
+                        errorException = TrackinChainExceptionExtensions.GetAllExceptionMessages(ex);
                     }
-
-                    //transactionDetail null equal to error.
-                    if (!isInError &&
-                        transactionDetail is null)
-                    {
-                        isInError = true;
-
-                        if (pending.ErrorTimes <= errorAfterReTry)
-                        {
-                            AddReportEntity($"TransactionDetail NULL in ErrorTimes: {pending.ErrorTimes}\tErrorAfterReTry: {errorAfterReTry}",
-                                    pending,
-                                    ReportItemType.TxWatchingFailed);
-                            pending.UnlockFromError(TransactionErrorReason.TransactionNotFound, reTryAfterSeconds);
-                        }
-                    }
+                    if (transactionDetail is null)
+                        transactionDetail = new TransactionDetail(TransactionErrorReason.GetTrasactionReceiptExpection);
                 }
                 else
                     transactionDetail = new TransactionDetail(true); //empty url means no watcher avaiable
 
-                // Transaction Success.
-                if (!isInError &&
-                    transactionDetail!.TransactionErrorReason != TransactionErrorReason.TransactionFinalizedInError)
+                if (transactionDetail.TransactionErrorReason is null)
                 {
                     await TransactionExecutedSuccessAsync(pending, transactionDetail);
                 }
-                else if (transactionDetail?.TransactionErrorReason == TransactionErrorReason.TransactionFinalizedInError ||
-                         pending.ErrorTimes > errorAfterReTry)
+                else
                 {
-                    AddReportEntity($"Exceed Retry Limit\tErrorTimes: {pending.ErrorTimes}\tErrorAfterReTry: {errorAfterReTry}",
-                        pending,
-                        ReportItemType.TxWatchingInError);
-                    await TransactionExecutedErrorAsync(
-                        pending,
-                        transactionDetail ?? new TransactionDetail(pending.LastUnlockedError ?? TransactionErrorReason.UnableToWatchTransactionOnChain));
+                    pending.UnlockFromError(transactionDetail.TransactionErrorReason.Value, reTryAfterSeconds);
+                    applicationDbContext.Update(pending);
 
-                    await applicationDbContext.SaveChangesAsync();
-                    return pending.TrackingId;
+                    if (transactionDetail.TransactionErrorReason == TransactionErrorReason.TransactionFinalizedInError ||
+                         pending.ErrorTimes > maxErrorTime)
+                    {
+                        AddReportEntity(
+                            !string.IsNullOrEmpty(errorException) ? errorException : $"ErrorTimes: {pending.ErrorTimes}\tMaxErrorTime: {maxErrorTime}\tStatus: {transactionDetail.TransactionErrorReason}",
+                            pending,
+                            ReportItemType.TxWatchingInError);
+
+                        await TransactionExecutedErrorAsync(
+                            pending,
+                            transactionDetail);
+                    }
+                    else
+                    {
+                        AddReportEntity(
+                            !string.IsNullOrEmpty(errorException) ? errorException : $"ErrorTimes: {pending.ErrorTimes}\tMaxErrorTime: {maxErrorTime}\tStatus: {transactionDetail.TransactionErrorReason}",
+                            pending,
+                            ReportItemType.TxWatchingFailed);
+                    }
                 }
 
                 await applicationDbContext.SaveChangesAsync();

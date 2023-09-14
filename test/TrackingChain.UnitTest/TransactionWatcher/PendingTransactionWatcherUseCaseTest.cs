@@ -63,7 +63,7 @@ namespace TrackingChain.UnitTest.TransactionWatcher
             var reTryAfterSeconds = 6;
             var saveAsErrorAfterSeconds = 900;
 
-            await EntityCreator.CreateFullDatabaseWithProfileAndTriageAsync(10, primaryProfile, secondaryProfile, dbContext, includePools: true);
+            await EntityCreator.CreateFullDatabaseWithProfileAndTriageAsync(10, primaryProfile, secondaryProfile, dbContext, includePools: true, includePendings: true, includeRegistry: true) ;
             await dbContext.SaveChangesAsync();
 
             //mock
@@ -71,13 +71,12 @@ namespace TrackingChain.UnitTest.TransactionWatcher
             mockAccountService
                 .Setup(m => m.GetAccountAsync(primaryProfile))
                 .Returns(Task.FromResult(primaryAccount));
-            var primaryPendings = (await dbContext.TransactionPools
+            var primaryPendings = await dbContext.TransactionPendings
                 .Take(maxConcurrentThread)
-                .ToListAsync())
-                .Select(tp => EntityCreator.ConvertToPending(tp, "txHash"));
+                .ToListAsync();
             mockTransactionWatcherService
                 .Setup(m => m.GetTransactionToCheckAsync(maxConcurrentThread, primaryProfile))
-                .Returns(Task.FromResult(primaryPendings));
+                .Returns(Task.FromResult((IEnumerable<TransactionPending>) primaryPendings));
             mockTransactionWatcherService
                 .Setup(m => m.SetToRegistryCompletedAsync(It.IsAny<Guid>(), It.IsAny<TransactionDetail>()))
                 .Returns(Task.FromResult(EntityCreator.ConvertToRegistry(primaryPendings.First())));

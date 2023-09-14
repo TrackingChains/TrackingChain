@@ -47,7 +47,7 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
             int max,
             Guid accountId,
             int reTryAfterSeconds,
-            int errorAfterReTry)
+            int maxErrorTime)
         {
             var account = await accountService.GetAccountAsync(accountId);
             var pools = await transactionGeneratorService.GetAvaiableTransactionPoolAsync(max, accountId);
@@ -64,15 +64,15 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                     applicationDbContext.Entry(pool).State = EntityState.Unchanged;
                     continue;
                 }
-                if (pool.ErrorTimes > errorAfterReTry)
+                if (pool.ErrorTimes > maxErrorTime)
                 {
-                    await SetTransactionGenerationCompletedInErrorAsync(errorAfterReTry, pool);
+                    await SetTransactionGenerationCompletedInErrorAsync(maxErrorTime, pool);
 
                     await applicationDbContext.SaveChangesAsync();
 
                     logger.TransactionOnChain(
                         pool.TrackingId, 
-                        $"Exceed Retry Limit\tErrorTimes: {pool.ErrorTimes}\tErrorAfterReTry: {errorAfterReTry}", 
+                        $"Exceed Retry Limit\tErrorTimes: {pool.ErrorTimes}\tMaxErrorTime: {maxErrorTime}", 
                         pool.SmartContractAddress);
                     return pool.TrackingId;
                 }
@@ -107,8 +107,9 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                 if (transactionDetail.Status == TransactionDetailStatus.Failed)
                 {
                     pool.UnlockFromError(transactionDetail.TransactionErrorReason ?? TransactionErrorReason.UnableToSendTransactionOnChain, reTryAfterSeconds);
+                    applicationDbContext.Update(pool);
 
-                    if (pool.ErrorTimes < errorAfterReTry &&
+                    if (pool.ErrorTimes <= maxErrorTime &&
                         transactionDetail.TransactionErrorReason != TransactionErrorReason.TransactionFinalizedInError)
                     {
                         var reportItem = new Core.Domain.Entities.ReportItem(
@@ -119,10 +120,9 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                         pool.TrackingId);
 
                         applicationDbContext.Add(reportItem);
-                        applicationDbContext.Update(pool);
                     }
                     else
-                        await SetTransactionGenerationCompletedInErrorAsync(errorAfterReTry, pool);
+                        await SetTransactionGenerationCompletedInErrorAsync(maxErrorTime, pool);
 
                     await applicationDbContext.SaveChangesAsync();
 
@@ -146,22 +146,22 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                     }
                     else
                         await transactionGeneratorService.SetToPendingAsync(pool.TrackingId, transactionDetail.TransactionHash, account.ChainWriterAddress);
+
+                    await applicationDbContext.SaveChangesAsync();
+
+                    logger.TransactionOnChain(pool.TrackingId, transactionDetail.TransactionHash, pool.SmartContractAddress);
+                    return pool.TrackingId;
                 }
-
-                await applicationDbContext.SaveChangesAsync();
-
-                logger.TransactionOnChain(pool.TrackingId, transactionDetail.TransactionHash, pool.SmartContractAddress);
-                return pool.TrackingId;
             }
 
             return Guid.Empty;
         }
 
         // Helpers.
-        private async Task SetTransactionGenerationCompletedInErrorAsync(int errorAfterReTry, TransactionPool pool)
+        private async Task SetTransactionGenerationCompletedInErrorAsync(int maxErrorTime, TransactionPool pool)
         {
             var reportItem = new Core.Domain.Entities.ReportItem(
-                                    $"Exceed Retry Limit\tErrorTimes: {pool.ErrorTimes}\tErrorAfterReTry: {errorAfterReTry}",
+                                    $"Exceed Retry Limit\tErrorTimes: {pool.ErrorTimes}\tMaxErrorTime: {maxErrorTime}",
                                     0,
                                     false,
                                     ReportItemType.TxGenerationInError,

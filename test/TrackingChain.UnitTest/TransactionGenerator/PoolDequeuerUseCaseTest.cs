@@ -218,7 +218,7 @@ namespace TrackingChain.UnitTest.TransactionGenerator
             var secondaryProfile = Guid.NewGuid();
             var maxConcurrentThread = 3;
             var reTryAfterSeconds = 6;
-            var errorAfterReTry = 1;
+            var maxErrorTime = 1;
 
             await EntityCreator.CreateFullDatabaseWithProfileAndTriageAsync(1, primaryProfile, secondaryProfile, dbContext, includePools: true);
             await dbContext.SaveChangesAsync();
@@ -243,11 +243,11 @@ namespace TrackingChain.UnitTest.TransactionGenerator
                 Mock.Of<ILogger<PoolDequeuerUseCase>>(),
                 mockTransactionGeneratorService.Object);
             blockchainServices = new[] { new Mock<IBlockchainService>(), new Mock<IBlockchainService>(), };
-            await poolDequeuerUseCase.DequeueTransactionAsync(maxConcurrentThread, primaryProfile, reTryAfterSeconds, errorAfterReTry);
+            await poolDequeuerUseCase.DequeueTransactionAsync(maxConcurrentThread, primaryProfile, reTryAfterSeconds, maxErrorTime);
 
 
             //Act
-            var dequedResult = await poolDequeuerUseCase.DequeueTransactionAsync(maxConcurrentThread, primaryProfile, reTryAfterSeconds, errorAfterReTry);
+            var dequedResult = await poolDequeuerUseCase.DequeueTransactionAsync(maxConcurrentThread, primaryProfile, reTryAfterSeconds, maxErrorTime);
 
 
             //Assert

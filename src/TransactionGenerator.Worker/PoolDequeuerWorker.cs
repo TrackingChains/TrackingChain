@@ -72,7 +72,7 @@ namespace TrackingChain.TransactionGeneratorWorker
                         dequeuerOptions.Accounts.Count,
                         taskId,
                         dequeuerOptions.ReTryAfterSeconds,
-                        dequeuerOptions.ErrorAfterReTry);
+                        dequeuerOptions.MaxErrorTime);
                 }
 #pragma warning disable CA1031 // We need fot catch all problems.
                 catch (Exception ex)
