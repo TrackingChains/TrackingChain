@@ -36,12 +36,29 @@ namespace TrackingChain.TransactionMonitorWorker
             {
                 using var scope = serviceProvider.CreateScope();
                 var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
-                var logger = loggerFactory.CreateLogger<TransactionLockedWorker>();
-                var transactionLockedUseCase = scope.ServiceProvider.GetRequiredService<ITransactionLockedUseCase>();
+                var logger = loggerFactory.CreateLogger<TransactionFailedWorker>();
+                var transactionFailedUseCase = scope.ServiceProvider.GetRequiredService<ITransactionFailedUseCase>();
 
-                await transactionLockedUseCase.ReProcessAsync(monitorOptions.GetMaxFailedTransaction, monitorOptions.FailedReTryTimes);
+                var itemDeleted = 0;
+                try
+                {
+                    await transactionFailedUseCase.ManageAsync(
+                        monitorOptions.GetMaxFailedTransaction, 
+                        monitorOptions.FailedReTryTimes);
+                }
+#pragma warning disable CA1031 // We need fot catch all problems.
+                catch (Exception ex)
+                {
+                    itemDeleted = 0;
+                    logger.TransactionFailedWorkerError(ex);
+                }
+#pragma warning restore CA1031 // Do not catch general exception types
+                await Task.Delay(
+                    itemDeleted < monitorOptions.GetMaxFailedTransaction ?
+                        (int)TimeSpan.FromMinutes(1).TotalMilliseconds :
+                        (int)TimeSpan.FromSeconds(1).TotalMilliseconds,
+                    stoppingToken);
 
-                await Task.Delay(1500, stoppingToken);
             }
             logger.EndTransactionFailedWorker();
         }

@@ -99,7 +99,7 @@ namespace TrackingChain.UnitTest.Helpers
         }
 
         public static IEnumerable<TransactionPending> CreateTransactionPending(
-            IEnumerable<TransactionTriage> transactionTriages, 
+            IEnumerable<TransactionTriage> transactionTriages,
             DateTime? forceWatchingFrom = null)
         {
             var transactionPendings = new List<TransactionPending>();
@@ -191,10 +191,12 @@ namespace TrackingChain.UnitTest.Helpers
 
         public static async Task CreateFullDatabaseWithProfileAndTriageAsync(
             int numberOfTriage,
-            Guid primaryProfileAccount, 
-            Guid secondaryProfileAccount, 
+            Guid primaryProfileAccount,
+            Guid secondaryProfileAccount,
             ApplicationDbContext dbContext,
-            bool includePools = false)
+            bool includePools = false,
+            bool includePendings = false,
+            bool includeRegistry = false)
         {
             //smart contracts
             var smartContracts = EntityCreator.CreateSmartContract(2);
@@ -232,8 +234,20 @@ namespace TrackingChain.UnitTest.Helpers
 
                 if (includePools)
                 {
-                    var pools = CreateTransactionPool(triages);
-                    dbContext.TransactionPools.AddRange(pools);
+                    var pool = CreateTransactionPool(triages);
+                    dbContext.TransactionPools.AddRange(pool);
+                    await dbContext.SaveChangesAsync();
+                }
+                if (includePendings)
+                {
+                    var pending = CreateTransactionPending(triages);
+                    dbContext.TransactionPendings.AddRange(pending);
+                    await dbContext.SaveChangesAsync();
+                }
+
+                if (includeRegistry)
+                {
+                    dbContext.TransactionRegistries.AddRange(EntityCreator.CreateTransactionRegistry(triages));
                     await dbContext.SaveChangesAsync();
                 }
             }

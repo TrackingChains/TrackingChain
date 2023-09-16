@@ -36,9 +36,13 @@ namespace TrackingChain.TransactionTriageCore.UseCases
                 {
                     TransactionStep = group.Key,
                     Count = group.Count(),
-                    ErrorCount = group.Count(tr =>
-                        tr.TransactionStep == TransactionStep.Completed &&
-                        tr.Status == RegistryStatus.Error)
+                    ErrorCount = group.Count(tr => tr.TransactionStep == TransactionStep.Completed &&
+                                                   (tr.Status == RegistryStatus.Error ||
+                                                   tr.Status == RegistryStatus.Aborted ||
+                                                   tr.Status == RegistryStatus.CanceledDueToError)),
+                    ErrorToManage = group.Count(tr => (tr.TransactionStep == TransactionStep.Pool ||
+                                                       tr.TransactionStep == TransactionStep.Pending)  &&
+                                                       tr.Status == RegistryStatus.Error),
                 })
                 .ToListAsync();
 
@@ -95,6 +99,7 @@ namespace TrackingChain.TransactionTriageCore.UseCases
 
             return new TrackingStatusStatisticModelView
             {
+                ErrorToManage = transactionStatistics.Sum(stat => stat.ErrorToManage),
                 Error = transactionStatistics.Sum(stat => stat.ErrorCount),
                 Pending = transactionStatistics
                     .FirstOrDefault(stat => stat.TransactionStep == TransactionStep.Pending)?.Count ?? 0,

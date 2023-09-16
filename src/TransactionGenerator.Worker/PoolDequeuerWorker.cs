@@ -35,7 +35,7 @@ namespace TrackingChain.TransactionGeneratorWorker
         {
             logger.StartPoolDequeuerWorker();
             if (dequeuerOptions.Accounts == null ||
-                dequeuerOptions.Accounts.Any())
+                !dequeuerOptions.Accounts.Any())
             {
                 logger.EndPoolDequeuerWorker();
                 return;
@@ -54,7 +54,7 @@ namespace TrackingChain.TransactionGeneratorWorker
 
         // Helpers.
         private async Task RunSingleAccountAsync(
-            Guid taskId, 
+            Guid taskId,
             CancellationToken stoppingToken)
         {
             logger.StartChildPoolDequeuerTask(taskId);
@@ -65,11 +65,11 @@ namespace TrackingChain.TransactionGeneratorWorker
                 var logger = loggerFactory.CreateLogger<PoolDequeuerWorker>();
                 var poolDequeuerUseCase = scope.ServiceProvider.GetRequiredService<IPoolDequeuerUseCase>();
 
-                bool dequeued = false;
+                Guid trackingIdDequeued;
                 try
                 {
-                    dequeued = await poolDequeuerUseCase.DequeueTransactionAsync(
-                        dequeuerOptions.Accounts.Count, 
+                    trackingIdDequeued = await poolDequeuerUseCase.DequeueTransactionAsync(
+                        dequeuerOptions.Accounts.Count,
                         taskId,
                         dequeuerOptions.ReTryAfterSeconds,
                         dequeuerOptions.ErrorAfterReTry);
@@ -78,9 +78,10 @@ namespace TrackingChain.TransactionGeneratorWorker
                 catch (Exception ex)
 #pragma warning restore CA1031 // Do not catch general exception types
                 {
+                    trackingIdDequeued = Guid.Empty;
                     logger.ChildPoolDequeuerTaskInError(taskId, ex);
                 }
-                await Task.Delay(dequeued ? 500 : 1000, stoppingToken);
+                await Task.Delay(trackingIdDequeued == Guid.Empty ? 1000 : 500, stoppingToken);
             }
             logger.EndChildPoolDequeuerTask(taskId);
         }

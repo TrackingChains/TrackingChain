@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TrackingChain.Core.Domain.Entities;
 using TrackingChain.Core.Domain.Enums;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
@@ -12,6 +13,10 @@ namespace TrackingChain.TransactionMonitorCore.Services
 {
     public class TransactionMonitorService : ITransactionMonitorService
     {
+        // Const.
+        private readonly List<ReportItemType> TransactionErrorTypes = new() { ReportItemType.TxGenerationFailed, ReportItemType.TxWatchingFailed, ReportItemType.TxGenerationInError, ReportItemType.TxWatchingInError };
+        private readonly List<ReportItemType> TransactionCancelledTypes = new() { ReportItemType.TxCancelled };
+
         // Fields.
         private readonly ApplicationDbContext applicationDbContext;
         private readonly ILogger<TransactionMonitorService> logger;
@@ -26,15 +31,40 @@ namespace TrackingChain.TransactionMonitorCore.Services
         }
 
         // Methods.
+        public async Task<IEnumerable<ReportItem>> GenerateTransactionCancelledReportItemAsync()
+        {
+            return await applicationDbContext.ReportItems
+                .Where(tp => !tp.Reported &&
+                              TransactionCancelledTypes.Contains(tp.Type))
+                .OrderBy(tp => tp.Created)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ReportItem>> GenerateTransactionErrorReportItemAsync()
+        {
+            return await applicationDbContext.ReportItems
+                .Where(tp => !tp.Reported &&
+                              TransactionErrorTypes.Contains(tp.Type))
+                .OrderBy(tp => tp.Created)
+                .ToListAsync();
+        }
+
+        public async Task<bool> IsInTimeForGenerateTransactionCancelledReportAsync(TimeSpan intervalBetweenLastReport) =>
+            await IsInTimeAsync(ReportDataType.TxCancel, intervalBetweenLastReport);
+
+        public async Task<bool> IsInTimeForGenerateTransactionErrorReportAsync(TimeSpan intervalBetweenLastReport) =>
+            await IsInTimeAsync(ReportDataType.TxError, intervalBetweenLastReport);
+
         public async Task<IEnumerable<TransactionPending>> GetPendingLockedInTimeoutAsync(
             int max, 
             int timeoutSeconds)
         {
             return await applicationDbContext.TransactionPendings
                 .Where(tp => !tp.Completed &&
+                             (tp.Status == PendingStatus.InProgress || tp.Status == PendingStatus.WaitingForWorker) &&
                              tp.Locked &&
-                             tp.WatchingFrom.AddSeconds(timeoutSeconds) < DateTime.UtcNow)
-                .OrderBy(tp => tp.WatchingFrom)
+                             tp.LockedDated!.Value.AddSeconds(timeoutSeconds) < DateTime.UtcNow)
+                .OrderBy(tp => tp.LockedDated)
                 .Take(max)
                 .ToListAsync();
         }
@@ -45,17 +75,19 @@ namespace TrackingChain.TransactionMonitorCore.Services
         {
             return await applicationDbContext.TransactionPools
                 .Where(tp => !tp.Completed &&
+                             (tp.Status == PoolStatus.InProgress || tp.Status == PoolStatus.WaitingForWorker) &&
                              tp.Locked &&
-                             tp.GeneratingFrom.AddSeconds(timeoutSeconds) < DateTime.UtcNow)
-                .OrderBy(tp => tp.GeneratingFrom)
+                             tp.LockedDated!.Value.AddSeconds(timeoutSeconds) < DateTime.UtcNow)
+                .OrderBy(tp => tp.LockedDated)
                 .Take(max)
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<TransactionRegistry>> GetTransactionWaitingToReTryAsync(int max)
+        public async Task<IEnumerable<TransactionRegistry>> GetTransactionWaitingToReProcessAsync(int max)
         {
             return await applicationDbContext.TransactionRegistries
-                .Where(tr => tr.Status == RegistryStatus.WaitingToReTry)
+                .Where(tr => tr.Status == RegistryStatus.WaitingToReTry ||
+                             tr.Status == RegistryStatus.WaitingToCancel)
                 .OrderBy(tp => tp.ReceivedDate)
                 .Take(max)
                 .ToListAsync();
@@ -80,6 +112,18 @@ namespace TrackingChain.TransactionMonitorCore.Services
             return await applicationDbContext.TransactionTriages
                 .Where(tr => ids.Contains(tr.TrackingIdentify))
                 .ToListAsync();
+        }
+
+        // Helpers
+        private async Task<bool> IsInTimeAsync(
+            ReportDataType reportDataType,
+            TimeSpan intervalBetweenLastReport)
+        {
+            var maxDate = await applicationDbContext.ReportData
+                .Where(tp => tp.Type == reportDataType)
+                .MaxAsync(tr => (DateTime?)tr.Created) ?? DateTime.MinValue;
+
+            return DateTime.UtcNow > maxDate.Add(intervalBetweenLastReport);
         }
     }
 }

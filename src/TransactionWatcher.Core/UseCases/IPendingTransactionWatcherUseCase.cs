@@ -5,7 +5,7 @@ namespace TrackingChain.TransactionWatcherCore.UseCases
 {
     public interface IPendingTransactionWatcherUseCase
     {
-        Task<bool> CheckTransactionStatusAsync(
+        Task<Guid> CheckTransactionStatusAsync(
             int max, 
             Guid accountId,
             int reTryAfterSeconds,

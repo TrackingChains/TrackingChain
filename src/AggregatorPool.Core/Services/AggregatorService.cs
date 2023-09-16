@@ -65,15 +65,19 @@ namespace TrackingChain.AggregatorPoolCore.Services
             var query = applicationDbContext.TransactionTriages
                         .Join(subquery, tt => tt.Id, id => id, (tt, id) => tt);
 
+            /*
+             * Further use.
             if (profileIds.Any())
             {
-                // (MileStone 3)
+                
                 var subqueryAccountProfiles = applicationDbContext.Accounts
                     .Where(ap => profileIds.Contains(ap.Id));
                 query = query.Join(subqueryAccountProfiles, tt => tt.ProfileGroupId, ap => ap.Id, (tt, ap) => tt);
+                
             }
-
             var test = query.ToQueryString();
+            */
+
             return await query.ToListAsync();
         }
 
@@ -85,7 +89,7 @@ namespace TrackingChain.AggregatorPoolCore.Services
                 .Where(tr => trackingIds.Contains(tr.TrackingId))
                 .ToListAsync();
 
-            //TODO manage this case where any missing (MileStone 3)
+            //TODO Further use manage this case where any missing
 
             transactionRegistries.ForEach(tp => tp.SetToPool());
 

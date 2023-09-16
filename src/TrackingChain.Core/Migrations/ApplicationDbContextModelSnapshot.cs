@@ -17,13 +17,86 @@ namespace TrackingChain.Core.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.9")
+                .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Proxies:ChangeTracking", false)
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("TrackingChain.Core.Domain.Entities.ReportData", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Sent")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ReportData");
+                });
+
+            modelBuilder.Entity("TrackingChain.Core.Domain.Entities.ReportItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("ReportDataId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Reported")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("TrackingId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReportDataId");
+
+                    b.ToTable("Reports", (string)null);
+                });
+
+            modelBuilder.Entity("TrackingChain.Core.Domain.Entities.ReportSetting", b =>
+                {
+                    b.Property<string>("Key")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Key");
+
+                    b.ToTable("ReportSettings", (string)null);
+                });
 
             modelBuilder.Entity("TrackingChain.TrackingChainCore.Domain.Entities.Account", b =>
                 {
@@ -170,6 +243,9 @@ namespace TrackingChain.Core.Migrations
                     b.Property<bool>("IsInProgress")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("LastUnlockedError")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Locked")
                         .IsConcurrencyToken()
                         .HasColumnType("bit");
@@ -249,6 +325,9 @@ namespace TrackingChain.Core.Migrations
 
                     b.Property<DateTime>("GeneratingFrom")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("LastUnlockedError")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Locked")
                         .IsConcurrencyToken()
@@ -445,6 +524,15 @@ namespace TrackingChain.Core.Migrations
                     b.HasIndex("IsInPool", "Completed");
 
                     b.ToTable("TransactionTriages", (string)null);
+                });
+
+            modelBuilder.Entity("TrackingChain.Core.Domain.Entities.ReportItem", b =>
+                {
+                    b.HasOne("TrackingChain.Core.Domain.Entities.ReportData", "ReportData")
+                        .WithMany()
+                        .HasForeignKey("ReportDataId");
+
+                    b.Navigation("ReportData");
                 });
 
             modelBuilder.Entity("TrackingChain.TrackingChainCore.Domain.Entities.AccountProfileGroup", b =>

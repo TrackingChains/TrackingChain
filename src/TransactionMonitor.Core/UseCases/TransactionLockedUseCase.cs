@@ -3,8 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TrackingChain.Common.Enums;
+using TrackingChain.Core.Domain.Enums;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
+using TrackingChain.TrackingChainCore.Extensions;
 using TrackingChain.TransactionMonitorCore.Services;
 
 namespace TrackingChain.TransactionMonitorCore.UseCases
@@ -28,25 +31,52 @@ namespace TrackingChain.TransactionMonitorCore.UseCases
         }
 
         // Methods.
-        public async Task ReProcessAsync(
-            int max, 
-            int unlockTimeoutSeconds)
+        public async Task<int> ReProcessAsync(
+            int max,
+            int unlockUncompletedGeneratorAfterSeconds,
+            int unlockUncompletedWatcherAfterSeconds)
         {
-            var pendings = await transactionMonitorService.GetPendingLockedInTimeoutAsync(max, unlockTimeoutSeconds);
+            logger.StartReProcessTransactionLockedUseCase(max, unlockUncompletedGeneratorAfterSeconds, unlockUncompletedWatcherAfterSeconds);
+
+            var pendings = await transactionMonitorService.GetPendingLockedInTimeoutAsync(max, unlockUncompletedWatcherAfterSeconds);
 
             IEnumerable<TransactionPool> pools = Array.Empty<TransactionPool>();
             if (pendings.Count() < max)
-                pools = await transactionMonitorService.GetPoolLockedInTimeoutAsync(max - pendings.Count(), unlockTimeoutSeconds);
+                pools = await transactionMonitorService.GetPoolLockedInTimeoutAsync(max - pendings.Count(), unlockUncompletedGeneratorAfterSeconds);
 
             foreach (var pending in pendings)
-                pending.Unlock(0);
-            applicationDbContext.UpdateRange(pendings);
+            {
+                pending.UnlockFromError(TransactionErrorReason.LockedTimeOut, 0);
+                applicationDbContext.Update(pending);
+
+                var reportItem = new Core.Domain.Entities.ReportItem(
+                $"Pending LockedDated: {pending.LockedDated} LockedBy: {pending.LockedBy}",
+                0,
+                false,
+                ReportItemType.LockTimeOut,
+                pending.TrackingId);
+                applicationDbContext.Add(reportItem);
+            }
 
             foreach (var pool in pools)
-                pool.Unlock(0);
-            applicationDbContext.UpdateRange(pools);
+            {
+                pool.UnlockFromError(TransactionErrorReason.LockedTimeOut, 0);
+                applicationDbContext.Update(pool);
+
+                var reportItem = new Core.Domain.Entities.ReportItem(
+                $"Pool LockedDated: {pool.LockedDated} LockedBy: {pool.LockedBy}",
+                0,
+                false,
+                ReportItemType.LockTimeOut,
+                pool.TrackingId);
+                applicationDbContext.Add(reportItem);
+            }
 
             await applicationDbContext.SaveChangesAsync();
+
+            var processed = pools.Count() + pendings.Count();
+            logger.EndReProcessTransactionLockedUseCase(processed);
+            return processed;
         }
     }
 }

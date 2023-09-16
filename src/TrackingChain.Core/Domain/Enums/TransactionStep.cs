@@ -2,9 +2,9 @@
 {
     public enum TransactionStep
     {
-        Triage,
-        Pool,
-        Pending,
-        Completed
+        Triage = 0,
+        Pool = 1,
+        Pending = 2,
+        Completed = 3
     }
 }
