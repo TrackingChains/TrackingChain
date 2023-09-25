@@ -1,0 +1,22 @@
+﻿@page
+@model TrackingChain.TriageWebApplication.Pages.Admin.Monitor.TemplateFailedModel
+@{
+}
+<h4>Transaction Failed Template</h4>
+<hr />
+<div class="container">
+    <form method="post">
+        <div class="form-group">
+            <label for="Template">Template HTML:</label>
+            <textarea id="Template" name="Template" class="form-control" rows="5">@Model.TemplateData.Template</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="AddressMails">Email Address (; for multi address):</label>
+            <input type="text" id="AddressMails" name="AddressMails" class="form-control" value="@Model.TemplateData.AddressMails">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+    @Model.ErrorMessage
+</div>

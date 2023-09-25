@@ -1,54 +1,72 @@
-version: '3.4'
+version: '3.9'
 
 services:
-  sql-server-db:
-    container_name: sql-server-db
+  trackingdb:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    ports:
-      - 1433:1433
-    expose:
-      - 1433
     environment:
-      SA_PASSWORD: "T5snGs!d98Sm&"
-      ACCEPT_EULA: "Y"
-  triageapi:
-    image: ${DOCKER_REGISTRY-}triageapi
+      MSSQL_SA_PASSWORD: YourStrong@Passw0rd
+      ACCEPT_EULA: Y
     ports:
-      - 5001:80
-      - 5002:443
+      - "5532:1433"
+    networks:
+      - mynetwork
+  triage:
+    image: triageapi
     build:
       context: .
-      dockerfile: src/TriageAPI/Dockerfile
-    depends_on:
-      - "sql-server-db"
-  aggregatorpoolworker:
-    image: ${DOCKER_REGISTRY-}aggregatorpoolworker
-    build:
-      context: .
-      dockerfile: src/AggregatorPoolWorker/Dockerfile
-    depends_on:
-      - "triageapi"
-  transactiongeneratorworker:
-    image: ${DOCKER_REGISTRY-}transactiongeneratorworker
-    build:
-      context: .
-      dockerfile: src/TransactionGeneratorWorker/Dockerfile
-    depends_on:
-      - "triageapi"
-  transactionwatcherworker:
-    image: ${DOCKER_REGISTRY-}transactionwatcherworker
-    build:
-      context: .
-      dockerfile: src/TransactionWatcherWorker/Dockerfile
-    depends_on:
-      - "triageapi"
-  triagewebapplication:
-    image: ${DOCKER_REGISTRY-}triagewebapplication
+      dockerfile: src/Triage.API/Dockerfile
     ports:
-      - 5101:80
-      - 5102:443
+      - "5000:80"
+    depends_on:
+      - trackingdb
+    networks:
+      - mynetwork
+  webapp:
+    image: trackingchainwebapp
     build:
       context: .
-      dockerfile: src/TriageWebApplication/Dockerfile
+      dockerfile: src/TrackingChain.WebApp/Dockerfile
+    ports:
+      - "12345:12345"
     depends_on:
-      - "triageapi"
+      - triage
+    networks:
+      - mynetwork
+  aggregator-pool:
+    image: aggregatorpoolworker
+    build:
+      context: .
+      dockerfile: src/AggregatorPool.Worker/Dockerfile
+    depends_on:
+      - webapp
+    networks:
+      - mynetwork
+  transaction-generator:
+    image: transactiongeneratorworker
+    build:
+      context: .
+      dockerfile: src/TransactionGenerator.Worker/Dockerfile
+    depends_on:
+      - aggregator-pool
+    networks:
+      - mynetwork
+  transaction-watcher:
+    image: transactionwatcherworker
+    build:
+      context: .
+      dockerfile: src/TransactionWatcher.Worker/Dockerfile
+    depends_on:
+      - transaction-generator
+    networks:
+      - mynetwork
+  monitor:
+    image: monitor
+    build:
+      context: .
+      dockerfile: src/TransactionMonitor.Worker/Dockerfile
+    depends_on:
+      - transaction-watcher
+    networks:
+      - mynetwork
+networks:
+  mynetwork:

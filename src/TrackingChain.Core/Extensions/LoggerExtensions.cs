@@ -1,12 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
+using TrackingChain.Common.Dto;
 using TrackingChain.Common.Enums;
 
 namespace TrackingChain.TrackingChainCore.Extensions
 {
     /*
      * Always group similar log delegates by type, always use incremental event ids.
-     * Last event id is: 40
+     * Last event id is: 42
      */
     public static class LoggerExtensions
     {
@@ -169,11 +170,11 @@ namespace TrackingChain.TrackingChainCore.Extensions
                 LogLevel.Information,
                 new EventId(11, nameof(StartTransactionFailedWorker)),
                 "Start Transaction Failed Worker running.");
-        private static readonly Action<ILogger, Guid, bool?, Exception> _transactionWatcher =
-            LoggerMessage.Define<Guid, bool?>(
+        private static readonly Action<ILogger, Guid, TransactionDetailStatus, Exception> _transactionWatcher =
+            LoggerMessage.Define<Guid, TransactionDetailStatus>(
                 LogLevel.Information,
                 new EventId(16, nameof(TransactionWatcher)),
-                "Transaction Wacther for TrackingGuid:{TrackingGuid}\tSuccessful:{Successful}");
+                "Transaction Wacther for TrackingGuid:{TrackingGuid}\tStatus:{Status}");
         private static readonly Action<ILogger, string, string, string, string, Guid, Exception> _trackingEntry =
             LoggerMessage.Define<string, string, string, string, Guid>(
                 LogLevel.Information,
@@ -218,6 +219,16 @@ namespace TrackingChain.TrackingChainCore.Extensions
                 LogLevel.Error,
                 new EventId(17, nameof(GetTrasactionReceiptInError)),
                 "GetTrasactionReceiptInError TrackingGuid:{TrackingGuid}\tTxHash:{TxHash}\tApiUrl:{ApiUrl}");
+        private static readonly Action<ILogger, Guid, Exception> _manageTransactionToCancelInError =
+            LoggerMessage.Define<Guid>(
+                LogLevel.Error,
+                new EventId(41, nameof(ManageTransactionToCancelInError)),
+                "_manageTransactionToCancelInError TrackingGuid:{TrackingGuid}");
+        private static readonly Action<ILogger, Guid, Exception> _manageTransactionToRetryInError =
+            LoggerMessage.Define<Guid>(
+                LogLevel.Error,
+                new EventId(42, nameof(ManageTransactionToRetryInError)),
+                "_manageTransactionToCancelInError TrackingGuid:{TrackingGuid}");
         private static readonly Action<ILogger, Guid, Exception> _transactionGenerationCompletedInError =
             LoggerMessage.Define<Guid>(
                 LogLevel.Error,
@@ -285,6 +296,10 @@ namespace TrackingChain.TrackingChainCore.Extensions
             _manageTransactionFailedCanceledDueToErrorUseCase(logger, trackingGuid, errorTimes, null!);
         public static void ManageTransactionFailedToReprocessableUseCase(this ILogger logger, Guid trackingGuid, int errorTimes, TransactionErrorReason transactionErrorReason) =>
             _manageTransactionFailedToReprocessableUseCase(logger, trackingGuid, errorTimes, transactionErrorReason, null!);
+        public static void ManageTransactionToCancelInError(this ILogger logger, Guid trackingGuid, Exception exception) =>
+            _manageTransactionToCancelInError(logger, trackingGuid, exception);
+        public static void ManageTransactionToRetryInError(this ILogger logger, Guid trackingGuid, Exception exception) =>
+            _manageTransactionToRetryInError(logger, trackingGuid, exception);
         public static void RunMigrateDbTransactionPool(this ILogger logger, string dbContextName) =>
             _runMigrateDbTransactionPool(logger, dbContextName, null!);
         public static void RunPoolDequeuer(this ILogger logger) =>
@@ -321,8 +336,8 @@ namespace TrackingChain.TrackingChainCore.Extensions
             _transactionGenerationCompletedInError(logger, trackingGuid, null!);
         public static void TrasactionGenerationInError(this ILogger logger, Guid trackingGuid, string endpoint, Exception exception) =>
             _trasactionGenerationInError(logger, trackingGuid, endpoint, exception);
-        public static void TransactionWatcher(this ILogger logger, Guid trackingGuid, bool? successful) =>
-            _transactionWatcher(logger, trackingGuid, successful, null!);
+        public static void TransactionWatcher(this ILogger logger, Guid trackingGuid, TransactionDetailStatus status) =>
+            _transactionWatcher(logger, trackingGuid, status, null!);
         public static void TransactionDeleterWorkerError(this ILogger logger, Exception exception) =>
             _transactionDeleterWorkerError(logger, exception);
         public static void TrackingEntry(this ILogger logger, string code, string dataValue, string category, string smartContracAddress, Guid profileGroup) =>

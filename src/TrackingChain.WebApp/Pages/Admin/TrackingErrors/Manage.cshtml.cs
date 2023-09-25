@@ -48,7 +48,7 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.TrackingErrors
             if (buttonRecoveryAction == "ReTry To Process")
                 TransactionRegistry.SetWaitingToReTry();
             else if (buttonRecoveryAction == "Cancel for Error")
-                TransactionRegistry.SetToCanceled();
+                TransactionRegistry.SetWaitingToCancel();
             else
             {
                 var ex = new InvalidOperationException();

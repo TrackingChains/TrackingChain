@@ -15,13 +15,13 @@
     <Configurations>Debug;Release</Configurations>
     <UserSecretsId>26fdef2b-14e5-4e45-b38e-b1e415870ce0</UserSecretsId>
 
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/TrackingChains</PackageProjectUrl>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/TrackingChains/TrackingChain</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <IsPackable>true</IsPackable>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
+    <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,9 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.9" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.9" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.10" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
     <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
@@ -40,8 +40,6 @@
     <ProjectReference Include="..\EVM.Generic.Client\EVM.Generic.Client.csproj" />
     <ProjectReference Include="..\Substrate.Generic.Client\Substrate.Generic.Client.csproj" />
     <ProjectReference Include="..\TransactionTriage.Core\TransactionTriage.Core.csproj" />
-    <None Include="../../README.md" Pack="true" PackagePath="\" />
-    <None Include="../../LICENSE" Pack="true" PackagePath="" />
     <None Include="compilerconfig.json" />
     <None Include="Pages\Admin\Accounts\Create.cshtml" />
     <None Include="Pages\Admin\Accounts\Delete.cshtml" />
@@ -58,6 +56,12 @@
     <None Include="Pages\Admin\Smartcontracts\Details.cshtml" />
     <None Include="Pages\Admin\Smartcontracts\Edit.cshtml" />
     <None Include="Pages\Admin\Smartcontracts\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.Development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

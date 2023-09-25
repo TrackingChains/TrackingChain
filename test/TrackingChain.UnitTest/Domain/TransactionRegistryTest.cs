@@ -189,7 +189,7 @@ namespace TrackingChain.UnitTest.Domain
             var receiptEffectiveGasPrice = "receiptEffectiveGasPriceTest";
             var receiptFrom = "receiptFromTest";
             var receiptGasUsed = "receiptGasUsedTest";
-            var receiptSuccessful = true;
+            var receiptSuccessful = TransactionDetailStatus.Success;
             var receiptTransactionHash = "receiptTransactionHashTest";
             var receiptTo = "receiptToTest";
 
@@ -295,7 +295,7 @@ namespace TrackingChain.UnitTest.Domain
             var receiptEffectiveGasPrice = "receiptEffectiveGasPriceTest";
             var receiptFrom = "receiptFromTest";
             var receiptGasUsed = "receiptGasUsedTest";
-            var receiptSuccessful = true;
+            var receiptSuccessful = TransactionDetailStatus.Success;
             var receiptTransactionHash = "receiptTransactionHashTest";
             var receiptTo = "receiptToTest";
 
@@ -346,7 +346,7 @@ namespace TrackingChain.UnitTest.Domain
             var receiptEffectiveGasPrice = "";
             var receiptFrom = "";
             var receiptGasUsed = "";
-            bool? receiptSuccessful = null;
+            var receiptSuccessful = TransactionDetailStatus.Undefined;
             var receiptTransactionHash = "";
             var receiptTo = "";
 

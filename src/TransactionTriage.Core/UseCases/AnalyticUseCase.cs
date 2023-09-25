@@ -36,9 +36,13 @@ namespace TrackingChain.TransactionTriageCore.UseCases
                 {
                     TransactionStep = group.Key,
                     Count = group.Count(),
-                    ErrorCount = group.Count(tr =>
-                        tr.TransactionStep == TransactionStep.Completed &&
-                        tr.Status == RegistryStatus.Error)
+                    ErrorCount = group.Count(tr => tr.TransactionStep == TransactionStep.Completed &&
+                                                   (tr.Status == RegistryStatus.Error ||
+                                                   tr.Status == RegistryStatus.Aborted ||
+                                                   tr.Status == RegistryStatus.CanceledDueToError)),
+                    ErrorToManage = group.Count(tr => (tr.TransactionStep == TransactionStep.Pool ||
+                                                       tr.TransactionStep == TransactionStep.Pending)  &&
+                                                       tr.Status == RegistryStatus.Error),
                 })
                 .ToListAsync();
 
@@ -56,45 +60,58 @@ namespace TrackingChain.TransactionTriageCore.UseCases
             {
                 averageTriage = await dbContext.TransactionRegistries
                    .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
-                                tr.Status == RegistryStatus.SuccessfullyCompleted)
-                   .Select(tr => EF.Functions.DateDiffMillisecond(tr.TriageDate, tr.PoolDate))
-                   .AverageAsync();
+                                tr.Status == RegistryStatus.SuccessfullyCompleted &&
+                                tr.TriageDate > DateTime.MinValue &&
+                                tr.PoolDate > DateTime.MinValue)
+                   .Select(tr => EF.Functions.DateDiffSecond(tr.TriageDate, tr.PoolDate))
+                   .AverageAsync(x => (double?)x) ?? 0;
 
                 averagePool = await dbContext.TransactionRegistries
                    .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
-                                tr.Status == RegistryStatus.SuccessfullyCompleted)
-                   .Select(tr => EF.Functions.DateDiffMillisecond(tr.PoolDate, tr.PendingDate))
-                   .AverageAsync();
+                                tr.Status == RegistryStatus.SuccessfullyCompleted &&
+                                tr.PoolDate > DateTime.MinValue &&
+                                tr.PendingDate > DateTime.MinValue)
+                   .Select(tr => EF.Functions.DateDiffSecond(tr.PoolDate, tr.PendingDate))
+                   .AverageAsync(x => (double?)x) ?? 0;
 
                 averagePending = await dbContext.TransactionRegistries
                    .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
-                                tr.Status == RegistryStatus.SuccessfullyCompleted)
-                   .Select(tr => EF.Functions.DateDiffMillisecond(tr.PendingDate, tr.RegistryDate))
-                   .AverageAsync();
+                                tr.Status == RegistryStatus.SuccessfullyCompleted &&
+                                tr.PendingDate > DateTime.MinValue &&
+                                tr.RegistryDate > DateTime.MinValue)
+                   .Select(tr => EF.Functions.DateDiffSecond(tr.PendingDate, tr.RegistryDate))
+                   .AverageAsync(x => (double?)x) ?? 0;
 
                 averageCompleted = await dbContext.TransactionRegistries
                    .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
-                                tr.Status == RegistryStatus.SuccessfullyCompleted)
-                   .Select(tr => EF.Functions.DateDiffMillisecond(tr.TriageDate, tr.RegistryDate))
-                   .AverageAsync();
+                                tr.Status == RegistryStatus.SuccessfullyCompleted &&
+                                tr.TriageDate > DateTime.MinValue &&
+                                tr.RegistryDate > DateTime.MinValue)
+                   .Select(tr => EF.Functions.DateDiffSecond(tr.TriageDate, tr.RegistryDate))
+                   .AverageAsync(x => (double?)x) ?? 0;
 
                 minCompletedTime = await dbContext.TransactionRegistries
                    .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
                                 tr.Status == RegistryStatus.SuccessfullyCompleted &&
-                                tr.TriageDate.AddMonths(1) > DateTime.UtcNow)
-                   .Select(tr => EF.Functions.DateDiffMillisecond(tr.TriageDate, tr.RegistryDate))
-                   .MinAsync();
+                                tr.TriageDate.AddMonths(1) > DateTime.UtcNow &&
+                                tr.TriageDate > DateTime.MinValue &&
+                                tr.RegistryDate > DateTime.MinValue)
+                   .Select(tr => EF.Functions.DateDiffSecond(tr.TriageDate, tr.RegistryDate))
+                   .MinAsync(x => (double?)x) ?? 0;
 
                 maxCompletedTime = await dbContext.TransactionRegistries
                    .Where(tr => tr.TransactionStep == TransactionStep.Completed &&
                                 tr.Status == RegistryStatus.SuccessfullyCompleted &&
-                                tr.TriageDate.AddMonths(1) > DateTime.UtcNow)
-                   .Select(tr => EF.Functions.DateDiffMillisecond(tr.TriageDate, tr.RegistryDate))
-                   .MaxAsync();
+                                tr.TriageDate.AddMonths(1) > DateTime.UtcNow &&
+                                tr.TriageDate > DateTime.MinValue &&
+                                tr.RegistryDate > DateTime.MinValue)
+                   .Select(tr => EF.Functions.DateDiffSecond(tr.TriageDate, tr.RegistryDate))
+                   .MaxAsync(x => (double?)x) ?? 0;
             }
 
             return new TrackingStatusStatisticModelView
             {
+                ErrorToManage = transactionStatistics.Sum(stat => stat.ErrorToManage),
                 Error = transactionStatistics.Sum(stat => stat.ErrorCount),
                 Pending = transactionStatistics
                     .FirstOrDefault(stat => stat.TransactionStep == TransactionStep.Pending)?.Count ?? 0,

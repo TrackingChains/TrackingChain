@@ -58,9 +58,9 @@ namespace Substrate.NetApi.Modules
             return await SubmitExtrinsicAsync(Utils.Bytes2HexString(extrinsic.Encode()));
         }
 
-        public async Task<Hash> SubmitExtrinsicAsync(Method method, Account account, ChargeType charge, uint lifeTime, CancellationToken token)
+        public async Task<Hash> SubmitExtrinsicAsync(Method method, Account account, ChargeType charge, uint lifeTime, bool signed, CancellationToken token)
         {
-            var extrinsic = await _client.GetExtrinsicParametersAsync(method, account, charge, lifeTime, signed: true, token);
+            var extrinsic = await _client.GetExtrinsicParametersAsync(method, account, charge, lifeTime, signed: signed, token);
 
             return await SubmitExtrinsicAsync(Utils.Bytes2HexString(extrinsic.Encode()), token);
         }

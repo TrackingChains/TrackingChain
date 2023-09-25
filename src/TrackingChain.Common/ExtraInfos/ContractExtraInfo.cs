@@ -14,6 +14,7 @@ namespace TrackingChain.Common.ExtraInfos
         public ulong InsertTrackRefTime { get; set; } = default!;
         public SupportedClient SupportedClient { get; set; } = default!;
         public int WaitingSecondsForWatcherTx { get; set; } = default!;
+        public bool WaitingForResult { get; set; } = default!;
 
         // Methods.
         public static ContractExtraInfo FromJson(string json) => JsonSerializer.Deserialize<ContractExtraInfo>(json) ?? new ContractExtraInfo();

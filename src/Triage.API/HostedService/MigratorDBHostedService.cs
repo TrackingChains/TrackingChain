@@ -6,6 +6,8 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using TrackingChain.Common.DefaulValues;
+using TrackingChain.Core.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TrackingChainCore.Extensions;
 using TrackingChain.TrackingChainCore.Options;
@@ -39,17 +41,40 @@ namespace TrackingChain.TriageAPI.HostedService
                 {
                     logger.RunMigrateDbTransactionPool(nameof(ApplicationDbContext));
                     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
                     await dbContext.Database.MigrateAsync(cancellationToken);
+                    await SeedAsync(dbContext);
                 }
             }
 
             logger.EndMigratorDbWorker();
         }
 
-
         public Task StopAsync(CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
+        }
+
+        // Helpers.
+        private async Task SeedAsync(ApplicationDbContext applicationDbContext)
+        {
+            var itemToSeed = await applicationDbContext.ReportSettings.FirstOrDefaultAsync(rs => rs.Key == ReportSetting.TransactionErrorTemplate);
+            if (itemToSeed is null)
+                applicationDbContext.Add(new ReportSetting(ReportSetting.TransactionErrorTemplate, ReportDefaultValue.TransactionErrorTemplate));
+
+            itemToSeed = await applicationDbContext.ReportSettings.FirstOrDefaultAsync(rs => rs.Key == ReportSetting.TransactionErrorMail);
+            if (itemToSeed is null)
+                applicationDbContext.Add(new ReportSetting(ReportSetting.TransactionErrorMail, ""));
+
+            itemToSeed = await applicationDbContext.ReportSettings.FirstOrDefaultAsync(rs => rs.Key == ReportSetting.TransactionCancelledTemplate);
+            if (itemToSeed is null)
+                applicationDbContext.Add(new ReportSetting(ReportSetting.TransactionCancelledTemplate, ReportDefaultValue.TransactionCancelledTemplate));
+
+            itemToSeed = await applicationDbContext.ReportSettings.FirstOrDefaultAsync(rs => rs.Key == ReportSetting.TransactionCancelledMail);
+            if (itemToSeed is null)
+                applicationDbContext.Add(new ReportSetting(ReportSetting.TransactionCancelledMail, ""));
+
+            await applicationDbContext.SaveChangesAsync();
         }
     }
 }

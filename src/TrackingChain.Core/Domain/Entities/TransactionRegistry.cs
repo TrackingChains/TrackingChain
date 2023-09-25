@@ -111,12 +111,11 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             string receiptEffectiveGasPrice,
             string receiptFrom,
             string receiptGasUsed,
-            bool? receiptSuccessful,
+            TransactionDetailStatus status,
             string receiptTransactionHash,
             string receiptTo)
         {
-            if (receiptSuccessful.HasValue &&
-                !receiptSuccessful.Value)
+            if (status == TransactionDetailStatus.Failed)
                 throw new InvalidOperationException("use SetToRegistryError");
 
             TransactionStep = TransactionStep.Completed;
@@ -130,7 +129,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             ReceiptTransactionHash = receiptTransactionHash;
             ReceiptTo = receiptTo;
             RegistryDate = DateTime.UtcNow;
-            ReceiptReceived = receiptSuccessful.HasValue;
+            ReceiptReceived = status != TransactionDetailStatus.Undefined;
             Status = RegistryStatus.SuccessfullyCompleted;
         }
 
@@ -143,7 +142,8 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
 
         public void SetWaitingToCancel()
         {
-            if (Status != RegistryStatus.Error)
+            if (Status != RegistryStatus.Error &&
+                Status != RegistryStatus.WaitingToReTry)
             {
                 var ex = new InvalidOperationException("SetWaitingToCancel when in status not permited");
                 ex.Data.Add("TrackingId", TrackingId);

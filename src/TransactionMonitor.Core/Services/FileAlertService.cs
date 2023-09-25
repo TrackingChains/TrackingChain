@@ -76,14 +76,14 @@ namespace TrackingChain.TransactionMonitorCore.Services
             string path, 
             string content)
         {
-            if (Directory.Exists(path))
+            if (!Directory.Exists(path))
             {
                 var ex = new InvalidOperationException("SendFile with Invalid path");
                 ex.Data.Add("Path", path);
                 throw ex;
             }
 
-            var filePath = Path.Combine(path, $"Report_{reportData.Type}_{reportData.Created.ToLongDateString}.html");
+            var filePath = Path.Combine(path, $"Report_{reportData.Type}_{reportData.Created.ToShortDateString().Replace("/", "-", StringComparison.InvariantCulture)}_{reportData.Created.ToShortTimeString().Replace(":", "-", StringComparison.InvariantCulture)}.html");
             if (File.Exists(filePath))
                 File.Delete(filePath);
 

@@ -132,7 +132,7 @@ namespace TrackingChain.UnitTest.Domain
 
 
             //Act
-            transactionPool.UnlockFromError();
+            transactionPool.UnlockFromError(TransactionErrorReason.InsertTransactionExpection);
 
 
             //Assert
@@ -152,7 +152,7 @@ namespace TrackingChain.UnitTest.Domain
 
 
             //Act
-            transactionPool.UnlockFromError();
+            transactionPool.UnlockFromError(TransactionErrorReason.InsertTransactionExpection);
 
 
             //Assert
@@ -166,33 +166,18 @@ namespace TrackingChain.UnitTest.Domain
             var transactionPool = CreateGenericEntity();
             Guid locker = Guid.NewGuid();
             transactionPool.SetLocked(locker);
-            transactionPool.UnlockFromError();
+            transactionPool.UnlockFromError(TransactionErrorReason.InsertTransactionExpection);
             transactionPool.SetLocked(locker);
-            transactionPool.UnlockFromError();
+            transactionPool.UnlockFromError(TransactionErrorReason.InsertTransactionExpection);
             transactionPool.SetLocked(locker);
 
 
             //Act
-            transactionPool.UnlockFromError();
+            transactionPool.UnlockFromError(TransactionErrorReason.InsertTransactionExpection);
 
 
             //Assert
             Assert.True(transactionPool.GeneratingFrom > DateTime.UtcNow.AddSeconds(15));
-        }
-
-        [Fact]
-        public void SetStatusDoneShouldBe()
-        {
-            //Arrange
-            var transactionPool = CreateGenericEntity();
-
-
-            //Act
-            transactionPool.SetStatusDone();
-
-
-            //Assert
-            Assert.Equal(PoolStatus.Done, transactionPool.Status);
         }
 
         [Fact]

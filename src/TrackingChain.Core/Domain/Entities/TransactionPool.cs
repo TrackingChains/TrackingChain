@@ -32,6 +32,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public bool Completed { get; private set; }
         public int ErrorTimes { get; private set; }
         public DateTime GeneratingFrom { get; private set; }
+        public TransactionErrorReason? LastUnlockedError { get; private set; }
         public bool Locked { get; private set; }
         public Guid? LockedBy { get; private set; }
         public DateTime? LockedDated { get; private set; }
@@ -43,7 +44,6 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
         public void Reprocessable()
         {
             ErrorTimes = 0;
-            Status = PoolStatus.WaitingForWorker;
             Unlock();
         }
 
@@ -71,11 +71,6 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             Status = PoolStatus.InProgress;
         }
 
-        public void SetStatusDone()
-        {
-            Status = PoolStatus.Done;
-        }
-
         public void SetStatusError()
         {
             Status = PoolStatus.Error;
@@ -89,9 +84,12 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             Status = PoolStatus.WaitingForWorker;
         }
 
-        public void UnlockFromError(int secondsDelayGeneratingFrom = 6)
+        public void UnlockFromError(
+            TransactionErrorReason transactionErrorReason, 
+            int secondsDelayGeneratingFrom = 6)
         {
             ErrorTimes++;
+            LastUnlockedError = transactionErrorReason;
             Locked = false;
             LockedBy = null;
             GeneratingFrom = DateTime.UtcNow.AddSeconds(secondsDelayGeneratingFrom * ErrorTimes);

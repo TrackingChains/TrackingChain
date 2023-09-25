@@ -14,25 +14,20 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Configurations>Debug;Release</Configurations>
 
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/TrackingChains</PackageProjectUrl>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/TrackingChains/TrackingChain</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nethereum.ABI" Version="4.15.2" />
-    <PackageReference Include="Nethereum.Contracts" Version="4.15.2" />
-    <PackageReference Include="Nethereum.Web3" Version="4.15.2" />
+    <PackageReference Include="Nethereum.ABI" Version="4.16.0" />
+    <PackageReference Include="Nethereum.Contracts" Version="4.16.0" />
+    <PackageReference Include="Nethereum.Web3" Version="4.16.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Substrate.Generic.Client\Substrate.Generic.Client.csproj" />
     <ProjectReference Include="..\TrackingChain.Core\TrackingChain.Core.csproj" />
-    <None Include="../../README.md" Pack="true" PackagePath="\" />
-    <None Include="../../LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
 
 </Project>

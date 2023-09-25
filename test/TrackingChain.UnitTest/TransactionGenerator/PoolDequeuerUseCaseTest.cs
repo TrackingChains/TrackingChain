@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using TrackingChain.Common.Dto;
 using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
 using TrackingChain.Common.Interfaces;
@@ -93,7 +94,9 @@ namespace TrackingChain.UnitTest.TransactionGenerator
                         It.IsAny<string>(),
                         It.IsAny<ContractExtraInfo>(),
                         It.IsAny<CancellationToken>()))
-                    .Returns(i % 2 == 0 ? Task.FromResult("0x1234567890") : Task.FromResult("0x0987654321"))
+                    .ReturnsAsync((i % 2 == 0) ? 
+                        (TransactionDetail?)new TransactionDetail("0x1234567890") : 
+                        (TransactionDetail?)new TransactionDetail("0x0987654321"))
                     .Verifiable();
 
                 if (i % 2 == 0)
@@ -215,7 +218,7 @@ namespace TrackingChain.UnitTest.TransactionGenerator
             var secondaryProfile = Guid.NewGuid();
             var maxConcurrentThread = 3;
             var reTryAfterSeconds = 6;
-            var errorAfterReTry = 1;
+            var maxErrorTime = 1;
 
             await EntityCreator.CreateFullDatabaseWithProfileAndTriageAsync(1, primaryProfile, secondaryProfile, dbContext, includePools: true);
             await dbContext.SaveChangesAsync();
@@ -240,11 +243,11 @@ namespace TrackingChain.UnitTest.TransactionGenerator
                 Mock.Of<ILogger<PoolDequeuerUseCase>>(),
                 mockTransactionGeneratorService.Object);
             blockchainServices = new[] { new Mock<IBlockchainService>(), new Mock<IBlockchainService>(), };
-            await poolDequeuerUseCase.DequeueTransactionAsync(maxConcurrentThread, primaryProfile, reTryAfterSeconds, errorAfterReTry);
+            await poolDequeuerUseCase.DequeueTransactionAsync(maxConcurrentThread, primaryProfile, reTryAfterSeconds, maxErrorTime);
 
 
             //Act
-            var dequedResult = await poolDequeuerUseCase.DequeueTransactionAsync(maxConcurrentThread, primaryProfile, reTryAfterSeconds, errorAfterReTry);
+            var dequedResult = await poolDequeuerUseCase.DequeueTransactionAsync(maxConcurrentThread, primaryProfile, reTryAfterSeconds, maxErrorTime);
 
 
             //Assert

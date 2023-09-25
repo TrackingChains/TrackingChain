@@ -14,8 +14,8 @@ namespace TrackingChain.TransactionMonitorCore.Services
     public class TransactionMonitorService : ITransactionMonitorService
     {
         // Const.
-        private readonly List<ReportItemType> TransactionErrorTypes = new List<ReportItemType> { ReportItemType.TxGenerationFailed, ReportItemType.TxWatchingFailed, ReportItemType.TxGenerationInError, ReportItemType.TxWatchingInError };
-        private readonly List<ReportItemType> TransactionCancelledTypes = new List<ReportItemType> { ReportItemType.TxCancelled };
+        private readonly List<ReportItemType> TransactionErrorTypes = new() { ReportItemType.TxGenerationFailed, ReportItemType.TxWatchingFailed, ReportItemType.TxGenerationInError, ReportItemType.TxWatchingInError };
+        private readonly List<ReportItemType> TransactionCancelledTypes = new() { ReportItemType.TxCancelled };
 
         // Fields.
         private readonly ApplicationDbContext applicationDbContext;
@@ -61,6 +61,7 @@ namespace TrackingChain.TransactionMonitorCore.Services
         {
             return await applicationDbContext.TransactionPendings
                 .Where(tp => !tp.Completed &&
+                             (tp.Status == PendingStatus.InProgress || tp.Status == PendingStatus.WaitingForWorker) &&
                              tp.Locked &&
                              tp.LockedDated!.Value.AddSeconds(timeoutSeconds) < DateTime.UtcNow)
                 .OrderBy(tp => tp.LockedDated)
@@ -74,6 +75,7 @@ namespace TrackingChain.TransactionMonitorCore.Services
         {
             return await applicationDbContext.TransactionPools
                 .Where(tp => !tp.Completed &&
+                             (tp.Status == PoolStatus.InProgress || tp.Status == PoolStatus.WaitingForWorker) &&
                              tp.Locked &&
                              tp.LockedDated!.Value.AddSeconds(timeoutSeconds) < DateTime.UtcNow)
                 .OrderBy(tp => tp.LockedDated)
@@ -119,7 +121,7 @@ namespace TrackingChain.TransactionMonitorCore.Services
         {
             var maxDate = await applicationDbContext.ReportData
                 .Where(tp => tp.Type == reportDataType)
-                .MaxAsync(tr => tr.Created);
+                .MaxAsync(tr => (DateTime?)tr.Created) ?? DateTime.MinValue;
 
             return DateTime.UtcNow > maxDate.Add(intervalBetweenLastReport);
         }

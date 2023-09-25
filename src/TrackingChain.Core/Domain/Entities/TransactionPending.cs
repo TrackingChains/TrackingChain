@@ -80,6 +80,11 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             Status = PendingStatus.Done;
         }
 
+        public void SetExcluded()
+        {
+            Status = PendingStatus.Excluded;
+        }
+
         public void SetStatusError()
         {
             Status = PendingStatus.Error;
@@ -101,11 +106,6 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
             LockedBy = accountId;
             LockedDated = DateTime.UtcNow;
             Status = PendingStatus.InProgress;
-        }
-
-        public void SetStatusDone()
-        {
-            Status = PendingStatus.Done;
         }
 
         public void Unlock(int secondsDelayWatchingFrom = 6)

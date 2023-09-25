@@ -16,7 +16,7 @@ namespace TrackingChain.Common.Interfaces
             ContractExtraInfo contractExtraInfo,
             CancellationToken token);
 
-        Task<string> InsertTrackingAsync(
+        Task<TransactionDetail?> InsertTrackingAsync(
             string code,
             string dataValue,
             string privateKey,

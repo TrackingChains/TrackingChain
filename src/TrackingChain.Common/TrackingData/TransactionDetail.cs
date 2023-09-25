@@ -19,9 +19,24 @@ namespace TrackingChain.Common.Dto
             Error = "";
             From = "";
             GasUsed = "";
-            Undefined = undefined;
-            Successful = null;
+            Status = TransactionDetailStatus.Undefined;
             TransactionHash = "";
+            To = "";
+        }
+
+        public TransactionDetail(string txHash)
+        {
+            BlockHash = "";
+            BlockNumber = "";
+            ContractAddress = "";
+            CumulativeGasUsed = "";
+            EffectiveGasPrice = "";
+            Error = "";
+            From = "";
+            GasUsed = "";
+            WatchOnlyTx = true;
+            Status = TransactionDetailStatus.Undefined;
+            TransactionHash = txHash;
             To = "";
         }
 
@@ -37,10 +52,36 @@ namespace TrackingChain.Common.Dto
             Error = "";
             From = "";
             GasUsed = "";
-            Undefined = false;
-            Successful = false;
+            Status = TransactionDetailStatus.Failed;
             TransactionHash = "";
             To = "";
+        }
+
+        public TransactionDetail(
+            TransactionErrorReason transactionErrorReason,
+            string blockHash,
+            string blockNumber,
+            string contractAddress,
+            string cumulativeGasUsed,
+            string effectiveGasPrice,
+            string error,
+            string from,
+            string gasUsed,
+            string transactionHash,
+            string to)
+        {
+            BlockHash = blockHash;
+            BlockNumber = blockNumber;
+            ContractAddress = contractAddress;
+            CumulativeGasUsed = cumulativeGasUsed;
+            EffectiveGasPrice = effectiveGasPrice;
+            Error = error;
+            From = from;
+            GasUsed = gasUsed;
+            Status = TransactionDetailStatus.Failed;
+            TransactionHash = transactionHash;
+            TransactionErrorReason = transactionErrorReason;
+            To = to;
         }
 
         public TransactionDetail(
@@ -67,8 +108,7 @@ namespace TrackingChain.Common.Dto
             Error = error;
             From = from;
             GasUsed = gasUsed;
-            Undefined = false;
-            Successful = successful;
+            Status = TransactionDetailStatus.Success;
             TransactionHash = transactionHash;
             To = to;
         }
@@ -82,8 +122,8 @@ namespace TrackingChain.Common.Dto
         public string Error { get; set; }
         public string From { get; set; }
         public string GasUsed { get; set; }
-        public bool Undefined { get; set; }
-        public bool? Successful { get; set; }
+        public bool WatchOnlyTx { get; set; }
+        public TransactionDetailStatus Status { get; set; }
         public TransactionErrorReason? TransactionErrorReason { get; set; }
         public string TransactionHash { get; set; }
         public string To { get; set; }

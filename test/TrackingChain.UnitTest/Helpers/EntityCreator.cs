@@ -195,7 +195,8 @@ namespace TrackingChain.UnitTest.Helpers
             Guid secondaryProfileAccount,
             ApplicationDbContext dbContext,
             bool includePools = false,
-            bool includePendings = false)
+            bool includePendings = false,
+            bool includeRegistry = false)
         {
             //smart contracts
             var smartContracts = EntityCreator.CreateSmartContract(2);
@@ -241,6 +242,12 @@ namespace TrackingChain.UnitTest.Helpers
                 {
                     var pending = CreateTransactionPending(triages);
                     dbContext.TransactionPendings.AddRange(pending);
+                    await dbContext.SaveChangesAsync();
+                }
+
+                if (includeRegistry)
+                {
+                    dbContext.TransactionRegistries.AddRange(EntityCreator.CreateTransactionRegistry(triages));
                     await dbContext.SaveChangesAsync();
                 }
             }

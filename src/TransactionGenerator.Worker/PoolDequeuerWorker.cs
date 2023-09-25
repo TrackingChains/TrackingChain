@@ -34,6 +34,12 @@ namespace TrackingChain.TransactionGeneratorWorker
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             logger.StartPoolDequeuerWorker();
+            if (dequeuerOptions.Accounts == null ||
+                !dequeuerOptions.Accounts.Any())
+            {
+                logger.EndPoolDequeuerWorker();
+                return;
+            }
 
             // Task creations.
             var tasks = new List<Task>();
@@ -66,7 +72,7 @@ namespace TrackingChain.TransactionGeneratorWorker
                         dequeuerOptions.Accounts.Count,
                         taskId,
                         dequeuerOptions.ReTryAfterSeconds,
-                        dequeuerOptions.ErrorAfterReTry);
+                        dequeuerOptions.MaxErrorTime);
                 }
 #pragma warning disable CA1031 // We need fot catch all problems.
                 catch (Exception ex)
