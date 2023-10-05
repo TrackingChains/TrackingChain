@@ -71,8 +71,8 @@ jobs:
           tag=$(git describe --tags --abbrev=0)
           release_name="aggregator-pool-worker-$tag-${{ matrix.kind }}"
           # Build everything
-          dotnet publish src/AggregatorPool.Worker/AggregatorPool.Worker.csproj --runtime "${{ matrix.target }}" "${{ matrix.frameworktype }}" -c Release -o "$release_name" /p:PublishSingleFile=true /p:PublishReadyToRun=true
-          zz# Pack files
+          dotnet publish src/AggregatorPool.Worker/AggregatorPool.Worker.csproj --runtime "${{ matrix.target }}" "${{ matrix.frameworktype }}" -c Release -o "$release_name"
+          # Pack files
           if [ "${{ matrix.target }}" == "win-x64" ]; then
             7z a -tzip "${release_name}.zip" "./${release_name}/*"
           else
@@ -85,7 +85,7 @@ jobs:
           tag=$(git describe --tags --abbrev=0)
           release_name="transaction-generator-worker-$tag-${{ matrix.kind }}"
           # Build everything
-          dotnet publish src/TransactionGenerator.Worker/TransactionGenerator.Worker.csproj --runtime "${{ matrix.target }}" "${{ matrix.frameworktype }}" -c Release -o "$release_name"  /p:PublishSingleFile=true /p:PublishReadyToRun=true
+          dotnet publish src/TransactionGenerator.Worker/TransactionGenerator.Worker.csproj --runtime "${{ matrix.target }}" "${{ matrix.frameworktype }}" -c Release -o "$release_name"
           # Pack files
           if [ "${{ matrix.target }}" == "win-x64" ]; then
             7z a -tzip "${release_name}.zip" "./${release_name}/*"
@@ -99,7 +99,21 @@ jobs:
           tag=$(git describe --tags --abbrev=0)
           release_name="transaction-watcher-worker-$tag-${{ matrix.kind }}"
           # Build everything
-          dotnet publish src/TransactionWatcher.Worker/TransactionWatcher.Worker.csproj --runtime "${{ matrix.target }}" "${{ matrix.frameworktype }}" -c Release -o "$release_name"  /p:PublishSingleFile=true /p:PublishReadyToRun=true
+          dotnet publish src/TransactionWatcher.Worker/TransactionWatcher.Worker.csproj --runtime "${{ matrix.target }}" "${{ matrix.frameworktype }}" -c Release -o "$release_name"
+          # Pack files
+          if [ "${{ matrix.target }}" == "win-x64" ]; then
+            7z a -tzip "${release_name}.zip" "./${release_name}/*"
+          else
+            tar czvf "${release_name}.tar.gz" "$release_name"
+          fi
+
+      - name: Build TransactionMonitor.Worker project
+        shell: bash
+        run: |
+          tag=$(git describe --tags --abbrev=0)
+          release_name="transaction-monitor-worker-$tag-${{ matrix.kind }}"
+          # Build everything
+          dotnet publish src/TransactionMonitor.Worker/TransactionMonitor.Worker.csproj --runtime "${{ matrix.target }}" "${{ matrix.frameworktype }}" -c Release -o "$release_name"
           # Pack files
           if [ "${{ matrix.target }}" == "win-x64" ]; then
             7z a -tzip "${release_name}.zip" "./${release_name}/*"
@@ -129,6 +143,7 @@ jobs:
             aggregator-pool-worker-*    
             transaction-generator-worker-*
             transaction-watcher-worker-*
+            transaction-monitor-worker-*
             web-application-*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
