@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TrackingChain.Core.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -27,6 +27,33 @@ namespace TrackingChain.Core.Migrations
                     table.PrimaryKey("PK_Accounts", x => x.Id);
                 });
 #pragma warning restore CA1062 // Validate arguments of public methods
+
+            migrationBuilder.CreateTable(
+                name: "ReportData",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Sent = table.Column<bool>(type: "bit", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReportData", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ReportSettings",
+                columns: table => new
+                {
+                    Key = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReportSettings", x => x.Key);
+                });
 
             migrationBuilder.CreateTable(
                 name: "SmartContract",
@@ -52,10 +79,13 @@ namespace TrackingChain.Core.Migrations
                 {
                     TrackingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Completed = table.Column<bool>(type: "bit", nullable: false),
+                    ErrorTimes = table.Column<int>(type: "int", nullable: false),
                     IsInProgress = table.Column<bool>(type: "bit", nullable: false),
+                    LastUnlockedError = table.Column<int>(type: "int", nullable: true),
                     Locked = table.Column<bool>(type: "bit", nullable: false),
                     LockedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     LockedDated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     TriageDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TxHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Priority = table.Column<byte>(type: "tinyint", nullable: false),
@@ -66,9 +96,9 @@ namespace TrackingChain.Core.Migrations
                     ReceivedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ChainNumberId = table.Column<int>(type: "int", nullable: false),
                     ChainType = table.Column<int>(type: "int", nullable: false),
-                    SmartContractExtraInfo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SmartContractId = table.Column<long>(type: "bigint", nullable: false),
                     SmartContractAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SmartContractExtraInfo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProfileGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -82,19 +112,23 @@ namespace TrackingChain.Core.Migrations
                 {
                     TrackingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Completed = table.Column<bool>(type: "bit", nullable: false),
+                    ErrorTimes = table.Column<int>(type: "int", nullable: false),
+                    GeneratingFrom = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastUnlockedError = table.Column<int>(type: "int", nullable: true),
                     Locked = table.Column<bool>(type: "bit", nullable: false),
                     LockedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     LockedDated = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TriageDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Priority = table.Column<byte>(type: "tinyint", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    TriageDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReceivedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ChainNumberId = table.Column<int>(type: "int", nullable: false),
                     ChainType = table.Column<int>(type: "int", nullable: false),
-                    SmartContractExtraInfo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SmartContractId = table.Column<long>(type: "bigint", nullable: false),
                     SmartContractAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SmartContractExtraInfo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProfileGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -107,8 +141,10 @@ namespace TrackingChain.Core.Migrations
                 columns: table => new
                 {
                     TrackingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ErrorTime = table.Column<int>(type: "int", nullable: false),
                     LastTransactionHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TransactionStep = table.Column<int>(type: "int", nullable: false),
+                    TransactionErrorReason = table.Column<int>(type: "int", nullable: true),
                     TriageDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PendingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PoolDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -118,18 +154,20 @@ namespace TrackingChain.Core.Migrations
                     ReceiptEffectiveGasPrice = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReceiptFrom = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReceiptGasUsed = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReceiptSuccessful = table.Column<bool>(type: "bit", nullable: true),
+                    ReceiptReceived = table.Column<bool>(type: "bit", nullable: false),
                     ReceiptTransactionHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReceiptTo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RegistryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SmartContractEndpoint = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReceivedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ChainNumberId = table.Column<int>(type: "int", nullable: false),
                     ChainType = table.Column<int>(type: "int", nullable: false),
-                    SmartContractExtraInfo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SmartContractId = table.Column<long>(type: "bigint", nullable: false),
                     SmartContractAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SmartContractExtraInfo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProfileGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -151,14 +189,37 @@ namespace TrackingChain.Core.Migrations
                     ReceivedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ChainNumberId = table.Column<int>(type: "int", nullable: false),
                     ChainType = table.Column<int>(type: "int", nullable: false),
-                    SmartContractExtraInfo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SmartContractId = table.Column<long>(type: "bigint", nullable: false),
                     SmartContractAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SmartContractExtraInfo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProfileGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TransactionTriages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reports",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Priority = table.Column<int>(type: "int", nullable: false),
+                    Reported = table.Column<bool>(type: "bit", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    TrackingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ReportDataId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reports_ReportData_ReportDataId",
+                        column: x => x.ReportDataId,
+                        principalTable: "ReportData",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -190,6 +251,7 @@ namespace TrackingChain.Core.Migrations
                 {
                     AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProfileGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Priority = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -217,8 +279,12 @@ namespace TrackingChain.Core.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_ProfileGroups_SmartContractId",
                 table: "ProfileGroups",
-                column: "SmartContractId",
-                unique: true);
+                column: "SmartContractId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reports_ReportDataId",
+                table: "Reports",
+                column: "ReportDataId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TransactionPools_Locked_Priority",
@@ -240,6 +306,12 @@ namespace TrackingChain.Core.Migrations
 #pragma warning restore CA1062 // Validate arguments of public methods
 
             migrationBuilder.DropTable(
+                name: "Reports");
+
+            migrationBuilder.DropTable(
+                name: "ReportSettings");
+
+            migrationBuilder.DropTable(
                 name: "TransactionPendings");
 
             migrationBuilder.DropTable(
@@ -256,6 +328,9 @@ namespace TrackingChain.Core.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProfileGroups");
+
+            migrationBuilder.DropTable(
+                name: "ReportData");
 
             migrationBuilder.DropTable(
                 name: "SmartContract");

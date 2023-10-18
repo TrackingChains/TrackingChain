@@ -12,8 +12,8 @@ using TrackingChain.TrackingChainCore.EntityFramework.Context;
 namespace TrackingChain.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230907163703_LastUnlockPool")]
-    partial class LastUnlockPool
+    [Migration("20231018125153_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
