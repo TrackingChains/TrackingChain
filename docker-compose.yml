@@ -10,6 +10,13 @@ services:
       - "5532:1433"
     networks:
       - mynetwork
+  app-wait-for-sql:
+    image: alpine
+    depends_on:
+      - trackingdb
+    command: ["sh", "-c", "until nc -z -v -w30 sql-server 1433; do echo 'Waiting for SQL Server to start...'; sleep 5; done"]
+    networks:
+      - mynetwork
   triage:
     image: triageapi
     build:
@@ -18,7 +25,7 @@ services:
     ports:
       - "5000:80"
     depends_on:
-      - trackingdb
+      - app-wait-for-sql
     networks:
       - mynetwork
   webapp:
@@ -29,7 +36,7 @@ services:
     ports:
       - "12345:12345"
     depends_on:
-      - triage
+      - trackingdb-init
     networks:
       - mynetwork
   aggregator-pool:

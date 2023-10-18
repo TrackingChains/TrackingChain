@@ -4,6 +4,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TrackingChain.Common.DefaulValues;
@@ -43,7 +45,7 @@ namespace TrackingChain.TriageAPI.HostedService
                     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
                     await dbContext.Database.MigrateAsync(cancellationToken);
-                    await SeedAsync(dbContext);
+                    await SeedAsync(dbContext, databaseConfig.Value);
                 }
             }
 
@@ -56,7 +58,9 @@ namespace TrackingChain.TriageAPI.HostedService
         }
 
         // Helpers.
-        private async Task SeedAsync(ApplicationDbContext applicationDbContext)
+        private async Task SeedAsync(
+            ApplicationDbContext applicationDbContext, 
+            DatabaseOptions databaseOptions)
         {
             var itemToSeed = await applicationDbContext.ReportSettings.FirstOrDefaultAsync(rs => rs.Key == ReportSetting.TransactionErrorTemplate);
             if (itemToSeed is null)
@@ -75,6 +79,22 @@ namespace TrackingChain.TriageAPI.HostedService
                 applicationDbContext.Add(new ReportSetting(ReportSetting.TransactionCancelledMail, ""));
 
             await applicationDbContext.SaveChangesAsync();
+
+            if (databaseOptions.SeedData &&
+                !(await applicationDbContext.Accounts.AnyAsync()))
+            {
+                string[] sqlStatements = File.ReadAllText("Seeds\\Milestone4.sql")
+                    .Split(new[] { ";\r\n", ";\n" }, StringSplitOptions.RemoveEmptyEntries);
+                sqlStatements = sqlStatements
+                    .Select(s => s.Replace("{", "{{", StringComparison.InvariantCultureIgnoreCase)
+                                  .Replace("}", "}}", StringComparison.InvariantCultureIgnoreCase))
+                    .ToArray();
+
+                foreach (var sqlStatement in sqlStatements)
+                    applicationDbContext.Database.ExecuteSqlRaw(sqlStatement);
+
+                await applicationDbContext.SaveChangesAsync();
+            }
         }
     }
 }
