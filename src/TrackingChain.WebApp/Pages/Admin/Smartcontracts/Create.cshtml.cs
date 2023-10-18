@@ -50,6 +50,7 @@ namespace TrackingChain.TriageWebApplication.Pages.Admin.Smartcontracts
                 return Page();
             }
 #pragma warning restore CA1031 // Do not catch general exception types
+            contractExtraInfo.WaitingForResult = SmartContractBinding.WaitingForResult;
 
             var smartContract = new SmartContract(
                 SmartContractBinding.Address,
