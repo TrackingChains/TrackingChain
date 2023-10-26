@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using StreamJsonRpc;
 using Substrate.NetApi;
-using Substrate.NetApi.Model.Extrinsics;
 using Substrate.NetApi.Model.Types;
 using Substrate.NetApi.Model.Types.Base;
 using Substrate.NetApi.Model.Types.Primitive;
@@ -17,29 +15,21 @@ using TrackingChain.Substrate.Generic.Client.Helpers;
 
 namespace TrackingChain.Substrate.Generic.Client.Clients
 {
-    public class ShibuyaClient : ISubstrateClient
+    public class ShibuyaClient : BaseClient, ISubstrateClient
     {
         // Fields.
-        private readonly ChargeType chargeTypeDefault;
         private readonly ILogger<ShibuyaClient> logger;
 
         // Constructors.
         public ShibuyaClient(
             Account account,
-            ILogger<ShibuyaClient> 
-            logger, string url)
+            ILogger<ShibuyaClient> logger,
+            string url)
+            : base(account, logger)
         {
-            Account = account;
-            chargeTypeDefault = ChargeTransactionPayment.Default();
+            this.SubstrateClient = new SubstrateClientExt(new Uri(url), ChargeType);
             this.logger = logger;
-
-            SubstrateClient = new SubstrateClientExt(new Uri(url), chargeTypeDefault);
         }
-
-        // Properties.
-        public Account Account { get; set; }
-        public bool IsConnected => SubstrateClient.IsConnected;
-        public SubstrateClient SubstrateClient { get; }
 
         // Public methods.
         public async Task<bool> ConnectAsync(bool useMetadata, bool standardSubstrate, CancellationToken token)
@@ -51,6 +41,7 @@ namespace TrackingChain.Substrate.Generic.Client.Clients
         }
 
         public async Task<string?> ContractsCallAsync(
+            bool callSigned,
             IType dest,
             BigInteger value,
             ulong refTime,
@@ -59,11 +50,53 @@ namespace TrackingChain.Substrate.Generic.Client.Clients
             byte[] data,
             CancellationToken token)
         {
-            if (!IsConnected || Account == null)
-            {
+            if (!IsConnected || 
+                Account == null)
                 return null;
-            }
 
+            return await ExecuteContractsCallAsync(callSigned, dest, value, refTime, proofSize, storageDepositLimit, data, null, token);
+        }
+
+        public async Task<string?> ContractsCallAndWatchAsync(
+            IType dest, 
+            BigInteger value, 
+            ulong refTime, 
+            ulong proofSize, 
+            BigInteger? storageDepositLimit, 
+            byte[] data, 
+            string extrinsicType, 
+            CancellationToken token)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(extrinsicType);
+
+            if (!IsConnected || 
+                Account == null)
+                return null;
+
+            return await ExecuteContractsCallAsync(true, dest, value, refTime, proofSize, storageDepositLimit, data, extrinsicType, token);
+        }
+
+        public async Task<bool> DisconnectAsync()
+        {
+            if (!IsConnected)
+                return false;
+
+            await SubstrateClient.CloseAsync();
+            return true;
+        }
+
+        // Helpers.
+        public async Task<string?> ExecuteContractsCallAsync(
+            bool callSigned,
+            IType dest,
+            BigInteger value,
+            ulong refTime,
+            ulong proofSize,
+            BigInteger? storageDepositLimit,
+            byte[] data,
+            string? extrinsicType,
+            CancellationToken token)
+        {
             var destParam = new EnumMultiAddress();
             destParam.Create(MultiAddress.Id, dest);
 
@@ -93,38 +126,10 @@ namespace TrackingChain.Substrate.Generic.Client.Clients
 
             var extrinsic = ContractsCalls.Call(destParam, valueParam, gasLimitParam, storageDepositLimitParam, dataParam);
 
-            return await GenericExtrinsicAsync(Account, extrinsic, token);
-        }
-
-        public async Task<bool> DisconnectAsync()
-        {
-            if (!IsConnected)
-                return false;
-
-            await SubstrateClient.CloseAsync();
-            return true;
-        }
-
-        internal async Task<string?> GenericExtrinsicAsync(
-            Account account,
-            Method extrinsicMethod,
-            CancellationToken token)
-        {
-            if (account == null)
-                return null;
-
-            if (!IsConnected)
-                return null;
-
-            try
-            {
-                return (await SubstrateClient.Author.SubmitExtrinsicAsync(extrinsicMethod, account, chargeTypeDefault, 64, token))?.Value ?? "";
-            }
-            catch (RemoteInvocationException ex)
-            {
-                logger.SubmitExtrinsicError(ex);
-                return "";
-            }
+            if (extrinsicType is null)
+                return await GenericExtrinsicAsync(Account, extrinsic, callSigned, token);
+            else
+                return await GenericExtrinsicAndSubscriptionAsync(Account, extrinsic, extrinsicType, token);
         }
     }
 }

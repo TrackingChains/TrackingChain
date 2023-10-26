@@ -12,6 +12,7 @@ using Nethereum.Web3;
 using Nethereum.Web3.Accounts;
 using System.Linq;
 using System;
+using Nethereum.RPC.Eth.DTOs;
 
 namespace EVM.Generic.Client
 {
@@ -44,8 +45,10 @@ namespace EVM.Generic.Client
 
             var contractHandler = web3.Eth.GetContractHandler(contractAddress);
 
-            var getProductTrackingFunction = new GetCodeTrackingFunction();
-            getProductTrackingFunction.Code = Encoding.ASCII.GetBytes(code);
+            var getProductTrackingFunction = new GetCodeTrackingFunction
+            {
+                Code = Encoding.ASCII.GetBytes(code)
+            };
             var getTrackingResult = await contractHandler.QueryDeserializingToObjectAsync<GetCodeTrackingFunction, GetCodeTrackingOutputDTO>(getProductTrackingFunction);
 
             return new TrackingChainData
@@ -86,7 +89,7 @@ namespace EVM.Generic.Client
                 ethReceipt.To);
         }
 
-        public async Task<string> InsertTrackingAsync(
+        public async Task<TransactionDetail?> InsertTrackingAsync(
             string code,
             string dataValue,
             string privateKey,
@@ -96,6 +99,8 @@ namespace EVM.Generic.Client
             ContractExtraInfo contractExtraInfo,
             CancellationToken token)
         {
+            ArgumentNullException.ThrowIfNull(contractExtraInfo);    
+
             var contractHandler = GetContractHandler(
                 privateKey,
                 chainNumberId,
@@ -106,7 +111,16 @@ namespace EVM.Generic.Client
                 code,
                 dataValue);
 
-            return await contractHandler.SendRequestAsync(insertTracking);
+            if (contractExtraInfo.WaitingForResult)
+            {
+                var receipt = await contractHandler.SendRequestAndWaitForReceiptAsync(insertTracking);
+                return ToTransactionDetail(receipt);
+            }
+            else
+            {
+                var txHash = await contractHandler.SendRequestAsync(insertTracking);
+                return ToTransactionDetail(txHash);
+            }
         }
 
         // Helpers.
@@ -128,10 +142,44 @@ namespace EVM.Generic.Client
             string chainEndpoint,
             string contractAddress)
         {
-            var account = new Nethereum.Web3.Accounts.Account(privateKey, chainNumberId);
+            var account = new Account(privateKey, chainNumberId);
             var web3 = new Web3(account, chainEndpoint);
 
             return web3.Eth.GetContractHandler(contractAddress);
+        }
+
+        public TransactionDetail? ToTransactionDetail(string txHash) => new(txHash);
+
+        public TransactionDetail? ToTransactionDetail(TransactionReceipt ethReceipt)
+        {
+            if (ethReceipt is null)
+                return null;
+
+            return ethReceipt.Status.Value == 1 ?
+                new TransactionDetail(
+                    ethReceipt.BlockHash,
+                    ethReceipt.BlockNumber.HexValue,
+                    ethReceipt.ContractAddress,
+                    ethReceipt.CumulativeGasUsed.HexValue,
+                    ethReceipt.EffectiveGasPrice.HexValue,
+                    "",
+                    ethReceipt.From,
+                    ethReceipt.GasUsed.HexValue,
+                    ethReceipt.Status.Value == 1,
+                    ethReceipt.TransactionHash,
+                    ethReceipt.To) :
+                new TransactionDetail(
+                    TransactionErrorReason.TransactionFinalizedInError,
+                    ethReceipt.BlockHash,
+                    ethReceipt.BlockNumber.HexValue,
+                    ethReceipt.ContractAddress,
+                    ethReceipt.CumulativeGasUsed.HexValue,
+                    ethReceipt.EffectiveGasPrice.HexValue,
+                    "",
+                    ethReceipt.From,
+                    ethReceipt.GasUsed.HexValue,
+                    ethReceipt.TransactionHash,
+                    ethReceipt.To);
         }
     }
 }

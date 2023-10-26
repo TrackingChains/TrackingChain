@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
+using TrackingChain.Common.Dto;
 using TrackingChain.Common.Enums;
 
 namespace TrackingChain.TrackingChainCore.Extensions
@@ -169,11 +170,11 @@ namespace TrackingChain.TrackingChainCore.Extensions
                 LogLevel.Information,
                 new EventId(11, nameof(StartTransactionFailedWorker)),
                 "Start Transaction Failed Worker running.");
-        private static readonly Action<ILogger, Guid, bool?, Exception> _transactionWatcher =
-            LoggerMessage.Define<Guid, bool?>(
+        private static readonly Action<ILogger, Guid, TransactionDetailStatus, Exception> _transactionWatcher =
+            LoggerMessage.Define<Guid, TransactionDetailStatus>(
                 LogLevel.Information,
                 new EventId(16, nameof(TransactionWatcher)),
-                "Transaction Wacther for TrackingGuid:{TrackingGuid}\tSuccessful:{Successful}");
+                "Transaction Wacther for TrackingGuid:{TrackingGuid}\tStatus:{Status}");
         private static readonly Action<ILogger, string, string, string, string, Guid, Exception> _trackingEntry =
             LoggerMessage.Define<string, string, string, string, Guid>(
                 LogLevel.Information,
@@ -335,8 +336,8 @@ namespace TrackingChain.TrackingChainCore.Extensions
             _transactionGenerationCompletedInError(logger, trackingGuid, null!);
         public static void TrasactionGenerationInError(this ILogger logger, Guid trackingGuid, string endpoint, Exception exception) =>
             _trasactionGenerationInError(logger, trackingGuid, endpoint, exception);
-        public static void TransactionWatcher(this ILogger logger, Guid trackingGuid, bool? successful) =>
-            _transactionWatcher(logger, trackingGuid, successful, null!);
+        public static void TransactionWatcher(this ILogger logger, Guid trackingGuid, TransactionDetailStatus status) =>
+            _transactionWatcher(logger, trackingGuid, status, null!);
         public static void TransactionDeleterWorkerError(this ILogger logger, Exception exception) =>
             _transactionDeleterWorkerError(logger, exception);
         public static void TrackingEntry(this ILogger logger, string code, string dataValue, string category, string smartContracAddress, Guid profileGroup) =>

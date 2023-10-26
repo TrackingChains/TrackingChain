@@ -82,7 +82,7 @@ namespace Substrate.NetApi.Modules.Contracts
         /// <param name="lifeTime"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        Task<Hash> SubmitExtrinsicAsync(Method method, Account account, ChargeType charge, uint lifeTime, CancellationToken token);
+        Task<Hash> SubmitExtrinsicAsync(Method method, Account account, ChargeType charge, uint lifeTime, bool signed, CancellationToken token);
 
         /// <summary>
         /// Submit a fully formatted extrinsic for block inclusion

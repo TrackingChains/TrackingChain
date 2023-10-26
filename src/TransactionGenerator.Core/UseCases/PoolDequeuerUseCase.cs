@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using TrackingChain.Common.Dto;
 using TrackingChain.Common.Enums;
 using TrackingChain.Common.ExtraInfos;
 using TrackingChain.Common.Interfaces;
@@ -46,7 +47,7 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
             int max,
             Guid accountId,
             int reTryAfterSeconds,
-            int errorAfterReTry)
+            int maxErrorTime)
         {
             var account = await accountService.GetAccountAsync(accountId);
             var pools = await transactionGeneratorService.GetAvaiableTransactionPoolAsync(max, accountId);
@@ -63,27 +64,30 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                     applicationDbContext.Entry(pool).State = EntityState.Unchanged;
                     continue;
                 }
-                if (pool.ErrorTimes > errorAfterReTry)
+                if (pool.ErrorTimes > maxErrorTime)
                 {
-                    await SetTransactionGenerationCompletedInErrorAsync(errorAfterReTry, pool);
+                    pool.Unlock();
+
+                    await SetTransactionGenerationCompletedInErrorAsync(maxErrorTime, pool);
 
                     await applicationDbContext.SaveChangesAsync();
 
                     logger.TransactionOnChain(
                         pool.TrackingId, 
-                        $"Exceed Retry Limit\tErrorTimes: {pool.ErrorTimes}\tErrorAfterReTry: {errorAfterReTry}", 
+                        $"Exceed Retry Limit\tErrorTimes: {pool.ErrorTimes}\tMaxErrorTime: {maxErrorTime}", 
                         pool.SmartContractAddress);
                     return pool.TrackingId;
                 }
 
                 var blockChainService = blockchainServices.First(x => x.ProviderType == pool.ChainType);
 
-                string txHash = "";
+                TransactionDetail? transactionDetail = null;
                 string writerEndpointAddress = "";
+                string? errorException = null;
                 try
                 {
                     writerEndpointAddress = account.GetFirstRandomWriterAddress;
-                    txHash = await blockChainService.InsertTrackingAsync(
+                    transactionDetail = await blockChainService.InsertTrackingAsync(
                     pool.Code,
                     pool.DataValue,
                     account.PrivateKey,
@@ -98,46 +102,68 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
 #pragma warning restore CA1031 // Do not catch general exception types
                 {
                     logger.TrasactionGenerationInError(pool.TrackingId, writerEndpointAddress, ex);
+                    errorException = TrackinChainExceptionExtensions.GetAllExceptionMessages(ex);
+                }
+                transactionDetail ??= new TransactionDetail(TransactionErrorReason.UnableToSendTransactionOnChain);
 
-                    pool.UnlockFromError(TransactionErrorReason.InsertTransactionExpection, reTryAfterSeconds);
+                if (transactionDetail.Status == TransactionDetailStatus.Failed)
+                {
+                    pool.UnlockFromError(transactionDetail.TransactionErrorReason ?? TransactionErrorReason.UnableToSendTransactionOnChain, reTryAfterSeconds);
+                    applicationDbContext.Update(pool);
 
-                    if (pool.ErrorTimes <= errorAfterReTry)
+                    if (pool.ErrorTimes <= maxErrorTime &&
+                        transactionDetail.TransactionErrorReason != TransactionErrorReason.TransactionFinalizedInError)
                     {
                         var reportItem = new Core.Domain.Entities.ReportItem(
-                        TrackinChainExceptionExtensions.GetAllExceptionMessages(ex),
+                        errorException ?? transactionDetail.TransactionErrorReason.ToString() ?? "Unknow error",
                         0,
                         false,
                         ReportItemType.TxGenerationFailed,
                         pool.TrackingId);
+
                         applicationDbContext.Add(reportItem);
                     }
                     else
-                        await SetTransactionGenerationCompletedInErrorAsync(errorAfterReTry, pool);
+                        await SetTransactionGenerationCompletedInErrorAsync(maxErrorTime, pool);
 
                     await applicationDbContext.SaveChangesAsync();
 
                     logger.TransactionOnChain(pool.TrackingId, "TxFailed", pool.SmartContractAddress);
+
                     return pool.TrackingId;
                 }
+                else
+                {
+                    pool.SetCompleted();
+                    var txPending = transactionGeneratorService.AddTransactionPendingFromPool(pool, transactionDetail.TransactionHash);
+                    if (transactionDetail.WatchOnlyTx)
+                    {
+                        await transactionGeneratorService.SetToRegistryCompletedAsync(
+                            txPending.TrackingId,
+                            transactionDetail);
 
-                // Tx Generated.
-                var txPending = transactionGeneratorService.AddTransactionPendingFromPool(pool, txHash);
-                await transactionGeneratorService.SetToPendingAsync(txPending.TrackingId, txHash, account.ChainWriterAddress);
+                        await transactionGeneratorService.SetTransactionTriageCompletedAsync(pool.TrackingId);
 
-                await applicationDbContext.SaveChangesAsync();
+                        txPending.SetExcluded();
+                    }
+                    else
+                        await transactionGeneratorService.SetToPendingAsync(pool.TrackingId, transactionDetail.TransactionHash, account.ChainWriterAddress);
 
-                logger.TransactionOnChain(pool.TrackingId, txPending.TxHash, pool.SmartContractAddress);
-                return pool.TrackingId;
+                    await applicationDbContext.SaveChangesAsync();
+
+                    logger.TransactionOnChain(pool.TrackingId, transactionDetail.TransactionHash, pool.SmartContractAddress);
+                    return pool.TrackingId;
+                }
             }
 
             return Guid.Empty;
         }
 
         // Helpers.
-        private async Task SetTransactionGenerationCompletedInErrorAsync(int errorAfterReTry, TransactionPool pool)
+        private async Task SetTransactionGenerationCompletedInErrorAsync(int maxErrorTime, TransactionPool pool)
         {
             var reportItem = new Core.Domain.Entities.ReportItem(
-                                    $"Exceed Retry Limit\tErrorTimes: {pool.ErrorTimes}\tErrorAfterReTry: {errorAfterReTry}",
+                                    $"Exceed Retry Limit\tErrorTimes: {pool.ErrorTimes}\tMaxErrorTime: {maxErrorTime}",
                                     0,
                                     false,
                                     ReportItemType.TxGenerationInError,
@@ -145,8 +171,11 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
             applicationDbContext.Add(reportItem);
 
             pool.SetStatusError();
+            applicationDbContext.Update(pool);
 
-            await transactionGeneratorService.SetToRegistryErrorAsync(pool.TrackingId);
+            await transactionGeneratorService.SetToRegistryErrorAsync(
+                pool.TrackingId, 
+                new TransactionDetail(TransactionErrorReason.UnableToSendTransactionOnChain));
 
             logger.TransactionGenerationCompletedInError(pool.TrackingId);
         }

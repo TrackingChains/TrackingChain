@@ -41,6 +41,11 @@
             <span asp-validation-for="SmartContractBinding.ExtraInfo" class="text-danger"></span>
         </div>
         <div class="form-group">
+            <label asp-for="SmartContractBinding.WaitingForResult" class="control-label"></label>
+            <input asp-for="SmartContractBinding.WaitingForResult" type="checkbox"/>
+            <span asp-validation-for="SmartContractBinding.WaitingForResult" class="text-danger"></span>
+        </div>
+        <div class="form-group">
             <label asp-for="SmartContractBinding.Name" class="control-label"></label>
             <input asp-for="SmartContractBinding.Name" class="form-control" />
             <span asp-validation-for="SmartContractBinding.Name" class="text-danger"></span>

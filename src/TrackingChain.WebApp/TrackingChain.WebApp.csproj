@@ -58,4 +58,10 @@
     <None Include="Pages\Admin\Smartcontracts\Index.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="appsettings.Development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

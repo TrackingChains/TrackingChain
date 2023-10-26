@@ -37,4 +37,10 @@
     <ProjectReference Include="..\EVM.Generic.Client\EVM.Generic.Client.csproj" />
     <ProjectReference Include="..\TransactionGenerator.Core\TransactionGenerator.Core.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.Development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>
