@@ -249,7 +249,7 @@ namespace TrackingChain.Substrate.Generic.Client
                            !queueInfo.IsCompleted)
                     {
 #pragma warning disable CA1848
-                        logger.LogDebug("Insert OnChain Info {Subscription} [{State}]", subscriptionId, queueInfo.State);
+                        logger.LogInformation("Insert OnChain Info {Subscription} [{State}]", subscriptionId, queueInfo.State);
 #pragma warning restore CA1848
 
                         Thread.Sleep(1000);

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TrackingChain.Common.Dto;
 using TrackingChain.Common.Enums;
+using TrackingChain.Core.Domain.Enums;
 using TrackingChain.TrackingChainCore.Domain.Entities;
 using TrackingChain.TrackingChainCore.EntityFramework.Context;
 
@@ -38,6 +39,7 @@ namespace TrackingChain.TransactionWatcherCore.Services
                       atg => atg.ProfileGroupId,
                       (tp, atg) => tp)
                 .Where(p => p.Locked == false &&
+                            p.Status != PendingStatus.Excluded &&
                             p.WatchingFrom < DateTime.UtcNow)
                 .Take(max)
                 .OrderBy(tp => Guid.NewGuid())

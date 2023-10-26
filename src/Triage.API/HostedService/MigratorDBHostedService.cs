@@ -83,7 +83,7 @@ namespace TrackingChain.TriageAPI.HostedService
             if (databaseOptions.SeedData &&
                 !(await applicationDbContext.Accounts.AnyAsync()))
             {
-                string[] sqlStatements = File.ReadAllText("Seeds\\Milestone4.sql")
+                string[] sqlStatements = File.ReadAllText("Seeds/Milestone4.sql")
                     .Split(new[] { ";\r\n", ";\n" }, StringSplitOptions.RemoveEmptyEntries);
                 sqlStatements = sqlStatements
                     .Select(s => s.Replace("{", "{{", StringComparison.InvariantCultureIgnoreCase)

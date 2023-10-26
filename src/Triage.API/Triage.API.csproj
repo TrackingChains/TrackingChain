@@ -48,4 +48,10 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Seeds\Milestone4.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

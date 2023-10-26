@@ -82,6 +82,7 @@ namespace TrackingChain.TrackingChainCore.Domain.Entities
 
         public void SetExcluded()
         {
+            Completed = true;
             Status = PendingStatus.Excluded;
         }
 
