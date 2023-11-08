@@ -84,8 +84,11 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                 TransactionDetail? transactionDetail = null;
                 string writerEndpointAddress = "";
                 string? errorException = null;
+                ContractExtraInfo? contractExtraInfo = null;
                 try
                 {
+                    contractExtraInfo = ContractExtraInfo.FromJson(pool.SmartContractExtraInfo);
+
                     writerEndpointAddress = account.GetFirstRandomWriterAddress;
                     transactionDetail = await blockChainService.InsertTrackingAsync(
                     pool.Code,
@@ -94,7 +97,7 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                     pool.ChainNumberId,
                     writerEndpointAddress,
                     pool.SmartContractAddress,
-                    ContractExtraInfo.FromJson(pool.SmartContractExtraInfo),
+                    contractExtraInfo,
                     CancellationToken.None);
                 }
 #pragma warning disable CA1031 // We need fot catch all problems.
@@ -136,7 +139,7 @@ namespace TrackingChain.TransactionGeneratorCore.UseCases
                 {
                     pool.SetCompleted();
                     var txPending = transactionGeneratorService.AddTransactionPendingFromPool(pool, transactionDetail.TransactionHash);
-                    if (transactionDetail.WatchOnlyTx)
+                    if (contractExtraInfo?.WaitingForResult ?? false)
                     {
                         await transactionGeneratorService.SetToRegistryCompletedAsync(
                             txPending.TrackingId,
