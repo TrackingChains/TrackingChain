@@ -31,6 +31,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddTransient<IEnqueuerPoolUseCase, EnqueuerPoolUseCase>();
         services.AddTransient<IUnitOfWork, UnitOfWork>();
 
+        services.AddHostedService<WaitingDBHostedService>();
         services.AddHostedService<PoolEnqueuerWorker>();
     })
     .UseSerilog((hostingContext, services, loggerConfiguration) => loggerConfiguration

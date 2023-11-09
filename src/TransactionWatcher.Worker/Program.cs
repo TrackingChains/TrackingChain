@@ -10,6 +10,7 @@ using TrackingChain.TrackingChainCore.EntityFramework.Context;
 using TrackingChain.TrackingChainCore.Options;
 using TrackingChain.TransactionWatcherCore.Services;
 using TrackingChain.TransactionWatcherCore.UseCases;
+using TrackingChain.TransactionWatcherWorker;
 using TrackingChain.TransactionWatcherWorker.Options;
 using TransactionWatcherWorker;
 
@@ -38,6 +39,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddTransient<ITransactionWatcherService, TransactionWatcherService>();
         services.AddTransient<IUnitOfWork, UnitOfWork>();
 
+        services.AddHostedService<WaitingDBHostedService>();
         services.AddHostedService<PendingTransactionCheckerWorker>();
     })
     .UseSerilog((hostingContext, services, loggerConfiguration) => loggerConfiguration
